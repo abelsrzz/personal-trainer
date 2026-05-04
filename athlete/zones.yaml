@@ -1,0 +1,27 @@
+zones:
+  heart_rate:
+    resting_hr: 54
+    max_hr: 197
+    threshold_hr: null
+    z0: "<130"
+    z1: 131-140
+    z2: 141-155
+    z3: 156-170
+    z4: 171-185
+    z5: ">185"
+  pace:
+    easy: 6:00-7:30/km
+    marathon: null
+    half_marathon: null
+    ten_k: 4:22/km
+    five_k: 4:15/km
+    threshold: null
+  guidance_priority:
+    primary: both
+    secondary: null
+  reference_marks:
+    recent_key_session: 4x1000@4:05/km
+    current_10k_pb:
+      date: 2025-02-07
+      pace: 4:22/km
+    current_5k_pace: 4:15/km

@@ -1,0 +1,35 @@
+workout:
+  name: Rodaje 6 km + 4 rectas suaves
+  schedule_date: 2026-05-20
+  sport: running
+  description: Rodaje facil para soltar piernas con 4 rectas controladas al final. Sin sprintar.
+  estimated_duration_s: 2400
+  steps:
+    - order: 1
+      step_type: interval
+      description: 5 km faciles
+      distance_m: 5000
+      target:
+        type: heart_rate_range
+        min_bpm: 135
+        max_bpm: 150
+    - order: 2
+      type: repeat_group
+      iterations: 4
+      steps:
+        - order: 3
+          step_type: interval
+          description: Recta 20 s
+          duration_s: 20
+        - order: 4
+          step_type: recovery
+          description: Recuperacion 40 s
+          duration_s: 40
+    - order: 5
+      step_type: cooldown
+      description: 1 km facil
+      distance_m: 1000
+      target:
+        type: heart_rate_range
+        min_bpm: 135
+        max_bpm: 150

@@ -1,0 +1,35 @@
+workout:
+  name: Shakeout pre-carrera 4 km
+  schedule_date: 2026-05-23
+  sport: running
+  description: Rodaje muy corto para despertar piernas antes de la carrera. Debe dejar sensacion de frescura.
+  estimated_duration_s: 1560
+  steps:
+    - order: 1
+      step_type: interval
+      description: 3 km muy faciles
+      distance_m: 3000
+      target:
+        type: heart_rate_range
+        min_bpm: 130
+        max_bpm: 145
+    - order: 2
+      type: repeat_group
+      iterations: 4
+      steps:
+        - order: 3
+          step_type: interval
+          description: Recta 15 s
+          duration_s: 15
+        - order: 4
+          step_type: recovery
+          description: Recuperacion 45 s
+          duration_s: 45
+    - order: 5
+      step_type: cooldown
+      description: 1 km muy facil
+      distance_m: 1000
+      target:
+        type: heart_rate_range
+        min_bpm: 130
+        max_bpm: 145

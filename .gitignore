@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+
+garmin/local_credentials.yaml
+telegram/bot_config.yaml
+telegram/.semana_actual_state.json
+training/completed/imports/garmin/**/*.fit
+training/completed/imports/garmin/**/*.gpx
+training/completed/imports/garmin/**/*.tcx
+training/completed/imports/garmin/**/*.zip

@@ -1,0 +1,636 @@
+{
+  "upload_mode": "structured_targets",
+  "workout_file": "training/planned/workouts/2026-05-22_activacion_ritmo_carrera.yaml",
+  "uploaded_response": {
+    "workoutId": 1557402234,
+    "ownerId": 137864769,
+    "workoutName": "Activacion ritmo carrera",
+    "description": "Sesion corta para recordar el ritmo objetivo de la carrera sin acumular fatiga.",
+    "updatedDate": "2026-05-04T12:41:19.0",
+    "createdDate": "2026-05-04T12:41:19.0",
+    "sportType": {
+      "sportTypeId": 1,
+      "sportTypeKey": "running",
+      "displayOrder": 1
+    },
+    "subSportType": null,
+    "trainingPlanId": null,
+    "author": {
+      "userProfilePk": 137864769,
+      "displayName": "4001188d-ed09-4b5d-86d2-ef751217099e",
+      "fullName": "Abel",
+      "profileImgNameLarge": null,
+      "profileImgNameMedium": "3f638055-fd65-4de8-a95a-ba40fab94e10-prfr.png",
+      "profileImgNameSmall": "3f638055-fd65-4de8-a95a-ba40fab94e10-prth.png",
+      "userPro": false,
+      "vivokidUser": false
+    },
+    "sharedWithUsers": null,
+    "estimatedDurationInSecs": 2160,
+    "estimatedDistanceInMeters": null,
+    "workoutSegments": [
+      {
+        "segmentOrder": 1,
+        "sportType": {
+          "sportTypeId": 1,
+          "sportTypeKey": "running",
+          "displayOrder": 1
+        },
+        "poolLengthUnit": null,
+        "poolLength": null,
+        "avgTrainingSpeed": null,
+        "estimatedDurationInSecs": null,
+        "estimatedDistanceInMeters": null,
+        "estimatedDistanceUnit": null,
+        "estimateType": null,
+        "description": null,
+        "workoutSteps": [
+          {
+            "type": "ExecutableStepDTO",
+            "stepId": 13256319252,
+            "stepOrder": 1,
+            "stepType": {
+              "stepTypeId": 1,
+              "stepTypeKey": "warmup",
+              "displayOrder": 1
+            },
+            "childStepId": null,
+            "description": "2 km faciles",
+            "endCondition": {
+              "conditionTypeId": 3,
+              "conditionTypeKey": "distance",
+              "displayOrder": 3,
+              "displayable": true
+            },
+            "endConditionValue": 2000.0,
+            "preferredEndConditionUnit": {
+              "unitId": 1,
+              "unitKey": "meter",
+              "factor": 100.0
+            },
+            "endConditionCompare": null,
+            "targetType": {
+              "workoutTargetTypeId": 4,
+              "workoutTargetTypeKey": "heart.rate.zone",
+              "displayOrder": 4
+            },
+            "targetValueOne": 135.0,
+            "targetValueTwo": 145.0,
+            "targetValueUnit": null,
+            "zoneNumber": null,
+            "secondaryTargetType": null,
+            "secondaryTargetValueOne": null,
+            "secondaryTargetValueTwo": null,
+            "secondaryTargetValueUnit": null,
+            "secondaryZoneNumber": null,
+            "endConditionZone": null,
+            "strokeType": {
+              "strokeTypeId": 0,
+              "strokeTypeKey": null,
+              "displayOrder": 0
+            },
+            "equipmentType": {
+              "equipmentTypeId": 0,
+              "equipmentTypeKey": null,
+              "displayOrder": 0
+            },
+            "category": null,
+            "exerciseName": null,
+            "workoutProvider": null,
+            "providerExerciseSourceId": null,
+            "weightValue": null,
+            "weightUnit": null
+          },
+          {
+            "type": "RepeatGroupDTO",
+            "stepId": 13256319253,
+            "stepOrder": 2,
+            "stepType": {
+              "stepTypeId": 6,
+              "stepTypeKey": "repeat",
+              "displayOrder": 6
+            },
+            "childStepId": 1,
+            "numberOfIterations": 3,
+            "workoutSteps": [
+              {
+                "type": "ExecutableStepDTO",
+                "stepId": 13256319254,
+                "stepOrder": 3,
+                "stepType": {
+                  "stepTypeId": 3,
+                  "stepTypeKey": "interval",
+                  "displayOrder": 3
+                },
+                "childStepId": 1,
+                "description": "2 min a ritmo objetivo",
+                "endCondition": {
+                  "conditionTypeId": 2,
+                  "conditionTypeKey": "time",
+                  "displayOrder": 2,
+                  "displayable": true
+                },
+                "endConditionValue": 120.0,
+                "preferredEndConditionUnit": null,
+                "endConditionCompare": null,
+                "targetType": {
+                  "workoutTargetTypeId": 6,
+                  "workoutTargetTypeKey": "pace.zone",
+                  "displayOrder": 6
+                },
+                "targetValueOne": 3.846,
+                "targetValueTwo": 4.0,
+                "targetValueUnit": null,
+                "zoneNumber": null,
+                "secondaryTargetType": null,
+                "secondaryTargetValueOne": null,
+                "secondaryTargetValueTwo": null,
+                "secondaryTargetValueUnit": null,
+                "secondaryZoneNumber": null,
+                "endConditionZone": null,
+                "strokeType": {
+                  "strokeTypeId": 0,
+                  "strokeTypeKey": null,
+                  "displayOrder": 0
+                },
+                "equipmentType": {
+                  "equipmentTypeId": 0,
+                  "equipmentTypeKey": null,
+                  "displayOrder": 0
+                },
+                "category": null,
+                "exerciseName": null,
+                "workoutProvider": null,
+                "providerExerciseSourceId": null,
+                "weightValue": null,
+                "weightUnit": null
+              },
+              {
+                "type": "ExecutableStepDTO",
+                "stepId": 13256319255,
+                "stepOrder": 4,
+                "stepType": {
+                  "stepTypeId": 4,
+                  "stepTypeKey": "recovery",
+                  "displayOrder": 4
+                },
+                "childStepId": 1,
+                "description": "2 min suaves",
+                "endCondition": {
+                  "conditionTypeId": 2,
+                  "conditionTypeKey": "time",
+                  "displayOrder": 2,
+                  "displayable": true
+                },
+                "endConditionValue": 120.0,
+                "preferredEndConditionUnit": null,
+                "endConditionCompare": null,
+                "targetType": {
+                  "workoutTargetTypeId": 4,
+                  "workoutTargetTypeKey": "heart.rate.zone",
+                  "displayOrder": 4
+                },
+                "targetValueOne": 131.0,
+                "targetValueTwo": 145.0,
+                "targetValueUnit": null,
+                "zoneNumber": null,
+                "secondaryTargetType": null,
+                "secondaryTargetValueOne": null,
+                "secondaryTargetValueTwo": null,
+                "secondaryTargetValueUnit": null,
+                "secondaryZoneNumber": null,
+                "endConditionZone": null,
+                "strokeType": {
+                  "strokeTypeId": 0,
+                  "strokeTypeKey": null,
+                  "displayOrder": 0
+                },
+                "equipmentType": {
+                  "equipmentTypeId": 0,
+                  "equipmentTypeKey": null,
+                  "displayOrder": 0
+                },
+                "category": null,
+                "exerciseName": null,
+                "workoutProvider": null,
+                "providerExerciseSourceId": null,
+                "weightValue": null,
+                "weightUnit": null
+              }
+            ],
+            "endConditionValue": 3.0,
+            "preferredEndConditionUnit": null,
+            "endConditionCompare": null,
+            "endCondition": {
+              "conditionTypeId": 7,
+              "conditionTypeKey": "iterations",
+              "displayOrder": 7,
+              "displayable": false
+            },
+            "skipLastRestStep": null,
+            "smartRepeat": false
+          },
+          {
+            "type": "ExecutableStepDTO",
+            "stepId": 13256319256,
+            "stepOrder": 5,
+            "stepType": {
+              "stepTypeId": 2,
+              "stepTypeKey": "cooldown",
+              "displayOrder": 2
+            },
+            "childStepId": null,
+            "description": "2 km faciles",
+            "endCondition": {
+              "conditionTypeId": 3,
+              "conditionTypeKey": "distance",
+              "displayOrder": 3,
+              "displayable": true
+            },
+            "endConditionValue": 2000.0,
+            "preferredEndConditionUnit": {
+              "unitId": 1,
+              "unitKey": "meter",
+              "factor": 100.0
+            },
+            "endConditionCompare": null,
+            "targetType": {
+              "workoutTargetTypeId": 4,
+              "workoutTargetTypeKey": "heart.rate.zone",
+              "displayOrder": 4
+            },
+            "targetValueOne": 135.0,
+            "targetValueTwo": 145.0,
+            "targetValueUnit": null,
+            "zoneNumber": null,
+            "secondaryTargetType": null,
+            "secondaryTargetValueOne": null,
+            "secondaryTargetValueTwo": null,
+            "secondaryTargetValueUnit": null,
+            "secondaryZoneNumber": null,
+            "endConditionZone": null,
+            "strokeType": {
+              "strokeTypeId": 0,
+              "strokeTypeKey": null,
+              "displayOrder": 0
+            },
+            "equipmentType": {
+              "equipmentTypeId": 0,
+              "equipmentTypeKey": null,
+              "displayOrder": 0
+            },
+            "category": null,
+            "exerciseName": null,
+            "workoutProvider": null,
+            "providerExerciseSourceId": null,
+            "weightValue": null,
+            "weightUnit": null
+          }
+        ]
+      }
+    ],
+    "poolLength": null,
+    "poolLengthUnit": null,
+    "locale": null,
+    "workoutProvider": null,
+    "workoutSourceId": null,
+    "uploadTimestamp": null,
+    "atpPlanId": null,
+    "consumer": null,
+    "consumerName": null,
+    "consumerImageURL": null,
+    "consumerWebsiteURL": null,
+    "workoutNameI18nKey": null,
+    "descriptionI18nKey": null,
+    "avgTrainingSpeed": 0.0,
+    "estimateType": null,
+    "estimatedDistanceUnit": {
+      "unitId": null,
+      "unitKey": null,
+      "factor": null
+    },
+    "workoutThumbnailUrl": null,
+    "isSessionTransitionEnabled": null,
+    "shared": false
+  },
+  "scheduled_response": {
+    "workoutScheduleId": 1639069385,
+    "workout": {
+      "workoutId": 1557402234,
+      "ownerId": 137864769,
+      "workoutName": "Activacion ritmo carrera",
+      "description": "Sesion corta para recordar el ritmo objetivo de la carrera sin acumular fatiga.",
+      "updatedDate": "2026-05-04T12:41:19.0",
+      "createdDate": "2026-05-04T12:41:19.0",
+      "sportType": {
+        "sportTypeId": 1,
+        "sportTypeKey": "running",
+        "displayOrder": 1
+      },
+      "subSportType": null,
+      "trainingPlanId": null,
+      "author": null,
+      "sharedWithUsers": null,
+      "estimatedDurationInSecs": 2160,
+      "estimatedDistanceInMeters": null,
+      "workoutSegments": [
+        {
+          "segmentOrder": 1,
+          "sportType": {
+            "sportTypeId": 1,
+            "sportTypeKey": "running",
+            "displayOrder": 1
+          },
+          "poolLengthUnit": null,
+          "poolLength": null,
+          "avgTrainingSpeed": null,
+          "estimatedDurationInSecs": null,
+          "estimatedDistanceInMeters": null,
+          "estimatedDistanceUnit": null,
+          "estimateType": null,
+          "description": null,
+          "workoutSteps": [
+            {
+              "type": "ExecutableStepDTO",
+              "stepId": 13256319252,
+              "stepOrder": 1,
+              "stepType": {
+                "stepTypeId": 1,
+                "stepTypeKey": "warmup",
+                "displayOrder": 1
+              },
+              "childStepId": null,
+              "description": "2 km faciles",
+              "endCondition": {
+                "conditionTypeId": 3,
+                "conditionTypeKey": "distance",
+                "displayOrder": 3,
+                "displayable": true
+              },
+              "endConditionValue": 2000.0,
+              "preferredEndConditionUnit": {
+                "unitId": 1,
+                "unitKey": "meter",
+                "factor": 100.0
+              },
+              "endConditionCompare": null,
+              "targetType": {
+                "workoutTargetTypeId": 4,
+                "workoutTargetTypeKey": "heart.rate.zone",
+                "displayOrder": 4
+              },
+              "targetValueOne": 135.0,
+              "targetValueTwo": 145.0,
+              "targetValueUnit": null,
+              "zoneNumber": null,
+              "secondaryTargetType": null,
+              "secondaryTargetValueOne": null,
+              "secondaryTargetValueTwo": null,
+              "secondaryTargetValueUnit": null,
+              "secondaryZoneNumber": null,
+              "endConditionZone": null,
+              "strokeType": {
+                "strokeTypeId": 0,
+                "strokeTypeKey": null,
+                "displayOrder": 0
+              },
+              "equipmentType": {
+                "equipmentTypeId": 0,
+                "equipmentTypeKey": null,
+                "displayOrder": 0
+              },
+              "category": null,
+              "exerciseName": null,
+              "workoutProvider": null,
+              "providerExerciseSourceId": null,
+              "weightValue": null,
+              "weightUnit": null
+            },
+            {
+              "type": "RepeatGroupDTO",
+              "stepId": 13256319253,
+              "stepOrder": 2,
+              "stepType": {
+                "stepTypeId": 6,
+                "stepTypeKey": "repeat",
+                "displayOrder": 6
+              },
+              "childStepId": 1,
+              "numberOfIterations": 3,
+              "workoutSteps": [
+                {
+                  "type": "ExecutableStepDTO",
+                  "stepId": 13256319254,
+                  "stepOrder": 3,
+                  "stepType": {
+                    "stepTypeId": 3,
+                    "stepTypeKey": "interval",
+                    "displayOrder": 3
+                  },
+                  "childStepId": 1,
+                  "description": "2 min a ritmo objetivo",
+                  "endCondition": {
+                    "conditionTypeId": 2,
+                    "conditionTypeKey": "time",
+                    "displayOrder": 2,
+                    "displayable": true
+                  },
+                  "endConditionValue": 120.0,
+                  "preferredEndConditionUnit": null,
+                  "endConditionCompare": null,
+                  "targetType": {
+                    "workoutTargetTypeId": 6,
+                    "workoutTargetTypeKey": "pace.zone",
+                    "displayOrder": 6
+                  },
+                  "targetValueOne": 3.846,
+                  "targetValueTwo": 4.0,
+                  "targetValueUnit": null,
+                  "zoneNumber": null,
+                  "secondaryTargetType": null,
+                  "secondaryTargetValueOne": null,
+                  "secondaryTargetValueTwo": null,
+                  "secondaryTargetValueUnit": null,
+                  "secondaryZoneNumber": null,
+                  "endConditionZone": null,
+                  "strokeType": {
+                    "strokeTypeId": 0,
+                    "strokeTypeKey": null,
+                    "displayOrder": 0
+                  },
+                  "equipmentType": {
+                    "equipmentTypeId": 0,
+                    "equipmentTypeKey": null,
+                    "displayOrder": 0
+                  },
+                  "category": null,
+                  "exerciseName": null,
+                  "workoutProvider": null,
+                  "providerExerciseSourceId": null,
+                  "weightValue": null,
+                  "weightUnit": null
+                },
+                {
+                  "type": "ExecutableStepDTO",
+                  "stepId": 13256319255,
+                  "stepOrder": 4,
+                  "stepType": {
+                    "stepTypeId": 4,
+                    "stepTypeKey": "recovery",
+                    "displayOrder": 4
+                  },
+                  "childStepId": 1,
+                  "description": "2 min suaves",
+                  "endCondition": {
+                    "conditionTypeId": 2,
+                    "conditionTypeKey": "time",
+                    "displayOrder": 2,
+                    "displayable": true
+                  },
+                  "endConditionValue": 120.0,
+                  "preferredEndConditionUnit": null,
+                  "endConditionCompare": null,
+                  "targetType": {
+                    "workoutTargetTypeId": 4,
+                    "workoutTargetTypeKey": "heart.rate.zone",
+                    "displayOrder": 4
+                  },
+                  "targetValueOne": 131.0,
+                  "targetValueTwo": 145.0,
+                  "targetValueUnit": null,
+                  "zoneNumber": null,
+                  "secondaryTargetType": null,
+                  "secondaryTargetValueOne": null,
+                  "secondaryTargetValueTwo": null,
+                  "secondaryTargetValueUnit": null,
+                  "secondaryZoneNumber": null,
+                  "endConditionZone": null,
+                  "strokeType": {
+                    "strokeTypeId": 0,
+                    "strokeTypeKey": null,
+                    "displayOrder": 0
+                  },
+                  "equipmentType": {
+                    "equipmentTypeId": 0,
+                    "equipmentTypeKey": null,
+                    "displayOrder": 0
+                  },
+                  "category": null,
+                  "exerciseName": null,
+                  "workoutProvider": null,
+                  "providerExerciseSourceId": null,
+                  "weightValue": null,
+                  "weightUnit": null
+                }
+              ],
+              "endConditionValue": 3.0,
+              "preferredEndConditionUnit": null,
+              "endConditionCompare": null,
+              "endCondition": {
+                "conditionTypeId": 7,
+                "conditionTypeKey": "iterations",
+                "displayOrder": 7,
+                "displayable": false
+              },
+              "skipLastRestStep": null,
+              "smartRepeat": false
+            },
+            {
+              "type": "ExecutableStepDTO",
+              "stepId": 13256319256,
+              "stepOrder": 5,
+              "stepType": {
+                "stepTypeId": 2,
+                "stepTypeKey": "cooldown",
+                "displayOrder": 2
+              },
+              "childStepId": null,
+              "description": "2 km faciles",
+              "endCondition": {
+                "conditionTypeId": 3,
+                "conditionTypeKey": "distance",
+                "displayOrder": 3,
+                "displayable": true
+              },
+              "endConditionValue": 2000.0,
+              "preferredEndConditionUnit": {
+                "unitId": 1,
+                "unitKey": "meter",
+                "factor": 100.0
+              },
+              "endConditionCompare": null,
+              "targetType": {
+                "workoutTargetTypeId": 4,
+                "workoutTargetTypeKey": "heart.rate.zone",
+                "displayOrder": 4
+              },
+              "targetValueOne": 135.0,
+              "targetValueTwo": 145.0,
+              "targetValueUnit": null,
+              "zoneNumber": null,
+              "secondaryTargetType": null,
+              "secondaryTargetValueOne": null,
+              "secondaryTargetValueTwo": null,
+              "secondaryTargetValueUnit": null,
+              "secondaryZoneNumber": null,
+              "endConditionZone": null,
+              "strokeType": {
+                "strokeTypeId": 0,
+                "strokeTypeKey": null,
+                "displayOrder": 0
+              },
+              "equipmentType": {
+                "equipmentTypeId": 0,
+                "equipmentTypeKey": null,
+                "displayOrder": 0
+              },
+              "category": null,
+              "exerciseName": null,
+              "workoutProvider": null,
+              "providerExerciseSourceId": null,
+              "weightValue": null,
+              "weightUnit": null
+            }
+          ]
+        }
+      ],
+      "poolLength": null,
+      "poolLengthUnit": null,
+      "locale": null,
+      "workoutProvider": null,
+      "workoutSourceId": null,
+      "uploadTimestamp": null,
+      "atpPlanId": null,
+      "consumer": null,
+      "consumerName": null,
+      "consumerImageURL": null,
+      "consumerWebsiteURL": null,
+      "workoutNameI18nKey": null,
+      "descriptionI18nKey": null,
+      "avgTrainingSpeed": 0.0,
+      "estimateType": null,
+      "estimatedDistanceUnit": {
+        "unitId": null,
+        "unitKey": null,
+        "factor": null
+      },
+      "workoutThumbnailUrl": null,
+      "isSessionTransitionEnabled": null,
+      "shared": false
+    },
+    "calendarDate": "2026-05-22",
+    "createdDate": "2026-05-04",
+    "ownerId": 137864769,
+    "newName": null,
+    "consumer": null,
+    "atpPlanTypeId": null,
+    "associatedActivityId": null,
+    "priority": null,
+    "associatedActivityDateTime": null,
+    "tpType": null,
+    "itp": false,
+    "race": false,
+    "protected": false,
+    "nameChanged": false
+  }
+}

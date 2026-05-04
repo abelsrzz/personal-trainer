@@ -1,0 +1,11 @@
+id: xxiv_padron_10k_2027
+name: XXIV Padron 10k
+date: 2027-02-06
+distance: 10k
+elevation_gain_m: 20
+priority: S
+goal:
+  type: time_and_pace
+  value: 35:00
+  target_pace: 3:30/km
+notes: Date approximate

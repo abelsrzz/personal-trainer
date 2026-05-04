@@ -1,0 +1,15 @@
+workout:
+  name: Rodaje 6 km recuperacion
+  schedule_date: 2026-05-12
+  sport: running
+  description: Rodaje de recuperacion tras la carrera suave de Cerceda. Soltar piernas y controlar carga.
+  estimated_duration_s: 2520
+  steps:
+    - order: 1
+      step_type: interval
+      description: 6 km suaves
+      distance_m: 6000
+      target:
+        type: heart_rate_range
+        min_bpm: 131
+        max_bpm: 145

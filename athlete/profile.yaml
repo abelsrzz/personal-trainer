@@ -1,0 +1,23 @@
+athlete:
+  id: main
+  name: Abel
+  birth_date: 2004-06-17
+  age: 21
+  sex: male
+  height_cm: 174
+  weight_kg: 64.2
+  city: Ordes
+  years_running: 0.5
+  availability:
+    days_per_week: 7
+    hours_per_week:
+      min: 7
+      max: 10
+    preferred_quality_days:
+      - Tuesday
+      - Thursday
+    preferred_long_run_day: Sunday
+    constraints:
+      - Work schedule 07:30-15:00
+  current_context:
+    strength_sessions_per_week: 1

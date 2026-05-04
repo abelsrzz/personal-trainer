@@ -1,0 +1,4 @@
+telegram:
+  bot_token: 123456789:replace_me
+  chat_id: 123456789
+  caption_prefix: Running Coach

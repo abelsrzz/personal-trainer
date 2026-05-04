@@ -1,0 +1,16 @@
+activity:
+  id: null
+  source: manual
+  garmin_activity_id: null
+  date: null
+  title: null
+  type: run
+  planned_session_reference: null
+  distance_km: null
+  duration: null
+  elevation_gain_m: null
+  avg_pace: null
+  avg_hr: null
+  max_hr: null
+  shoes: null
+  notes: null

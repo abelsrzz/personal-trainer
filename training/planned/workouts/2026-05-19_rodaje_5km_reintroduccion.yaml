@@ -1,0 +1,15 @@
+workout:
+  name: Rodaje 5 km reintroduccion
+  schedule_date: 2026-05-19
+  sport: running
+  description: Primer contacto de carrera tras la carga andando. Muy facil y sin buscar ritmo.
+  estimated_duration_s: 2100
+  steps:
+    - order: 1
+      step_type: interval
+      description: 5 km muy faciles
+      distance_m: 5000
+      target:
+        type: heart_rate_range
+        min_bpm: 131
+        max_bpm: 145

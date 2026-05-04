@@ -1,0 +1,27 @@
+workout:
+  name: Example Workout
+  schedule_date: 2026-05-04
+  sport: running
+  description: Replace with the actual workout description.
+  estimated_duration_s: 3600
+  steps:
+    - order: 1
+      step_type: interval
+      description: Main aerobic step
+      distance_m: 10000
+      target:
+        type: heart_rate_zone
+        zone: Z2
+
+    - order: 2
+      type: repeat_group
+      iterations: 6
+      steps:
+        - order: 3
+          step_type: interval
+          description: Stride
+          duration_s: 20
+        - order: 4
+          step_type: recovery
+          description: Recovery
+          duration_s: 40

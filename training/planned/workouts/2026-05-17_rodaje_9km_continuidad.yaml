@@ -1,0 +1,14 @@
+workout:
+  name: Rodaje 9 km continuidad
+  schedule_date: 2026-05-17
+  sport: running
+  description: Rodaje continuo comodo para encadenar volumen moderado sin castigar el periostio.
+  estimated_duration_s: 3780
+  steps:
+    - order: 1
+      step_type: interval
+      description: 9 km en Z2
+      distance_m: 9000
+      target:
+        type: heart_rate_zone
+        zone: Z2

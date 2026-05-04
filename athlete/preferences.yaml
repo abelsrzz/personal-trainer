@@ -1,0 +1,16 @@
+preferences:
+  workout_rating_style:
+    - numeric_score
+    - traffic_light
+    - written_review
+  weekly_plan_format:
+    type: table
+    columns:
+      - day
+      - description
+      - distance
+      - pace_or_hr
+      - shoes
+    notes: Use pace for intervals and tempo sessions, otherwise heart rate.
+  session_detail_level: high
+  other_notes: null

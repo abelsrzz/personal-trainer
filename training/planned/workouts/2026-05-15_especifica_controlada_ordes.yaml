@@ -1,0 +1,43 @@
+workout:
+  name: Especifica controlada Ordes
+  schedule_date: 2026-05-15
+  sport: running
+  description: Recordatorio controlado de ritmo cercano al objetivo de Ordes, sin convertirlo en una sesion de desgaste.
+  estimated_duration_s: 3120
+  steps:
+    - order: 1
+      step_type: warmup
+      description: 2 km faciles
+      distance_m: 2000
+      target:
+        type: heart_rate_range
+        min_bpm: 135
+        max_bpm: 145
+    - order: 2
+      type: repeat_group
+      iterations: 3
+      steps:
+        - order: 3
+          step_type: interval
+          description: 4 min controlados
+          duration_s: 240
+          target:
+            type: pace_range
+            min_pace: 4:25/km
+            max_pace: 4:20/km
+        - order: 4
+          step_type: recovery
+          description: 2 min suaves
+          duration_s: 120
+          target:
+            type: heart_rate_range
+            min_bpm: 131
+            max_bpm: 145
+    - order: 5
+      step_type: cooldown
+      description: 2 km faciles
+      distance_m: 2000
+      target:
+        type: heart_rate_range
+        min_bpm: 135
+        max_bpm: 145

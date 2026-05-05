@@ -96,6 +96,7 @@ The system must act as an intelligent coach, planner and reviewer.
   - import recent activities
   - import daily recovery metrics
   - upload and schedule planned workouts from YAML files
+  - compare completed Garmin runs against the planned workout of the day and generate review artifacts
 
 ## Garmin Commands
 
@@ -104,6 +105,7 @@ source .venv/bin/activate
 python scripts/garmin/sync_garmin.py import-activities --days 14 --limit 30
 python scripts/garmin/sync_garmin.py import-daily --days 14
 python scripts/garmin/sync_garmin.py schedule-workout-file training/planned/workouts/<file>.yaml
+python scripts/garmin/review_planned_session.py --date YYYY-MM-DD
 ```
 
 ## Planning Principles
@@ -135,3 +137,12 @@ Future sessions should start by reading:
 1. `AGENT.md`
 2. `.agents/README.md`
 3. `.agents/memory/project_snapshot.md`
+
+## Repository Skills
+
+Operational skill notes live under `.agents/skills/`.
+
+- `weekly_planning_cycle.md`: build or adjust the current week
+- `workout_loading.md`: create and structure planned workouts
+- `garmin_operations.md`: import, upload and review Garmin-linked sessions
+- `completed_workout_inspection.md`: inspect completed sessions in depth

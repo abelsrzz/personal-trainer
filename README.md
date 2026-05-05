@@ -38,10 +38,11 @@ Rellena `INPUT_DATOS_REALES.md` en la raiz del proyecto.
 
 1. Se genera o actualiza `planning/weeks/semana_actual.md`.
 2. Despues de cada entrenamiento, me pasas lo realizado o importamos desde Garmin.
-3. El entrenamiento se revisa con nota numerica, semaforo y comentario tecnico.
-4. Si la ejecucion o la fatiga lo justifican, se replanifica la semana actual.
-5. Cada domingo se genera solo la semana siguiente.
-6. Cada vez que se modifique `planning/weeks/semana_actual.md`, se puede generar un PDF y enviarlo por Telegram para tenerlo a mano en el movil.
+3. Para entrenamientos planificados hechos con Garmin, ejecuta `python scripts/garmin/review_planned_session.py --date YYYY-MM-DD` para importar, comparar y generar la revision automaticamente.
+4. El entrenamiento se revisa con nota numerica, semaforo y comentario tecnico.
+5. Si la ejecucion o la fatiga lo justifican, se replanifica la semana actual.
+6. Cada domingo se genera solo la semana siguiente.
+7. Cada vez que se modifique `planning/weeks/semana_actual.md`, se puede generar un PDF y enviarlo por Telegram para tenerlo a mano en el movil.
 
 ## Garmin V1
 
@@ -61,6 +62,19 @@ Importar actividades recientes:
 ```bash
 python scripts/garmin/sync_garmin.py import-activities --days 14 --limit 30
 ```
+
+Importar y revisar automaticamente un entrenamiento planificado completado:
+
+```bash
+source .venv/bin/activate
+python scripts/garmin/review_planned_session.py --date 2026-05-05
+```
+
+Salida generada:
+
+- `training/completed/activities/<workout>.yaml`
+- `training/completed/reviews/<workout>.md`
+- `training/completed/reviews/<workout>.analysis.json`
 
 Importar metricas diarias para enriquecer recuperacion y estado:
 

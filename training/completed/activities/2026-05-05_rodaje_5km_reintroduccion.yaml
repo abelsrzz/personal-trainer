@@ -1,0 +1,16 @@
+activity:
+  id: garmin-22776053069
+  source: garmin
+  garmin_activity_id: 22776053069
+  date: 2026-05-05
+  title: Ordes - Rodaje 5 km reintroduccion
+  type: run
+  planned_session_reference: training/planned/workouts/2026-05-05_rodaje_5km_reintroduccion.yaml
+  distance_km: 5.036
+  duration: '37:15'
+  elevation_gain_m: 13.0
+  avg_pace: 7:24/km
+  avg_hr: 144.0
+  max_hr: 151.0
+  shoes: null
+  notes: Autoimported from Garmin on 2026-05-05T20:56:47

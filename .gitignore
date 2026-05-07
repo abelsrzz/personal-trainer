@@ -5,6 +5,9 @@ __pycache__/
 garmin/local_credentials.yaml
 telegram/bot_config.yaml
 telegram/.semana_actual_state.json
+telegram/opencode_sessions.json
+telegram/opencode_bot.log
+telegram/opencode_confirmations.json
 training/completed/imports/garmin/**/*.fit
 training/completed/imports/garmin/**/*.gpx
 training/completed/imports/garmin/**/*.tcx

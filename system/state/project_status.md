@@ -11,6 +11,8 @@
 - Coach automation implemented with `coach_sync.py` and `coach_engine.py`
 - Status dashboard and coach decision files generated from local Garmin/review data
 - 35:00 goal gates and shin tracker added
+- Telegram remote bridge for OpenCode implemented
+- Telegram remote bridge defaults to `openai/gpt-5.4` with default reasoning and supports `/model` per-chat overrides
 
 ## Next Natural Actions
 
@@ -19,3 +21,4 @@
 3. Read `athlete/status_dashboard.md` and `planning/coach_decision.md` before changing the active week.
 4. Update `athlete/shin_tracker.yaml` when periosteum symptoms are reported.
 5. Use `planning/goal_gates.yaml` before allowing `35:00` to influence training paces.
+6. For remote access, run `opencode serve --hostname 127.0.0.1 --port 4096` and `python scripts/telegram/opencode_bot.py`.

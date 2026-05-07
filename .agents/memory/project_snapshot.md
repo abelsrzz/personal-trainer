@@ -10,6 +10,7 @@
 - Garmin V1 connector implemented
 - Coach engine added for dashboard, load decision and 35:00 gates
 - Coach sync added as the preferred one-command Garmin workflow
+- Telegram remote OpenCode bridge added for self-hosted access
 - First Garmin workout upload and scheduling already proven
 
 ## Athlete Highlights
@@ -36,6 +37,10 @@
 - `planning/goal_gates.md`
 - `athlete/shin_tracker.yaml`
 - `training/planned/workouts/library_10k_templates.yaml`
+- `scripts/telegram/opencode_bot.py`
+- `scripts/telegram/opencode_bridge.py`
+- `deploy/systemd/opencode-server.service.example`
+- `deploy/systemd/opencode-telegram-bot.service.example`
 
 ## Coach Automation Operating Model
 
@@ -45,6 +50,16 @@
 - Read `planning/coach_decision.md` for the operative green/yellow/red decision.
 - Treat `red` as reduce or replace quality, `yellow` as maintain without increasing load, and `green` as allow small progression if shin status is quiet.
 - Update `athlete/shin_tracker.yaml` whenever Abel reports periosteum pain during, after or the next morning.
+
+## Remote Telegram Operating Model
+
+- Start OpenCode with `opencode serve --hostname 127.0.0.1 --port 4096`.
+- Start the bot with `python scripts/telegram/opencode_bot.py`.
+- Telegram `allowed_chat_ids` in `telegram/bot_config.yaml` are the access control boundary.
+- The Telegram bridge defaults to `openai/gpt-5.4` and does not pass a reasoning `--variant`.
+- Use `/model` to show the active model, `/model openai/gpt-5.4` to set one, and `/model reset` to return to default.
+- Commit and push are allowed through Telegram only when explicitly requested.
+- Destructive commands require confirmation through `/confirm <id>`.
 
 ## First Proven Garmin Upload
 

@@ -1,0 +1,14 @@
+[Unit]
+Description=OpenCode headless server for personal-trainer
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/abel/Documentos/Proyectos/personal-trainer
+ExecStart=/home/abel/.opencode/bin/opencode serve --hostname 127.0.0.1 --port 4096
+Restart=always
+RestartSec=5
+Environment=PATH=/home/abel/.opencode/bin:/usr/local/bin:/usr/bin:/bin
+
+[Install]
+WantedBy=multi-user.target

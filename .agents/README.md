@@ -34,6 +34,9 @@ Coach automation files:
 - `../planning/coach_decision.json`: structured decision data for automation.
 - `../planning/goal_gates.yaml`: measurable gates for whether `35:00` can guide training.
 - `../athlete/shin_tracker.yaml`: structured periosteum symptom log.
+- `../scripts/telegram/opencode_bot.py`: Telegram remote interface to OpenCode.
+- `../scripts/telegram/opencode_bridge.py`: subprocess bridge to `opencode run --attach`.
+- `../.agents/workflows/remote_opencode_telegram.md`: remote operation workflow.
 
 ## Default Entry Points For Future Sessions
 
@@ -48,3 +51,5 @@ Coach automation files:
 - After Garmin-linked training, prefer `python scripts/garmin/coach_sync.py --date YYYY-MM-DD` over running separate import/review/dashboard commands manually.
 - If Garmin should not be contacted, use `python scripts/garmin/coach_sync.py --date YYYY-MM-DD --skip-garmin` to refresh decisions from local data.
 - Use `planning/coach_decision.md` as the first load-management signal before changing the active week.
+- For remote Telegram operation, run `opencode serve` locally and then `python scripts/telegram/opencode_bot.py`.
+- Remote Telegram operation defaults to `openai/gpt-5.4` with default reasoning; `/model` changes the per-chat model override.

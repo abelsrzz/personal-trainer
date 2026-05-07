@@ -1,0 +1,15 @@
+[Unit]
+Description=Telegram bridge for OpenCode personal-trainer
+After=network.target opencode-server.service
+Requires=opencode-server.service
+
+[Service]
+Type=simple
+WorkingDirectory=/home/abel/Documentos/Proyectos/personal-trainer
+ExecStart=/home/abel/Documentos/Proyectos/personal-trainer/.venv/bin/python scripts/telegram/opencode_bot.py
+Restart=always
+RestartSec=5
+Environment=PATH=/home/abel/.opencode/bin:/home/abel/Documentos/Proyectos/personal-trainer/.venv/bin:/usr/local/bin:/usr/bin:/bin
+
+[Install]
+WantedBy=multi-user.target

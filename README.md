@@ -141,3 +141,50 @@ Vigilar cambios en `semana_actual.md` y enviar al detectar modificaciones:
 source .venv/bin/activate
 python scripts/notifications/semana_pdf_telegram.py watch --interval 30
 ```
+
+## OpenCode Remoto Por Telegram
+
+El proyecto puede exponerse como una sesion remota de OpenCode usando el mismo bot de Telegram.
+
+Preparacion:
+
+```bash
+source .venv/bin/activate
+pip install -r requirements.txt
+cp telegram/bot_config.yaml.example telegram/bot_config.yaml
+python scripts/telegram/opencode_bot.py --check-config
+```
+
+Servidor OpenCode:
+
+```bash
+opencode serve --hostname 127.0.0.1 --port 4096
+```
+
+Bot Telegram:
+
+```bash
+source .venv/bin/activate
+python scripts/telegram/opencode_bot.py
+```
+
+Comandos utiles desde Telegram:
+
+- `/status`: muestra `planning/coach_decision.md`.
+- `/dashboard`: muestra `athlete/status_dashboard.md`.
+- `/model`: muestra el modelo activo.
+- `/model openai/gpt-5.4`: cambia el modelo del chat.
+- `/model reset`: vuelve al modelo por defecto.
+- `/sync`: ejecuta `coach_sync.py` contactando Garmin.
+- `/sync_local`: ejecuta `coach_sync.py --skip-garmin`.
+- `/week`: muestra `planning/weeks/semana_actual.md`.
+- `/pdf_week`: genera y envia el PDF semanal.
+- `/git`: muestra `git status --short`.
+- cualquier otro mensaje se envia a OpenCode.
+
+El modelo por defecto del servicio remoto es `openai/gpt-5.4` con razonamiento default de OpenCode. El bot no pasa `--variant`, asi que no fuerza razonamiento alto.
+
+Ejemplos de servicios `systemd`:
+
+- `deploy/systemd/opencode-server.service.example`
+- `deploy/systemd/opencode-telegram-bot.service.example`

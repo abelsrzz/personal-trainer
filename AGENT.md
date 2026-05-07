@@ -88,6 +88,8 @@ The system must act as an intelligent coach, planner and reviewer.
 - Review template: `training/completed/reviews/review_template.md`
 - Local agent memory: `.agents/`
 - Telegram PDF sender: `scripts/notifications/semana_pdf_telegram.py`
+- Telegram OpenCode bot: `scripts/telegram/opencode_bot.py`
+- Telegram OpenCode bridge: `scripts/telegram/opencode_bridge.py`
 - Coach sync: `scripts/garmin/coach_sync.py`
 - Coach engine: `scripts/garmin/coach_engine.py`
 - Status dashboard: `athlete/status_dashboard.md`
@@ -139,6 +141,8 @@ python scripts/garmin/coach_engine.py --as-of YYYY-MM-DD --days 28
 - Recalibrate the long-term goal from checkpoints.
 - Current limiter is aerobic durability and shin tolerance more than isolated speed.
 - Use `coach_sync.py` after Garmin-linked training to refresh imports, reviews, dashboard and decision files.
+- Remote Telegram access uses `opencode serve` plus `scripts/telegram/opencode_bot.py`; only commit or push when explicitly requested.
+- Remote Telegram access defaults to model `openai/gpt-5.4` with OpenCode default reasoning; use `/model` in Telegram to override per chat.
 
 ## Communication Rules For Future Sessions
 
@@ -171,4 +175,5 @@ Operational skill notes live under `.agents/skills/`.
 - `workout_loading.md`: create and structure planned workouts
 - `garmin_operations.md`: import, upload and review Garmin-linked sessions
 - `coach_automation.md`: run coach sync/engine and interpret dashboard, decisions and gates
+- `remote_opencode_telegram.md`: operate OpenCode remotely through Telegram
 - `completed_workout_inspection.md`: inspect completed sessions in depth

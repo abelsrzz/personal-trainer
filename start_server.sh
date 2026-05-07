@@ -1,0 +1,246 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+LOG_DIR="${OPENCODE_LOG_DIR:-/tmp/opencode}"
+HOST="${OPENCODE_HOST:-127.0.0.1}"
+PORT="${OPENCODE_PORT:-4096}"
+OPENCODE_BIN="${OPENCODE_BIN:-opencode}"
+PYTHON_BIN="${PYTHON_BIN:-$ROOT_DIR/.venv/bin/python}"
+PYTHON_BOOTSTRAP="${PYTHON_BOOTSTRAP:-python3}"
+INSTALL_OPENCODE="${INSTALL_OPENCODE:-1}"
+
+SERVER_PID_FILE="$LOG_DIR/personal-trainer-opencode-serve.pid"
+BOT_PID_FILE="$LOG_DIR/personal-trainer-telegram-bot.pid"
+SERVER_LOG="$LOG_DIR/personal-trainer-opencode-serve.log"
+BOT_LOG="$LOG_DIR/personal-trainer-telegram-bot.log"
+
+usage() {
+  cat <<EOF
+Usage: ./start_server.sh [install|start|stop|restart|status|logs]
+
+Commands:
+  install   Install Python dependencies, prepare config, and install/check OpenCode
+  start     Start opencode server and Telegram bot (default)
+  stop      Stop both processes started by this script
+  restart   Stop and start again
+  status    Show process status
+  logs      Follow both log files
+
+Environment overrides:
+  OPENCODE_HOST=$HOST
+  OPENCODE_PORT=$PORT
+  OPENCODE_LOG_DIR=$LOG_DIR
+  OPENCODE_BIN=$OPENCODE_BIN
+  PYTHON_BIN=$PYTHON_BIN
+  PYTHON_BOOTSTRAP=$PYTHON_BOOTSTRAP
+  INSTALL_OPENCODE=$INSTALL_OPENCODE  # set to 0 to skip automatic OpenCode install
+EOF
+}
+
+resolve_opencode() {
+  if command -v "$OPENCODE_BIN" >/dev/null 2>&1; then
+    return 0
+  fi
+
+  if [[ -x "$HOME/.opencode/bin/opencode" ]]; then
+    OPENCODE_BIN="$HOME/.opencode/bin/opencode"
+    return 0
+  fi
+
+  return 1
+}
+
+is_running() {
+  local pid_file="$1"
+  [[ -f "$pid_file" ]] || return 1
+  local pid
+  pid="$(<"$pid_file")"
+  [[ -n "$pid" ]] || return 1
+  kill -0 "$pid" 2>/dev/null
+}
+
+require_runtime() {
+  mkdir -p "$LOG_DIR"
+
+  if ! resolve_opencode; then
+    echo "ERROR: opencode binary not found: $OPENCODE_BIN" >&2
+    echo "Run: ./start_server.sh install" >&2
+    exit 1
+  fi
+
+  if [[ ! -x "$PYTHON_BIN" ]]; then
+    echo "ERROR: Python virtualenv not found or not executable: $PYTHON_BIN" >&2
+    echo "Run: ./start_server.sh install" >&2
+    exit 1
+  fi
+
+  if [[ ! -f "$ROOT_DIR/telegram/bot_config.yaml" ]]; then
+    echo "ERROR: Missing telegram/bot_config.yaml" >&2
+    echo "Create it from telegram/bot_config.yaml.example and set bot_token/chat_id." >&2
+    exit 1
+  fi
+}
+
+install_runtime() {
+  cd "$ROOT_DIR"
+  mkdir -p "$LOG_DIR"
+
+  echo "== Checking Python bootstrap"
+  if ! command -v "$PYTHON_BOOTSTRAP" >/dev/null 2>&1; then
+    echo "ERROR: Python bootstrap binary not found: $PYTHON_BOOTSTRAP" >&2
+    echo "Install python3 and python3-venv with your OS package manager, then retry." >&2
+    exit 1
+  fi
+
+  echo "== Creating/updating virtualenv"
+  "$PYTHON_BOOTSTRAP" -m venv "$ROOT_DIR/.venv"
+
+  echo "== Installing Python dependencies"
+  "$PYTHON_BIN" -m pip install --upgrade pip
+  "$PYTHON_BIN" -m pip install -r "$ROOT_DIR/requirements.txt"
+
+  echo "== Checking OpenCode"
+  if resolve_opencode; then
+    echo "OpenCode found: $OPENCODE_BIN"
+  else
+    if [[ "$INSTALL_OPENCODE" == "1" ]]; then
+      if ! command -v curl >/dev/null 2>&1; then
+        echo "ERROR: curl is required to install OpenCode automatically." >&2
+        echo "Install curl or set INSTALL_OPENCODE=0 and install OpenCode manually." >&2
+        exit 1
+      fi
+      echo "Installing OpenCode via official installer"
+      curl -fsSL https://opencode.ai/install | bash
+      if ! resolve_opencode; then
+        echo "ERROR: OpenCode installer finished but opencode was not found." >&2
+        echo "Set OPENCODE_BIN=/path/to/opencode and retry." >&2
+        exit 1
+      fi
+      echo "OpenCode installed: $OPENCODE_BIN"
+    else
+      echo "WARNING: OpenCode not installed. Install it manually before running start." >&2
+    fi
+  fi
+
+  echo "== Preparing Telegram config"
+  if [[ -f "$ROOT_DIR/telegram/bot_config.yaml" ]]; then
+    echo "telegram/bot_config.yaml already exists; not overwriting."
+  else
+    cp "$ROOT_DIR/telegram/bot_config.yaml.example" "$ROOT_DIR/telegram/bot_config.yaml"
+    echo "Created telegram/bot_config.yaml from example. Edit bot_token, chat_id and allowed_chat_ids before starting."
+  fi
+
+  echo "== Validating bot config"
+  if "$PYTHON_BIN" scripts/telegram/opencode_bot.py --check-config >/dev/null 2>&1; then
+    echo "Bot config OK"
+  else
+    echo "Bot config not ready yet. Edit telegram/bot_config.yaml, then run:" >&2
+    echo "  $PYTHON_BIN scripts/telegram/opencode_bot.py --check-config" >&2
+  fi
+
+  echo "== Install complete"
+  echo "Start the server with: ./start_server.sh start"
+}
+
+start_server() {
+  require_runtime
+  cd "$ROOT_DIR"
+
+  "$PYTHON_BIN" scripts/telegram/opencode_bot.py --check-config >/dev/null
+
+  if is_running "$SERVER_PID_FILE"; then
+    echo "OpenCode server already running (pid $(<"$SERVER_PID_FILE"))"
+  else
+    nohup "$OPENCODE_BIN" serve --hostname "$HOST" --port "$PORT" >"$SERVER_LOG" 2>&1 &
+    echo "$!" >"$SERVER_PID_FILE"
+    echo "Started OpenCode server (pid $(<"$SERVER_PID_FILE"))"
+  fi
+
+  sleep 2
+
+  if is_running "$BOT_PID_FILE"; then
+    echo "Telegram bot already running (pid $(<"$BOT_PID_FILE"))"
+  else
+    nohup "$PYTHON_BIN" scripts/telegram/opencode_bot.py >"$BOT_LOG" 2>&1 &
+    echo "$!" >"$BOT_PID_FILE"
+    echo "Started Telegram bot (pid $(<"$BOT_PID_FILE"))"
+  fi
+
+  echo ""
+  echo "OpenCode server: http://$HOST:$PORT"
+  echo "Logs:"
+  echo "  $SERVER_LOG"
+  echo "  $BOT_LOG"
+}
+
+stop_process() {
+  local name="$1"
+  local pid_file="$2"
+  if is_running "$pid_file"; then
+    local pid
+    pid="$(<"$pid_file")"
+    kill "$pid"
+    echo "Stopped $name (pid $pid)"
+  else
+    echo "$name is not running"
+  fi
+}
+
+stop_server() {
+  stop_process "Telegram bot" "$BOT_PID_FILE"
+  stop_process "OpenCode server" "$SERVER_PID_FILE"
+}
+
+status_server() {
+  if is_running "$SERVER_PID_FILE"; then
+    echo "OpenCode server: running (pid $(<"$SERVER_PID_FILE"))"
+  else
+    echo "OpenCode server: stopped"
+  fi
+
+  if is_running "$BOT_PID_FILE"; then
+    echo "Telegram bot: running (pid $(<"$BOT_PID_FILE"))"
+  else
+    echo "Telegram bot: stopped"
+  fi
+}
+
+logs_server() {
+  mkdir -p "$LOG_DIR"
+  touch "$SERVER_LOG" "$BOT_LOG"
+  tail -f "$SERVER_LOG" "$BOT_LOG"
+}
+
+command="${1:-start}"
+
+case "$command" in
+  start)
+    start_server
+    ;;
+  install)
+    install_runtime
+    ;;
+  stop)
+    stop_server
+    ;;
+  restart)
+    stop_server
+    sleep 1
+    start_server
+    ;;
+  status)
+    status_server
+    ;;
+  logs)
+    logs_server
+    ;;
+  -h|--help|help)
+    usage
+    ;;
+  *)
+    usage
+    exit 1
+    ;;
+esac

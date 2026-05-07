@@ -3,6 +3,7 @@
     "name": "Rodaje 5 km reintroduccion",
     "date": "2026-05-05",
     "sport": "running",
+    "goal_category": "reintroduction_easy",
     "description": "Primer contacto de carrera tras la carga andando. Muy facil y sin buscar ritmo.",
     "estimated_duration_s": 2100,
     "distance_m": 5000.0,
@@ -168,7 +169,33 @@
       "avg_gap_pace_s_per_km": 410.58093256036534
     }
   ],
-  "score": 7,
-  "traffic_light": "amarillo",
-  "risk_level": "medio"
+  "score": 8,
+  "traffic_light": "verde",
+  "risk_level": "medio",
+  "progression": {
+    "comparable_count": 1,
+    "matches": [
+      {
+        "date": "2026-05-07",
+        "name": "Rodaje 6 km + 4 rectas controladas",
+        "goal_category": "steady_easy",
+        "distance_m": 6680.5,
+        "elevation_gain_m": 18.0,
+        "pace_s_per_km": 432.8378112486902,
+        "avg_hr": 151.0,
+        "avg_power_w": 215.0,
+        "decoupling_pct": 8.306906458013486
+      }
+    ],
+    "baseline": {
+      "pace_s_per_km": 432.8378112486902,
+      "avg_hr": 151.0
+    },
+    "delta_vs_baseline": {
+      "pace_s_per_km": 10.936685355517227,
+      "avg_hr": -7.0
+    },
+    "trend": "neutral",
+    "summary": "Cambios pequenos o ambiguos frente a sesiones comparables; no hay una senal clara de progresion o regresion."
+  }
 }

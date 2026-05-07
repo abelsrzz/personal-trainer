@@ -128,6 +128,49 @@ def planned_primary_hr_range(workout: dict[str, Any]) -> tuple[float | None, flo
     return (min(mins) if mins else None, max(maxs) if maxs else None)
 
 
+def planned_goal_category(workout: dict[str, Any]) -> str:
+    workout_data = workout.get("workout", {})
+    name = str(workout_data.get("name") or "").lower()
+    description = str(workout_data.get("description") or "").lower()
+    steps = flatten_steps(workout.get("workout", {}).get("steps", []))
+    text = f"{name} {description}"
+    has_pace = any((step.get("target") or {}).get("type") == "pace_range" for step in steps)
+    has_rectas = "recta" in text or "strides" in text
+    has_warmup_cooldown = any(step.get("step_type") in {"warmup", "cooldown"} for step in steps)
+    distance_m = planned_distance_m(workout) or 0.0
+
+    if "reintroduccion" in text:
+        return "reintroduction_easy"
+    if "recuperacion" in text:
+        return "recovery_easy"
+    if "activacion" in text:
+        return "activation"
+    if "tirada larga" in text or distance_m >= 10000:
+        return "long_run"
+    if "continuidad" in text:
+        return "steady_easy"
+    if has_rectas:
+        return "easy_plus_strides"
+    if has_pace and has_warmup_cooldown:
+        return "controlled_quality"
+    if has_pace:
+        return "quality"
+    if "facil" in text or "suave" in text or "z2" in text:
+        return "easy_aerobic"
+    return "general_run"
+
+
+def parse_duration_text(value: str | None) -> float | None:
+    if not value:
+        return None
+    parts = [int(part) for part in value.split(":")]
+    if len(parts) == 2:
+        return float(parts[0] * 60 + parts[1])
+    if len(parts) == 3:
+        return float(parts[0] * 3600 + parts[1] * 60 + parts[2])
+    return None
+
+
 def metric_rows(details: dict[str, Any]) -> list[dict[str, float | None]]:
     descriptors = {item["metricsIndex"]: item["key"] for item in details["metricDescriptors"]}
     rows: list[dict[str, float | None]] = []
@@ -222,6 +265,110 @@ def format_duration(seconds: float | None) -> str | None:
     if hours:
         return f"{hours}:{minutes:02d}:{secs:02d}"
     return f"{minutes}:{secs:02d}"
+
+
+def load_historical_reviews(current_activity_id: int) -> list[dict[str, Any]]:
+    reviews: list[dict[str, Any]] = []
+    for path in sorted(DEFAULT_REVIEW_ROOT.glob("*.analysis.json")):
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        if int(payload.get("summary", {}).get("activity_id") or 0) == current_activity_id:
+            continue
+        reviews.append(payload)
+    return reviews
+
+
+def comparable_session(candidate: dict[str, Any], planned: dict[str, Any], summary: dict[str, Any]) -> bool:
+    if candidate.get("planned", {}).get("sport") != planned.get("sport"):
+        return False
+    candidate_goal = candidate.get("planned", {}).get("goal_category")
+    planned_goal = planned.get("goal_category")
+    goal_groups = {
+        "easy_family": {"reintroduction_easy", "recovery_easy", "easy_aerobic", "steady_easy", "general_run"},
+        "strides_family": {"easy_plus_strides", "activation"},
+        "quality_family": {"controlled_quality", "quality"},
+    }
+    same_goal = candidate_goal == planned_goal
+    same_family = any(candidate_goal in family and planned_goal in family for family in goal_groups.values())
+    if not same_goal and not same_family:
+        return False
+    candidate_distance = candidate.get("planned", {}).get("distance_m")
+    planned_distance = planned.get("distance_m")
+    if candidate_distance is None or planned_distance is None:
+        return False
+    if abs(float(candidate_distance) - float(planned_distance)) > max(1000.0, float(planned_distance) * 0.2):
+        return False
+    candidate_gain = candidate.get("summary", {}).get("elevation_gain_m")
+    current_gain = summary.get("elevation_gain_m")
+    if candidate_gain is None or current_gain is None:
+        return True
+    return abs(float(candidate_gain) - float(current_gain)) <= max(20.0, float(current_gain) * 0.75)
+
+
+def progression_label(delta_pace_s: float | None, delta_hr: float | None) -> tuple[str, str]:
+    if delta_pace_s is None or delta_hr is None:
+        return ("neutral", "No hay suficientes datos para valorar progresion de forma fiable.")
+    if delta_pace_s <= -8 and delta_hr <= 2:
+        return ("progress", "Ritmo mas rapido con pulso similar o mejor controlado frente a sesiones comparables.")
+    if delta_hr <= -3 and delta_pace_s <= 5:
+        return ("progress", "Pulso mas bajo a un ritmo parecido, senal positiva de eficiencia aerobica.")
+    if delta_pace_s >= 8 and delta_hr >= 3:
+        return ("regression", "Ritmo peor con pulso mas alto frente a sesiones comparables, senal de regresion o fatiga contextual.")
+    if delta_pace_s >= 12 and delta_hr >= 0:
+        return ("regression", "Ritmo claramente peor sin mejora cardiaca apreciable frente a referencias similares.")
+    return ("neutral", "Cambios pequenos o ambiguos frente a sesiones comparables; no hay una senal clara de progresion o regresion.")
+
+
+def progression_analysis(review: dict[str, Any]) -> dict[str, Any]:
+    history = load_historical_reviews(int(review["summary"]["activity_id"]))
+    comparables = [item for item in history if comparable_session(item, review["planned"], review["summary"])]
+    comparables.sort(key=lambda item: item.get("planned", {}).get("date", ""), reverse=True)
+    recent = comparables[:3]
+    if not recent:
+        return {
+            "comparable_count": 0,
+            "matches": [],
+            "trend": "insufficient_data",
+            "summary": "Aun no hay sesiones comparables previas para medir progresion o regresion.",
+        }
+
+    pace_values = [float(item["summary"]["pace_s_per_km"]) for item in recent if item.get("summary", {}).get("pace_s_per_km") is not None]
+    hr_values = [float(item["summary"]["avg_hr"]) for item in recent if item.get("summary", {}).get("avg_hr") is not None]
+    current_pace = float(review["summary"]["pace_s_per_km"])
+    current_hr = float(review["summary"]["avg_hr"])
+    baseline_pace = sum(pace_values) / len(pace_values) if pace_values else None
+    baseline_hr = sum(hr_values) / len(hr_values) if hr_values else None
+    delta_pace = current_pace - baseline_pace if baseline_pace is not None else None
+    delta_hr = current_hr - baseline_hr if baseline_hr is not None else None
+    trend, text = progression_label(delta_pace, delta_hr)
+    matches = []
+    for item in recent:
+        matches.append(
+            {
+                "date": item["planned"]["date"],
+                "name": item["planned"]["name"],
+                "goal_category": item["planned"].get("goal_category"),
+                "distance_m": item["summary"].get("distance_m"),
+                "elevation_gain_m": item["summary"].get("elevation_gain_m"),
+                "pace_s_per_km": item["summary"].get("pace_s_per_km"),
+                "avg_hr": item["summary"].get("avg_hr"),
+                "avg_power_w": item["summary"].get("avg_power_w"),
+                "decoupling_pct": item.get("halves", {}).get("decoupling_pct"),
+            }
+        )
+    return {
+        "comparable_count": len(comparables),
+        "matches": matches,
+        "baseline": {
+            "pace_s_per_km": baseline_pace,
+            "avg_hr": baseline_hr,
+        },
+        "delta_vs_baseline": {
+            "pace_s_per_km": delta_pace,
+            "avg_hr": delta_hr,
+        },
+        "trend": trend,
+        "summary": text,
+    }
 
 
 def split_metrics(segments: list[dict[str, float | None]], split_distance_m: float, total_distance_m: float, total_duration_s: float) -> list[dict[str, Any]]:
@@ -340,28 +487,34 @@ def split_halves(segments: list[dict[str, float | None]], total_distance_m: floa
 def traffic_light(score: int) -> str:
     if score >= 8:
         return "verde"
-    if score >= 6:
+    if score >= 5:
         return "amarillo"
     return "rojo"
 
 
-def risk_level(score: int, above_zone_pct: float) -> str:
-    if score >= 8 and above_zone_pct < 20:
+def risk_level(score: int, above_zone_pct: float, decoupling_pct: float | None) -> str:
+    if score >= 8 and above_zone_pct < 20 and (decoupling_pct is None or decoupling_pct < 5):
         return "bajo"
-    if score >= 6:
+    if score >= 5 and above_zone_pct < 60 and (decoupling_pct is None or decoupling_pct < 10):
         return "medio"
     return "alto"
 
 
 def score_session(distance_diff_m: float, above_zone_pct: float, decoupling_pct: float | None) -> int:
     score = 8
-    if abs(distance_diff_m) > 150:
-        score -= 1
-    if above_zone_pct > 35:
+    if abs(distance_diff_m) > 800:
         score -= 2
-    elif above_zone_pct > 20:
+    elif abs(distance_diff_m) > 400:
         score -= 1
-    if decoupling_pct is not None and decoupling_pct > 5:
+    if above_zone_pct > 70:
+        score -= 3
+    elif above_zone_pct > 50:
+        score -= 2
+    elif above_zone_pct > 35:
+        score -= 1
+    if decoupling_pct is not None and decoupling_pct > 12:
+        score -= 2
+    elif decoupling_pct is not None and decoupling_pct > 8:
         score -= 1
     return max(1, min(10, score))
 
@@ -436,11 +589,12 @@ def analyze_workout(planned: dict[str, Any], summary: dict[str, Any], details: d
         decoupling,
     )
 
-    return {
+    review = {
         "planned": {
             "name": planned["workout"]["name"],
             "date": planned["workout"]["schedule_date"],
             "sport": planned["workout"].get("sport"),
+            "goal_category": planned_goal_category(planned),
             "description": planned["workout"].get("description"),
             "estimated_duration_s": planned["workout"].get("estimated_duration_s"),
             "distance_m": planned_distance,
@@ -500,8 +654,10 @@ def analyze_workout(planned: dict[str, Any], summary: dict[str, Any], details: d
         "splits": split_metrics(segments, 1000.0, actual_distance, actual_duration),
         "score": score,
         "traffic_light": traffic_light(score),
-        "risk_level": risk_level(score, float(compliance["pct_above_hr_zone"] or 0.0)),
+        "risk_level": risk_level(score, float(compliance["pct_above_hr_zone"] or 0.0), decoupling),
     }
+    review["progression"] = progression_analysis(review)
+    return review
 
 
 def activity_record(review: dict[str, Any], planned_reference: str) -> dict[str, Any]:
@@ -533,12 +689,21 @@ def coaching_text(review: dict[str, Any]) -> tuple[str, str, str, str]:
     compliance = review["compliance"]
     halves = review["halves"]
     goal = planned.get("description") or planned["name"]
-    good = f"Se completo la distancia prevista con estabilidad mecanica y una deriva cardiaca contenida ({halves['decoupling_pct']:.1f}% si no es None else 0)."
     if halves["decoupling_pct"] is None:
         good = "Se completo la distancia prevista con estabilidad mecanica y sin senales de fatiga clara."
+    elif halves["decoupling_pct"] < 5:
+        good = f"Se completo la sesion con estabilidad mecanica y una deriva cardiaca baja ({halves['decoupling_pct']:.1f}%)."
+    elif halves["decoupling_pct"] < 9:
+        good = f"La sesion mantuvo una tecnica estable y una deriva cardiaca moderada ({halves['decoupling_pct']:.1f}%), asumible si las sensaciones fueron buenas."
+    else:
+        good = f"Se sostuvo bien la tecnica, pero la deriva cardiaca ya fue apreciable ({halves['decoupling_pct']:.1f}%)."
     missed = ""
-    if compliance["pct_above_hr_zone"] and compliance["pct_above_hr_zone"] > 20:
-        missed = f"La segunda mitad paso demasiado tiempo por encima del techo de FC ({compliance['pct_above_hr_zone']:.1f}% del total), asi que no fue un rodaje tan facil como estaba prescrito."
+    if compliance["pct_above_hr_zone"] and compliance["pct_above_hr_zone"] > 50:
+        missed = f"La intensidad quedo claramente por encima de lo prescrito: {compliance['pct_above_hr_zone']:.1f}% del tiempo estuvo sobre el techo de FC objetivo."
+    elif compliance["pct_above_hr_zone"] and compliance["pct_above_hr_zone"] > 30:
+        missed = f"La intensidad se fue algo por encima de lo ideal en varios tramos ({compliance['pct_above_hr_zone']:.1f}% del tiempo sobre el techo de FC), pero no implica por si sola que haya que replantear la semana."
+    elif compliance["pct_above_hr_zone"] and compliance["pct_above_hr_zone"] > 15:
+        missed = f"Hubo algunos tramos por encima del techo de FC ({compliance['pct_above_hr_zone']:.1f}% del tiempo), aunque dentro de un desvio relativamente normal para un rodaje al aire libre."
     else:
         missed = "La intensidad se mantuvo razonablemente alineada con el objetivo previsto."
     relevant = (
@@ -546,10 +711,21 @@ def coaching_text(review: dict[str, Any]) -> tuple[str, str, str, str]:
         f"cadencia {summary['avg_cadence_spm']:.1f} spm, potencia {summary['avg_power_w']} W, "
         f"temperatura {summary['min_temp_c']}-{summary['max_temp_c']} C, desnivel +{summary['elevation_gain_m']} m."
     )
-    written = (
-        f"Sesion valida para el objetivo del dia, con buen control general y tecnica estable, aunque el pulso se fue al limite alto en el tramo final. "
-        f"Cuenta como reintroduccion positiva, pero en futuros rodajes muy faciles conviene priorizar mas el techo de FC que el cierre algo mas rapido."
-    )
+    if compliance["pct_above_hr_zone"] and compliance["pct_above_hr_zone"] > 50:
+        written = (
+            "Sesion util, pero mas exigente de lo previsto para el objetivo del dia. "
+            "La lectura correcta es ajustar el juicio del entreno, no dramatizarlo: solo conviene vigilar fatiga y sensaciones antes de la siguiente sesion importante."
+        )
+    elif compliance["pct_above_hr_zone"] and compliance["pct_above_hr_zone"] > 30:
+        written = (
+            "Sesion globalmente valida, aunque algo mas viva de lo ideal. "
+            "Es una desviacion moderada y normalmente se corrige mas con control fino en los proximos rodajes que con cambios grandes en la semana."
+        )
+    else:
+        written = (
+            "Sesion bien alineada con el objetivo del dia y sin senales relevantes de exceso. "
+            "Si las sensaciones posteriores son normales, no deberia condicionar la planificacion inmediata."
+        )
     return goal, good, missed, relevant + " " + written
 
 
@@ -561,9 +737,25 @@ def review_markdown(review: dict[str, Any], planned_reference: str, completed_re
     keep_week = "yes" if review["score"] >= 6 else "no"
     changes = "none" if keep_week == "yes" else "Reduce upcoming load and review shin response."
     split_lines = []
+    progression = review.get("progression", {})
     for split in review["splits"]:
         split_lines.append(
             f"- {split['label']} km: {format_pace(split['pace_s_per_km'])}, {split['avg_hr']:.1f} bpm, {split['avg_power_w']:.0f} W, {split['avg_cadence_spm']:.1f} spm"
+        )
+    progression_lines = [f"- Trend: {progression.get('trend', 'unknown')}", f"- Summary: {progression.get('summary', 'No progression summary available.')}" ]
+    baseline = progression.get("baseline") or {}
+    delta = progression.get("delta_vs_baseline") or {}
+    if baseline.get("pace_s_per_km") is not None and baseline.get("avg_hr") is not None:
+        progression_lines.append(
+            f"- Baseline comparable sessions: {format_pace(baseline['pace_s_per_km'])}, {baseline['avg_hr']:.1f} bpm"
+        )
+    if delta.get("pace_s_per_km") is not None and delta.get("avg_hr") is not None:
+        progression_lines.append(
+            f"- Delta vs baseline: {delta['pace_s_per_km']:+.1f} s/km, {delta['avg_hr']:+.1f} bpm"
+        )
+    for match in progression.get("matches", []):
+        progression_lines.append(
+            f"- Comparable {match['date']}: {match['name']}, {format_pace(match['pace_s_per_km'])}, {match['avg_hr']:.1f} bpm, +{match['elevation_gain_m']:.0f} m"
         )
     return "\n".join(
         [
@@ -621,6 +813,10 @@ def review_markdown(review: dict[str, Any], planned_reference: str, completed_re
             f"- Avg vertical ratio: {summary['avg_vr']:.2f}",
             f"- Aerobic training effect: {summary['aerobic_training_effect']}",
             f"- Anaerobic training effect: {summary['anaerobic_training_effect']}",
+            "",
+            "## Progression Markers",
+            "",
+            *progression_lines,
             "",
             "## Coaching Decision",
             "",

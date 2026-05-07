@@ -9,15 +9,15 @@
 
 ## Rating
 
-- Numeric score: 7/10
-- Traffic light: amarillo
-- Written review: Ritmo medio 7:24/km, FC 144.0/151.0 bpm, cadencia 165.9 spm, potencia 212.0 W, temperatura 19.0-26.0 C, desnivel +13.0 m. Sesion valida para el objetivo del dia, con buen control general y tecnica estable, aunque el pulso se fue al limite alto en el tramo final. Cuenta como reintroduccion positiva, pero en futuros rodajes muy faciles conviene priorizar mas el techo de FC que el cierre algo mas rapido.
+- Numeric score: 8/10
+- Traffic light: verde
+- Written review: Ritmo medio 7:24/km, FC 144.0/151.0 bpm, cadencia 165.9 spm, potencia 212.0 W, temperatura 19.0-26.0 C, desnivel +13.0 m. Sesion bien alineada con el objetivo del dia y sin senales relevantes de exceso. Si las sensaciones posteriores son normales, no deberia condicionar la planificacion inmediata.
 
 ## Execution Analysis
 
 - Goal of the session: Primer contacto de carrera tras la carga andando. Muy facil y sin buscar ritmo.
-- What went well: Se completo la distancia prevista con estabilidad mecanica y una deriva cardiaca contenida (3.0% si no es None else 0).
-- What missed the target: La segunda mitad paso demasiado tiempo por encima del techo de FC (26.3% del total), asi que no fue un rodaje tan facil como estaba prescrito.
+- What went well: Se completo la sesion con estabilidad mecanica y una deriva cardiaca baja (3.0%).
+- What missed the target: Hubo algunos tramos por encima del techo de FC (26.3% del tiempo), aunque dentro de un desvio relativamente normal para un rodaje al aire libre.
 - Relevant signals: ritmo 7:24/km, FC media/max 144.0/151.0, cadencia 165.9, potencia 212.0, terreno +13.0 m, temperatura 19.0-26.0 C.
 
 ## Planned Vs Completed
@@ -57,6 +57,14 @@
 - Avg vertical ratio: 10.04
 - Aerobic training effect: 2.4000000953674316
 - Anaerobic training effect: 0.0
+
+## Progression Markers
+
+- Trend: neutral
+- Summary: Cambios pequenos o ambiguos frente a sesiones comparables; no hay una senal clara de progresion o regresion.
+- Baseline comparable sessions: 7:13/km, 151.0 bpm
+- Delta vs baseline: +10.9 s/km, -7.0 bpm
+- Comparable 2026-05-07: Rodaje 6 km + 4 rectas controladas, 7:13/km, 151.0 bpm, +18 m
 
 ## Coaching Decision
 

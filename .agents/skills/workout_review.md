@@ -18,3 +18,13 @@ Evaluate completed training in a way that is useful for coaching decisions.
 - did pace, heart rate and sensations align?
 - was there any shin warning?
 - should the next 2-4 days change?
+- does `coach_sync.py` produce green, yellow or red after the review?
+
+## Preferred Automation
+
+```bash
+source .venv/bin/activate
+python scripts/garmin/coach_sync.py --date YYYY-MM-DD
+```
+
+If Garmin data is already local, use `--skip-garmin`.

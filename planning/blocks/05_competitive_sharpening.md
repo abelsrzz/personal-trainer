@@ -1,45 +1,58 @@
-# Block 5: Competitive Sharpening
+# Block 5: Specific Consolidation And Competitive Sharpening
 
 ## Dates
 
-- `2026-12-21` to `2027-01-24`
-- Duration: `5 weeks`
+- `2026-12-14` to `2027-01-24`
+- Duration: `6 weeks`
 
 ## Block Objective
 
-- Sharpen race economy and confidence.
-- Confirm the most realistic race strategy for the 10k.
+- Confirm the final 10k strategy and target pace band.
+- Sharpen race economy without increasing total stress.
+- Practice race-specific rhythm under controlled fatigue.
 
 ## Primary Stimulus
 
-- Race-pace repetition with incomplete recovery.
+- Race-pace repetition with incomplete but controlled recovery.
 - Shorter faster work to improve economy.
-- Specific sessions under light fatigue.
+- Specific 10k sets that validate, not invent, the target pace.
 
 ## Weekly Volume Guide
 
-- Typical range: `45-55 km/week`.
+- Typical range: `45-58 km/week`.
+- Do not chase new peak mileage in this block.
+- Reduce volume immediately if quality, sleep or shin response deteriorates.
 
 ## Key Session Types
 
-- Shorter intervals around 3k-5k feel in controlled doses.
-- Specific 10k sets with partial recovery.
-- Tune-up races if they fit the calendar and recovery.
+- 10k-specific sets such as `5 x 1000 m`, `6 x 1000 m`, `3 x 2000 m`, `2 x 3000 m` or broken `6-8 km` specific volume.
+- Short economy reps around 3k-5k feel in low total volume.
+- Tune-up race if it fits the calendar and does not compromise the `S` race.
+- Long runs stay present but no longer build aggressively.
 
 ## Practical Rules
 
-- Quality becomes more precise, but total load should stop climbing.
+- Quality becomes more precise, but total load stops climbing.
 - Shoe selection for race and key sessions should be validated here.
-- The goal pace should now come from accumulated evidence, not only ambition.
+- The goal pace now comes from accumulated evidence, not ambition.
+- If a target pace cannot be repeated in training with controlled recovery, it is not the race target.
+
+## Final Target Gates
+
+- `35:00` can be selected only if recent evidence supports it strongly, such as a very strong 5k/tune-up result and repeatable 10k-specific sessions near goal rhythm without excessive fatigue.
+- If evidence supports a slower but still ambitious pace, lock that pace and race it well.
+- If shin stability is fragile, prioritize arriving healthy and reduce specificity rather than forcing one more hard workout.
 
 ## Success Criteria
 
 - Race pace feels more economical.
-- Tune-up results support a clear strategy.
+- Tune-up or key-session evidence supports a clear strategy.
 - No late-cycle injury flare.
+- Confidence comes from repeatable execution, not from isolated hero sessions.
 
 ## Failure Triggers
 
 - Speed work causes lingering soreness.
 - Confidence drops because target pace is disconnected from training reality.
 - Accumulated fatigue blunts session quality.
+- The athlete needs unusually long recovery after every specific session.

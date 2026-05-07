@@ -22,6 +22,17 @@ zones:
   reference_marks:
     recent_key_session: 4x1000@4:05/km
     current_10k_pb:
-      date: 2025-02-07
+      date: 2026-02-07
       pace: 4:22/km
+      note: Project reference; Garmin race activity shows 10.08 km around 4:26/km.
+    current_10k_garmin_reference:
+      date: 2026-02-07
+      distance: 10.08km
+      pace: 4:26/km
+      fastest_10k_split: 44:23
+      average_hr: 186
     current_5k_pace: 4:15/km
+    current_interval_capability:
+      date: 2026-04-16
+      session: 4x1000@3:56-4:01/km
+      note: High-cost interval ability, not current 10k pace.

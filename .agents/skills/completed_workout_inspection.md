@@ -36,10 +36,14 @@ For planned Garmin runs, use:
 ```bash
 source .venv/bin/activate
 python scripts/garmin/review_planned_session.py --date YYYY-MM-DD
+python scripts/garmin/coach_sync.py --date YYYY-MM-DD --skip-garmin
 ```
+
+For normal end-to-end post-workout operation, prefer `coach_sync.py --date YYYY-MM-DD` because it imports, reviews when possible and refreshes the dashboard/decision.
 
 ## Output Rules
 
 - if a formal review is requested, write both normalized activity and review artifacts
 - keep findings actionable for planning
 - do not stop at average pace and average HR
+- include the resulting `planning/coach_decision.md` status when planning implications are discussed

@@ -40,7 +40,7 @@ The system must act as an intelligent coach, planner and reviewer.
 - Distance: 10k
 - Elevation gain: 20 m
 - Declared goal: 35:00 at 3:30/km
-- Important: treat this as ambitious and recalibrate with evidence.
+- Important: treat this as aspirational and evidence-gated; do not prescribe 3:30/km work until checkpoints support it.
 
 ## Training References
 
@@ -53,7 +53,9 @@ The system must act as an intelligent coach, planner and reviewer.
   - Z4: 171-185
   - Z5: >185
 - 5k reference pace: 4:15/km
-- 10k reference pace: 4:22/km
+- 10k evidence band: 4:22-4:26/km
+- Garmin race reference: 2026-02-07 Padron, 10.08 km around 4:26/km, avg HR 186 bpm
+- Short interval ability: 4 x 1000 m around 3:56-4:01/km on 2026-04-16, high cost and not current 10k pace
 - Threshold pace: unknown at project setup
 
 ## Weekly Operating Model
@@ -86,6 +88,13 @@ The system must act as an intelligent coach, planner and reviewer.
 - Review template: `training/completed/reviews/review_template.md`
 - Local agent memory: `.agents/`
 - Telegram PDF sender: `scripts/notifications/semana_pdf_telegram.py`
+- Coach sync: `scripts/garmin/coach_sync.py`
+- Coach engine: `scripts/garmin/coach_engine.py`
+- Status dashboard: `athlete/status_dashboard.md`
+- Coach decision: `planning/coach_decision.md`
+- 35:00 gates: `planning/goal_gates.yaml`
+- Shin tracker: `athlete/shin_tracker.yaml`
+- Workout library: `training/planned/workouts/library_10k_templates.yaml`
 
 ## Garmin Integration
 
@@ -106,7 +115,19 @@ python scripts/garmin/sync_garmin.py import-activities --days 14 --limit 30
 python scripts/garmin/sync_garmin.py import-daily --days 14
 python scripts/garmin/sync_garmin.py schedule-workout-file training/planned/workouts/<file>.yaml
 python scripts/garmin/review_planned_session.py --date YYYY-MM-DD
+python scripts/garmin/coach_sync.py --date YYYY-MM-DD
+python scripts/garmin/coach_sync.py --date YYYY-MM-DD --skip-garmin
+python scripts/garmin/coach_engine.py --as-of YYYY-MM-DD --days 28
 ```
+
+## Coach Automation Rules
+
+- Prefer `coach_sync.py` after Garmin-linked workouts because it imports, reviews when possible and refreshes dashboard/decision files.
+- Use `coach_sync.py --skip-garmin` when working only from already imported local data.
+- Read `athlete/status_dashboard.md` and `planning/coach_decision.md` before modifying the active week.
+- Treat `red` as reduce or replace quality, `yellow` as maintain without increasing load, and `green` as allow only small progression if the shin is quiet.
+- Keep `planning/goal_gates.yaml` as the source of truth for whether `35:00` can influence training paces.
+- Update `athlete/shin_tracker.yaml` when periosteum pain is reported during, after or the next morning.
 
 ## Planning Principles
 
@@ -116,6 +137,8 @@ python scripts/garmin/review_planned_session.py --date YYYY-MM-DD
 - Use pace mainly for quality work.
 - Do not force threshold or race pace estimates without data.
 - Recalibrate the long-term goal from checkpoints.
+- Current limiter is aerobic durability and shin tolerance more than isolated speed.
+- Use `coach_sync.py` after Garmin-linked training to refresh imports, reviews, dashboard and decision files.
 
 ## Communication Rules For Future Sessions
 
@@ -137,6 +160,8 @@ Future sessions should start by reading:
 1. `AGENT.md`
 2. `.agents/README.md`
 3. `.agents/memory/project_snapshot.md`
+4. `athlete/status_dashboard.md` when it exists
+5. `planning/coach_decision.md` when it exists
 
 ## Repository Skills
 
@@ -145,4 +170,5 @@ Operational skill notes live under `.agents/skills/`.
 - `weekly_planning_cycle.md`: build or adjust the current week
 - `workout_loading.md`: create and structure planned workouts
 - `garmin_operations.md`: import, upload and review Garmin-linked sessions
+- `coach_automation.md`: run coach sync/engine and interpret dashboard, decisions and gates
 - `completed_workout_inspection.md`: inspect completed sessions in depth

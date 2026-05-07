@@ -16,6 +16,9 @@ Create, update, normalize and schedule planned workouts with the repository as s
 - `planning/weeks/semana_actual.md`
 - relevant block in `planning/blocks/`
 - recent reviews in `training/completed/reviews/`
+- `planning/coach_decision.md`
+- `athlete/status_dashboard.md`
+- `training/planned/workouts/library_10k_templates.yaml`
 - reference workouts in `training/planned/workouts/`
 
 ## Output Rules
@@ -25,6 +28,8 @@ Create, update, normalize and schedule planned workouts with the repository as s
 - use heart rate targets for easy and long runs
 - use pace targets mainly for quality work
 - keep structure minimal and explicit
+- do not create workouts that contradict a `red` or `yellow` coach decision
+- use template library patterns when they fit, but create dated workout YAML as the upload source of truth
 
 ## Validation Checklist
 

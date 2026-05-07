@@ -1,0 +1,19 @@
+goal_gates:
+  goal: "10k 35:00"
+  race: "XXIV Padron 10k"
+  race_date: 2027-02-06
+  principle: "35:00 is aspirational until checkpoints make it trainable."
+  thresholds:
+    foundation_avg_weekly_km: 40
+    foundation_long_run_km: 14
+    threshold_gate_5k_s: 1140
+    specific_avg_weekly_km: 50
+    specific_long_run_km: 16
+    specific_5k_s: 1080
+    final_5k_s: 1035
+    final_10k_s: 2190
+  rules:
+    - Do not prescribe 3:30/km work before the final gate is close.
+    - A red/high-risk review blocks progression for the next microcycle.
+    - Shin pain above 2/10 blocks load increase.
+    - Race target is recalibrated if checkpoints do not support 35:00.

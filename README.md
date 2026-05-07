@@ -82,6 +82,35 @@ Importar metricas diarias para enriquecer recuperacion y estado:
 python scripts/garmin/sync_garmin.py import-daily --days 14
 ```
 
+Comando unico de entrenador:
+
+```bash
+source .venv/bin/activate
+python scripts/garmin/coach_sync.py --date YYYY-MM-DD
+```
+
+Este comando importa actividades Garmin, intenta importar metricas diarias, revisa el entrenamiento planificado del dia si existe y genera:
+
+- `athlete/status_dashboard.md`
+- `planning/coach_decision.md`
+- `planning/coach_decision.json`
+
+Para trabajar solo con datos ya importados, sin conectar con Garmin:
+
+```bash
+python scripts/garmin/coach_sync.py --date YYYY-MM-DD --skip-garmin
+```
+
+Evaluar el estado del atleta y los gates del objetivo `35:00`:
+
+```bash
+python scripts/garmin/coach_engine.py --as-of YYYY-MM-DD --days 28
+```
+
+Plantillas reutilizables para convertir en sesiones fechadas:
+
+- `training/planned/workouts/library_10k_templates.yaml`
+
 ## Memoria Persistente
 
 Puntos de entrada recomendados para futuras sesiones:

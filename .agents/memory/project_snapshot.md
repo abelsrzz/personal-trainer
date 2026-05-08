@@ -36,7 +36,7 @@
 - `planning/goal_gates.yaml`
 - `planning/goal_gates.md`
 - `athlete/shin_tracker.yaml`
-- `training/planned/workouts/library_10k_templates.yaml`
+- `training/planned/workouts/library_run_templates.yaml`
 - `scripts/telegram/opencode_bot.py`
 - `scripts/telegram/opencode_bridge.py`
 - `deploy/systemd/opencode-server.service.example`

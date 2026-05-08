@@ -1,0 +1,653 @@
+library:
+  purpose: "Reusable workout patterns for 5k, 10k, 21k and marathon planning. Convert to dated workout YAML before uploading to Garmin."
+  rules:
+    - Use heart rate for easy work and pace only for quality blocks.
+    - Do not use final 3:30/km pace unless goal gates support it.
+    - Remove strides or fast blocks if shin pain is above 2/10.
+    - Choose the session from the desired stimulus first, then scale volume and pace to the active block, recent evidence and coach decision.
+    - Prefer the minimum effective dose when recovery, shin tolerance or aerobic control are still fragile.
+  taxonomy:
+    session_types:
+      - short_intervals
+      - medium_intervals
+      - long_intervals
+      - tempo_threshold
+      - cruise_intervals
+      - fartlek
+      - progression
+      - easy_aerobic
+      - long_run
+      - hills
+      - mixed
+      - technique_economy
+      - polarized
+      - recovery
+      - test
+    primary_stimuli:
+      - aerobic_base
+      - aerobic_endurance
+      - threshold
+      - high_threshold
+      - vo2max
+      - running_economy
+      - neuromuscular
+      - speed_support
+      - strength_endurance
+      - marathon_specific
+      - half_marathon_specific
+      - ten_k_specific
+      - five_k_specific
+      - fatigue_resistance
+      - recovery
+      - assessment
+    target_distances:
+      - 5k
+      - 10k
+      - 21k
+      - marathon
+      - general
+    distance_families:
+      5k:
+        priority_templates:
+          - short_intervals_economy
+          - short_intervals_vo2
+          - medium_intervals_vo2
+          - five_k_specific_reps
+          - fartlek_structured
+          - technique_drills_strides
+          - race_activation
+        notes:
+          - Favor economy, VO2max and race-rhythm tolerance.
+          - Keep enough aerobic support so the athlete does not become only a short-rep runner.
+      10k:
+        priority_templates:
+          - cruise_intervals
+          - tempo_continuous
+          - tempo_broken
+          - ten_k_specific_reps
+          - ten_k_specific_continuous
+          - progression_finish_fast
+          - mixed_tempo_plus_fast
+          - ten_k_specific_sharpener
+        notes:
+          - Build from threshold and aerobic durability before dense specific work.
+          - Specific pace always comes from current evidence, never from aspirational goal pace alone.
+      21k:
+        priority_templates:
+          - cruise_intervals
+          - tempo_continuous
+          - tempo_broken
+          - half_marathon_specific_blocks
+          - progression_finish_fast
+          - long_run
+          - long_run_quality
+          - mixed_tempo_plus_fast
+        notes:
+          - Emphasize threshold, sustained rhythm and fatigue resistance.
+          - Long blocks and controlled continuous work usually matter more than very fast reps.
+      marathon:
+        priority_templates:
+          - easy_z2
+          - aerobic_steady
+          - marathon_specific_blocks
+          - progression_finish_fast
+          - long_run
+          - long_run_quality
+          - polarized_aerobic_with_spikes
+          - race_activation
+        notes:
+          - Prioritize aerobic volume, fuel durability and long-run specificity.
+          - Fast work is supportive unless the specific marathon phase clearly calls for it.
+    progression_rules:
+      - Move from easy aerobic, long run and simple threshold work before adding dense 10k-specific or VO2max sessions.
+      - Increase one variable at a time: total volume, rep length, rep count or recovery density.
+      - Derive related sessions by trimming or extending a proven pattern instead of inventing a new structure every week.
+  template_fields:
+    name: "Short label for the session family."
+    sport: "Usually running."
+    session_type: "Taxonomy bucket used by the planner."
+    primary_stimulus: "Main adaptation sought."
+    secondary_stimuli: "Optional support adaptations."
+    target_distances: "Race distances or general use."
+    intensity: "Low, medium, medium-high or high."
+    fatigue_cost: "Expected recovery cost: low, medium, medium-high or high."
+    use_when: "When this family fits the week."
+    avoid_when: "When this family should be replaced or scaled down."
+    progression_from: "Safer predecessor session families."
+    progression_to: "Natural harder derivatives."
+    structure: "Canonical structure to convert into a dated workout."
+    variants: "Derived options chosen by block, readiness and target race."
+  templates:
+    easy_recovery:
+      name: "Rodaje recuperacion"
+      sport: running
+      session_type: recovery
+      primary_stimulus: recovery
+      secondary_stimuli: [aerobic_base]
+      target_distances: [general]
+      intensity: low
+      fatigue_cost: low
+      use_when: "After quality, race, poor sleep or yellow/red coach decision."
+      avoid_when: "Do not turn this into a disguised quality day."
+      progression_from: []
+      progression_to: [easy_z2, easy_plus_strides]
+      structure: "30-45 min easy, 131-145 bpm."
+      variants:
+        - "25-30 min very easy Z1 after race or heavy fatigue."
+        - "40-50 min easy if the athlete is stable but still needs low cost work."
+    recovery_plus_mobility:
+      name: "Recuperacion + movilidad"
+      sport: running
+      session_type: recovery
+      primary_stimulus: recovery
+      secondary_stimuli: [neuromuscular]
+      target_distances: [general]
+      intensity: low
+      fatigue_cost: low
+      use_when: "Day after hard sessions when circulation and leg reset matter more than volume."
+      avoid_when: "Skip strides or drills if the shin is reactive."
+      progression_from: [easy_recovery]
+      progression_to: [easy_plus_strides]
+      structure: "25-40 min very easy + optional mobility or 4-6 short relaxed strides."
+      variants:
+        - "30 min regenerative."
+        - "35 min easy + mobility."
+        - "30 min easy + 6 relaxed strides."
+    easy_z2:
+      name: "Rodaje Z2 estable"
+      sport: running
+      session_type: easy_aerobic
+      primary_stimulus: aerobic_base
+      secondary_stimuli: [aerobic_endurance]
+      target_distances: [general, 10k, 21k, marathon]
+      intensity: low
+      fatigue_cost: low
+      use_when: "Base building, volume support and low-risk aerobic continuity."
+      avoid_when: "Shorten if easy heart rate is drifting or shin symptoms rise."
+      progression_from: [easy_recovery]
+      progression_to: [easy_plus_strides, aerobic_steady, long_run]
+      structure: "40-90 min Z1-Z2 under aerobic cap."
+      variants:
+        - "40-50 min Z2 stable."
+        - "60-75 min easy by feel with heart rate cap."
+        - "60 min comfortable with last 5 min lively if fully green."
+    easy_plus_strides:
+      name: "Rodaje facil + rectas"
+      sport: running
+      session_type: technique_economy
+      primary_stimulus: running_economy
+      secondary_stimuli: [neuromuscular, aerobic_base]
+      target_distances: [general, 5k, 10k, 21k]
+      intensity: low
+      fatigue_cost: low
+      use_when: "Green status, shin quiet, neuromuscular touch needed."
+      avoid_when: "Do not use if the shin is not quiet or after an already demanding fast day."
+      progression_from: [easy_recovery, easy_z2]
+      progression_to: [technique_drills_strides, short_hills_power]
+      structure: "35-50 min easy + 4-8 x 12-20 s relaxed strides."
+      variants:
+        - "35 min easy + 6 strides."
+        - "45 min easy + 8 x 100 m progressive."
+        - "40 min easy + 6 x 20 s quick but relaxed."
+    technique_drills_strides:
+      name: "Tecnica + rectas"
+      sport: running
+      session_type: technique_economy
+      primary_stimulus: running_economy
+      secondary_stimuli: [neuromuscular]
+      target_distances: [general, 5k, 10k]
+      intensity: low
+      fatigue_cost: low
+      use_when: "When coordination, cadence and posture need attention without adding much metabolic load."
+      avoid_when: "Reduce drills if there is calf or shin irritation."
+      progression_from: [easy_plus_strides]
+      progression_to: [short_intervals_economy, short_hills_power]
+      structure: "20-40 min easy + drills + 4-10 strides or progressions."
+      variants:
+        - "30 min easy + drills + 6 progressive accelerations."
+        - "45 min easy + skipping, talones, zancadas and strides."
+        - "8 x 100 m progressive with full recovery after easy warm up."
+    aerobic_steady:
+      name: "Aerobico sostenido"
+      sport: running
+      session_type: progression
+      primary_stimulus: aerobic_endurance
+      secondary_stimuli: [high_threshold]
+      target_distances: [10k, 21k, marathon, general]
+      intensity: medium
+      fatigue_cost: medium
+      use_when: "Base block or secondary stimulus."
+      avoid_when: "Do not let steady work drift into hard threshold when recovery is limited."
+      progression_from: [easy_z2]
+      progression_to: [tempo_continuous, progression_finish_fast]
+      structure: "15-25 min easy + 20-40 min steady under threshold + cool down."
+      variants:
+        - "40-60 min progressive from Z2 to marathon effort."
+        - "50 min finishing at half-marathon controlled effort."
+        - "60 min progressive from easy to threshold only when the block supports it."
+    cruise_intervals:
+      name: "Cruise intervals"
+      sport: running
+      session_type: cruise_intervals
+      primary_stimulus: threshold
+      secondary_stimuli: [aerobic_endurance, fatigue_resistance]
+      target_distances: [10k, 21k, general]
+      intensity: medium-high
+      fatigue_cost: medium
+      use_when: "Threshold block, controlled sustainable work."
+      avoid_when: "Skip if the athlete is carrying high residual fatigue or cannot control threshold rhythm."
+      progression_from: [aerobic_steady, tempo_broken]
+      progression_to: [tempo_continuous, ten_k_specific_reps]
+      structure: "2 km easy + 4-6 x 1000 m controlled threshold / 60-90 s jog + cool down."
+      variants:
+        - "6-10 x 1000 m threshold / 30-45 s jog."
+        - "5-6 x 1600 m threshold / 1 min jog."
+        - "4-5 x 2000 m threshold / 1 min jog."
+    tempo_continuous:
+      name: "Tempo continuo"
+      sport: running
+      session_type: tempo_threshold
+      primary_stimulus: threshold
+      secondary_stimuli: [aerobic_endurance]
+      target_distances: [10k, 21k, marathon]
+      intensity: medium-high
+      fatigue_cost: medium-high
+      use_when: "When the athlete can sustain stable controlled discomfort without racing the session."
+      avoid_when: "Avoid long continuous tempo if threshold control is not yet proven."
+      progression_from: [aerobic_steady, tempo_broken, cruise_intervals]
+      progression_to: [half_marathon_specific_blocks, ten_k_specific_continuous]
+      structure: "20-45 min tempo at controlled threshold to half-marathon effort."
+      variants:
+        - "20-30 min tempo around half-marathon effort."
+        - "35-40 min controlled tempo."
+        - "10-15 km tempo from marathon to half-marathon effort depending on block."
+    tempo_broken:
+      name: "Tempo fraccionado"
+      sport: running
+      session_type: tempo_threshold
+      primary_stimulus: threshold
+      secondary_stimuli: [running_economy]
+      target_distances: [10k, 21k, marathon]
+      intensity: medium-high
+      fatigue_cost: medium
+      use_when: "When threshold work is desired with less mental and mechanical cost than a continuous tempo."
+      avoid_when: "Do not make recoveries so short that pace quality collapses."
+      progression_from: [aerobic_steady]
+      progression_to: [cruise_intervals, tempo_continuous]
+      structure: "2-4 tempo blocks with short jog recoveries."
+      variants:
+        - "2 x 15 min tempo / 3 min easy."
+        - "3 x 10 min tempo / 2 min easy."
+        - "4 x 8 min tempo / 90 s easy."
+    short_intervals_economy:
+      name: "Series cortas de economia"
+      sport: running
+      session_type: short_intervals
+      primary_stimulus: running_economy
+      secondary_stimuli: [vo2max, neuromuscular]
+      target_distances: [5k, 10k]
+      intensity: high
+      fatigue_cost: medium
+      use_when: "Economy dose, rhythm feel or early faster work without large continuous strain."
+      avoid_when: "Limit or remove if shin tolerance is not clear."
+      progression_from: [technique_drills_strides, easy_plus_strides]
+      progression_to: [short_intervals_vo2, five_k_specific_reps]
+      structure: "Warm up + 200-400 m reps at 3k-5k or 5k-10k effort with generous control + cool down."
+      variants:
+        - "8 x 200 m at 3k-5k / 200 m easy."
+        - "10 x 300 m strong / 1 min easy."
+        - "8 x 400 m at 5k / 90 s easy."
+    short_intervals_vo2:
+      name: "Series cortas VO2max"
+      sport: running
+      session_type: short_intervals
+      primary_stimulus: vo2max
+      secondary_stimuli: [running_economy, speed_support]
+      target_distances: [5k, 10k]
+      intensity: high
+      fatigue_cost: medium-high
+      use_when: "Specific high-aerobic stimulus once the athlete has enough durability for real fast work."
+      avoid_when: "Not before Block 4 unless it is only a very small economy dose."
+      progression_from: [short_intervals_economy, medium_intervals_vo2]
+      progression_to: [five_k_specific_reps, ten_k_specific_sharpener]
+      structure: "Warm up + dense 200-600 m reps around 3k-5k effort with controlled recoveries + cool down."
+      variants:
+        - "10 x 400 m at 5k / 1 min easy."
+        - "6-8 x 600 m at 5k / 90-120 s easy."
+        - "10 x 1 min hard / 1 min easy."
+    medium_intervals_vo2:
+      name: "Series medias VO2max"
+      sport: running
+      session_type: medium_intervals
+      primary_stimulus: vo2max
+      secondary_stimuli: [ten_k_specific, fatigue_resistance]
+      target_distances: [5k, 10k]
+      intensity: high
+      fatigue_cost: high
+      use_when: "When the plan needs strong aerobic power work and the athlete is absorbing training well."
+      avoid_when: "Avoid during fragile weeks or if threshold control is still a bigger limiter than speed."
+      progression_from: [tempo_broken, cruise_intervals, short_intervals_economy]
+      progression_to: [five_k_specific_reps, ten_k_specific_reps]
+      structure: "Warm up + 800-1200 m reps around 5k to 10k effort with moderate recoveries + cool down."
+      variants:
+        - "5-6 x 800 m at 5k / 2 min easy."
+        - "4-5 x 1000 m at 5k / 2-2:30 min easy."
+        - "3-4 x 1200 m at 5k-10k / 2-3 min easy."
+    ten_k_specific_reps:
+      name: "Repeticiones especificas 10k"
+      sport: running
+      session_type: medium_intervals
+      primary_stimulus: ten_k_specific
+      secondary_stimuli: [high_threshold, fatigue_resistance]
+      target_distances: [10k]
+      intensity: high
+      fatigue_cost: medium-high
+      use_when: "Specific block after checkpoint pace is defined."
+      avoid_when: "Do not prescribe from aspiration pace; use current evidence only."
+      progression_from: [cruise_intervals, tempo_continuous, medium_intervals_vo2]
+      progression_to: [ten_k_specific_continuous, mixed_tempo_plus_fast]
+      structure: "2 km easy + 3-5 x 1600 m at current 10k effort / 2 min jog + cool down."
+      variants:
+        - "6-8 x 1000 m at 10k / 1-1:30 min easy."
+        - "4 x 2000 m at 10k / 2 min easy."
+        - "2 x 4 km at 10k / 3 min easy."
+    ten_k_specific_continuous:
+      name: "Continuo especifico 10k"
+      sport: running
+      session_type: long_intervals
+      primary_stimulus: ten_k_specific
+      secondary_stimuli: [threshold, fatigue_resistance]
+      target_distances: [10k]
+      intensity: high
+      fatigue_cost: high
+      use_when: "Late specific work to validate race rhythm and control."
+      avoid_when: "Use only when recent workouts show repeatability without excessive fatigue."
+      progression_from: [ten_k_specific_reps]
+      progression_to: [test_sessions]
+      structure: "Long reps or controlled continuous blocks at current 10k effort."
+      variants:
+        - "3 x 3000 m at 10k / 3 min easy."
+        - "8 km continuous at controlled 10k effort."
+        - "15 x 400 m at 10k / 45 s easy for rhythm density."
+    five_k_specific_reps:
+      name: "Repeticiones especificas 5k"
+      sport: running
+      session_type: medium_intervals
+      primary_stimulus: five_k_specific
+      secondary_stimuli: [vo2max, running_economy]
+      target_distances: [5k, 10k]
+      intensity: high
+      fatigue_cost: high
+      use_when: "Short race preparation or when 5k power supports the 10k block."
+      avoid_when: "Do not overuse if the athlete already has enough short-rep speed but lacks durability."
+      progression_from: [short_intervals_vo2, medium_intervals_vo2]
+      progression_to: [test_sessions]
+      structure: "Warm up + 600-2000 m reps around current 5k effort + cool down."
+      variants:
+        - "6 x 800 m at 5k / 2 min easy."
+        - "5 x 1000 m at 5k / 2-2:30 min easy."
+        - "3 x 1600 m at 5k / 3 min easy."
+        - "2 x 2000 m at 5k / 4 min easy."
+        - "10 x 300 m faster than 5k / 90 s easy."
+        - "4 x 1200 m at 5k / 2-2:30 min easy."
+    half_marathon_specific_blocks:
+      name: "Bloques especificos 21k"
+      sport: running
+      session_type: long_intervals
+      primary_stimulus: half_marathon_specific
+      secondary_stimuli: [threshold, aerobic_endurance]
+      target_distances: [21k, 10k]
+      intensity: medium-high
+      fatigue_cost: medium-high
+      use_when: "Useful to raise sustained speed and durability before the most specific 10k work."
+      avoid_when: "Do not force half-marathon pace if the athlete cannot yet control threshold."
+      progression_from: [tempo_continuous, cruise_intervals]
+      progression_to: [ten_k_specific_reps]
+      structure: "3-6 long blocks at half-marathon effort with short recoveries or controlled continuous runs."
+      variants:
+        - "3-4 x 10 min at 21k / 2 min easy."
+        - "3-4 x 3000 m at 21k / 90-120 s easy."
+        - "12-15 km controlled around half-marathon effort."
+        - "2 x 5000 m at 21k / 3 min easy."
+        - "18 km with 12 km at 21k effort."
+        - "90 min with 3 x 15 min at 21k effort."
+    marathon_specific_blocks:
+      name: "Bloques especificos maraton"
+      sport: running
+      session_type: long_intervals
+      primary_stimulus: marathon_specific
+      secondary_stimuli: [aerobic_endurance, fatigue_resistance]
+      target_distances: [marathon, 21k, general]
+      intensity: medium
+      fatigue_cost: medium-high
+      use_when: "Useful for aerobic durability, steady fuel use and long sustained rhythm."
+      avoid_when: "Secondary tool only in this project; avoid replacing more relevant 10k/threshold work too often."
+      progression_from: [aerobic_steady, long_run]
+      progression_to: [progression_finish_fast, long_run_quality]
+      structure: "Long continuous or block-based work at marathon effort inside medium-long runs."
+      variants:
+        - "15-20 km at marathon effort."
+        - "3 x 20 min at marathon effort / 3 min easy."
+        - "24 km with 16 km at marathon effort."
+        - "2 x 8000 m at marathon effort / 4 min easy."
+        - "28 km with 18 km at marathon effort."
+        - "30 km alternating 5 km easy / 5 km marathon effort."
+    fartlek_structured:
+      name: "Fartlek estructurado"
+      sport: running
+      session_type: fartlek
+      primary_stimulus: vo2max
+      secondary_stimuli: [running_economy, fatigue_resistance]
+      target_distances: [5k, 10k, general]
+      intensity: medium-high
+      fatigue_cost: medium
+      use_when: "Flexible quality when terrain, feel or mental freshness matter more than exact splits."
+      avoid_when: "Avoid uncontrolled surges that turn the session into a race."
+      progression_from: [aerobic_steady, easy_plus_strides]
+      progression_to: [short_intervals_vo2, mixed_tempo_plus_fast]
+      structure: "Alternating hard and easy running by time with clear effort anchors."
+      variants:
+        - "10-15 x 1 min hard / 1 min easy."
+        - "8 x 3 min fast / 2 min easy."
+        - "Pyramid 1-2-3-4-5-4-3-2-1 with equal easy recoveries."
+    progression_finish_fast:
+      name: "Progresivo con final vivo"
+      sport: running
+      session_type: progression
+      primary_stimulus: fatigue_resistance
+      secondary_stimuli: [aerobic_endurance, marathon_specific]
+      target_distances: [10k, 21k, marathon, general]
+      intensity: medium
+      fatigue_cost: medium
+      use_when: "To teach pacing and strong finishes without the stress of pure interval work."
+      avoid_when: "Do not finish fast if the long aerobic portion is already overloading recovery."
+      progression_from: [easy_z2, aerobic_steady]
+      progression_to: [long_run_quality, half_marathon_specific_blocks]
+      structure: "Aerobic run progressing from easy to steady, marathon or half-marathon effort late."
+      variants:
+        - "50 min progressive finishing at 21k effort."
+        - "70-90 min with last 15-30 min at marathon effort."
+        - "20 km progressive with last 5 km at 21k effort."
+    long_run:
+      name: "Tirada larga controlada"
+      sport: running
+      session_type: long_run
+      primary_stimulus: aerobic_endurance
+      secondary_stimuli: [fatigue_resistance, aerobic_base]
+      target_distances: [10k, 21k, marathon, general]
+      intensity: medium
+      fatigue_cost: medium
+      use_when: "Sunday anchor if shin and recovery are stable."
+      avoid_when: "Keep it easy if midweek load was not absorbed or shin feedback is not quiet."
+      progression_from: [easy_z2]
+      progression_to: [long_run_quality, marathon_specific_blocks]
+      structure: "10-16 km Z1-Z2, no fast finish unless green and fresh."
+      variants:
+        - "90-120 min easy Z2."
+        - "22-30 km easy for advanced marathon-oriented durability phases."
+        - "2 h easy with 10 changes of 2 min strong if the block explicitly calls for it."
+    long_run_quality:
+      name: "Tirada larga especifica"
+      sport: running
+      session_type: long_run
+      primary_stimulus: fatigue_resistance
+      secondary_stimuli: [marathon_specific, half_marathon_specific, ten_k_specific]
+      target_distances: [10k, 21k, marathon]
+      intensity: medium-high
+      fatigue_cost: high
+      use_when: "Only when the athlete is already absorbing the weekly load and needs specific endurance."
+      avoid_when: "Do not combine with another heavy week if recovery markers are mediocre."
+      progression_from: [long_run, progression_finish_fast, marathon_specific_blocks]
+      progression_to: [test_sessions]
+      structure: "Long run with controlled quality blocks late or in the middle."
+      variants:
+        - "24 km with last 6-8 km at marathon effort."
+        - "28 km with 2 x 5 km at marathon effort."
+        - "18-20 km progressive finishing at half-marathon effort."
+    hills_strength:
+      name: "Cuestas de fuerza"
+      sport: running
+      session_type: hills
+      primary_stimulus: strength_endurance
+      secondary_stimuli: [running_economy, vo2max]
+      target_distances: [5k, 10k, 21k, general]
+      intensity: medium-high
+      fatigue_cost: medium
+      use_when: "When the plan needs mechanical strength and uphill-specific recruitment."
+      avoid_when: "Careful with aggressive hills if calves, achilles or shin are sensitive."
+      progression_from: [easy_plus_strides, technique_drills_strides]
+      progression_to: [medium_intervals_vo2, fartlek_structured]
+      structure: "Short to medium uphill repeats with easy downhill recoveries."
+      variants:
+        - "10-12 x 20-30 s strong uphill."
+        - "8 x 45 s uphill at 5k effort."
+        - "6 x 2 min uphill at 10k effort."
+    short_hills_power:
+      name: "Cuestas cortas explosivas"
+      sport: running
+      session_type: hills
+      primary_stimulus: neuromuscular
+      secondary_stimuli: [running_economy, speed_support]
+      target_distances: [general, 5k, 10k]
+      intensity: medium
+      fatigue_cost: low
+      use_when: "Low-volume power and mechanics stimulus with limited metabolic cost."
+      avoid_when: "Skip if there is any sign of sharp shin pain."
+      progression_from: [easy_plus_strides]
+      progression_to: [hills_strength, short_intervals_economy]
+      structure: "8-12 x 10-15 s steep hill sprints with full walking recovery."
+      variants:
+        - "10 x 10 s explosive hill."
+        - "8 x 15 s strong uphill with full recovery."
+        - "3 blocks of 5 x 30 s uphill with 30 s / 3 min recoveries."
+    mixed_tempo_plus_fast:
+      name: "Mixto tempo + rapido"
+      sport: running
+      session_type: mixed
+      primary_stimulus: threshold
+      secondary_stimuli: [running_economy, ten_k_specific]
+      target_distances: [5k, 10k, 21k]
+      intensity: high
+      fatigue_cost: medium-high
+      use_when: "Useful when the week needs threshold plus a small speed reminder in one session."
+      avoid_when: "Do not stack too many hard elements if the athlete is still rebuilding durability."
+      progression_from: [tempo_broken, short_intervals_economy]
+      progression_to: [ten_k_specific_reps, ten_k_specific_sharpener]
+      structure: "Controlled threshold block followed by a short fast set with good mechanics."
+      variants:
+        - "20 min tempo + 6 x 400 m at 5k."
+        - "3 x 10 min tempo + 6 x 200 m quick."
+        - "2 x 20 min tempo + 4 x 400 m fast."
+    mixed_aerobic_plus_fast:
+      name: "Mixto aerobico + rapido"
+      sport: running
+      session_type: mixed
+      primary_stimulus: aerobic_endurance
+      secondary_stimuli: [running_economy, neuromuscular]
+      target_distances: [general, 10k, 21k]
+      intensity: medium
+      fatigue_cost: medium
+      use_when: "To keep volume and add a compact faster touch without a full quality day."
+      avoid_when: "Keep the fast part short and relaxed if the athlete is carrying fatigue."
+      progression_from: [easy_z2, easy_plus_strides]
+      progression_to: [mixed_tempo_plus_fast]
+      structure: "Aerobic run followed by short reps, strides or a compact strong finish."
+      variants:
+        - "30 min easy + 10 x 200 m quick."
+        - "60 min easy + 10 x 30 s fast."
+        - "45 min easy + controlled 3 km strong finish."
+    polarized_aerobic_with_spikes:
+      name: "Polarizado con toques rapidos"
+      sport: running
+      session_type: polarized
+      primary_stimulus: aerobic_base
+      secondary_stimuli: [neuromuscular, vo2max]
+      target_distances: [general, 10k, 21k, marathon]
+      intensity: medium
+      fatigue_cost: low
+      use_when: "When the athlete needs mostly easy load with tiny fast exposures to stay coordinated."
+      avoid_when: "The fast spikes must stay small; otherwise use a real quality template instead."
+      progression_from: [easy_z2, easy_plus_strides]
+      progression_to: [fartlek_structured, short_intervals_economy]
+      structure: "Mostly easy aerobic running with a handful of very short fast reps or strides."
+      variants:
+        - "80 min Z2 + 8 x 20 s fast."
+        - "60 min easy + 10 x 30 s fast / 90 s easy."
+        - "75 min Z2 + 5 x 2 min at 5k effort."
+    test_sessions:
+      name: "Sesion de test"
+      sport: running
+      session_type: test
+      primary_stimulus: assessment
+      secondary_stimuli: [ten_k_specific, five_k_specific, threshold]
+      target_distances: [5k, 10k, 21k, marathon, general]
+      intensity: high
+      fatigue_cost: high
+      use_when: "Checkpoint weeks or when updated evidence is needed to recalibrate training paces."
+      avoid_when: "Do not test when carrying fatigue that would make the result misleading."
+      progression_from: [tempo_continuous, ten_k_specific_reps, five_k_specific_reps]
+      progression_to: []
+      structure: "Controlled maximal or near-maximal benchmark session with clear interpretation purpose."
+      variants:
+        - "3k test hard but controlled."
+        - "5k competitive or tune-up."
+        - "20 min maximal sustainable effort for threshold estimate."
+    race_activation:
+      name: "Activacion pre-carrera"
+      sport: running
+      session_type: technique_economy
+      primary_stimulus: neuromuscular
+      secondary_stimuli: [running_economy]
+      target_distances: [5k, 10k, 21k, marathon]
+      intensity: low
+      fatigue_cost: low
+      use_when: "48-72 h before tune-up or S race."
+      avoid_when: "Keep total work low; activation should freshen, not fatigue."
+      progression_from: [easy_plus_strides]
+      progression_to: []
+      structure: "25-35 min easy + 3-5 short rhythm blocks + relaxed strides."
+      variants:
+        - "25 min easy + 4 x 20 s quick."
+        - "30 min easy + 3 x 1 min at race rhythm + strides."
+        - "35 min easy + a few short pickups 48-72 h before race."
+    ten_k_specific_sharpener:
+      name: "Afinado especifico 10k"
+      sport: running
+      session_type: mixed
+      primary_stimulus: ten_k_specific
+      secondary_stimuli: [running_economy, neuromuscular]
+      target_distances: [10k]
+      intensity: medium-high
+      fatigue_cost: medium
+      use_when: "Late-race phase when the athlete needs rhythm confidence without a full fatigue hit."
+      avoid_when: "Not useful if the athlete still lacks the base work that should precede sharpening."
+      progression_from: [ten_k_specific_reps, mixed_tempo_plus_fast]
+      progression_to: [race_activation, test_sessions]
+      structure: "Short specific 10k blocks plus compact faster reminders with controlled total load."
+      variants:
+        - "5k tempo + 5 x 400 m quick."
+        - "1000 m and 400 m alternating reps."
+        - "8 km controlled at 10k effort if sharpening doubles as confidence check."
+        - "6 x 1000 m at 10k / 90 s easy."
+        - "4 x 2000 m at 10k / 2 min easy."
+        - "2 x 4 km at 10k / 3 min easy."

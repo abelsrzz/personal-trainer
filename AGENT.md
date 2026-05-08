@@ -96,7 +96,7 @@ The system must act as an intelligent coach, planner and reviewer.
 - Coach decision: `planning/coach_decision.md`
 - 35:00 gates: `planning/goal_gates.yaml`
 - Shin tracker: `athlete/shin_tracker.yaml`
-- Workout library: `training/planned/workouts/library_10k_templates.yaml`
+- Workout library: `training/planned/workouts/library_run_templates.yaml`
 
 ## Garmin Integration
 

@@ -18,7 +18,7 @@ Create, update, normalize and schedule planned workouts with the repository as s
 - recent reviews in `training/completed/reviews/`
 - `planning/coach_decision.md`
 - `athlete/status_dashboard.md`
-- `training/planned/workouts/library_10k_templates.yaml`
+- `training/planned/workouts/library_run_templates.yaml`
 - reference workouts in `training/planned/workouts/`
 
 ## Output Rules
@@ -30,6 +30,9 @@ Create, update, normalize and schedule planned workouts with the repository as s
 - keep structure minimal and explicit
 - do not create workouts that contradict a `red` or `yellow` coach decision
 - use template library patterns when they fit, but create dated workout YAML as the upload source of truth
+- use the library taxonomy and metadata to preserve the intended stimulus when converting a pattern into a dated workout
+- if deriving a new session from the library, stay inside the same progression family unless there is a clear coaching reason to change stimulus
+- respect the target distance family in the library so 5k, 10k, 21k and marathon workouts keep their own planning logic
 
 ## Validation Checklist
 
@@ -39,6 +42,7 @@ Create, update, normalize and schedule planned workouts with the repository as s
 4. steps are ordered and complete
 5. targets are realistic for the athlete status
 6. if requested, upload with Garmin and keep the upload trace
+7. the chosen workout family matches the intended physiological stimulus and target race context
 
 ## Related Commands
 

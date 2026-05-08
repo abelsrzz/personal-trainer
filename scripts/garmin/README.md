@@ -8,7 +8,7 @@ Espacio reservado para el adaptador local de Garmin.
 - `review_planned_session.py`: compara una sesion planificada con la actividad real de Garmin.
 - `coach_engine.py`: genera estado del atleta, decision de carga y gates del objetivo.
 - `coach_sync.py`: orquesta Garmin, revision y dashboard en un solo comando.
-- `training/planned/workouts/library_10k_templates.yaml`: biblioteca base de sesiones 10k.
+- `training/planned/workouts/library_run_templates.yaml`: biblioteca base multidiestancia de sesiones.
 
 ## Preparacion
 

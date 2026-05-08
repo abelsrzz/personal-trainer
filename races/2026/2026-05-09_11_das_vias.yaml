@@ -1,0 +1,10 @@
+id: 11_das_vias_2026
+name: 11 Das Vias
+date: 2026-05-09
+distance: 11km
+elevation_gain_m: "-"
+priority: C
+goal:
+  type: open
+  value: "-"
+notes: Added to make the event visible in the web calendar.

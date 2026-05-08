@@ -109,7 +109,7 @@ python scripts/garmin/coach_engine.py --as-of YYYY-MM-DD --days 28
 
 Plantillas reutilizables para convertir en sesiones fechadas:
 
-- `training/planned/workouts/library_10k_templates.yaml`
+- `training/planned/workouts/library_run_templates.yaml`
 
 ## Memoria Persistente
 

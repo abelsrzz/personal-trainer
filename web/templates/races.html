@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Carreras | Running Coach Portal{% endblock %}
+{% block content %}
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Calendario</p>
+      <h2>Carreras registradas</h2>
+    </div>
+    <span class="badge">{{ races|length }} carreras</span>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Nombre</th>
+          <th>Prioridad</th>
+          <th>Distancia</th>
+          <th>Desnivel</th>
+          <th>Goal</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for race in races %}
+        <tr>
+          <td>{{ race.date }}</td>
+          <td>{{ race.name }}</td>
+          <td>{{ race.priority }}</td>
+          <td>{{ race.distance_km }} km</td>
+          <td>{{ race.elevation_gain_m }} m</td>
+          <td>{{ race.goal }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6">No hay carreras registradas.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}Inicio | Running Coach Portal{% endblock %}
+{% block content %}
+<section class="hero">
+  <div>
+    <p class="eyebrow">Resumen operativo</p>
+    <h2>{{ dashboard.decision.status if dashboard.decision else "sin datos" }}</h2>
+    <p>{{ dashboard.decision.recommendation if dashboard.decision else "Todavia no existe planning/coach_decision.json" }}</p>
+  </div>
+  <div class="hero-meta">
+    <span>Analisis: {{ dashboard.as_of or "-" }}</span>
+    <span>Revisiones: {{ review_count }}</span>
+    <span>Planificados: {{ planned_count }}</span>
+  </div>
+</section>
+
+<section class="cards three">
+  <article class="card status-{{ dashboard.decision.status if dashboard.decision else 'unknown' }}">
+    <h3>Coach Decision</h3>
+    <p class="metric">{{ dashboard.decision.action if dashboard.decision else "-" }}</p>
+    <p class="muted">{{ dashboard.decision.reasons[0] if dashboard.decision and dashboard.decision.reasons else "Sin motivo disponible." }}</p>
+  </article>
+  <article class="card">
+    <h3>Semana activa</h3>
+    <p class="metric">{{ week.rows|length }}</p>
+    <p class="muted">Sesiones detectadas en la tabla diaria de `semana_actual.md`.</p>
+  </article>
+  <article class="card">
+    <h3>Objetivo 35:00</h3>
+    <p class="metric">{{ dashboard.goal_gates.status if dashboard.goal_gates else "-" }}</p>
+    <p class="muted">{{ dashboard.goal_gates.summary if dashboard.goal_gates else "Sin evaluacion disponible." }}</p>
+  </article>
+</section>
+
+<section class="split">
+  <article class="panel">
+    <div class="panel-head">
+      <h3>Proximos entrenos</h3>
+      <a href="/planned-workouts">Ver todos</a>
+    </div>
+    <div class="list">
+      {% for workout in upcoming %}
+      <a class="list-item" href="/planned-workouts/{{ workout.slug }}">
+        <div>
+          <strong>{{ workout.date }}</strong>
+          <p>{{ workout.name }}</p>
+        </div>
+        <span>{{ workout.estimated_duration }}</span>
+      </a>
+      {% else %}
+      <p class="muted">No hay entrenos planificados detectados.</p>
+      {% endfor %}
+    </div>
+  </article>
+  <article class="panel">
+    <div class="panel-head">
+      <h3>Ultimas revisiones</h3>
+      <a href="/completed-workouts">Ver todas</a>
+    </div>
+    <div class="list">
+      {% for review in recent_reviews %}
+      <a class="list-item" href="/completed-workouts/{{ review.slug }}">
+        <div>
+          <strong>{{ review.date }}</strong>
+          <p>{{ review.name }}</p>
+        </div>
+        <span>{{ review.score }}/10</span>
+      </a>
+      {% else %}
+      <p class="muted">Todavia no hay revisiones disponibles.</p>
+      {% endfor %}
+    </div>
+  </article>
+</section>
+{% endblock %}

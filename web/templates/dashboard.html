@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Dashboard | Running Coach Portal{% endblock %}
+{% block content %}
+<section class="hero compact">
+  <div>
+    <p class="eyebrow">Dashboard del atleta</p>
+    <h2>{{ dashboard.decision.status }}</h2>
+    <p>{{ dashboard.decision.recommendation }}</p>
+  </div>
+  <div class="hero-meta">
+    <span>As of: {{ dashboard.as_of }}</span>
+    <span>Ventana: {{ dashboard.lookback_days }} dias</span>
+  </div>
+</section>
+
+<section class="cards four">
+  <article class="card">
+    <h3>7 dias</h3>
+    <p class="metric">{{ "%.1f"|format(dashboard.decision.windows.last_7_days.km) }} km</p>
+    <p class="muted">{{ dashboard.decision.windows.last_7_days.runs }} carreras</p>
+  </article>
+  <article class="card">
+    <h3>28 dias</h3>
+    <p class="metric">{{ "%.1f"|format(dashboard.decision.windows.last_28_days.km) }} km</p>
+    <p class="muted">{{ dashboard.decision.windows.last_28_days.quality_runs }} exigentes</p>
+  </article>
+  <article class="card">
+    <h3>Estimacion 10k</h3>
+    <p class="metric">{{ dashboard.performance_estimate.current_10k_estimate_s|format_duration }}</p>
+    <p class="muted">Estimacion actual basada en los mejores splits recientes.</p>
+  </article>
+  <article class="card">
+    <h3>Gates</h3>
+    <p class="metric">{{ dashboard.goal_gates.passed_count }}/{{ dashboard.goal_gates.total_gates }}</p>
+    <p class="muted">{{ dashboard.goal_gates.status }}</p>
+  </article>
+</section>
+
+<section class="split">
+  <article class="panel">
+    <h3>Riesgos detectados</h3>
+    <ul class="plain-list">
+      {% for reason in dashboard.decision.reasons %}
+      <li>{{ reason }}</li>
+      {% endfor %}
+    </ul>
+  </article>
+  <article class="panel">
+    <h3>Volumen semanal</h3>
+    <ul class="plain-list">
+      {% for item in dashboard.weekly_volume %}
+      <li>{{ item.week }}: {{ "%.1f"|format(item.km) }} km, {{ item.runs }} carreras, {{ item.quality_runs }} exigentes.</li>
+      {% endfor %}
+    </ul>
+  </article>
+</section>
+
+<section class="panel">
+  <h3>Goal Gates</h3>
+  <div class="list">
+    {% for gate in dashboard.goal_gates.gates %}
+    <div class="list-item static">
+      <div>
+        <strong>{{ gate.name }}</strong>
+        <p>{{ gate.evidence }}</p>
+      </div>
+      <span class="badge {{ 'ok' if gate.passed else 'warn' }}">{{ 'OK' if gate.passed else 'NO' }}</span>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

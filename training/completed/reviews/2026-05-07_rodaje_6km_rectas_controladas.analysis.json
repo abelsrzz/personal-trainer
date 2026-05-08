@@ -185,9 +185,9 @@
       "avg_gap_pace_s_per_km": 433.9097993485609
     }
   ],
-  "score": 4,
-  "traffic_light": "rojo",
-  "risk_level": "alto",
+  "score": 6,
+  "traffic_light": "amarillo",
+  "risk_level": "medio",
   "progression": {
     "comparable_count": 1,
     "matches": [

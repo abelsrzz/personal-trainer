@@ -1,9 +1,9 @@
 # Athlete Status Dashboard
 
-- Fecha de analisis: `2026-05-07`
-- Estado: `red`
-- Accion recomendada: `reduce_or_replace_quality`
-- Recomendacion: Reducir carga inmediata: cambiar la proxima calidad por rodaje muy facil o descanso, y mantener FC capada.
+- Fecha de analisis: `2026-05-08`
+- Estado: `green`
+- Accion recomendada: `maintain_or_progress_carefully`
+- Recomendacion: Mantener plan y permitir progresion pequena si el periostio sigue en 0-2/10.
 
 ## Carga Reciente
 
@@ -14,14 +14,14 @@
 
 ## Predictor De Marca
 
-- Mejor 5k reciente: `22:04`.
+- Mejor 5k reciente: `23:32`.
 - Mejor 10k reciente: `44:23`.
 - Estimacion 10k actual: `44:23`.
 - Metodo: Mejores splits recientes de Garmin y conversion Riegel; usar como tendencia, no como garantia de carrera.
 
 ## Riesgos Detectados
 
-- Revision reciente de alto riesgo: 2026-05-07 Rodaje 6 km + 4 rectas controladas.
+- Sin banderas rojas objetivas en los datos locales disponibles.
 
 ## Objetivo 35:00
 
@@ -29,10 +29,10 @@
 - Resumen: Con la evidencia actual, 35:00 sigue siendo aspiracional y no prescribe ritmos.
 - Gates cumplidos: `0/4`
 
-- `NO` Base estable: Media 4 semanas 21.9 km/sem, tirada larga 10.4 km, revisiones rojas 1, periostio -.
-- `NO` Umbral competitivo: Mejor 5k reciente: 22:04.
-- `NO` Precondicion 35:00: Media 21.9 km/sem, tirada 10.4 km, 5k 22:04, riesgo 1.
-- `NO` Seleccion 35:00: 5k 22:04, 10k 44:23.
+- `NO` Base estable: Media 4 semanas 21.9 km/sem, tirada larga 10.4 km, revisiones rojas 0, periostio 1.
+- `NO` Umbral competitivo: Mejor 5k reciente: 23:32.
+- `NO` Precondicion 35:00: Media 21.9 km/sem, tirada 10.4 km, 5k 23:32, riesgo 0.
+- `NO` Seleccion 35:00: 5k 23:32, 10k 44:23.
 
 ## Volumen Semanal
 

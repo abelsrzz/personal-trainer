@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}{{ workout.name }} | Running Coach Portal{% endblock %}
+{% block content %}
+<section class="panel">
+  <p class="eyebrow">Detalle planificado</p>
+  <h2>{{ workout.name }}</h2>
+  <p>{{ workout.description }}</p>
+  <div class="cards three">
+    <article class="card"><h3>Fecha</h3><p class="metric">{{ workout.date }}</p></article>
+    <article class="card"><h3>Duracion</h3><p class="metric">{{ workout.estimated_duration }}</p></article>
+    <article class="card"><h3>Pasos</h3><p class="metric">{{ workout.step_count }}</p></article>
+  </div>
+</section>
+
+<section class="panel">
+  <h3>Pasos</h3>
+  <div class="list">
+    {% for step in workout.payload.steps %}
+    <div class="list-item static">
+      <div>
+        <strong>{{ step.step_type or step.type or 'step' }}</strong>
+        <p>{{ step.description or '-' }}</p>
+      </div>
+      <span>
+        {% if step.distance_m %}{{ (step.distance_m / 1000.0)|round(2) }} km{% elif step.duration_s %}{{ step.duration_s }} s{% else %}-{% endif %}
+      </span>
+    </div>
+    {% else %}
+    <p class="muted">Sin pasos definidos.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="panel">
+  <h3>YAML fuente</h3>
+  <pre class="raw">{{ workout.payload }}</pre>
+</section>
+{% endblock %}

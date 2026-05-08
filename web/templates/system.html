@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Sistema | Running Coach Portal{% endblock %}
+{% block content %}
+<section class="panel">
+  <p class="eyebrow">Estado operativo</p>
+  <h2>Sistema</h2>
+  <div class="cards four">
+    <article class="card"><h3>Coach JSON</h3><p class="metric">{{ system.coach_generated_at }}</p></article>
+    <article class="card"><h3>Actividades</h3><p class="metric">{{ system.activity_count }}</p></article>
+    <article class="card"><h3>Daily</h3><p class="metric">{{ system.daily_count }}</p></article>
+    <article class="card"><h3>Revisiones</h3><p class="metric">{{ system.review_count }}</p></article>
+  </div>
+</section>
+
+<section class="panel">
+  <h3>Artefactos</h3>
+  <ul class="plain-list">
+    <li>Planificados detectados: {{ system.planned_count }}</li>
+    <li>PDF semanal disponible: {{ 'si' if system.week_pdf_exists else 'no' }}</li>
+    <li>PDF semanal: {{ system.week_pdf_path }}</li>
+    <li>Sesiones Telegram: {{ system.telegram_sessions_path }}</li>
+  </ul>
+</section>
+{% endblock %}

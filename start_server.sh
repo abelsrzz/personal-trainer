@@ -6,6 +6,9 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LOG_DIR="${OPENCODE_LOG_DIR:-/tmp/opencode}"
 HOST="${OPENCODE_HOST:-127.0.0.1}"
 PORT="${OPENCODE_PORT:-4096}"
+WEB_HOST="${RUNNING_WEB_HOST:-127.0.0.1}"
+WEB_PORT="${RUNNING_WEB_PORT:-8090}"
+WEB_ENABLED="${RUNNING_WEB_ENABLED:-1}"
 OPENCODE_BIN="${OPENCODE_BIN:-opencode}"
 PYTHON_BIN="${PYTHON_BIN:-$ROOT_DIR/.venv/bin/python}"
 PYTHON_BOOTSTRAP="${PYTHON_BOOTSTRAP:-python3}"
@@ -13,8 +16,11 @@ INSTALL_OPENCODE="${INSTALL_OPENCODE:-1}"
 
 SERVER_PID_FILE="$LOG_DIR/personal-trainer-opencode-serve.pid"
 BOT_PID_FILE="$LOG_DIR/personal-trainer-telegram-bot.pid"
+WEB_PID_FILE="$LOG_DIR/personal-trainer-web.pid"
 SERVER_LOG="$LOG_DIR/personal-trainer-opencode-serve.log"
 BOT_LOG="$LOG_DIR/personal-trainer-telegram-bot.log"
+WEB_LOG="$LOG_DIR/personal-trainer-web.log"
+WEB_CONFIG_FILE="$ROOT_DIR/web/web_config.yaml"
 
 usage() {
   cat <<EOF
@@ -22,8 +28,8 @@ Usage: ./start_server.sh [install|start|stop|restart|status|logs]
 
 Commands:
   install   Install Python dependencies, prepare config, and install/check OpenCode
-  start     Start opencode server and Telegram bot (default)
-  stop      Stop both processes started by this script
+  start     Start opencode server, Telegram bot, and web portal (default)
+  stop      Stop all processes started by this script
   restart   Stop and start again
   status    Show process status
   logs      Follow both log files
@@ -31,11 +37,18 @@ Commands:
 Environment overrides:
   OPENCODE_HOST=$HOST
   OPENCODE_PORT=$PORT
+  RUNNING_WEB_HOST=$WEB_HOST
+  RUNNING_WEB_PORT=$WEB_PORT
+  RUNNING_WEB_ENABLED=$WEB_ENABLED
   OPENCODE_LOG_DIR=$LOG_DIR
   OPENCODE_BIN=$OPENCODE_BIN
   PYTHON_BIN=$PYTHON_BIN
   PYTHON_BOOTSTRAP=$PYTHON_BOOTSTRAP
   INSTALL_OPENCODE=$INSTALL_OPENCODE  # set to 0 to skip automatic OpenCode install
+  web/web_config.yaml                 # local file with username/password/secret
+  RUNNING_WEB_USERNAME=...            # optional override for username
+  RUNNING_WEB_PASSWORD=...            # optional override for password
+  RUNNING_WEB_SECRET=...              # optional override for session secret
 EOF
 }
 
@@ -81,6 +94,14 @@ require_runtime() {
     echo "Create it from telegram/bot_config.yaml.example and set bot_token/chat_id." >&2
     exit 1
   fi
+}
+
+web_config_ready() {
+  [[ "$WEB_ENABLED" != "1" ]] && return 0
+  if [[ -f "$WEB_CONFIG_FILE" ]]; then
+    return 0
+  fi
+  [[ -n "${RUNNING_WEB_USERNAME:-}" && -n "${RUNNING_WEB_PASSWORD:-}" ]]
 }
 
 install_runtime() {
@@ -140,6 +161,14 @@ install_runtime() {
     echo "  $PYTHON_BIN scripts/telegram/opencode_bot.py --check-config" >&2
   fi
 
+  if [[ "$WEB_ENABLED" == "1" ]]; then
+    if web_config_ready; then
+      echo "Web config OK"
+    else
+      echo "Web portal credentials not set yet. Create web/web_config.yaml from web/web_config.yaml.example or define RUNNING_WEB_USERNAME and RUNNING_WEB_PASSWORD." >&2
+    fi
+  fi
+
   echo "== Install complete"
   echo "Start the server with: ./start_server.sh start"
 }
@@ -147,6 +176,7 @@ install_runtime() {
 start_server() {
   require_runtime
   cd "$ROOT_DIR"
+  local web_running=0
 
   "$PYTHON_BIN" scripts/telegram/opencode_bot.py --check-config >/dev/null
 
@@ -168,11 +198,36 @@ start_server() {
     echo "Started Telegram bot (pid $(<"$BOT_PID_FILE"))"
   fi
 
+  if [[ "$WEB_ENABLED" != "1" ]]; then
+    echo "Web portal disabled (RUNNING_WEB_ENABLED=$WEB_ENABLED)"
+  elif ! web_config_ready; then
+    echo "Web portal skipped: create web/web_config.yaml from web/web_config.yaml.example or define RUNNING_WEB_USERNAME and RUNNING_WEB_PASSWORD first." >&2
+  elif is_running "$WEB_PID_FILE"; then
+    echo "Web portal already running (pid $(<"$WEB_PID_FILE"))"
+    web_running=1
+  else
+    nohup "$PYTHON_BIN" -m uvicorn app:app --app-dir "$ROOT_DIR/scripts/web" --host "$WEB_HOST" --port "$WEB_PORT" >"$WEB_LOG" 2>&1 &
+    echo "$!" >"$WEB_PID_FILE"
+    sleep 1
+    if is_running "$WEB_PID_FILE"; then
+      echo "Started web portal (pid $(<"$WEB_PID_FILE"))"
+      web_running=1
+    else
+      echo "Web portal failed to start. Check $WEB_LOG" >&2
+    fi
+  fi
+
   echo ""
   echo "OpenCode server: http://$HOST:$PORT"
+  if [[ "$web_running" == "1" ]]; then
+    echo "Web portal: http://$WEB_HOST:$WEB_PORT"
+  fi
   echo "Logs:"
   echo "  $SERVER_LOG"
   echo "  $BOT_LOG"
+  if [[ "$WEB_ENABLED" == "1" ]]; then
+    echo "  $WEB_LOG"
+  fi
 }
 
 stop_process() {
@@ -189,6 +244,7 @@ stop_process() {
 }
 
 stop_server() {
+  stop_process "Web portal" "$WEB_PID_FILE"
   stop_process "Telegram bot" "$BOT_PID_FILE"
   stop_process "OpenCode server" "$SERVER_PID_FILE"
 }
@@ -205,12 +261,18 @@ status_server() {
   else
     echo "Telegram bot: stopped"
   fi
+
+  if is_running "$WEB_PID_FILE"; then
+    echo "Web portal: running (pid $(<"$WEB_PID_FILE"))"
+  else
+    echo "Web portal: stopped"
+  fi
 }
 
 logs_server() {
   mkdir -p "$LOG_DIR"
-  touch "$SERVER_LOG" "$BOT_LOG"
-  tail -f "$SERVER_LOG" "$BOT_LOG"
+  touch "$SERVER_LOG" "$BOT_LOG" "$WEB_LOG"
+  tail -f "$SERVER_LOG" "$BOT_LOG" "$WEB_LOG"
 }
 
 command="${1:-start}"

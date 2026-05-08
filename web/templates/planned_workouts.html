@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Planificados | Running Coach Portal{% endblock %}
+{% block content %}
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Workout library operativa</p>
+      <h2>Entrenamientos planificados</h2>
+    </div>
+    <span class="badge">{{ workouts|length }} sesiones</span>
+  </div>
+  <div class="list">
+    {% for workout in workouts %}
+    <a class="list-item" href="/planned-workouts/{{ workout.slug }}">
+      <div>
+        <strong>{{ workout.date }}</strong>
+        <p>{{ workout.name }}</p>
+        <p class="muted">{{ workout.description }}</p>
+      </div>
+      <span>{{ workout.estimated_duration }}</span>
+    </a>
+    {% else %}
+    <p class="muted">No hay entrenos planificados.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

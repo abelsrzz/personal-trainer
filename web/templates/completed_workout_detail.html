@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}{{ review.name }} | Running Coach Portal{% endblock %}
+{% block content %}
+<section class="panel">
+  <p class="eyebrow">Revision completada</p>
+  <h2>{{ review.name }}</h2>
+  <div class="cards four">
+    <article class="card"><h3>Fecha</h3><p class="metric">{{ review.date }}</p></article>
+    <article class="card"><h3>Score</h3><p class="metric">{{ review.score }}/10</p></article>
+    <article class="card"><h3>Riesgo</h3><p class="metric">{{ review.risk_level }}</p></article>
+    <article class="card"><h3>Pace</h3><p class="metric">{{ review.pace }}</p></article>
+  </div>
+</section>
+
+<section class="split">
+  <article class="panel">
+    <h3>Resumen</h3>
+    <ul class="plain-list">
+      <li>Distancia: {{ review.distance_km }} km</li>
+      <li>Duracion: {{ review.duration }}</li>
+      <li>FC media: {{ review.avg_hr }}</li>
+      <li>Semaforo: {{ review.traffic_light }}</li>
+    </ul>
+  </article>
+  <article class="panel">
+    <h3>Cumplimiento</h3>
+    <ul class="plain-list">
+      <li>Dentro de zona: {{ "%.1f"|format(review.payload.compliance.pct_in_hr_zone) }}%</li>
+      <li>Por encima de zona: {{ "%.1f"|format(review.payload.compliance.pct_above_hr_zone) }}%</li>
+      <li>Diff distancia: {{ review.payload.compliance.distance_diff_m }} m</li>
+      <li>Diff duracion: {{ review.payload.compliance.duration_diff_s_vs_est|round(1) }} s</li>
+    </ul>
+  </article>
+</section>
+
+<section class="panel">
+  <h3>Progresion</h3>
+  <p>{{ review.payload.progression.summary }}</p>
+  <ul class="plain-list">
+    <li>Tendencia: {{ review.payload.progression.trend }}</li>
+    <li>Comparables: {{ review.payload.progression.comparable_count }}</li>
+  </ul>
+</section>
+
+<section class="panel">
+  <h3>JSON fuente</h3>
+  <pre class="raw">{{ review.payload }}</pre>
+</section>
+{% endblock %}

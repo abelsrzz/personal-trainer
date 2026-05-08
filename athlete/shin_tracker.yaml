@@ -4,7 +4,15 @@ shin_tracker:
     green: "0-2/10 and not worse next morning"
     yellow: "3/10 or mild next-morning reaction; do not increase load"
     red: "4/10 or more, pain changing gait, or worsening trend; reduce running load"
-  entries: []
+  entries:
+    - date: 2026-05-08
+      pain_during: 1
+      pain_after: 1
+      pain_next_morning: 1
+      location: left_shin
+      surface: null
+      shoes: null
+      notes: Reevaluacion manual. Dolor tibial actual 1/10 y cansancio subjetivo 0/10; sin empeoramiento relevante reportado.
   entry_template:
     date: YYYY-MM-DD
     pain_during: 0

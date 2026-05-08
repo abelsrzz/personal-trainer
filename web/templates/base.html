@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Running Coach Portal{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div>
+        <p class="eyebrow">Running Coach</p>
+        <h1>Portal</h1>
+        <p class="muted">Acceso web al estado agentico del proyecto.</p>
+      </div>
+      {% if authenticated %}
+      <nav class="nav">
+        <a href="/">Inicio</a>
+        <a href="/week">Semana</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/decision">Decision</a>
+        <a href="/planned-workouts">Planificados</a>
+        <a href="/completed-workouts">Completados</a>
+        <a href="/athlete">Atleta</a>
+        <a href="/races">Carreras</a>
+        <a href="/system">Sistema</a>
+      </nav>
+      <a class="logout" href="/logout">Cerrar sesion</a>
+      {% endif %}
+    </aside>
+    <main class="content">
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+</body>
+</html>

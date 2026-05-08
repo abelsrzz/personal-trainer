@@ -1,13 +1,13 @@
 # Coach Decision
 
-- Fecha de analisis: `2026-05-07`
-- Estado: `red`
-- Accion: `reduce_or_replace_quality`
-- Decision: Reducir carga inmediata: cambiar la proxima calidad por rodaje muy facil o descanso, y mantener FC capada.
+- Fecha de analisis: `2026-05-08`
+- Estado: `green`
+- Accion: `maintain_or_progress_carefully`
+- Decision: Mantener plan y permitir progresion pequena si el periostio sigue en 0-2/10.
 
 ## Motivos
 
-- Revision reciente de alto riesgo: 2026-05-07 Rodaje 6 km + 4 rectas controladas.
+- Sin banderas rojas objetivas en los datos locales disponibles.
 
 ## Regla Operativa
 

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Atleta | Running Coach Portal{% endblock %}
+{% block content %}
+<section class="panel">
+  <p class="eyebrow">Perfil</p>
+  <h2>{{ athlete.profile.name }}</h2>
+  <div class="cards four">
+    <article class="card"><h3>Edad</h3><p class="metric">{{ athlete.profile.age }}</p></article>
+    <article class="card"><h3>Peso</h3><p class="metric">{{ athlete.profile.weight_kg }} kg</p></article>
+    <article class="card"><h3>Ciudad</h3><p class="metric">{{ athlete.profile.city }}</p></article>
+    <article class="card"><h3>Disponibilidad</h3><p class="metric">{{ athlete.profile.availability.days_per_week }} d/sem</p></article>
+  </div>
+</section>
+
+<section class="split">
+  <article class="panel">
+    <h3>Salud</h3>
+    <ul class="plain-list">
+      {% for issue in athlete.health.current_issues %}
+      <li>{{ issue }}</li>
+      {% endfor %}
+      {% for injury in athlete.health.past_injuries %}
+      <li>Historial: {{ injury }}</li>
+      {% endfor %}
+      <li>Recovery notes: {{ athlete.health.recovery_notes or '-' }}</li>
+    </ul>
+  </article>
+  <article class="panel">
+    <h3>Periostio</h3>
+    <div class="list">
+      {% for entry in athlete.entries %}
+      <div class="list-item static">
+        <div>
+          <strong>{{ entry.date }}</strong>
+          <p>{{ entry.notes or '-' }}</p>
+        </div>
+        <span>{{ entry.pain_during }}/{{ entry.pain_after }}/{{ entry.pain_next_morning }}</span>
+      </div>
+      {% else %}
+      <p class="muted">No hay entradas en el tracker.</p>
+      {% endfor %}
+    </div>
+  </article>
+</section>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Semana | Running Coach Portal{% endblock %}
+{% block content %}
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Plan activo</p>
+      <h2>Semana actual</h2>
+    </div>
+    {% if week.pdf_exists %}
+    <span class="badge ok">PDF disponible</span>
+    {% endif %}
+  </div>
+  <p class="muted">Fuente: `{{ week.path }}`</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Dia</th>
+          <th>Descripcion</th>
+          <th>Distancia</th>
+          <th>Objetivo</th>
+          <th>Zapatillas</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in week.rows %}
+        <tr>
+          <td>{{ row.day }}</td>
+          <td>{{ row.description }}</td>
+          <td>{{ row.distance }}</td>
+          <td>{{ row.target }}</td>
+          <td>{{ row.shoes }}</td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="5">No se pudo extraer la tabla del plan.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="panel">
+  <h3>Markdown fuente</h3>
+  <pre class="raw">{{ week.content }}</pre>
+</section>
+{% endblock %}

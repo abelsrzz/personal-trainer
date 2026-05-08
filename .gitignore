@@ -8,6 +8,7 @@ telegram/.semana_actual_state.json
 telegram/opencode_sessions.json
 telegram/opencode_bot.log
 telegram/opencode_confirmations.json
+web/web_config.yaml
 training/completed/imports/garmin/**/*.fit
 training/completed/imports/garmin/**/*.gpx
 training/completed/imports/garmin/**/*.tcx

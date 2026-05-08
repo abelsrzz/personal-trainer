@@ -188,3 +188,79 @@ Ejemplos de servicios `systemd`:
 
 - `deploy/systemd/opencode-server.service.example`
 - `deploy/systemd/opencode-telegram-bot.service.example`
+
+## Portal Web
+
+El proyecto incluye una interfaz web de solo lectura para consultar la capa operativa del entorno agentico.
+
+Que muestra esta primera version:
+
+- resumen ejecutivo del estado actual
+- semana activa
+- dashboard del atleta
+- decision operativa del coach
+- entrenamientos planificados
+- entrenamientos completados y sus revisiones
+- perfil del atleta, periostio y carreras
+- estado basico del sistema
+
+Dependencias:
+
+```bash
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+Credenciales minimas en archivo local del proyecto:
+
+```bash
+cp web/web_config.yaml.example web/web_config.yaml
+```
+
+Contenido esperado:
+
+```yaml
+web:
+  username: abel
+  password: cambia-esto
+  secret: una-clave-de-sesion-larga
+```
+
+Tambien puedes usar variables de entorno si quieres sobreescribir el archivo:
+
+```bash
+export RUNNING_WEB_USERNAME=abel
+export RUNNING_WEB_PASSWORD='cambia-esto'
+export RUNNING_WEB_SECRET='una-clave-de-sesion-larga'
+```
+
+Lanzar solo la web:
+
+```bash
+source .venv/bin/activate
+python -m uvicorn app:app --app-dir scripts/web --host 127.0.0.1 --port 8090
+```
+
+Healthcheck:
+
+```bash
+curl http://127.0.0.1:8090/healthz
+```
+
+Integracion en el arranque global:
+
+```bash
+cp web/web_config.yaml.example web/web_config.yaml
+./start_server.sh start
+```
+
+Variables opcionales:
+
+- `RUNNING_WEB_HOST` por defecto `127.0.0.1`
+- `RUNNING_WEB_PORT` por defecto `8090`
+- `RUNNING_WEB_ENABLED=0` para no arrancar la web desde `start_server.sh`
+- `RUNNING_WEB_USERNAME`, `RUNNING_WEB_PASSWORD` y `RUNNING_WEB_SECRET` pueden sobreescribir el fichero local
+
+Servicio `systemd` de ejemplo:
+
+- `deploy/systemd/opencode-web.service.example`

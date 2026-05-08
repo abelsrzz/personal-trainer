@@ -1,0 +1,17 @@
+[Unit]
+Description=Running Coach web portal
+After=network.target opencode-server.service
+
+[Service]
+Type=simple
+WorkingDirectory=/home/abel/Documentos/Proyectos/personal-trainer
+ExecStart=/home/abel/Documentos/Proyectos/personal-trainer/.venv/bin/python -m uvicorn app:app --app-dir /home/abel/Documentos/Proyectos/personal-trainer/scripts/web --host 127.0.0.1 --port 8090
+Restart=always
+RestartSec=5
+Environment=PATH=/home/abel/.opencode/bin:/home/abel/Documentos/Proyectos/personal-trainer/.venv/bin:/usr/local/bin:/usr/bin:/bin
+Environment=RUNNING_WEB_USERNAME=change-me
+Environment=RUNNING_WEB_PASSWORD=change-me
+Environment=RUNNING_WEB_SECRET=change-me-too
+
+[Install]
+WantedBy=multi-user.target

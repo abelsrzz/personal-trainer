@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Completados | Running Coach Portal{% endblock %}
+{% block content %}
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Revision de ejecucion</p>
+      <h2>Entrenamientos completados</h2>
+    </div>
+    <span class="badge">{{ reviews|length }} revisiones</span>
+  </div>
+  <div class="list">
+    {% for review in reviews %}
+    <a class="list-item" href="/completed-workouts/{{ review.slug }}">
+      <div>
+        <strong>{{ review.date }}</strong>
+        <p>{{ review.name }}</p>
+        <p class="muted">{{ review.traffic_light }} / {{ review.risk_level }}</p>
+      </div>
+      <span>{{ review.score }}/10</span>
+    </a>
+    {% else %}
+    <p class="muted">Todavia no hay revisiones generadas.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

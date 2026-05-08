@@ -6,6 +6,7 @@ import argparse
 import asyncio
 import json
 import sys
+from contextlib import suppress
 from datetime import date
 from pathlib import Path
 from typing import Awaitable, Callable
@@ -103,6 +104,12 @@ async def run_project_command(command: list[str], timeout_s: int = 1800) -> str:
     output = stdout or stderr or "(sin salida)"
     prefix = "" if returncode == 0 else f"[exit {returncode}]\n"
     return prefix + output
+
+
+async def keep_chat_action(chat, action: ChatAction, interval_s: float = 4.0) -> None:
+    while True:
+        await chat.send_action(action)
+        await asyncio.sleep(interval_s)
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -308,8 +315,13 @@ async def dispatch_to_opencode(update: Update, context: ContextTypes.DEFAULT_TYP
         return
 
     async with lock:
-        await update.effective_chat.send_action(ChatAction.TYPING)
-        result = await get_bridge(context).send(chat_id(update), text)
+        action_task = asyncio.create_task(keep_chat_action(update.effective_chat, ChatAction.TYPING))
+        try:
+            result = await get_bridge(context).send(chat_id(update), text)
+        finally:
+            action_task.cancel()
+            with suppress(asyncio.CancelledError):
+                await action_task
         response = result.text
         if result.returncode != 0:
             response = f"OpenCode devolvio exit {result.returncode}.\n\n{response}"

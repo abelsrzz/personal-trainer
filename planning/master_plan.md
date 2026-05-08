@@ -33,6 +33,17 @@
 - Goal: `4:10-4:20/km` only if the shin and fatigue are controlled
 - Practical impact: the cycle start on `2026-05-25` assumes this race is the final stimulus of the bridge week, not part of Block 1 itself.
 
+## Intermediate Priority Race
+
+- `VI CARREIRA 5K EL CANARIO`
+- Date: `2026-06-28`
+- Distance: `5k`
+- Elevation gain: `unknown`
+- Priority: `A`
+- Goal: try to break `20:00` at `3:59/km` or faster
+- Role: end-of-Block-1 progress check and calibration race before the bigger aerobic build
+- Practical impact: treat it as an important checkpoint race, but do not force sub-20 training paces into the plan unless the block evidence starts to support them.
+
 ## Current Level Audit
 
 - Recent race reference from Garmin: `2026-02-07 Padron`, `10.08 km` at about `4:26/km`, fastest 10k split `44:23`, average HR `186 bpm`, aerobic TE `5.0`.
@@ -56,7 +67,7 @@
 1. `Block 1: Reset, consistency and tissue tolerance`
    - Dates: `2026-05-25` to `2026-06-28`
    - Duration: `5 weeks`
-   - Focus: absorb the Ordes race, rebuild frequency and make easy running repeatable without shin escalation.
+   - Focus: absorb the Ordes race, rebuild frequency, make easy running repeatable without shin escalation, and arrive at the `2026-06-28` 5k with enough freshness to use it as a meaningful checkpoint.
 
 2. `Block 2: Aerobic base and volume consolidation`
    - Dates: `2026-06-29` to `2026-08-23`
@@ -125,9 +136,10 @@
 ## Checkpoints
 
 1. End of Block 1
-   - Five consistent weeks or a clear reason for any missed session.
-   - Shin symptoms stable at `0-2/10` and not worse the next morning.
-   - Easy runs stay controlled without forcing pace.
+    - Five consistent weeks or a clear reason for any missed session.
+    - Shin symptoms stable at `0-2/10` and not worse the next morning.
+    - Easy runs stay controlled without forcing pace.
+    - The `2026-06-28` 5k should be used to calibrate current 5k ability; sub-20 is a valid attempt goal, but any result should update the next block from evidence, not desire alone.
 
 2. Mid Block 2
    - Weekly volume is rising without accumulating pain.

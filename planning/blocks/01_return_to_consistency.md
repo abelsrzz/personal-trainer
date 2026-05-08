@@ -10,6 +10,7 @@
 - Absorb the `2026-05-24` Ordes race and remove residual fatigue.
 - Re-establish a stable running routine without aggravating the left shin.
 - Make easy running repeatable before chasing specific performance.
+- Arrive at the `2026-06-28` `VI CARREIRA 5K EL CANARIO` with enough freshness to use it as a meaningful progress test.
 
 ## Entry Assumption
 
@@ -54,6 +55,7 @@
 - No worsening of shin discomfort during the run, after the run or the next morning.
 - Easy runs feel controlled rather than forced.
 - Long run and total mileage feel more routine.
+- The `2026-06-28` 5k provides usable evidence to calibrate the next block; sub-20 is an attempt goal, not a mandatory outcome.
 
 ## Failure Triggers
 
@@ -65,4 +67,5 @@
 ## Exit Decision
 
 - Move to Block 2 only if the shin is stable and the athlete can complete easy mileage without chasing pace.
+- Use the `2026-06-28` 5k result to update the realistic 5k and 10k rhythm bands for Block 2.
 - If not, repeat one extra conservative week before increasing volume.

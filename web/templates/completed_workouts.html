@@ -11,13 +11,14 @@
   </div>
   <div class="list">
     {% for review in reviews %}
-    <div class="list-item static">
+    <div class="list-item static {{ review.session_color_class }} {{ 'status-' + review.payload.traffic_light if review.payload.traffic_light else '' }}">
       <div>
-        <strong><a href="/completed-workouts/{{ review.slug }}">{{ review.date }}</a></strong>
+        <strong><a href="/calendar/day/{{ review.date }}">{{ review.date }}</a></strong>
         <p><a href="/completed-workouts/{{ review.slug }}">{{ review.name }}</a></p>
         <p class="muted">{{ review.traffic_light }} / {{ review.risk_level }}</p>
       </div>
       <div class="item-meta">
+        <span class="badge kind-badge">{{ review.session_kind_label }}</span>
         {% if review.garmin_activity_url %}
         <a class="link-pill" href="{{ review.garmin_activity_url }}" target="_blank" rel="noreferrer">Garmin</a>
         {% endif %}

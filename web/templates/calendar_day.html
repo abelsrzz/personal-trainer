@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}{{ calendar_day.date }} | Running Coach Portal{% endblock %}
+{% block content %}
+<section class="hero compact">
+  <div>
+    <p class="eyebrow">Detalle del día</p>
+    <h2>{{ calendar_day.date_label }}</h2>
+  </div>
+  <div class="hero-meta">
+    <span>{{ calendar_day.daily_summary.status_label }}</span>
+    <span>{{ calendar_day.daily_summary.item_count }} elementos</span>
+  </div>
+</section>
+
+<section class="split">
+  <article class="panel">
+    <h3>Plan del día</h3>
+    <div class="list">
+      {% for workout in calendar_day.planned_items %}
+      <div class="list-item static {{ workout.session_color_class }}">
+        <div>
+          <strong><a href="/planned-workouts/{{ workout.slug }}">{{ workout.name }}</a></strong>
+          <p class="muted">{{ workout.description }}</p>
+        </div>
+        <div class="item-meta">
+          <span class="badge kind-badge">{{ workout.session_kind_label }}</span>
+          <span>{{ workout.estimated_duration }}</span>
+          {% if workout.garmin_workout_url %}
+          <a class="link-pill" href="{{ workout.garmin_workout_url }}" target="_blank" rel="noreferrer">Garmin</a>
+          {% endif %}
+        </div>
+      </div>
+      {% else %}
+      <p class="muted">No había sesión planificada.</p>
+      {% endfor %}
+    </div>
+  </article>
+
+  <article class="panel">
+    <h3>Ejecucion real</h3>
+    <div class="list">
+      {% for review in calendar_day.completed_items %}
+      <div class="list-item static {{ review.session_color_class }} {{ 'status-' + review.payload.traffic_light if review.payload.traffic_light else '' }}">
+        <div>
+          <strong><a href="/completed-workouts/{{ review.slug }}">{{ review.activity_name }}</a></strong>
+          <p class="muted">{{ review.distance_km }} km · {{ review.duration }} · {{ review.pace }}</p>
+        </div>
+        <div class="item-meta">
+          <span class="badge kind-badge">{{ review.session_kind_label }}</span>
+          <span>FC {{ review.avg_hr }}</span>
+          {% if review.garmin_activity_url %}
+          <a class="link-pill" href="{{ review.garmin_activity_url }}" target="_blank" rel="noreferrer">Garmin</a>
+          {% endif %}
+        </div>
+      </div>
+      {% else %}
+      <p class="muted">No hay actividad completada enlazada para este día.</p>
+      {% endfor %}
+    </div>
+  </article>
+</section>
+
+<section class="split">
+  <article class="panel">
+    <h3>Analisis</h3>
+    <div class="list">
+      {% for review in calendar_day.reviews %}
+      <div class="list-item static {{ 'status-' + review.payload.traffic_light if review.payload.traffic_light else '' }}">
+        <div>
+          <strong>{{ review.score }}/10 · {{ review.traffic_light }}</strong>
+          <p class="muted">Riesgo {{ review.risk_level }}</p>
+          <p>{{ review.compliance_note }}</p>
+        </div>
+      </div>
+      {% else %}
+      <p class="muted">Todavía no hay revisión generada.</p>
+      {% endfor %}
+    </div>
+  </article>
+
+  <article class="panel">
+    <h3>Contexto</h3>
+    <div class="list">
+      {% for race in calendar_day.races %}
+      <div class="list-item static session-race">
+        <div>
+          <strong>{{ race.name }}</strong>
+          <p class="muted">{{ race.distance_km }} km · {{ race.location }}</p>
+          <p>{{ race.goal }}</p>
+        </div>
+      </div>
+      {% endfor %}
+      {% if not calendar_day.races %}
+      <div class="list-item static">
+        <div>
+          <strong>Sin carrera asociada</strong>
+          <p class="muted">No hay evento competitivo registrado para esta fecha.</p>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </article>
+</section>
+{% endblock %}

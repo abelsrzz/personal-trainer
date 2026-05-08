@@ -1,0 +1,19 @@
+2026-05-08 15:57:11,823 INFO calendar race candidate date=2026-05-24 items=1
+2026-05-08 15:57:11,823 INFO calendar race candidate date=2027-02-06 items=1
+2026-05-08 15:57:11,823 ERROR calendar_month_data_combined failed month=None
+Traceback (most recent call last):
+  File "/home/abel/Documentos/Proyectos/personal-trainer/scripts/web/app.py", line 625, in calendar_month_data_combined
+    available_months = sorted({day[:7] for day in event_by_day if parse_iso_date(day)})
+                               ~~~^^^^
+TypeError: 'datetime.date' object is not subscriptable
+2026-05-08 15:58:56,151 INFO calendar race candidate date=2026-05-24 items=1
+2026-05-08 15:58:56,151 INFO calendar race candidate date=2027-02-06 items=1
+2026-05-08 16:03:08,152 INFO calendar race candidate date=2026-05-09 items=1
+2026-05-08 16:03:08,153 INFO calendar race candidate date=2026-05-24 items=1
+2026-05-08 16:03:08,153 INFO calendar race candidate date=2027-02-06 items=1
+2026-05-08 16:03:11,237 INFO calendar race candidate date=2026-05-09 items=1
+2026-05-08 16:03:11,237 INFO calendar race candidate date=2026-05-24 items=1
+2026-05-08 16:03:11,237 INFO calendar race candidate date=2027-02-06 items=1
+2026-05-08 16:04:58,622 INFO calendar race candidate date=2026-05-09 items=1
+2026-05-08 16:04:58,622 INFO calendar race candidate date=2026-05-24 items=1
+2026-05-08 16:04:58,622 INFO calendar race candidate date=2027-02-06 items=1

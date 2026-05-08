@@ -5,22 +5,22 @@
   <div class="panel-head">
     <div>
       <p class="eyebrow">Planificacion</p>
-      <h2>Entrenamientos planificados</h2>
+      <h2>{{ 'Calendario combinado' if current_view == 'calendar' else 'Entrenamientos planificados' }}</h2>
     </div>
     <div class="toolbar">
       <span class="badge">{{ workouts|length }} sesiones</span>
       <div class="segmented">
         <a class="{{ 'active' if current_view == 'list' else '' }}" href="/planned-workouts?view=list">Lista</a>
-        <a class="{{ 'active' if current_view == 'calendar' else '' }}" href="/planned-workouts?view=calendar&month={{ calendar.selected }}">Calendario</a>
+        <a class="{{ 'active' if current_view == 'calendar' else '' }}" href="/calendar?month={{ calendar.selected }}">Calendario</a>
       </div>
     </div>
   </div>
 
   {% if current_view == 'calendar' %}
   <div class="calendar-head">
-    <a class="ghost-link" href="/planned-workouts?view=calendar&month={{ calendar.prev_month }}">Anterior</a>
+    <a class="ghost-link" href="/calendar?month={{ calendar.prev_month }}">Anterior</a>
     <h3>{{ calendar.selected_label }}</h3>
-    <a class="ghost-link" href="/planned-workouts?view=calendar&month={{ calendar.next_month }}">Siguiente</a>
+    <a class="ghost-link" href="/calendar?month={{ calendar.next_month }}">Siguiente</a>
   </div>
   <div class="calendar-grid">
     <div class="calendar-dow">Lun</div>
@@ -34,14 +34,18 @@
       {% for day in week %}
       <div class="calendar-cell {{ '' if day.in_month else 'muted-cell' }} {{ 'today' if day.is_today else '' }}">
         <div class="calendar-day">{{ day.day }}</div>
+        {% if day.event %}
         <div class="calendar-items">
-          {% for workout in day.workouts %}
-          <a class="calendar-item" href="/planned-workouts/{{ workout.slug }}">
-            <strong>{{ workout.name }}</strong>
-            <span>{{ workout.estimated_duration }}</span>
+          <a href="{{ day.detail_url }}" class="calendar-item {{ day.event.session_color_class }} {{ day.event.traffic_light_class }}">
+            <strong>{{ day.event.title }}</strong>
+            <span>{{ day.event.session_kind_label }}</span>
+            <span>{{ day.event.status_label }}</span>
+            {% if day.event.score %}
+            <span>Score {{ day.event.score }}/10</span>
+            {% endif %}
           </a>
-          {% endfor %}
         </div>
+        {% endif %}
       </div>
       {% endfor %}
     {% endfor %}
@@ -49,13 +53,14 @@
   {% else %}
   <div class="list">
     {% for workout in workouts %}
-    <div class="list-item static">
+    <div class="list-item static {{ workout.session_color_class }}">
       <div>
-        <strong><a href="/planned-workouts/{{ workout.slug }}">{{ workout.date }}</a></strong>
+        <strong><a href="/calendar/day/{{ workout.date }}">{{ workout.date }}</a></strong>
         <p><a href="/planned-workouts/{{ workout.slug }}">{{ workout.name }}</a></p>
         <p class="muted">{{ workout.description }}</p>
       </div>
       <div class="item-meta">
+        <span class="badge kind-badge">{{ workout.session_kind_label }}</span>
         {% if workout.garmin_workout_url %}
         <a class="link-pill" href="{{ workout.garmin_workout_url }}" target="_blank" rel="noreferrer">Garmin</a>
         {% endif %}

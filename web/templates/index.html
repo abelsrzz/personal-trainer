@@ -4,8 +4,8 @@
 <section class="hero">
   <div>
     <p class="eyebrow">Resumen operativo</p>
-    <h2>{{ dashboard.decision.status_label if dashboard.decision else "Sin datos todavia" }}</h2>
-    <p>{{ dashboard.decision.recommendation if dashboard.decision else "Aun no hay suficiente informacion para mostrar una recomendacion." }}</p>
+    <h2>{{ dashboard.decision.status_label if dashboard.decision else "Sin datos todavía" }}</h2>
+    <p>{{ dashboard.decision.recommendation if dashboard.decision else "Aún no hay suficiente información para mostrar una recomendación." }}</p>
   </div>
   <div class="hero-meta">
     <span>Analisis: {{ dashboard.as_of or "-" }}</span>
@@ -77,7 +77,7 @@
         </div>
       </div>
       {% else %}
-      <p class="muted">Todavia no hay revisiones disponibles.</p>
+      <p class="muted">Todavía no hay revisiones disponibles.</p>
       {% endfor %}
     </div>
   </article>

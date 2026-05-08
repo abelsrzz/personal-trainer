@@ -225,6 +225,7 @@ a {
 }
 
 .calendar-cell {
+  display: block;
   min-height: 160px;
   padding: 10px;
   border: 1px solid var(--line);
@@ -258,6 +259,7 @@ a {
   padding: 8px;
   border-radius: 10px;
   background: var(--panel);
+  border-left: 4px solid transparent;
 }
 
 .calendar-item span {
@@ -298,6 +300,43 @@ a {
 .list-item.static:hover {
   background: rgba(21, 29, 49, 0.9);
   color: inherit;
+}
+
+.session-easy {
+  border-left: 4px solid #69a8ff;
+}
+
+.session-recovery {
+  border-left: 4px solid #59d393;
+}
+
+.session-quality {
+  border-left: 4px solid #f6c177;
+}
+
+.session-long_run {
+  border-left: 4px solid #b18cff;
+}
+
+.session-strength {
+  border-left: 4px solid #8a9bb8;
+}
+
+.session-race {
+  border-left: 4px solid #ef6f6c;
+}
+
+.session-rest {
+  border-left: 4px solid #42506d;
+  opacity: 0.8;
+}
+
+.session-other {
+  border-left: 4px solid #5f6f91;
+}
+
+.kind-badge {
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .plain-list {

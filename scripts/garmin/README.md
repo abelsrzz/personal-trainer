@@ -5,10 +5,12 @@ Espacio reservado para el adaptador local de Garmin.
 ## Scripts disponibles
 
 - `sync_garmin.py`: importa actividades recientes y metricas diarias.
+- `athlete_sync.py`: aplica al repositorio local el snapshot de perfil Garmin del atleta.
 - `review_planned_session.py`: compara una sesion planificada con la actividad real de Garmin.
 - `coach_engine.py`: genera estado del atleta, decision de carga y gates del objetivo.
 - `coach_sync.py`: orquesta Garmin, revision y dashboard en un solo comando.
 - `training/planned/workouts/library_run_templates.yaml`: biblioteca base multidiestancia de sesiones.
+- `training/completed/imports/garmin/profile/athlete_profile_snapshot.json`: snapshot local de perfil Garmin, FC y gear.
 
 ## Preparacion
 
@@ -28,6 +30,8 @@ python scripts/garmin/sync_garmin.py schedule-workout-file training/planned/work
 python scripts/garmin/coach_sync.py --date YYYY-MM-DD
 python scripts/garmin/coach_sync.py --date YYYY-MM-DD --skip-garmin
 python scripts/garmin/coach_engine.py --as-of YYYY-MM-DD --days 28
+python scripts/garmin/sync_garmin.py import-athlete-profile
+python scripts/garmin/athlete_sync.py
 ```
 
 ## Salida

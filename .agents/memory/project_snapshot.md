@@ -10,6 +10,7 @@
 - Garmin V1 connector implemented
 - Coach engine added for dashboard, load decision and 35:00 gates
 - Coach sync added as the preferred one-command Garmin workflow
+- Garmin athlete profile sync added to update local athlete profile, zones, health and shoes from Garmin data
 - Telegram remote OpenCode bridge added for self-hosted access
 - First Garmin workout upload and scheduling already proven
 
@@ -29,6 +30,7 @@
 - `scripts/garmin/sync_garmin.py`
 - `scripts/garmin/coach_sync.py`
 - `scripts/garmin/coach_engine.py`
+- `scripts/garmin/athlete_sync.py`
 - `garmin/mappings.yaml`
 - `athlete/status_dashboard.md`
 - `planning/coach_decision.md`
@@ -36,6 +38,11 @@
 - `planning/goal_gates.yaml`
 - `planning/goal_gates.md`
 - `athlete/shin_tracker.yaml`
+- `planning/coaching_playbook.md`
+- `planning/session_selection_matrix.yaml`
+- `planning/workout_evaluation_rules.md`
+- `planning/context_automation_policy.md`
+- `athlete/response_profile.yaml`
 - `training/planned/workouts/library_run_templates.yaml`
 - `scripts/telegram/opencode_bot.py`
 - `scripts/telegram/opencode_bridge.py`
@@ -46,8 +53,14 @@
 
 - Run `python scripts/garmin/coach_sync.py --date YYYY-MM-DD` after Garmin-linked sessions when credentials/network use is acceptable.
 - Run `python scripts/garmin/coach_sync.py --date YYYY-MM-DD --skip-garmin` when using already imported local data.
+- When Garmin is contacted, athlete profile state should also be refreshed so planning can use updated resting HR, max HR, VO2max and gear.
 - Read `athlete/status_dashboard.md` for load, risk, 35:00 gates and rough performance estimate.
 - Read `planning/coach_decision.md` for the operative green/yellow/red decision.
+- Read `planning/coaching_playbook.md` as the default prescription policy.
+- Read `planning/session_selection_matrix.yaml` before selecting workout families.
+- Read `planning/workout_evaluation_rules.md` after completed-session reviews and before replanning.
+- Read `planning/context_automation_policy.md` to know which other files are mandatory for the current coaching task.
+- Read `athlete/response_profile.yaml` to bias decisions toward the athlete's current likely response pattern.
 - Treat `red` as reduce or replace quality, `yellow` as maintain without increasing load, and `green` as allow small progression if shin status is quiet.
 - Update `athlete/shin_tracker.yaml` whenever Abel reports periosteum pain during, after or the next morning.
 

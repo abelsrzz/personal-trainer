@@ -1,0 +1,228 @@
+session_selection_matrix:
+  version: 1
+  purpose: Map block, target distance and readiness context to recommended workout families.
+  defaults:
+    target_library: training/planned/workouts/library_run_templates.yaml
+    hard_constraints:
+      - no_aspirational_goal_pace_without_evidence
+      - max_two_true_quality_days_per_week
+      - do_not_increase_load_when_coach_decision_is_yellow
+      - replace_or_reduce_quality_when_coach_decision_is_red
+  states:
+    green:
+      allow_intensity: controlled_progression
+      allow_load_change: small_progression
+    yellow:
+      allow_intensity: maintain_or_reduce
+      allow_load_change: no_progression
+    red:
+      allow_intensity: recovery_only
+      allow_load_change: reduce
+  shin_bands:
+    green: "0-2/10 and not worse next morning"
+    yellow: "3/10 or mild next-morning reaction"
+    red: "4+/10, gait change or worsening trend"
+  rules:
+    - when:
+        coach_state: green
+        block: block_1
+      recommend:
+        primary:
+          - easy_recovery
+          - easy_z2
+          - easy_plus_strides
+          - aerobic_steady
+          - tempo_broken
+          - long_run
+        optional:
+          - short_hills_power
+          - technique_drills_strides
+      avoid:
+        - short_intervals_vo2
+        - medium_intervals_vo2
+        - ten_k_specific_continuous
+      quality_volume_cap: low_to_medium
+    - when:
+        coach_state: green
+        block: block_2
+      recommend:
+        primary:
+          - easy_z2
+          - aerobic_steady
+          - progression_finish_fast
+          - cruise_intervals
+          - long_run
+        optional:
+          - fartlek_structured
+          - easy_plus_strides
+          - hills_strength
+      avoid:
+        - ten_k_specific_continuous
+      quality_volume_cap: medium
+    - when:
+        coach_state: green
+        block: block_3
+      recommend:
+        primary:
+          - cruise_intervals
+          - tempo_broken
+          - tempo_continuous
+          - hills_strength
+          - progression_finish_fast
+          - long_run
+        optional:
+          - half_marathon_specific_blocks
+          - fartlek_structured
+      avoid:
+        - race_activation
+      quality_volume_cap: medium_to_medium_high
+    - when:
+        coach_state: green
+        block: block_4
+        target_distance: 10k
+      recommend:
+        primary:
+          - cruise_intervals
+          - ten_k_specific_reps
+          - tempo_continuous
+          - mixed_tempo_plus_fast
+          - ten_k_specific_sharpener
+        optional:
+          - short_intervals_vo2
+          - progression_finish_fast
+      avoid:
+        - marathon_specific_blocks
+      quality_volume_cap: medium_high
+    - when:
+        coach_state: green
+        block: block_5
+        target_distance: 10k
+      recommend:
+        primary:
+          - ten_k_specific_reps
+          - ten_k_specific_continuous
+          - ten_k_specific_sharpener
+          - race_activation
+        optional:
+          - tempo_broken
+          - short_intervals_economy
+      avoid:
+        - high_volume_marathon_work
+      quality_volume_cap: medium
+    - when:
+        coach_state: green
+        target_distance: 5k
+      recommend:
+        primary:
+          - short_intervals_economy
+          - short_intervals_vo2
+          - medium_intervals_vo2
+          - five_k_specific_reps
+        optional:
+          - fartlek_structured
+          - race_activation
+      avoid:
+        - marathon_specific_blocks
+      quality_volume_cap: medium_high
+    - when:
+        coach_state: green
+        target_distance: 21k
+      recommend:
+        primary:
+          - cruise_intervals
+          - tempo_broken
+          - tempo_continuous
+          - half_marathon_specific_blocks
+          - long_run_quality
+        optional:
+          - progression_finish_fast
+      avoid:
+        - excessive_short_rep_density
+      quality_volume_cap: medium_high
+    - when:
+        coach_state: green
+        target_distance: marathon
+      recommend:
+        primary:
+          - easy_z2
+          - aerobic_steady
+          - marathon_specific_blocks
+          - long_run
+          - long_run_quality
+        optional:
+          - progression_finish_fast
+          - polarized_aerobic_with_spikes
+        avoid:
+          - excessive_short_rep_density
+      quality_volume_cap: medium
+    - when:
+        coach_state: yellow
+      recommend:
+        primary:
+          - easy_recovery
+          - easy_z2
+          - easy_plus_strides
+          - tempo_broken
+          - long_run
+        optional:
+          - aerobic_steady
+      avoid:
+        - short_intervals_vo2
+        - medium_intervals_vo2
+        - ten_k_specific_continuous
+        - long_run_quality
+      quality_volume_cap: low_to_medium
+    - when:
+        coach_state: red
+      recommend:
+        primary:
+          - easy_recovery
+          - recovery_plus_mobility
+        optional:
+          - easy_z2
+      avoid:
+        - cruise_intervals
+        - tempo_continuous
+        - short_intervals_vo2
+        - medium_intervals_vo2
+        - ten_k_specific_reps
+        - ten_k_specific_continuous
+        - long_run_quality
+      quality_volume_cap: none
+    - when:
+        shin_band: yellow
+      override:
+        remove:
+          - short_hills_power
+          - hills_strength
+          - short_intervals_vo2
+        prefer:
+          - easy_z2
+          - easy_recovery
+          - tempo_broken
+    - when:
+        shin_band: red
+      override:
+        remove:
+          - short_hills_power
+          - hills_strength
+          - short_intervals_economy
+          - short_intervals_vo2
+          - medium_intervals_vo2
+          - ten_k_specific_reps
+          - ten_k_specific_continuous
+          - long_run_quality
+        prefer:
+          - easy_recovery
+          - recovery_plus_mobility
+  interpretation:
+    selection_order:
+      - coach_state
+      - shin_band
+      - active_block
+      - target_distance
+      - recent_completed_stimulus
+      - desired_fatigue_cost
+    anti_repetition_rules:
+      - avoid repeating the same high-cost family on consecutive quality days unless the week is explicitly a specific microcycle
+      - if a threshold family worked well, prefer a sibling progression before jumping to a new stimulus

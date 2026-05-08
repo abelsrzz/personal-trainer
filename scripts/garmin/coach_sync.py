@@ -14,6 +14,7 @@ WORKOUTS_ROOT = ROOT / "training" / "planned" / "workouts"
 SYNC_SCRIPT = ROOT / "scripts" / "garmin" / "sync_garmin.py"
 REVIEW_SCRIPT = ROOT / "scripts" / "garmin" / "review_planned_session.py"
 ENGINE_SCRIPT = ROOT / "scripts" / "garmin" / "coach_engine.py"
+ATHLETE_SYNC_SCRIPT = ROOT / "scripts" / "garmin" / "athlete_sync.py"
 
 
 def parse_args() -> argparse.Namespace:
@@ -25,6 +26,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--dashboard-days", type=int, default=28, help="Lookback window for coach dashboard")
     parser.add_argument("--skip-garmin", action="store_true", help="Do not contact Garmin; use local imported files only")
     parser.add_argument("--skip-daily", action="store_true", help="Skip Garmin daily recovery metrics import")
+    parser.add_argument("--skip-athlete-profile", action="store_true", help="Skip Garmin athlete profile and gear sync")
     parser.add_argument("--skip-review", action="store_true", help="Skip planned-session review")
     parser.add_argument("--force-review", action="store_true", help="Regenerate planned-session review if it exists")
     return parser.parse_args()
@@ -69,6 +71,17 @@ def main() -> None:
                 [sys.executable, str(SYNC_SCRIPT), "import-daily", "--days", str(args.daily_days)],
                 required=False,
             )
+        if not args.skip_athlete_profile:
+            if run_step(
+                "Import Garmin athlete profile",
+                [sys.executable, str(SYNC_SCRIPT), "import-athlete-profile"],
+                required=False,
+            ):
+                run_step(
+                    "Apply Garmin athlete profile to local athlete files",
+                    [sys.executable, str(ATHLETE_SYNC_SCRIPT)],
+                    required=False,
+                )
 
     if not args.skip_review:
         if planned_workout_exists(args.date):

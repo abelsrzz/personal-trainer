@@ -8,8 +8,10 @@ The operational week always runs from Monday to Sunday.
 2. if Garmin-linked, run `python scripts/garmin/coach_sync.py --date YYYY-MM-DD` unless the user asks not to contact Garmin
 3. if working offline, run `python scripts/garmin/coach_sync.py --date YYYY-MM-DD --skip-garmin`
 4. read `planning/coach_decision.md` and `athlete/status_dashboard.md`
-5. decide whether to keep or replanify the current week
-6. update `athlete/shin_tracker.yaml` if the athlete reports periosteum pain
+5. read `planning/context_automation_policy.md` to load the mandatory review and replanning context
+6. read `planning/workout_evaluation_rules.md` before deciding whether the completed session justifies progression, repetition, regression or replacement
+7. decide whether to keep or replanify the current week
+8. update `athlete/shin_tracker.yaml` if the athlete reports periosteum pain
 
 ## Sunday Cycle
 
@@ -17,10 +19,11 @@ The operational week always runs from Monday to Sunday.
 2. review the current week
 3. archive the outgoing week when needed
 4. read active block instructions
-5. read `planning/coach_decision.md`, `athlete/status_dashboard.md` and `planning/goal_gates.yaml`
-6. consider recent execution, fatigue, shin status and races
-7. generate the next `planning/weeks/semana_actual.md`
-8. generate `planning/weeks/generated/semana_actual.pdf` and send it by Telegram
+5. read `planning/context_automation_policy.md` and all files marked there as mandatory for weekly planning
+6. read `planning/coach_decision.md`, `athlete/status_dashboard.md`, `planning/goal_gates.yaml`, `planning/coaching_playbook.md`, `planning/session_selection_matrix.yaml` and `athlete/response_profile.yaml`
+7. consider recent execution, fatigue, shin status, shoes, zones, preferences, health and races through those policy files, not only ad hoc judgment
+8. generate the next `planning/weeks/semana_actual.md`
+9. generate `planning/weeks/generated/semana_actual.pdf` and send it by Telegram
 
 ## Replanning Triggers
 
@@ -37,3 +40,9 @@ The operational week always runs from Monday to Sunday.
 - `green`: keep the plan and allow only small progression if the shin is quiet.
 - `yellow`: keep structure but do not increase volume or intensity.
 - `red`: reduce load, replace quality with easy running or rest, and protect the shin.
+
+## Garmin Athlete State Sync
+
+- `python scripts/garmin/coach_sync.py --date YYYY-MM-DD` should also refresh Garmin athlete profile state unless explicitly skipped.
+- Garmin-synced resting HR, max HR, VO2max and gear should flow into local athlete files before planning whenever available.
+- Local athlete files remain the source of truth used by planning, but Garmin is the preferred upstream source for those fields.

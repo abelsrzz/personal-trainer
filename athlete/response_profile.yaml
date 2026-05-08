@@ -1,0 +1,78 @@
+response_profile:
+  version: 1
+  athlete_name: Abel
+  updated_at: 2026-05-08
+  summary:
+    primary_limiter: aerobic_durability
+    secondary_limiters:
+      - shin_tolerance
+      - recovery_repeatability
+    strengths:
+      - can produce relatively fast isolated kilometer reps versus current continuous race level
+      - responds to low-risk neuromuscular touches without needing large doses
+    current_constraints:
+      - easy running still needs heart-rate control
+      - recent weekly volume is below historical best and should be treated as rebuild status
+      - left shin tolerance must stay in green band before any real progression
+  workout_response:
+    likely_positive:
+      - family: cruise_intervals
+        reason: aligns with the need to raise sustainable speed without forcing all-out pace
+      - family: tempo_broken
+        reason: gives threshold stimulus with less cost than long continuous tempo
+      - family: aerobic_steady
+        reason: supports durability and pacing control during rebuild phases
+      - family: easy_plus_strides
+        reason: keeps economy alive with low metabolic cost when shin is quiet
+      - family: progression_finish_fast
+        reason: teaches controlled finishing strength without requiring full specific density
+    use_carefully:
+      - family: short_intervals_vo2
+        risk: can look attractive because of existing short-rep ability but may overshoot the real limiter
+      - family: medium_intervals_vo2
+        risk: high fatigue cost relative to current consistency level
+      - family: long_run_quality
+        risk: useful only after the weekly load is already being absorbed
+      - family: hills_strength
+        risk: mechanical load can become expensive if shin or calves are sensitive
+    likely_lower_priority:
+      - family: five_k_specific_reps
+        reason: supportive, but not the main need unless a 5k checkpoint or support block is intentional
+      - family: marathon_specific_blocks
+        reason: useful as a support tool, but not the main engine of the project
+  progression_preferences:
+    prefer:
+      - repeat a successful threshold family before increasing speed density
+      - increase total quality volume conservatively
+      - derive new sessions from proven families
+    avoid:
+      - two high-cost quality sessions in the same week without stable background volume
+      - using one strong workout as evidence for a new pace band
+      - fast workouts replacing aerobic work too early
+  monitoring_signals:
+    positive:
+      - easy pace improves at similar HR
+      - threshold work becomes more repeatable with lower strain
+      - shin remains 0-2 during, after and next morning
+      - long runs stop producing outsized fatigue
+    warning:
+      - easy HR drifts up at the same pace
+      - threshold sessions require racing effort to complete
+      - shin is worse next morning even if the run itself felt acceptable
+      - soreness or fatigue linger into the next key day
+  automation_rules:
+    default_quality_backbone:
+      - cruise_intervals
+      - tempo_broken
+      - tempo_continuous
+    default_support_backbone:
+      - easy_z2
+      - easy_plus_strides
+      - long_run
+      - aerobic_steady
+    escalation_gate:
+      require_all:
+        - coach_decision_green
+        - shin_green_band
+        - recent_quality_absorbed
+        - easy_hr_control_stable

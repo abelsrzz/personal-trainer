@@ -107,9 +107,26 @@ Evaluar el estado del atleta y los gates del objetivo `35:00`:
 python scripts/garmin/coach_engine.py --as-of YYYY-MM-DD --days 28
 ```
 
+Sincronizar tambien perfil del atleta, FC reposo, FC maxima, VO2max y material desde Garmin:
+
+```bash
+python scripts/garmin/sync_garmin.py import-athlete-profile
+python scripts/garmin/athlete_sync.py
+```
+
+`coach_sync.py` intenta hacerlo automaticamente salvo que se use `--skip-athlete-profile`.
+
 Plantillas reutilizables para convertir en sesiones fechadas:
 
 - `training/planned/workouts/library_run_templates.yaml`
+
+Contexto de coaching que el sistema debe usar por defecto:
+
+- `planning/context_automation_policy.md`
+- `planning/coaching_playbook.md`
+- `planning/session_selection_matrix.yaml`
+- `planning/workout_evaluation_rules.md`
+- `athlete/response_profile.yaml`
 
 ## Memoria Persistente
 
@@ -177,7 +194,7 @@ Comandos utiles desde Telegram:
 - `/model reset`: vuelve al modelo por defecto.
 - `/sync`: ejecuta `coach_sync.py` contactando Garmin.
 - `/sync_local`: ejecuta `coach_sync.py --skip-garmin`.
-- `/week`: muestra `planning/weeks/semana_actual.md`.
+- `/week`: muestra la semana activa; en la web redirige a `planned-workouts?view=week`.
 - `/pdf_week`: genera y envia el PDF semanal.
 - `/git`: muestra `git status --short`.
 - cualquier otro mensaje se envia a OpenCode.

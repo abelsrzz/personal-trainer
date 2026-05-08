@@ -94,8 +94,15 @@ The system must act as an intelligent coach, planner and reviewer.
 - Coach engine: `scripts/garmin/coach_engine.py`
 - Status dashboard: `athlete/status_dashboard.md`
 - Coach decision: `planning/coach_decision.md`
+- Garmin athlete snapshot: `training/completed/imports/garmin/profile/athlete_profile_snapshot.json`
 - 35:00 gates: `planning/goal_gates.yaml`
+- 35:00 gates explainer: `planning/goal_gates.md`
 - Shin tracker: `athlete/shin_tracker.yaml`
+- Coaching playbook: `planning/coaching_playbook.md`
+- Session selection matrix: `planning/session_selection_matrix.yaml`
+- Workout evaluation rules: `planning/workout_evaluation_rules.md`
+- Context automation policy: `planning/context_automation_policy.md`
+- Athlete response profile: `athlete/response_profile.yaml`
 - Workout library: `training/planned/workouts/library_run_templates.yaml`
 
 ## Garmin Integration
@@ -125,8 +132,12 @@ python scripts/garmin/coach_engine.py --as-of YYYY-MM-DD --days 28
 ## Coach Automation Rules
 
 - Prefer `coach_sync.py` after Garmin-linked workouts because it imports, reviews when possible and refreshes dashboard/decision files.
+- Prefer `coach_sync.py` after Garmin-linked work because it should also refresh athlete profile, resting HR, max HR, VO2max and gear when Garmin provides them.
 - Use `coach_sync.py --skip-garmin` when working only from already imported local data.
 - Read `athlete/status_dashboard.md` and `planning/coach_decision.md` before modifying the active week.
+- Read `planning/coaching_playbook.md`, `planning/session_selection_matrix.yaml`, `planning/workout_evaluation_rules.md` and `athlete/response_profile.yaml` as default operational context before planning, replanning or creating workouts.
+- Read `planning/context_automation_policy.md` to determine all mandatory supporting context files for the current task.
+- When Garmin athlete snapshot data exists, use it through the synced local athlete files as active planning context.
 - Treat `red` as reduce or replace quality, `yellow` as maintain without increasing load, and `green` as allow only small progression if the shin is quiet.
 - Keep `planning/goal_gates.yaml` as the source of truth for whether `35:00` can influence training paces.
 - Update `athlete/shin_tracker.yaml` when periosteum pain is reported during, after or the next morning.
@@ -164,8 +175,13 @@ Future sessions should start by reading:
 1. `AGENT.md`
 2. `.agents/README.md`
 3. `.agents/memory/project_snapshot.md`
-4. `athlete/status_dashboard.md` when it exists
-5. `planning/coach_decision.md` when it exists
+4. `planning/context_automation_policy.md`
+5. `planning/coaching_playbook.md`
+6. `planning/session_selection_matrix.yaml`
+7. `planning/workout_evaluation_rules.md`
+8. `athlete/response_profile.yaml`
+9. `athlete/status_dashboard.md` when it exists
+10. `planning/coach_decision.md` when it exists
 
 ## Repository Skills
 

@@ -54,6 +54,8 @@ def parse_args() -> argparse.Namespace:
     import_daily = subparsers.add_parser("import-daily", help="Import daily recovery and readiness metrics")
     import_daily.add_argument("--days", type=int, default=14, help="How many days back to import")
 
+    subparsers.add_parser("import-athlete-profile", help="Import Garmin athlete profile, heart-rate baselines and gear")
+
     schedule_workout = subparsers.add_parser("schedule-workout-file", help="Upload and schedule a planned workout from YAML")
     schedule_workout.add_argument("workout_file", type=Path, help="Path to workout YAML file")
 
@@ -401,9 +403,27 @@ def build_workout_payload(spec: dict[str, Any], include_targets: bool) -> Runnin
     }
     if sport == "running":
         return RunningWorkout(**common_kwargs)
-    if sport in {"fitness_equipment", "strength"}:
+    if sport in {"fitness_equipment", "strength", "mobility", "stretching", "other"}:
         return FitnessEquipmentWorkout(**common_kwargs)
     raise ValueError(f"Unsupported workout sport: {sport}")
+
+
+def build_other_workout_dict(spec: dict[str, Any], include_targets: bool) -> dict[str, Any]:
+    workout = spec["workout"]
+    payload = build_workout_payload({"workout": {**workout, "sport": "other"}}, include_targets).to_dict()
+    payload["sportType"] = {
+        "sportTypeId": 11,
+        "sportTypeKey": "other",
+        "displayOrder": 11,
+    }
+    for segment in payload.get("workoutSegments", []):
+        if isinstance(segment, dict):
+            segment["sportType"] = {
+                "sportTypeId": 11,
+                "sportTypeKey": "other",
+                "displayOrder": 11,
+            }
+    return payload
 
 
 def schedule_workout_file(client: Garmin, workout_file: Path) -> None:
@@ -421,14 +441,28 @@ def schedule_workout_file(client: Garmin, workout_file: Path) -> None:
     response: dict[str, Any] | None = None
     sport = workout.get("sport", "running")
     upload_mode = "structured_targets"
+    normalized_sport = str(sport).strip().lower()
+    prefers_other_fallback = normalized_sport in {"mobility", "stretching", "other"}
+
     try:
         payload = build_workout_payload(spec, include_targets=True)
         response = client.upload_workout(payload.to_dict())
     except Exception as exc:
-        upload_mode = "no_target_fallback"
-        print(f"Structured target upload failed, retrying without targets: {exc}")
-        payload = build_workout_payload(spec, include_targets=False)
-        response = client.upload_workout(payload.to_dict())
+        if prefers_other_fallback:
+            upload_mode = "other_workout_fallback"
+            print(f"Structured upload failed, retrying as Garmin other workout: {exc}")
+            try:
+                response = client.upload_workout(build_other_workout_dict(spec, include_targets=False))
+            except Exception as other_exc:
+                upload_mode = "fitness_equipment_fallback"
+                print(f"Garmin other workout failed, retrying as fitness equipment: {other_exc}")
+                payload = build_workout_payload({"workout": {**workout, "sport": "fitness_equipment"}}, include_targets=False)
+                response = client.upload_workout(payload.to_dict())
+        else:
+            upload_mode = "no_target_fallback"
+            print(f"Structured target upload failed, retrying without targets: {exc}")
+            payload = build_workout_payload(spec, include_targets=False)
+            response = client.upload_workout(payload.to_dict())
 
     workout_id = response.get("workoutId") or response.get("id")
     if not workout_id:
@@ -507,6 +541,56 @@ def import_daily_metrics(client: Garmin, days: int) -> None:
     print(json.dumps(manifest, indent=2, ensure_ascii=True))
 
 
+def import_athlete_profile(client: Garmin) -> None:
+    profile: dict[str, Any] = {}
+
+    for method_name in ["get_user_summary", "get_full_name", "get_user_profile", "get_settings", "get_gear", "get_personal_record"]:
+        method = getattr(client, method_name, None)
+        if method is None:
+            continue
+        try:
+            profile[method_name] = method()
+        except Exception as exc:
+            profile[method_name] = {"error": str(exc)}
+
+    flattened = {
+        "synced_at": datetime.utcnow().isoformat() + "Z",
+        "raw": profile,
+    }
+
+    user_profile = profile.get("get_user_profile") if isinstance(profile.get("get_user_profile"), dict) else {}
+    user_settings = profile.get("get_settings") if isinstance(profile.get("get_settings"), dict) else {}
+    gear = profile.get("get_gear") if isinstance(profile.get("get_gear"), list) else []
+    full_name = profile.get("get_full_name")
+    if isinstance(full_name, str):
+        flattened["full_name"] = full_name
+
+    flattened["display_name"] = user_profile.get("displayName") or user_profile.get("fullName")
+    flattened["gender"] = user_profile.get("gender") or user_settings.get("gender")
+    flattened["birth_date"] = user_profile.get("birthDate") or user_settings.get("birthDate")
+    flattened["weight_kg"] = user_profile.get("weight") or user_settings.get("weight")
+    flattened["height_cm"] = user_profile.get("height") or user_settings.get("height")
+    flattened["resting_heart_rate"] = user_profile.get("restingHeartRate") or user_settings.get("restingHR")
+    flattened["max_heart_rate"] = user_profile.get("maxHeartRate") or user_settings.get("maxHR")
+    flattened["vo2max"] = user_profile.get("vo2MaxRunning") or user_profile.get("vo2Max")
+    flattened["gear"] = []
+
+    for item in gear:
+        if not isinstance(item, dict):
+            continue
+        flattened["gear"].append(
+            {
+                "name": item.get("name"),
+                "display_name": item.get("displayName") or item.get("customMakeModel") or item.get("name"),
+                "distance_km": item.get("totalDistance") or item.get("distance"),
+            }
+        )
+
+    target_dir = DEFAULT_IMPORT_ROOT / "profile"
+    save_json(target_dir / "athlete_profile_snapshot.json", flattened)
+    print(json.dumps({"written": str((target_dir / 'athlete_profile_snapshot.json').relative_to(ROOT))}, indent=2, ensure_ascii=True))
+
+
 def main() -> None:
     args = parse_args()
     credentials = load_credentials(args.credentials)
@@ -518,6 +602,10 @@ def main() -> None:
 
     if args.command == "import-daily":
         import_daily_metrics(client, args.days)
+        return
+
+    if args.command == "import-athlete-profile":
+        import_athlete_profile(client)
         return
 
     if args.command == "schedule-workout-file":

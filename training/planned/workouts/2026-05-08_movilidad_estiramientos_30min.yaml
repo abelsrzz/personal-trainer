@@ -1,0 +1,27 @@
+workout:
+  name: Movilidad y estiramientos 30 min
+  schedule_date: 2026-05-08
+  sport: mobility
+  description: Sesion suave de movilidad y estiramientos para descargar sin impacto. Priorizar tobillo, soleo, gemelo, tibial anterior, cadera e isquios. Mantener dolor tibial en 0-2/10 y parar si empeora.
+  estimated_duration_s: 1800
+  steps:
+    - order: 1
+      step_type: warmup
+      description: Respiracion, movilidad suave y circulos de tobillo
+      duration_s: 180
+    - order: 2
+      step_type: interval
+      description: Movilidad activa de tobillo, cadera y sentadilla asistida
+      duration_s: 600
+    - order: 3
+      step_type: interval
+      description: Activacion de gemelo, soleo y tibial anterior con control
+      duration_s: 420
+    - order: 4
+      step_type: interval
+      description: Movilidad activa de isquios y gluteo, sin rebotes
+      duration_s: 360
+    - order: 5
+      step_type: cooldown
+      description: Estiramientos finales y descarga respiratoria
+      duration_s: 240

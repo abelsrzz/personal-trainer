@@ -149,13 +149,35 @@ def garmin_activity_url(activity_id: int | str | None) -> str | None:
     return f"https://connect.garmin.com/modern/activity/{activity_id}"
 
 
-def garmin_workout_url(workout_id: int | str | None) -> str | None:
+def garmin_workout_type(sport: str | None) -> str:
+    normalized = str(sport or "running").strip().lower()
+    return {
+        "running": "running",
+        "strength": "other",
+        "fitness_equipment": "other",
+        "mobility": "other",
+        "stretching": "other",
+        "other": "other",
+    }.get(normalized, "other")
+
+
+def garmin_workout_url(workout_id: int | str | None, sport: str | None = None) -> str | None:
     if not workout_id:
         return None
     workout_id = str(workout_id).strip()
     if not workout_id.isdigit():
         return None
-    return f"https://connect.garmin.com/modern/workout/{workout_id}"
+    workout_type = garmin_workout_type(sport)
+    return f"https://connect.garmin.com/app/workout/{workout_id}?workoutType={workout_type}"
+
+
+def garmin_scheduled_workout_url(workout_schedule_id: int | str | None) -> str | None:
+    if not workout_schedule_id:
+        return None
+    workout_schedule_id = str(workout_schedule_id).strip()
+    if not workout_schedule_id.isdigit():
+        return None
+    return f"https://connect.garmin.com/modern/calendar/{workout_schedule_id}"
 
 
 def decision_status_label(value: str | None) -> str:
@@ -170,7 +192,7 @@ def decision_action_label(value: str | None) -> str:
     return {
         "maintain_or_progress_carefully": "Mantener la línea actual con una progresión pequeña y controlada",
         "maintain_with_caution": "Mantener la estructura sin subir carga",
-        "reduce_or_replace_quality": "Reducir exigencia y priorizar recuperacion",
+        "reduce_or_replace_quality": "Reducir exigencia y priorizar recuperación",
     }.get(str(value or "").lower(), "Sin acción definida")
 
 
@@ -178,9 +200,9 @@ def goal_status_label(value: str | None) -> str:
     return {
         "unsupported_now": "Aún es pronto para orientar el entrenamiento a ese objetivo",
         "development_needed": "La base mejora, pero todavía falta desarrollo",
-        "aggressive_alive": "El objetivo sigue vivo si la progresion se consolida",
+        "aggressive_alive": "El objetivo sigue vivo si la progresión se consolida",
         "35_ready": "El objetivo ya puede influir en la estrategia",
-    }.get(str(value or "").lower(), "Sin evaluacion disponible")
+    }.get(str(value or "").lower(), "Sin evaluación disponible")
 
 
 def traffic_light_label(value: str | None) -> str:
@@ -213,23 +235,61 @@ def normalize_text(*parts: Any) -> str:
     return " ".join(str(part or "") for part in parts).strip().lower()
 
 
-def classify_session_kind(text: str, distance_km: float | None = None) -> str:
-    race_markers = {"competicion", "race day", "tune-up", "pre-carrera", "shakeout pre-carrera"}
-    if any(keyword in text for keyword in {"descanso", "rest"}):
+def flatten_workout_steps(steps: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    flat_steps: list[dict[str, Any]] = []
+    for step in steps:
+        if not isinstance(step, dict):
+            continue
+        flat_steps.append(step)
+        nested_steps = step.get("steps") or []
+        if isinstance(nested_steps, list):
+            flat_steps.extend(flatten_workout_steps(nested_steps))
+    return flat_steps
+
+
+def classify_session_kind(name_text: str, description_text: str, step_text: str, distance_km: float | None = None, steps: list[dict[str, Any]] | None = None) -> str:
+    race_markers = {"competición", "competicion", "race day", "tune-up", "pre-carrera", "shakeout pre-carrera"}
+    easy_markers = {"rodaje", "fácil", "facil", "suave", "easy", "continuidad", "z2", "cómodo", "comodo"}
+    recovery_markers = {"recuperación", "recuperacion", "recovery", "reintroducción", "reintroduccion"}
+    quality_name_markers = {"activación", "activacion", "ritmo carrera", "series", "umbral", "tempo", "específica", "especifica", "cuestas"}
+    quality_step_markers = {"ritmo objetivo", "pace_range", "tempo", "series", "cuestas", "controlados"}
+
+    full_text = normalize_text(name_text, description_text, step_text)
+    name_text = normalize_text(name_text)
+    description_text = normalize_text(description_text)
+    flat_steps = flatten_workout_steps(steps or [])
+
+    if any(keyword in full_text for keyword in {"descanso", "rest"}):
         return "rest"
-    if any(keyword in text for keyword in {"recuperacion", "recovery", "reintroduccion"}):
-        return "recovery"
-    if any(keyword in text for keyword in {"fuerza", "strength", "gymnasio", "gimnasio"}):
+    if any(keyword in full_text for keyword in race_markers):
+        return "race"
+    if any(keyword in full_text for keyword in {"fuerza", "strength", "gimnasio", "gymnasio"}):
         return "strength"
-    if any(keyword in text for keyword in {"activacion", "rectas", "ritmo", "series", "interval", "tempo", "umbral", "especifica", "cuestas"}):
-        return "quality"
-    if any(keyword in text for keyword in {"tirada", "long run", "larga"}):
+    if any(keyword in name_text or keyword in description_text for keyword in recovery_markers):
+        return "recovery"
+    if any(keyword in full_text for keyword in {"tirada larga", "long run", "tirada"}):
         return "long_run"
     if distance_km and distance_km >= 14:
         return "long_run"
-    if any(keyword in text for keyword in race_markers):
-        return "race"
-    if any(keyword in text for keyword in {"rodaje", "facil", "suave", "easy"}):
+
+    has_quality_name = any(keyword in name_text for keyword in quality_name_markers)
+    has_quality_steps = any(keyword in step_text for keyword in quality_step_markers)
+    repeat_groups = sum(1 for step in flat_steps if step.get("type") == "repeat_group" or step.get("type") == "RepeatGroupDTO")
+    interval_blocks = sum(1 for step in flat_steps if str(step.get("step_type") or step.get("stepType", {}).get("stepTypeKey") or "").lower() == "interval")
+    recovery_blocks = sum(1 for step in flat_steps if str(step.get("step_type") or step.get("stepType", {}).get("stepTypeKey") or "").lower() == "recovery")
+    easy_base = any(keyword in name_text for keyword in easy_markers) or any(keyword in description_text for keyword in easy_markers)
+    has_only_light_strides = "recta" in full_text and easy_base and not has_quality_name and not has_quality_steps
+
+    if has_only_light_strides:
+        return "recovery" if any(keyword in full_text for keyword in recovery_markers) else "easy"
+
+    if has_quality_name:
+        return "quality"
+    if has_quality_steps and (repeat_groups > 0 or interval_blocks >= 2):
+        return "quality"
+    if interval_blocks > 1 and recovery_blocks > 0 and not easy_base:
+        return "quality"
+    if easy_base:
         return "easy"
     return "other"
 
@@ -237,7 +297,7 @@ def classify_session_kind(text: str, distance_km: float | None = None) -> str:
 def session_kind_label(value: str) -> str:
     return {
         "easy": "Rodaje suave",
-        "recovery": "Recuperacion",
+        "recovery": "Recuperación",
         "quality": "Calidad",
         "long_run": "Tirada larga",
         "strength": "Fuerza",
@@ -256,22 +316,32 @@ def classify_planned_workout(payload: dict[str, Any]) -> tuple[str, str, str]:
     distance_m = payload.get("distance_m")
     if not distance_m:
         distance_m = sum(float(step.get("distance_m") or 0.0) for step in steps if isinstance(step, dict))
-    text = normalize_text(payload.get("name"), payload.get("description"), json.dumps(steps, ensure_ascii=True))
-    kind = classify_session_kind(text, float(distance_m) / 1000.0 if distance_m else None)
+    name_text = str(payload.get("name") or "")
+    description_text = str(payload.get("description") or "")
+    step_text = json.dumps(steps, ensure_ascii=False)
+    kind = classify_session_kind(name_text, description_text, step_text, float(distance_m) / 1000.0 if distance_m else None, steps)
     return kind, session_kind_label(kind), session_color_class(kind)
 
 
 def classify_completed_review(payload: dict[str, Any]) -> tuple[str, str, str]:
     planned = payload.get("planned", {})
     summary = payload.get("summary", {})
-    text = normalize_text(
-        planned.get("goal_category"),
-        planned.get("name"),
-        planned.get("description"),
-        summary.get("activity_name"),
-    )
+    goal_category = normalize_text(planned.get("goal_category"))
     distance_km = round(float(summary.get("distance_m") or 0.0) / 1000.0, 2) if summary.get("distance_m") else None
-    kind = classify_session_kind(text, distance_km)
+    if any(keyword in goal_category for keyword in {"recovery", "reintroduction"}):
+        kind = "recovery"
+    elif any(keyword in goal_category for keyword in {"easy", "steady_easy", "easy_aerobic"}):
+        kind = "easy"
+    elif any(keyword in goal_category for keyword in {"tempo", "threshold", "specific", "quality"}):
+        kind = "quality"
+    else:
+        kind = classify_session_kind(
+            str(planned.get("name") or summary.get("activity_name") or ""),
+            str(planned.get("description") or ""),
+            json.dumps(payload.get("splits") or [], ensure_ascii=False),
+            distance_km,
+            [],
+        )
     return kind, session_kind_label(kind), session_color_class(kind)
 
 
@@ -307,11 +377,19 @@ def event_status_label(value: str) -> str:
     return {
         "planned_only": "Planificado",
         "completed_unplanned": "Hecho sin plan enlazado",
-        "matched_completed": "Plan y ejecucion",
+        "matched_completed": "Plan y ejecución",
         "reviewed": "Revisado",
         "race_day": "Carrera",
         "rest_day": "Descanso",
     }.get(value, "Sin estado")
+
+
+def event_matches_filters(event: dict[str, Any], kind: str, status: str) -> bool:
+    if kind != "all" and event.get("kind") != kind:
+        return False
+    if status != "all" and event.get("status") != status:
+        return False
+    return True
 
 
 def traffic_light_class(value: str | None) -> str:
@@ -344,6 +422,7 @@ def template_context(request: Request, **values: Any) -> dict[str, Any]:
         "portal_configured": config["configured"],
         "authenticated": authenticated(request),
         "today": date.today().isoformat(),
+        "current_path": request.url.path,
     }
     context.update(values)
     return context
@@ -408,6 +487,7 @@ def planned_workouts() -> list[dict[str, Any]]:
         uploaded_response = upload.get("uploaded_response", {})
         scheduled_response = upload.get("scheduled_response", {})
         workout_id = uploaded_response.get("workoutId") or scheduled_response.get("workout", {}).get("workoutId")
+        scheduled_id = scheduled_response.get("workoutScheduleId")
         kind, kind_label, color_class = classify_planned_workout(payload)
         workouts.append(
             {
@@ -419,8 +499,8 @@ def planned_workouts() -> list[dict[str, Any]]:
                 "estimated_duration": format_duration(payload.get("estimated_duration_s")),
                 "step_count": len(payload.get("steps") or []),
                 "garmin_workout_id": workout_id,
-                "garmin_workout_url": garmin_workout_url(workout_id),
-                "garmin_scheduled_id": scheduled_response.get("workoutScheduleId"),
+                "garmin_workout_url": garmin_scheduled_workout_url(scheduled_id) or garmin_workout_url(workout_id, payload.get("sport")),
+                "garmin_scheduled_id": scheduled_id,
                 "session_kind": kind,
                 "session_kind_label": kind_label,
                 "session_color_class": color_class,
@@ -460,7 +540,7 @@ def completed_reviews() -> list[dict[str, Any]]:
                 "garmin_activity_id": summary.get("activity_id") or summary.get("activityId"),
                 "garmin_activity_url": garmin_activity_url(summary.get("activity_id") or summary.get("activityId")),
                 "garmin_workout_id": summary.get("workout_id") or summary.get("workoutId"),
-                "garmin_workout_url": garmin_workout_url(summary.get("workout_id") or summary.get("workoutId")),
+                "garmin_workout_url": garmin_workout_url(summary.get("workout_id") or summary.get("workoutId"), planned.get("sport")),
                 "activity_name": summary.get("activity_name") or planned.get("name") or path.stem,
                 "session_kind": kind,
                 "session_kind_label": kind_label,
@@ -543,6 +623,11 @@ def calendar_day_data(day: str) -> dict[str, Any]:
             "item_count": summary_items,
             "has_content": bool(summary_items),
         },
+        "links": {
+            "planned_count": len(planned_items),
+            "completed_count": len(completed_items),
+            "race_count": len(race_items),
+        },
     }
 
 
@@ -590,12 +675,13 @@ def calendar_events() -> list[dict[str, Any]]:
                 "detail_url": f"/calendar/day/{day}",
                 "session_kind_label": session_kind_label(primary_kind),
                 "session_color_class": session_color_class(primary_kind),
+                "badges": [badge for badge in ["Plan" if planned else None, "Hecho" if completed else None, "Revisión" if review else None] if badge],
             }
         )
     return events
 
 
-def calendar_month_data_combined(month: str | None) -> dict[str, Any]:
+def calendar_month_data_combined(month: str | None, kind: str = "all", status: str = "all") -> dict[str, Any]:
     try:
         workout_events = calendar_events()
         races = races_by_day()
@@ -610,6 +696,7 @@ def calendar_month_data_combined(month: str | None) -> dict[str, Any]:
                 continue
             if race_date in event_by_day:
                 event_by_day[race_date]["race"] = race_items[0]
+                event_by_day[race_date].setdefault("badges", []).append("Carrera")
                 if not event_by_day[race_date].get("review"):
                     event_by_day[race_date]["status"] = "race_day"
                     event_by_day[race_date]["status_label"] = "Carrera"
@@ -633,7 +720,9 @@ def calendar_month_data_combined(month: str | None) -> dict[str, Any]:
                 "detail_url": f"/calendar/day/{race_date}",
                 "session_kind_label": session_kind_label("race"),
                 "session_color_class": session_color_class("race"),
+                "badges": ["Carrera"],
             }
+        filtered_event_by_day = {day: event for day, event in event_by_day.items() if event_matches_filters(event, kind, status)}
         available_months = sorted({day[:7] for day in event_by_day if parse_iso_date(day)})
         selected = month if month in available_months else None
         if not selected:
@@ -653,7 +742,7 @@ def calendar_month_data_combined(month: str | None) -> dict[str, Any]:
                         "day": day.day,
                         "in_month": day.month == month_number,
                         "is_today": day == date.today(),
-                        "event": event_by_day.get(iso_day),
+                        "event": filtered_event_by_day.get(iso_day),
                         "detail_url": f"/calendar/day/{iso_day}",
                     }
                 )
@@ -666,6 +755,8 @@ def calendar_month_data_combined(month: str | None) -> dict[str, Any]:
             "weeks": weeks,
             "prev_month": add_month(selected, -1),
             "next_month": add_month(selected, 1),
+            "selected_kind": kind,
+            "selected_status": status,
         }
     except Exception:
         logger.exception("calendar_month_data_combined failed month=%s", month)
@@ -680,12 +771,14 @@ def system_page_data() -> dict[str, Any]:
     )
     review_count = len(list(COMPLETED_REVIEW_DIR.glob("*.analysis.json")))
     planned_count = len([path for path in PLANNED_WORKOUTS_DIR.glob("*.yaml") if path.name not in {"library_run_templates.yaml", "workout_template.yaml"}])
+    race_count = len(list(RACES_DIR.glob("**/*.yaml")))
     return {
         "coach_generated_at": format_datetime(load_json(coach_path).get("generated_at")) if coach_path.exists() else "-",
         "activity_count": activity_count,
         "daily_count": daily_count,
         "review_count": review_count,
         "planned_count": planned_count,
+        "race_count": race_count,
         "week_pdf_exists": (ROOT / "planning" / "weeks" / "generated" / "semana_actual.pdf").exists(),
     }
 
@@ -801,7 +894,7 @@ async def week(request: Request) -> HTMLResponse:
     redirect = auth_guard(request)
     if redirect:
         return redirect
-    return templates.TemplateResponse(request, "week.html", template_context(request, week=week_page_data()))
+    return RedirectResponse(url="/planned-workouts?view=week", status_code=303)
 
 
 @app.get("/dashboard", response_class=HTMLResponse)
@@ -817,31 +910,43 @@ async def decision(request: Request) -> HTMLResponse:
     redirect = auth_guard(request)
     if redirect:
         return redirect
-    dashboard = dashboard_payload()
-    return templates.TemplateResponse(request, "decision.html", template_context(request, dashboard=dashboard, decision=dashboard.get("decision", {})))
+    return RedirectResponse(url="/dashboard", status_code=303)
 
 
 @app.get("/planned-workouts", response_class=HTMLResponse)
-async def planned_workouts_page(request: Request, view: str = "list", month: str | None = None) -> HTMLResponse:
+async def planned_workouts_page(request: Request, view: str = "list", month: str | None = None, kind: str = "all", status: str = "all") -> HTMLResponse:
     redirect = auth_guard(request)
     if redirect:
         return redirect
     items = planned_workouts()
-    current_view = view if view in {"list", "calendar"} else "list"
-    calendar_data = calendar_month_data_combined(month) if current_view == "calendar" else {"selected": month or "", "selected_label": "", "weeks": [], "prev_month": "", "next_month": ""}
+    if kind != "all":
+        items = [item for item in items if item.get("session_kind") == kind]
+    current_view = view if view in {"week", "list", "calendar"} else "week"
+    calendar_data = (
+        calendar_month_data_combined(month, kind=kind, status=status)
+        if current_view == "calendar"
+        else {"selected": month or "", "selected_label": "", "weeks": [], "prev_month": "", "next_month": "", "selected_kind": kind, "selected_status": status}
+    )
     return templates.TemplateResponse(
         request,
         "planned_workouts.html",
-        template_context(request, workouts=items, current_view=current_view, calendar=calendar_data),
+        template_context(request, workouts=items, current_view=current_view, calendar=calendar_data, selected_kind=kind, selected_status=status, week=week_page_data()),
     )
 
 
 @app.get("/calendar", response_class=HTMLResponse)
-async def calendar_page(request: Request, month: str | None = None) -> HTMLResponse:
+async def calendar_page(request: Request, month: str | None = None, kind: str = "all", status: str = "all") -> HTMLResponse:
     redirect = auth_guard(request)
     if redirect:
         return redirect
-    return templates.TemplateResponse(request, "planned_workouts.html", template_context(request, workouts=planned_workouts(), current_view="calendar", calendar=calendar_month_data_combined(month)))
+    workouts = planned_workouts()
+    if kind != "all":
+        workouts = [item for item in workouts if item.get("session_kind") == kind]
+    return templates.TemplateResponse(
+        request,
+        "planned_workouts.html",
+        template_context(request, workouts=workouts, current_view="calendar", calendar=calendar_month_data_combined(month, kind=kind, status=status), selected_kind=kind, selected_status=status),
+    )
 
 
 @app.get("/calendar/day/{day}", response_class=HTMLResponse)

@@ -11,6 +11,8 @@ Generate or revise `planning/weeks/semana_actual.md` from the active block and t
 - choose session types, volume and shoe guidance
 - incorporate races `A/B/C/D` if present
 - use `planning/coach_decision.md` and `athlete/status_dashboard.md` before increasing load
+- use `planning/coaching_playbook.md`, `planning/session_selection_matrix.yaml` and `athlete/response_profile.yaml` as default selection policy
+- use `planning/context_automation_policy.md` to determine which additional context files are mandatory for the planning task
 - use `training/planned/workouts/library_run_templates.yaml` as a multi-distance pattern library when creating workouts
 - choose the desired stimulus first, then pick the lightest fitting template family and derivative
 - prefer progression through related variants already present in the library instead of inventing ad hoc sessions
@@ -36,7 +38,15 @@ Generate or revise `planning/weeks/semana_actual.md` from the active block and t
 2. read `planning/coach_decision.md`
 3. read `athlete/status_dashboard.md`
 4. read `athlete/shin_tracker.yaml`
-5. read the active block and current week
+5. read `planning/coaching_playbook.md`
+6. read `planning/session_selection_matrix.yaml`
+7. read `athlete/response_profile.yaml`
+8. read `planning/context_automation_policy.md`
+9. read `athlete/profile.yaml`, `athlete/preferences.yaml`, `athlete/zones.yaml`, `athlete/shoes.yaml` and `athlete/health.yaml`
+10. read `training/completed/imports/garmin/profile/athlete_profile_snapshot.json` when it exists
+11. read `planning/goal_gates.yaml` and `planning/goal_gates.md`
+12. read all relevant race files in `races/`
+13. read the active block and current week
 
 ## Workout Library Use
 
@@ -44,6 +54,14 @@ Generate or revise `planning/weeks/semana_actual.md` from the active block and t
 - use the distance family guidance inside the library so 5k, 10k, 21k and marathon weeks are not planned with the same emphasis
 - use `primary_stimulus`, `secondary_stimuli`, `target_distances`, `fatigue_cost`, `progression_from` and `progression_to` to choose the session family
 - use `variants` to derive the concrete workout that best matches the block, the coach color and the latest completed sessions
+- use `planning/session_selection_matrix.yaml` to filter allowed, preferred and forbidden workout families before choosing the final session
+- use `athlete/response_profile.yaml` to bias decisions toward session families with better expected response and lower current risk
+- use `athlete/preferences.yaml` for output style and execution realism
+- use `athlete/zones.yaml` as the default target source for HR and pace prescriptions
+- use `athlete/shoes.yaml` to assign shoe guidance deliberately instead of generically
+- use `athlete/health.yaml` and `athlete/shin_tracker.yaml` to block or soften mechanically expensive choices
+- treat the Garmin athlete profile snapshot as the freshest external source for resting HR, max HR, VO2max and gear, with local athlete files as the planning source of truth after sync
+- use race files and goal gates as active inputs whenever race proximity or pace ambition could distort the plan
 - when in doubt, choose the lower-cost variant that still matches the intended stimulus
 - maintain variety across weeks, but only after continuity, shin tolerance and aerobic control are protected
 

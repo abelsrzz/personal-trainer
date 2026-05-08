@@ -305,3 +305,7 @@ TypeError: 'datetime.date' object is not subscriptable
 2026-05-08 21:34:54,646 INFO calendar race candidate date=2026-05-24 items=1
 2026-05-08 21:34:54,646 INFO calendar race candidate date=2026-06-28 items=1
 2026-05-08 21:34:54,646 INFO calendar race candidate date=2027-02-06 items=1
+2026-05-08 21:38:19,500 INFO calendar race candidate date=2026-05-09 items=1
+2026-05-08 21:38:19,500 INFO calendar race candidate date=2026-05-24 items=1
+2026-05-08 21:38:19,501 INFO calendar race candidate date=2026-06-28 items=1
+2026-05-08 21:38:19,501 INFO calendar race candidate date=2027-02-06 items=1

@@ -5,22 +5,111 @@
   <div class="panel-head">
     <div>
       <p class="eyebrow">Planificacion</p>
-      <h2>{{ 'Calendario combinado' if current_view == 'calendar' else 'Entrenamientos planificados' }}</h2>
+      <h2>{% if current_view == 'calendar' %}Calendario combinado{% elif current_view == 'week' %}Entrenamientos planificados{% else %}Entrenamientos planificados{% endif %}</h2>
     </div>
     <div class="toolbar">
       <span class="badge">{{ workouts|length }} sesiones</span>
       <div class="segmented">
-        <a class="{{ 'active' if current_view == 'list' else '' }}" href="/planned-workouts?view=list">Lista</a>
-        <a class="{{ 'active' if current_view == 'calendar' else '' }}" href="/calendar?month={{ calendar.selected }}">Calendario</a>
+        <a class="{{ 'active' if current_view == 'week' else '' }}" href="/planned-workouts?view=week&kind={{ selected_kind }}&status={{ selected_status }}">Semana</a>
+        <a class="{{ 'active' if current_view == 'list' else '' }}" href="/planned-workouts?view=list&kind={{ selected_kind }}&status={{ selected_status }}">Lista</a>
+        <a class="{{ 'active' if current_view == 'calendar' else '' }}" href="/calendar?month={{ calendar.selected }}&kind={{ selected_kind }}&status={{ selected_status }}">Calendario</a>
       </div>
     </div>
   </div>
 
-  {% if current_view == 'calendar' %}
+  <div class="toolbar filters-bar">
+    <div class="segmented">
+      <a class="{{ 'active' if selected_kind == 'all' else '' }}" href="{{ '/calendar' if current_view == 'calendar' else '/planned-workouts?view=' ~ current_view }}{% if current_view == 'calendar' %}?month={{ calendar.selected }}&kind=all&status={{ selected_status }}{% else %}&kind=all&status={{ selected_status }}{% endif %}">Todo</a>
+      <a class="{{ 'active' if selected_kind == 'easy' else '' }}" href="{{ '/calendar' if current_view == 'calendar' else '/planned-workouts?view=' ~ current_view }}{% if current_view == 'calendar' %}?month={{ calendar.selected }}&kind=easy&status={{ selected_status }}{% else %}&kind=easy&status={{ selected_status }}{% endif %}">Rodaje</a>
+      <a class="{{ 'active' if selected_kind == 'recovery' else '' }}" href="{{ '/calendar' if current_view == 'calendar' else '/planned-workouts?view=' ~ current_view }}{% if current_view == 'calendar' %}?month={{ calendar.selected }}&kind=recovery&status={{ selected_status }}{% else %}&kind=recovery&status={{ selected_status }}{% endif %}">Recuperación</a>
+      <a class="{{ 'active' if selected_kind == 'quality' else '' }}" href="{{ '/calendar' if current_view == 'calendar' else '/planned-workouts?view=' ~ current_view }}{% if current_view == 'calendar' %}?month={{ calendar.selected }}&kind=quality&status={{ selected_status }}{% else %}&kind=quality&status={{ selected_status }}{% endif %}">Calidad</a>
+      <a class="{{ 'active' if selected_kind == 'race' else '' }}" href="{{ '/calendar' if current_view == 'calendar' else '/planned-workouts?view=' ~ current_view }}{% if current_view == 'calendar' %}?month={{ calendar.selected }}&kind=race&status={{ selected_status }}{% else %}&kind=race&status={{ selected_status }}{% endif %}">Carrera</a>
+    </div>
+    {% if current_view == 'calendar' %}
+    <div class="segmented">
+      <a class="{{ 'active' if selected_status == 'all' else '' }}" href="/calendar?month={{ calendar.selected }}&kind={{ selected_kind }}&status=all">Todos</a>
+      <a class="{{ 'active' if selected_status == 'planned_only' else '' }}" href="/calendar?month={{ calendar.selected }}&kind={{ selected_kind }}&status=planned_only">Plan</a>
+      <a class="{{ 'active' if selected_status == 'reviewed' else '' }}" href="/calendar?month={{ calendar.selected }}&kind={{ selected_kind }}&status=reviewed">Revisión</a>
+      <a class="{{ 'active' if selected_status == 'race_day' else '' }}" href="/calendar?month={{ calendar.selected }}&kind={{ selected_kind }}&status=race_day">Carrera</a>
+    </div>
+    {% endif %}
+  </div>
+
+  {% if current_view == 'week' %}
+  <div class="planned-week-shell">
+    <div class="planned-week-toolbar">
+      <div class="planned-week-summary">
+        <span class="badge">{{ week.rows|length }} bloques</span>
+        {% if week.pdf_exists %}
+        <span class="badge ok">PDF listo</span>
+        {% endif %}
+      </div>
+      <p class="muted planned-week-note">Lectura semanal integrada en el mismo lenguaje de entrenamientos planificados.</p>
+    </div>
+
+    <div class="list planned-week-list">
+      {% for row in week.rows %}
+      <article class="list-item static planned-week-item {{ 'session-race' if 'carrera' in row.description|lower or 'edicion' in row.description|lower else 'session-rest' if row.distance == '0 km' else 'session-quality' if 'ritmo' in row.target|lower or 'rectas' in row.description|lower or 'bloques' in row.description|lower else 'session-easy' }}">
+        <div class="planned-week-main">
+          <div class="planned-week-dayline">
+            <strong>{{ row.day }}</strong>
+            <span class="badge kind-badge">{{ row.distance if row.distance else '-' }}</span>
+          </div>
+          <p class="planned-week-description">{{ row.description }}</p>
+          <p class="muted planned-week-target">{{ row.target }}</p>
+        </div>
+        <div class="item-meta planned-week-meta">
+          <span class="badge kind-badge">{{ row.shoes if row.shoes else '-' }}</span>
+        </div>
+      </article>
+      {% else %}
+      <p class="muted">No se pudo extraer la tabla del plan actual.</p>
+      {% endfor %}
+    </div>
+
+    <details class="panel week-detail-toggle">
+      <summary>
+        <span>
+          <span class="eyebrow">Tabla base</span>
+          <strong>Ver detalle estructurado</strong>
+        </span>
+        <span class="muted">Expandir</span>
+      </summary>
+      <div class="table-wrap week-detail-table-wrap">
+        <table class="week-table">
+          <thead>
+            <tr>
+              <th>Dia</th>
+              <th>Descripcion</th>
+              <th>Distancia</th>
+              <th>Objetivo</th>
+              <th>Zapatillas</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in week.rows %}
+            <tr>
+              <td>{{ row.day }}</td>
+              <td>{{ row.description }}</td>
+              <td>{{ row.distance }}</td>
+              <td>{{ row.target }}</td>
+              <td>{{ row.shoes }}</td>
+            </tr>
+            {% else %}
+            <tr>
+              <td colspan="5">No se pudo extraer la tabla del plan.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </details>
+  </div>
+  {% elif current_view == 'calendar' %}
   <div class="calendar-head">
-    <a class="ghost-link" href="/calendar?month={{ calendar.prev_month }}">Anterior</a>
+    <a class="ghost-link" href="/calendar?month={{ calendar.prev_month }}&kind={{ selected_kind }}&status={{ selected_status }}">Anterior</a>
     <h3>{{ calendar.selected_label }}</h3>
-    <a class="ghost-link" href="/calendar?month={{ calendar.next_month }}">Siguiente</a>
+    <a class="ghost-link" href="/calendar?month={{ calendar.next_month }}&kind={{ selected_kind }}&status={{ selected_status }}">Siguiente</a>
   </div>
   <div class="calendar-grid">
     <div class="calendar-dow">Lun</div>
@@ -40,6 +129,11 @@
             <strong>{{ day.event.title }}</strong>
             <span>{{ day.event.session_kind_label }}</span>
             <span>{{ day.event.status_label }}</span>
+            <div class="mini-badges">
+              {% for badge in day.event.badges %}
+              <span class="mini-badge">{{ badge }}</span>
+              {% endfor %}
+            </div>
             {% if day.event.score %}
             <span>Score {{ day.event.score }}/10</span>
             {% endif %}

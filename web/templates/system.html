@@ -16,9 +16,10 @@
   <h3>Artefactos</h3>
   <ul class="plain-list">
     <li>Planificados detectados: {{ system.planned_count }}</li>
+    <li>Carreras detectadas: {{ system.race_count }}</li>
     <li>PDF semanal disponible: {{ 'si' if system.week_pdf_exists else 'no' }}</li>
     <li>Información de salud diaria disponible: {{ system.daily_count }}</li>
-    <li>Ultima actualizacion del panel: {{ system.coach_generated_at }}</li>
+    <li>Última actualización del panel: {{ system.coach_generated_at }}</li>
   </ul>
 </section>
 {% endblock %}

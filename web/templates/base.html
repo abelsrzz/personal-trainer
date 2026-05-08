@@ -9,23 +9,30 @@
 <body>
   <div class="shell">
     <aside class="sidebar">
-      <div>
+      <div class="brand-block">
         <p class="eyebrow">Running Coach</p>
         <h1>Portal</h1>
-        <p class="muted">Acceso web al estado agentico del proyecto.</p>
+        <p class="muted">Seguimiento operativo del plan, la ejecución real y las carreras.</p>
       </div>
       {% if authenticated %}
-      <nav class="nav">
-        <a href="/">Inicio</a>
-        <a href="/week">Semana</a>
-        <a href="/dashboard">Dashboard</a>
-        <a href="/decision">Decision</a>
-        <a href="/calendar">Calendario</a>
-        <a href="/planned-workouts">Planificados</a>
-        <a href="/completed-workouts">Completados</a>
-        <a href="/athlete">Atleta</a>
-        <a href="/races">Carreras</a>
-        <a href="/system">Sistema</a>
+      <nav class="nav grouped-nav">
+        <div class="nav-group">
+          <p class="nav-label">Seguimiento</p>
+          <a class="{{ 'active' if current_path == '/' else '' }}" href="/">Inicio</a>
+          <a class="{{ 'active' if current_path == '/calendar' else '' }}" href="/calendar">Calendario</a>
+          <a class="{{ 'active' if current_path == '/planned-workouts' else '' }}" href="/planned-workouts?view=week">Planificados</a>
+          <a class="{{ 'active' if current_path == '/completed-workouts' else '' }}" href="/completed-workouts">Completados</a>
+        </div>
+        <div class="nav-group">
+          <p class="nav-label">Análisis</p>
+          <a class="{{ 'active' if current_path == '/dashboard' else '' }}" href="/dashboard">Dashboard</a>
+        </div>
+        <div class="nav-group">
+          <p class="nav-label">Contexto</p>
+          <a class="{{ 'active' if current_path == '/athlete' else '' }}" href="/athlete">Atleta</a>
+          <a class="{{ 'active' if current_path == '/races' else '' }}" href="/races">Carreras</a>
+          <a class="{{ 'active' if current_path == '/system' else '' }}" href="/system">Sistema</a>
+        </div>
       </nav>
       <a class="logout" href="/logout">Cerrar sesión</a>
       {% endif %}

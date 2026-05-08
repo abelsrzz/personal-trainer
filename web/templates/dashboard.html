@@ -3,34 +3,40 @@
 {% block content %}
 <section class="hero compact">
   <div>
-    <p class="eyebrow">Dashboard del atleta</p>
+    <p class="eyebrow">Lectura operativa</p>
     <h2>{{ dashboard.decision.status_label }}</h2>
     <p>{{ dashboard.decision.recommendation }}</p>
   </div>
   <div class="hero-meta">
     <span>As of: {{ dashboard.as_of }}</span>
     <span>Ventana: {{ dashboard.lookback_days }} días</span>
+    <span>{{ dashboard.goal_gates.status_label }}</span>
   </div>
 </section>
 
 <section class="cards four">
-  <article class="card">
-    <h3>7 días</h3>
-    <p class="metric">{{ "%.1f"|format(dashboard.decision.windows.last_7_days.km) }} km</p>
-    <p class="muted">{{ dashboard.decision.windows.last_7_days.runs }} carreras</p>
+  <article class="card status-{{ dashboard.decision.status }}">
+    <h3>Acción ahora</h3>
+    <p class="metric">{{ dashboard.decision.action_label }}</p>
+    <p class="muted">La decisión manda sobre la próxima microprogresión.</p>
   </article>
   <article class="card">
-    <h3>28 días</h3>
-    <p class="metric">{{ "%.1f"|format(dashboard.decision.windows.last_28_days.km) }} km</p>
-    <p class="muted">{{ dashboard.decision.windows.last_28_days.quality_runs }} exigentes</p>
+    <h3>Carga 7 días</h3>
+    <p class="metric">{{ "%.1f"|format(dashboard.decision.windows.last_7_days.km) }} km</p>
+    <p class="muted">{{ dashboard.decision.windows.last_7_days.runs }} carreras, {{ dashboard.decision.windows.last_7_days.quality_runs }} exigentes.</p>
+  </article>
+  <article class="card">
+    <h3>Tendencia de carga</h3>
+    <p class="metric">{{ "%.0f"|format(dashboard.decision.volume_spike_pct) if dashboard.decision.volume_spike_pct is not none else '-' }}%</p>
+    <p class="muted">Cambio del último bloque de 7 días frente al anterior.</p>
   </article>
   <article class="card">
     <h3>Estimacion 10k</h3>
     <p class="metric">{{ dashboard.performance_estimate.current_10k_estimate_s|format_duration }}</p>
-    <p class="muted">Estimacion actual basada en los mejores splits recientes.</p>
+    <p class="muted">{{ dashboard.performance_estimate.method }}</p>
   </article>
   <article class="card">
-    <h3>Hitos superados</h3>
+    <h3>Gates del objetivo</h3>
     <p class="metric">{{ dashboard.goal_gates.passed_count }}/{{ dashboard.goal_gates.total_gates }}</p>
     <p class="muted">{{ dashboard.goal_gates.status_label }}</p>
   </article>
@@ -38,33 +44,130 @@
 
 <section class="split">
   <article class="panel">
-    <h3>Riesgos detectados</h3>
-    <ul class="plain-list">
-      {% for reason in dashboard.decision.reasons %}
-      <li>{{ reason }}</li>
-      {% endfor %}
-    </ul>
+    <div class="panel-head">
+      <div>
+        <p class="eyebrow">Decisión</p>
+        <h3>Cómo debería afectar al plan</h3>
+      </div>
+    </div>
+    <div class="list compact-list">
+      {% if dashboard.decision.status == 'green' %}
+      <div class="list-item static status-green">
+        <div>
+          <strong>Mantener o progresar poco</strong>
+          <p>La estructura semanal se puede respetar. La progresión, si existe, debe ser pequeña y depender del periostio.</p>
+        </div>
+      </div>
+      {% elif dashboard.decision.status == 'yellow' %}
+      <div class="list-item static status-yellow">
+        <div>
+          <strong>No subir carga</strong>
+          <p>Mantén la forma de la semana pero sin meter más volumen ni más intensidad.</p>
+        </div>
+      </div>
+      {% else %}
+      <div class="list-item static status-red">
+        <div>
+          <strong>Reducir y proteger</strong>
+          <p>La prioridad deja de ser construir y pasa a ser bajar coste, quitar calidad o incluso descansar.</p>
+        </div>
+      </div>
+      {% endif %}
+
+      <div class="list-item static">
+        <div>
+          <strong>Motivos de la decisión</strong>
+          <ul class="plain-list inline-plain-list">
+            {% for reason in dashboard.decision.reasons %}
+            <li>{{ reason }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
   </article>
   <article class="panel">
-    <h3>Volumen semanal</h3>
-    <ul class="plain-list">
-      {% for item in dashboard.weekly_volume %}
-      <li>{{ item.week }}: {{ "%.1f"|format(item.km) }} km, {{ item.runs }} carreras, {{ item.quality_runs }} exigentes.</li>
-      {% endfor %}
-    </ul>
+    <div class="panel-head">
+      <div>
+        <p class="eyebrow">Vigilancia</p>
+        <h3>Señales que mandan</h3>
+      </div>
+    </div>
+    <div class="list compact-list">
+      <div class="list-item static">
+        <div>
+          <strong>Periostio</strong>
+          <p>{{ dashboard.goal_gates.metrics.latest_shin_pain if dashboard.goal_gates.metrics.latest_shin_pain is not none else '-' }}/10 en el último dato disponible.</p>
+        </div>
+        <span class="badge">Shin</span>
+      </div>
+      <div class="list-item static">
+        <div>
+          <strong>Tirada más larga reciente</strong>
+          <p>{{ "%.1f"|format(dashboard.decision.windows.last_28_days.long_run_km) }} km en 28 días.</p>
+        </div>
+        <span class="badge">LR</span>
+      </div>
+      <div class="list-item static">
+        <div>
+          <strong>Frecuencia y densidad</strong>
+          <p>{{ dashboard.decision.windows.last_7_days.runs }} sesiones en 7 días y {{ dashboard.decision.windows.last_28_days.runs }} en 28 días.</p>
+        </div>
+        <span class="badge">Carga</span>
+      </div>
+      {% if dashboard.decision.latest_shin_entry %}
+      <div class="list-item static">
+        <div>
+          <strong>Último registro de periostio</strong>
+          <p>{{ dashboard.decision.latest_shin_entry.date }}. {{ dashboard.decision.latest_shin_entry.notes }}</p>
+        </div>
+        <div class="item-meta">
+          <span class="badge">Durante {{ dashboard.decision.latest_shin_entry.pain_during }}</span>
+          <span class="badge">Después {{ dashboard.decision.latest_shin_entry.pain_after }}</span>
+          <span class="badge">Mañana {{ dashboard.decision.latest_shin_entry.pain_next_morning }}</span>
+        </div>
+      </div>
+      {% endif %}
+    </div>
   </article>
 </section>
 
 <section class="panel">
-  <h3>Progreso hacia el objetivo</h3>
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Objetivo</p>
+      <h3>Progreso hacia el 35:00</h3>
+    </div>
+    <span class="badge warn">{{ dashboard.goal_gates.summary }}</span>
+  </div>
   <div class="list">
     {% for gate in dashboard.goal_gates.gates %}
-    <div class="list-item static">
+    <div class="list-item static {{ 'status-green' if gate.passed else 'status-yellow' }}">
       <div>
         <strong>{{ gate.name }}</strong>
         <p>{{ gate.evidence }}</p>
       </div>
       <span class="badge {{ 'ok' if gate.passed else 'warn' }}">{{ 'OK' if gate.passed else 'NO' }}</span>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Histórico corto</p>
+      <h3>Volumen semanal reciente</h3>
+    </div>
+  </div>
+  <div class="list compact-list">
+    {% for item in dashboard.weekly_volume %}
+    <div class="list-item static weekly-line-item">
+      <div>
+        <strong>{{ item.week }}</strong>
+        <p>{{ "%.1f"|format(item.km) }} km, {{ item.runs }} sesiones, {{ item.quality_runs }} exigentes.</p>
+      </div>
+      <span class="badge">{{ "%.1f"|format(item.long_run_km) }} km LR</span>
     </div>
     {% endfor %}
   </div>

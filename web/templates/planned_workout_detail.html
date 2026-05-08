@@ -5,6 +5,9 @@
   <p class="eyebrow">Detalle planificado</p>
   <h2>{{ workout.name }}</h2>
   <p>{{ workout.description }}</p>
+  {% if workout.garmin_workout_url %}
+  <p><a class="action-link" href="{{ workout.garmin_workout_url }}" target="_blank" rel="noreferrer">Abrir entrenamiento en Garmin</a></p>
+  {% endif %}
   <div class="cards three">
     <article class="card"><h3>Fecha</h3><p class="metric">{{ workout.date }}</p></article>
     <article class="card"><h3>Duracion</h3><p class="metric">{{ workout.estimated_duration }}</p></article>
@@ -31,8 +34,4 @@
   </div>
 </section>
 
-<section class="panel">
-  <h3>YAML fuente</h3>
-  <pre class="raw">{{ workout.payload }}</pre>
-</section>
 {% endblock %}

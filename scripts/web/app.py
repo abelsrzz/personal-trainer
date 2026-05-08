@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import calendar
 import os
 from datetime import date, datetime
 from pathlib import Path
@@ -107,6 +108,77 @@ def format_datetime(value: str | None) -> str:
     return parsed.strftime("%Y-%m-%d %H:%M")
 
 
+def month_label(value: str) -> str:
+    try:
+        parsed = datetime.strptime(value, "%Y-%m")
+    except ValueError:
+        return value
+    return parsed.strftime("%B %Y").capitalize()
+
+
+def garmin_activity_url(activity_id: int | str | None) -> str | None:
+    if not activity_id:
+        return None
+    return f"https://connect.garmin.com/modern/activity/{activity_id}"
+
+
+def garmin_workout_url(workout_id: int | str | None) -> str | None:
+    if not workout_id:
+        return None
+    return f"https://connect.garmin.com/modern/workout/{workout_id}"
+
+
+def decision_status_label(value: str | None) -> str:
+    return {
+        "green": "Buen momento para seguir construyendo",
+        "yellow": "Conviene ir con prudencia",
+        "red": "Hace falta bajar la carga",
+    }.get(str(value or "").lower(), "Estado no disponible")
+
+
+def decision_action_label(value: str | None) -> str:
+    return {
+        "maintain_or_progress_carefully": "Mantener la linea actual con una progresion pequena y controlada",
+        "maintain_with_caution": "Mantener la estructura sin subir carga",
+        "reduce_or_replace_quality": "Reducir exigencia y priorizar recuperacion",
+    }.get(str(value or "").lower(), "Sin accion definida")
+
+
+def goal_status_label(value: str | None) -> str:
+    return {
+        "unsupported_now": "Aun es pronto para orientar el entrenamiento a ese objetivo",
+        "development_needed": "La base mejora, pero todavia falta desarrollo",
+        "aggressive_alive": "El objetivo sigue vivo si la progresion se consolida",
+        "35_ready": "El objetivo ya puede influir en la estrategia",
+    }.get(str(value or "").lower(), "Sin evaluacion disponible")
+
+
+def traffic_light_label(value: str | None) -> str:
+    return {
+        "verde": "Verde",
+        "amarillo": "Amarillo",
+        "rojo": "Rojo",
+    }.get(str(value or "").lower(), str(value or "-"))
+
+
+def risk_level_label(value: str | None) -> str:
+    return {
+        "bajo": "Bajo",
+        "medio": "Medio",
+        "alto": "Alto",
+    }.get(str(value or "").lower(), str(value or "-"))
+
+
+def priority_label(value: str | None) -> str:
+    return {
+        "S": "Objetivo principal",
+        "A": "Muy importante",
+        "B": "Importante",
+        "C": "Secundaria",
+        "D": "Complementaria",
+    }.get(str(value or "").upper(), str(value or "-"))
+
+
 templates.env.filters["format_duration"] = format_duration
 templates.env.filters["format_pace"] = format_pace
 
@@ -159,18 +231,25 @@ def week_page_data() -> dict[str, Any]:
     path = ROOT / "planning" / "weeks" / "semana_actual.md"
     content = read_text(path)
     return {
-        "path": str(path.relative_to(ROOT)),
         "content": content,
         "rows": parse_week_table(content),
-        "pdf_path": str((ROOT / "planning" / "weeks" / "generated" / "semana_actual.pdf").relative_to(ROOT)),
         "pdf_exists": (ROOT / "planning" / "weeks" / "generated" / "semana_actual.pdf").exists(),
     }
+
+
+def planned_upload_data(workout_stem: str, schedule_date: str) -> dict[str, Any]:
+    upload_path = PLANNED_WORKOUTS_DIR / schedule_date / f"{workout_stem}.garmin_upload.json"
+    return load_json(upload_path) if upload_path.exists() else {}
 
 
 def dashboard_payload() -> dict[str, Any]:
     path = ROOT / "planning" / "coach_decision.json"
     payload = load_json(path) if path.exists() else {}
-    payload["path"] = str(path.relative_to(ROOT))
+    if payload.get("decision"):
+        payload["decision"]["status_label"] = decision_status_label(payload["decision"].get("status"))
+        payload["decision"]["action_label"] = decision_action_label(payload["decision"].get("action"))
+    if payload.get("goal_gates"):
+        payload["goal_gates"]["status_label"] = goal_status_label(payload["goal_gates"].get("status"))
     return payload
 
 
@@ -180,16 +259,23 @@ def planned_workouts() -> list[dict[str, Any]]:
         if path.name == "library_10k_templates.yaml" or path.name == "workout_template.yaml":
             continue
         payload = load_yaml(path).get("workout", {})
+        schedule_date = str(payload.get("schedule_date") or "")
+        upload = planned_upload_data(path.stem, schedule_date) if schedule_date else {}
+        uploaded_response = upload.get("uploaded_response", {})
+        scheduled_response = upload.get("scheduled_response", {})
+        workout_id = uploaded_response.get("workoutId") or scheduled_response.get("workout", {}).get("workoutId")
         workouts.append(
             {
                 "slug": path.stem,
-                "path": str(path.relative_to(ROOT)),
                 "name": payload.get("name") or path.stem,
-                "date": str(payload.get("schedule_date") or ""),
+                "date": schedule_date,
                 "sport": payload.get("sport") or "-",
                 "description": payload.get("description") or "",
                 "estimated_duration": format_duration(payload.get("estimated_duration_s")),
                 "step_count": len(payload.get("steps") or []),
+                "garmin_workout_id": workout_id,
+                "garmin_workout_url": garmin_workout_url(workout_id),
+                "garmin_scheduled_id": scheduled_response.get("workoutScheduleId"),
                 "payload": payload,
             }
         )
@@ -213,16 +299,19 @@ def completed_reviews() -> list[dict[str, Any]]:
         reviews.append(
             {
                 "slug": path.stem.replace(".analysis", ""),
-                "path": str(path.relative_to(ROOT)),
                 "date": planned.get("date") or "",
                 "name": planned.get("name") or path.stem,
                 "score": payload.get("score"),
-                "traffic_light": payload.get("traffic_light") or "-",
-                "risk_level": payload.get("risk_level") or "-",
+                "traffic_light": traffic_light_label(payload.get("traffic_light")),
+                "risk_level": risk_level_label(payload.get("risk_level")),
                 "distance_km": round(float(summary.get("distance_m") or 0.0) / 1000.0, 2),
                 "duration": format_duration(summary.get("duration_s")),
                 "pace": format_pace(summary.get("pace_s_per_km")),
                 "avg_hr": summary.get("avg_hr") or "-",
+                "garmin_activity_id": summary.get("activity_id") or summary.get("activityId"),
+                "garmin_activity_url": garmin_activity_url(summary.get("activity_id") or summary.get("activityId")),
+                "garmin_workout_id": summary.get("workout_id") or summary.get("workoutId"),
+                "garmin_workout_url": garmin_workout_url(summary.get("workout_id") or summary.get("workoutId")),
                 "payload": payload,
             }
         )
@@ -256,10 +345,9 @@ def races_page_data() -> list[dict[str, Any]]:
         payload = load_yaml(path).get("race", {})
         races.append(
             {
-                "path": str(path.relative_to(ROOT)),
                 "name": payload.get("name") or path.stem,
                 "date": payload.get("date") or "",
-                "priority": payload.get("priority") or "-",
+                "priority": priority_label(payload.get("priority")),
                 "distance_km": payload.get("distance_km") or "-",
                 "elevation_gain_m": payload.get("elevation_gain_m") or "-",
                 "location": payload.get("location") or "-",
@@ -285,8 +373,6 @@ def system_page_data() -> dict[str, Any]:
         "review_count": review_count,
         "planned_count": planned_count,
         "week_pdf_exists": (ROOT / "planning" / "weeks" / "generated" / "semana_actual.pdf").exists(),
-        "week_pdf_path": "planning/weeks/generated/semana_actual.pdf",
-        "telegram_sessions_path": "telegram/opencode_sessions.json",
     }
 
 
@@ -307,6 +393,54 @@ def home_page_data() -> dict[str, Any]:
     }
 
 
+def add_month(year_month: str, delta: int) -> str:
+    base = datetime.strptime(year_month, "%Y-%m")
+    month_index = base.year * 12 + (base.month - 1) + delta
+    year = month_index // 12
+    month = month_index % 12 + 1
+    return f"{year:04d}-{month:02d}"
+
+
+def planned_calendar_data(month: str | None) -> dict[str, Any]:
+    workouts = planned_workouts()
+    workout_by_day: dict[str, list[dict[str, Any]]] = {}
+    for workout in workouts:
+        workout_by_day.setdefault(workout["date"], []).append(workout)
+
+    available_months = sorted({item["date"][:7] for item in workouts if item.get("date")})
+    selected = month if month in available_months else None
+    if not selected:
+        today_month = date.today().strftime("%Y-%m")
+        selected = today_month if today_month in available_months else (available_months[0] if available_months else today_month)
+
+    year, month_number = map(int, selected.split("-"))
+    cal = calendar.Calendar(firstweekday=0)
+    weeks: list[list[dict[str, Any]]] = []
+    for week in cal.monthdatescalendar(year, month_number):
+        row: list[dict[str, Any]] = []
+        for day in week:
+            iso_day = day.isoformat()
+            row.append(
+                {
+                    "date": iso_day,
+                    "day": day.day,
+                    "in_month": day.month == month_number,
+                    "is_today": day == date.today(),
+                    "workouts": workout_by_day.get(iso_day, []),
+                }
+            )
+        weeks.append(row)
+
+    return {
+        "selected": selected,
+        "selected_label": month_label(selected),
+        "available_months": available_months,
+        "weeks": weeks,
+        "prev_month": add_month(selected, -1),
+        "next_month": add_month(selected, 1),
+    }
+
+
 @app.get("/login", response_class=HTMLResponse)
 async def login_page(request: Request) -> HTMLResponse:
     if authenticated(request):
@@ -323,7 +457,7 @@ async def login_submit(request: Request, username: str = Form(...), password: st
             "login.html",
             template_context(
                 request,
-                error=f"La web no esta configurada. Define credenciales en {config['config_path']} o mediante RUNNING_WEB_USERNAME y RUNNING_WEB_PASSWORD.",
+                error="La web no esta configurada todavia. Define las credenciales de acceso y vuelve a intentarlo.",
             ),
             status_code=503,
         )
@@ -374,12 +508,17 @@ async def decision(request: Request) -> HTMLResponse:
 
 
 @app.get("/planned-workouts", response_class=HTMLResponse)
-async def planned_workouts_page(request: Request) -> HTMLResponse:
+async def planned_workouts_page(request: Request, view: str = "list", month: str | None = None) -> HTMLResponse:
     redirect = auth_guard(request)
     if redirect:
         return redirect
     items = planned_workouts()
-    return templates.TemplateResponse(request, "planned_workouts.html", template_context(request, workouts=items))
+    calendar_data = planned_calendar_data(month)
+    return templates.TemplateResponse(
+        request,
+        "planned_workouts.html",
+        template_context(request, workouts=items, current_view=view if view in {"list", "calendar"} else "list", calendar=calendar_data),
+    )
 
 
 @app.get("/planned-workouts/{slug}", response_class=HTMLResponse)

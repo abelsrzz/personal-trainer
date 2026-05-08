@@ -171,6 +171,100 @@ a {
   gap: 16px;
 }
 
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.segmented {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 999px;
+  background: var(--panel-2);
+}
+
+.segmented a {
+  padding: 8px 12px;
+  border-radius: 999px;
+  color: var(--muted);
+}
+
+.segmented a.active {
+  background: var(--accent);
+  color: #09111f;
+  font-weight: 700;
+}
+
+.calendar-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.ghost-link,
+.action-link {
+  color: var(--accent);
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.calendar-dow {
+  color: var(--muted);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.calendar-cell {
+  min-height: 160px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(11, 16, 32, 0.7);
+}
+
+.calendar-cell.today {
+  border-color: var(--accent);
+}
+
+.muted-cell {
+  opacity: 0.45;
+}
+
+.calendar-day {
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.calendar-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.calendar-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
+  border-radius: 10px;
+  background: var(--panel);
+}
+
+.calendar-item span {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
 .list {
   display: flex;
   flex-direction: column;
@@ -183,6 +277,22 @@ a {
   justify-content: space-between;
   gap: 16px;
   align-items: start;
+}
+
+.item-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.link-pill {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(132, 220, 198, 0.15);
+  color: var(--accent);
+  font-size: 0.82rem;
 }
 
 .list-item.static:hover {
@@ -293,5 +403,17 @@ td {
   .hero {
     flex-direction: column;
     align-items: start;
+  }
+
+  .calendar-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .calendar-dow {
+    display: none;
+  }
+
+  .calendar-cell {
+    min-height: 0;
   }
 }

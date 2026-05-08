@@ -11,7 +11,6 @@
     <span class="badge ok">PDF disponible</span>
     {% endif %}
   </div>
-  <p class="muted">Fuente: `{{ week.path }}`</p>
   <div class="table-wrap">
     <table>
       <thead>
@@ -40,10 +39,5 @@
       </tbody>
     </table>
   </div>
-</section>
-
-<section class="panel">
-  <h3>Markdown fuente</h3>
-  <pre class="raw">{{ week.content }}</pre>
 </section>
 {% endblock %}

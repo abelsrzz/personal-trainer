@@ -4,7 +4,7 @@
 <section class="hero compact">
   <div>
     <p class="eyebrow">Dashboard del atleta</p>
-    <h2>{{ dashboard.decision.status }}</h2>
+    <h2>{{ dashboard.decision.status_label }}</h2>
     <p>{{ dashboard.decision.recommendation }}</p>
   </div>
   <div class="hero-meta">
@@ -30,9 +30,9 @@
     <p class="muted">Estimacion actual basada en los mejores splits recientes.</p>
   </article>
   <article class="card">
-    <h3>Gates</h3>
+    <h3>Hitos superados</h3>
     <p class="metric">{{ dashboard.goal_gates.passed_count }}/{{ dashboard.goal_gates.total_gates }}</p>
-    <p class="muted">{{ dashboard.goal_gates.status }}</p>
+    <p class="muted">{{ dashboard.goal_gates.status_label }}</p>
   </article>
 </section>
 
@@ -56,7 +56,7 @@
 </section>
 
 <section class="panel">
-  <h3>Goal Gates</h3>
+  <h3>Progreso hacia el objetivo</h3>
   <div class="list">
     {% for gate in dashboard.goal_gates.gates %}
     <div class="list-item static">

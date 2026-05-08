@@ -4,6 +4,9 @@
 <section class="panel">
   <p class="eyebrow">Revision completada</p>
   <h2>{{ review.name }}</h2>
+  {% if review.garmin_activity_url %}
+  <p><a class="action-link" href="{{ review.garmin_activity_url }}" target="_blank" rel="noreferrer">Abrir actividad en Garmin</a></p>
+  {% endif %}
   <div class="cards four">
     <article class="card"><h3>Fecha</h3><p class="metric">{{ review.date }}</p></article>
     <article class="card"><h3>Score</h3><p class="metric">{{ review.score }}/10</p></article>
@@ -42,8 +45,4 @@
   </ul>
 </section>
 
-<section class="panel">
-  <h3>JSON fuente</h3>
-  <pre class="raw">{{ review.payload }}</pre>
-</section>
 {% endblock %}

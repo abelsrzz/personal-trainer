@@ -3,12 +3,12 @@
 {% block content %}
 <section class="panel">
   <p class="eyebrow">Carga operativa</p>
-  <h2>{{ decision.status }}</h2>
+  <h2>{{ decision.status_label }}</h2>
   <p>{{ decision.recommendation }}</p>
   <div class="cards three">
     <article class="card">
-      <h3>Accion</h3>
-      <p class="metric">{{ decision.action }}</p>
+      <h3>Enfoque recomendado</h3>
+      <p class="metric">{{ decision.action_label }}</p>
     </article>
     <article class="card">
       <h3>Volumen 7d</h3>
@@ -56,7 +56,7 @@
     </table>
   </div>
   {% else %}
-  <p class="muted">No hay registro reciente en `athlete/shin_tracker.yaml`.</p>
+  <p class="muted">No hay registro reciente de molestias.</p>
   {% endif %}
 </section>
 {% endblock %}

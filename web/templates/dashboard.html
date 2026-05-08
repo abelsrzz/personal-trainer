@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Dashboard | Running Coach Portal{% endblock %}
+{% block title %}Dashboard | RunPilot{% endblock %}
 {% block content %}
 <section class="hero compact">
   <div>
@@ -136,7 +136,7 @@
   <div class="panel-head">
     <div>
       <p class="eyebrow">Objetivo</p>
-      <h3>Progreso hacia el 35:00</h3>
+      <h3>Checkpoints hacia el 35:00</h3>
     </div>
     <span class="badge warn">{{ dashboard.goal_gates.summary }}</span>
   </div>
@@ -145,14 +145,16 @@
     <div class="list-item static {{ 'status-green' if gate.passed else 'status-yellow' }}">
       <div>
         <strong>{{ gate.name }}</strong>
-        <p>{{ gate.evidence }}</p>
+        <p>{{ gate.description }}</p>
+        <p class="muted"><strong>Ahora mismo:</strong> {{ gate.evidence }}</p>
+        <p class="muted"><strong>Que falta para pasarlo:</strong> {{ gate.next_step }}</p>
         {% if gate.checks %}
         <div class="gate-checks">
           {% for check in gate.checks %}
           <div class="gate-check {{ 'is-passed' if check.passed else 'is-failed' }}">
             <strong>{{ check.label }}</strong>
-            <span>Requiere: {{ check.required }}</span>
-            <span>Actual: {{ check.current }}</span>
+            <span><strong>Hay que conseguir:</strong> {{ check.required }}</span>
+            <span><strong>Valor actual:</strong> {{ check.current }}</span>
           </div>
           {% endfor %}
         </div>

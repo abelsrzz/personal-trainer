@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Inicio | Running Coach Portal{% endblock %}
+{% block title %}Inicio | RunPilot{% endblock %}
 {% block content %}
 <section class="hero">
   <div>
@@ -30,6 +30,32 @@
     <p class="metric">{{ dashboard.goal_gates.status_label if dashboard.goal_gates else "-" }}</p>
     <p class="muted">{{ dashboard.goal_gates.summary if dashboard.goal_gates else "Sin evaluación disponible." }}</p>
   </article>
+</section>
+
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Seguimiento del objetivo</p>
+      <h3>Metricas de progreso</h3>
+    </div>
+    <span class="badge">Actualizacion automatica</span>
+  </div>
+  <div class="progress-metrics">
+    {% for metric in progress_metrics %}
+    <article class="progress-card">
+      <div class="progress-card-head">
+        <strong>{{ metric.label }}</strong>
+        <span>{{ metric.value_label }}</span>
+      </div>
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill tone-{{ metric.tone }}" style="width: {{ metric.value }}%"></div>
+      </div>
+      <p class="muted progress-card-detail">{{ metric.detail }}</p>
+    </article>
+    {% else %}
+    <p class="muted">Todavia no hay suficientes datos para mostrar metricas de progreso.</p>
+    {% endfor %}
+  </div>
 </section>
 
 <section class="split">

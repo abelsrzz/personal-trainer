@@ -3,15 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}Running Coach Portal{% endblock %}</title>
+  <title>{% block title %}RunPilot{% endblock %}</title>
+  <link rel="icon" type="image/png" href="{{ url_for('static', path='/logo.png') }}">
   <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
 </head>
 <body>
   <div class="shell">
     <aside class="sidebar">
       <div class="brand-block">
-        <p class="eyebrow">Running Coach</p>
-        <h1>Portal</h1>
+        <div class="brand-logo-frame">
+          <img class="brand-logo" src="{{ url_for('static', path='/logo.png') }}" alt="RunPilot logo">
+        </div>
         <p class="muted">Seguimiento operativo del plan, la ejecución real y las carreras.</p>
       </div>
       {% if authenticated %}
@@ -31,6 +33,7 @@
           <p class="nav-label">Contexto</p>
           <a class="{{ 'active' if current_path == '/athlete' else '' }}" href="/athlete">Atleta</a>
           <a class="{{ 'active' if current_path == '/races' else '' }}" href="/races">Carreras</a>
+          <a class="{{ 'active' if current_path == '/master-plan' else '' }}" href="/master-plan">Plan general</a>
           <a class="{{ 'active' if current_path == '/system' else '' }}" href="/system">Sistema</a>
         </div>
       </nav>

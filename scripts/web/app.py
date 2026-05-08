@@ -26,6 +26,7 @@ COMPLETED_REVIEW_DIR = ROOT / "training" / "completed" / "reviews"
 GARMIN_ACTIVITY_DIR = ROOT / "training" / "completed" / "imports" / "garmin" / "activities"
 GARMIN_DAILY_DIR = ROOT / "training" / "completed" / "imports" / "garmin" / "daily"
 RACES_DIR = ROOT / "races"
+MASTER_PLAN_PATH = ROOT / "planning" / "master_plan.md"
 WEB_CONFIG_PATH = ROOT / "web" / "web_config.yaml"
 WEB_LOG_PATH = ROOT / "web" / "web_debug.log"
 
@@ -59,7 +60,7 @@ def env_config() -> dict[str, Any]:
     }
 
 
-app = FastAPI(title="Running Coach Portal")
+app = FastAPI(title="RunPilot")
 app.add_middleware(SessionMiddleware, secret_key=env_config()["secret"], same_site="lax")
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
@@ -78,6 +79,10 @@ def read_text(path: Path) -> str:
     if not path.exists():
         return ""
     return path.read_text(encoding="utf-8")
+
+
+def strip_markdown_ticks(value: Any) -> str:
+    return str(value or "").strip().strip("`")
 
 
 def parse_iso_date(value: str | None) -> date | None:
@@ -473,7 +478,207 @@ def dashboard_payload() -> dict[str, Any]:
         payload["decision"]["action_label"] = decision_action_label(payload["decision"].get("action"))
     if payload.get("goal_gates"):
         payload["goal_gates"]["status_label"] = goal_status_label(payload["goal_gates"].get("status"))
+        metrics = payload["goal_gates"].get("metrics", {})
+
+        def km(value: Any) -> str:
+            return f"{float(value):.1f} km" if value is not None else "-"
+
+        def pace_target(seconds: Any) -> str:
+            if seconds is None:
+                return "-"
+            return format_duration(seconds)
+
+        def missing_text(checks: list[dict[str, Any]]) -> str:
+            pending = [check["missing"] for check in checks if not check.get("passed") and check.get("missing")]
+            return "; ".join(pending) if pending else "Checkpoint cumplido."
+
+        gates_with_checks = []
+        for gate in payload["goal_gates"].get("gates", []):
+            name = gate.get("name")
+            checks: list[dict[str, Any]] = []
+            description = ""
+            if name == "Base estable":
+                checks = [
+                    {
+                        "label": "Volumen medio 4 semanas",
+                        "required": "Al menos 40.0 km/sem",
+                        "current": f"{float(metrics.get('avg_weekly_km_28d') or 0.0):.1f} km/sem",
+                        "passed": float(metrics.get("avg_weekly_km_28d") or 0.0) >= 40.0,
+                        "missing": f"Subir {max(0.0, 40.0 - float(metrics.get('avg_weekly_km_28d') or 0.0)):.1f} km/sem de media",
+                    },
+                    {
+                        "label": "Tirada larga",
+                        "required": "Al menos 14.0 km",
+                        "current": km(metrics.get("long_run_km_28d")),
+                        "passed": float(metrics.get("long_run_km_28d") or 0.0) >= 14.0,
+                        "missing": f"Alargar {max(0.0, 14.0 - float(metrics.get('long_run_km_28d') or 0.0)):.1f} km la tirada larga",
+                    },
+                    {
+                        "label": "Revisiones de alto riesgo",
+                        "required": "0 en los ultimos 28 dias",
+                        "current": str(int(metrics.get("high_risk_reviews_28d") or 0)),
+                        "passed": int(metrics.get("high_risk_reviews_28d") or 0) == 0,
+                        "missing": "Encadenar 28 dias sin revisiones de alto riesgo",
+                    },
+                    {
+                        "label": "Periostio",
+                        "required": "2/10 o menos",
+                        "current": f"{metrics.get('latest_shin_pain') if metrics.get('latest_shin_pain') is not None else '-'} /10",
+                        "passed": metrics.get("latest_shin_pain") is None or float(metrics.get("latest_shin_pain") or 0.0) <= 2.0,
+                        "missing": "Bajar las molestias de periostio a 2/10 o menos",
+                    },
+                ]
+                description = "Antes de pensar en ritmos agresivos hace falta una base repetible y estable."
+            elif name == "Umbral competitivo":
+                best_5k = metrics.get("best_5k_s_90d")
+                checks = [
+                    {
+                        "label": "Mejor 5k reciente",
+                        "required": "19:00 o mejor",
+                        "current": pace_target(best_5k),
+                        "passed": best_5k is not None and float(best_5k) <= 1140.0,
+                        "missing": "Acercar el 5k hacia 19:00 o mejor",
+                    }
+                ]
+                description = "Este checkpoint mide si ya hay una base de rendimiento compatible con un objetivo competitivo."
+            elif name == "Precondicion 35:00":
+                best_5k = metrics.get("best_5k_s_90d")
+                checks = [
+                    {
+                        "label": "Volumen medio 4 semanas",
+                        "required": "Al menos 50.0 km/sem",
+                        "current": f"{float(metrics.get('avg_weekly_km_28d') or 0.0):.1f} km/sem",
+                        "passed": float(metrics.get("avg_weekly_km_28d") or 0.0) >= 50.0,
+                        "missing": f"Subir {max(0.0, 50.0 - float(metrics.get('avg_weekly_km_28d') or 0.0)):.1f} km/sem de media",
+                    },
+                    {
+                        "label": "Tirada larga",
+                        "required": "Al menos 16.0 km",
+                        "current": km(metrics.get("long_run_km_28d")),
+                        "passed": float(metrics.get("long_run_km_28d") or 0.0) >= 16.0,
+                        "missing": f"Alargar {max(0.0, 16.0 - float(metrics.get('long_run_km_28d') or 0.0)):.1f} km la tirada larga",
+                    },
+                    {
+                        "label": "Mejor 5k reciente",
+                        "required": "18:00 o mejor",
+                        "current": pace_target(best_5k),
+                        "passed": best_5k is not None and float(best_5k) <= 1080.0,
+                        "missing": "Acercar el 5k hacia 18:00 o mejor",
+                    },
+                    {
+                        "label": "Riesgo y periostio",
+                        "required": "Sin riesgo alto y periostio <= 2/10",
+                        "current": f"Riesgo {int(metrics.get('high_risk_reviews_28d') or 0)}, periostio {metrics.get('latest_shin_pain') if metrics.get('latest_shin_pain') is not None else '-'} /10",
+                        "passed": int(metrics.get("high_risk_reviews_28d") or 0) == 0 and (metrics.get("latest_shin_pain") is None or float(metrics.get("latest_shin_pain") or 0.0) <= 2.0),
+                        "missing": "Consolidar 28 dias sin riesgo alto y con periostio controlado",
+                    },
+                ]
+                description = "Aqui se comprueba si el objetivo 35:00 empieza a ser plausible sin forzar la preparacion."
+            elif name == "Seleccion 35:00":
+                best_5k = metrics.get("best_5k_s_90d")
+                best_10k = metrics.get("best_10k_s_180d")
+                checks = [
+                    {
+                        "label": "Mejor 5k reciente",
+                        "required": "17:15 o mejor",
+                        "current": pace_target(best_5k),
+                        "passed": best_5k is not None and float(best_5k) <= 1035.0,
+                        "missing": "Acercar el 5k hacia 17:15 o mejor",
+                    },
+                    {
+                        "label": "Mejor 10k o tune-up",
+                        "required": "36:30 o mejor",
+                        "current": pace_target(best_10k),
+                        "passed": best_10k is not None and float(best_10k) <= 2190.0,
+                        "missing": "Acercar el 10k hacia 36:30 o mejor",
+                    },
+                    {
+                        "label": "Precondicion 35:00",
+                        "required": "Checkpoint anterior cumplido",
+                        "current": "Si" if any(item.get("name") == "Precondicion 35:00" and item.get("passed") for item in payload["goal_gates"].get("gates", [])) else "No",
+                        "passed": any(item.get("name") == "Precondicion 35:00" and item.get("passed") for item in payload["goal_gates"].get("gates", [])),
+                        "missing": "Primero hay que cumplir la precondicion 35:00",
+                    },
+                ]
+                description = "Este es el filtro final antes de permitir que 35:00 guie la estrategia de carrera."
+
+            gate["description"] = description
+            gate["checks"] = checks
+            gate["next_step"] = missing_text(checks)
+            gates_with_checks.append(gate)
+
+        payload["goal_gates"]["gates"] = gates_with_checks
     return payload
+
+
+def progress_metrics() -> list[dict[str, Any]]:
+    master_plan = master_plan_page_data()
+    dashboard = dashboard_payload()
+    today = date.today()
+    metrics: list[dict[str, Any]] = []
+
+    start_date = parse_iso_date(strip_markdown_ticks(master_plan.get("cycle_window", {}).get("start_date")))
+    goal_date = parse_iso_date(strip_markdown_ticks(master_plan.get("cycle_window", {}).get("goal_race_date")))
+    if start_date and goal_date and goal_date >= start_date:
+        total_days = max((goal_date - start_date).days, 1)
+        elapsed_days = min(max((today - start_date).days, 0), total_days)
+        remaining_days = max((goal_date - today).days, 0)
+        cycle_progress = round((elapsed_days / total_days) * 100)
+        remaining_progress = round((remaining_days / total_days) * 100)
+        metrics.append(
+            {
+                "label": "Tiempo hasta la carrera principal",
+                "value": remaining_progress,
+                "value_label": f"{remaining_days} dias",
+                "detail": f"{remaining_days} dias para el objetivo; ciclo completado al {cycle_progress}%.",
+                "tone": "accent",
+            }
+        )
+        metrics.append(
+            {
+                "label": "Progreso del ciclo",
+                "value": cycle_progress,
+                "value_label": f"{cycle_progress}%",
+                "detail": f"Desde {start_date.isoformat()} hasta {goal_date.isoformat()}.",
+                "tone": "info",
+            }
+        )
+
+    goal_gate_status = str(dashboard.get("goal_gates", {}).get("status") or "").lower()
+    goal_probability_map = {
+        "unsupported_now": 18,
+        "development_needed": 42,
+        "aggressive_alive": 68,
+        "35_ready": 88,
+    }
+    if goal_gate_status:
+        probability = goal_probability_map.get(goal_gate_status, 0)
+        metrics.append(
+            {
+                "label": "Posibilidades de cumplir el objetivo",
+                "value": probability,
+                "value_label": f"{probability}%",
+                "detail": dashboard.get("goal_gates", {}).get("summary") or "Estimacion automatica basada en el estado actual del objetivo.",
+                "tone": "warn" if probability < 50 else "accent",
+            }
+        )
+
+    workouts = [item for item in planned_workouts() if parse_iso_date(item.get("date")) and parse_iso_date(item.get("date")) <= today]
+    reviews_by_date = {item.get("date") for item in completed_reviews() if item.get("date") and parse_iso_date(item.get("date")) and parse_iso_date(item.get("date")) <= today}
+    if workouts:
+        matched = sum(1 for item in workouts if item.get("date") in reviews_by_date)
+        adherence = round((matched / len(workouts)) * 100)
+        metrics.append(
+            {
+                "label": "Adherencia al plan",
+                "value": adherence,
+                "value_label": f"{matched}/{len(workouts)}",
+                "detail": "Relacion entre sesiones planificadas ya vencidas y sesiones con revision registrada.",
+                "tone": "accent" if adherence >= 75 else "warn",
+            }
+        )
+
+    return metrics
 
 
 def planned_workouts() -> list[dict[str, Any]]:
@@ -783,6 +988,145 @@ def system_page_data() -> dict[str, Any]:
     }
 
 
+def master_plan_page_data() -> dict[str, Any]:
+    text = read_text(MASTER_PLAN_PATH)
+    sections: dict[str, list[str]] = {}
+    current_section: str | None = None
+    for line in text.splitlines():
+        stripped = line.rstrip()
+        if stripped.startswith("## "):
+            current_section = stripped[3:].strip()
+            sections[current_section] = []
+            continue
+        if current_section is not None:
+            sections[current_section].append(stripped)
+
+    def clean_items(name: str) -> list[str]:
+        return [line[2:].strip() for line in sections.get(name, []) if line.startswith("- ")]
+
+    def translate_text(value: str) -> str:
+        replacements = [
+            ("Start date", "Fecha de inicio"),
+            ("Goal race date", "Fecha de la carrera objetivo"),
+            ("Total duration", "Duracion total"),
+            ("Last full review", "Ultima revision completa"),
+            ("Date", "Fecha"),
+            ("Priority", "Prioridad"),
+            ("Distance", "Distancia"),
+            ("Elevation gain", "Desnivel positivo"),
+            ("Declared goal", "Objetivo declarado"),
+            ("Role", "Rol"),
+            ("Goal", "Objetivo"),
+            ("Practical impact", "Impacto practico"),
+            ("Dates", "Fechas"),
+            ("Duration", "Duracion"),
+            ("Focus", "Enfoque"),
+            ("Tuesday", "Martes"),
+            ("Thursday", "Jueves"),
+            ("Sunday", "Domingo"),
+            ("Strength", "Fuerza"),
+            ("Recovery", "Recuperacion"),
+            ("Quality Density", "Densidad de calidad"),
+            ("End of Block", "Fin del bloque"),
+            ("Mid Block", "Mitad del bloque"),
+            ("Block ", "Bloque "),
+            ("Reset, consistency and tissue tolerance", "Reinicio, consistencia y tolerancia tisular"),
+            ("Aerobic base and volume consolidation", "Base aerobica y consolidacion del volumen"),
+            ("Threshold development and strength endurance", "Desarrollo del umbral y resistencia de fuerza"),
+            ("Specific 10k development", "Desarrollo especifico de 10k"),
+            ("Specific consolidation and competitive sharpening", "Consolidacion especifica y afinado competitivo"),
+            ("Taper and race execution", "Puesta a punto y ejecucion de carrera"),
+            ("weeks", "semanas"),
+            ("week", "semana"),
+            ("The `S` race is the fixed target event.", "La carrera `S` es el objetivo fijo del ciclo."),
+            ("`35:00` is a stretch target, not the training pace to force from the current level.", "`35:00` es un objetivo ambicioso, no un ritmo de entrenamiento que haya que forzar desde el nivel actual."),
+            ("The current evidence does not justify prescribing `3:30/km` work yet.", "La evidencia actual todavia no justifica prescribir trabajo a `3:30/km`."),
+            ("The plan must earn that pace through checkpoints; if the data does not support it, the race target is recalibrated while still prioritizing the best possible 10k performance in February.", "El plan debe ganarse ese ritmo a traves de checkpoints; si los datos no lo sostienen, se recalibra el objetivo de carrera manteniendo como prioridad el mejor 10k posible en febrero."),
+            ("Base the whole cycle on the only `S` race.", "Construir todo el ciclo alrededor de la unica carrera `S`."),
+            ("Fit `A`, `B`, `C` and `D` races around the active block.", "Encajar las carreras `A`, `B`, `C` y `D` alrededor del bloque activo."),
+            ("Update weekly planning every Sunday using completed training, fatigue, shin response and race proximity.", "Actualizar la planificacion semanal cada domingo usando entrenamientos completados, fatiga, respuesta de la tibia y proximidad de carrera."),
+            ("Use heart rate to control easy and long runs, and pace to control intervals or tempo work.", "Usar la frecuencia cardiaca para controlar rodajes y tiradas largas, y el ritmo para intervalos o trabajos de tempo."),
+            ("Keep load progression conservative until the left shin is stable.", "Mantener una progresion de carga conservadora hasta que la tibia izquierda este estable."),
+            ("Do not use final-goal pace until checkpoints prove that it is a realistic training stimulus.", "No usar el ritmo objetivo final hasta que los checkpoints demuestren que es un estimulo realista."),
+        ]
+        translated = value
+        for source, target in replacements:
+            translated = translated.replace(source, target)
+        return translated
+
+    def numbered_items(name: str) -> list[dict[str, Any]]:
+        items: list[dict[str, Any]] = []
+        current: dict[str, Any] | None = None
+        for raw_line in sections.get(name, []):
+            stripped = raw_line.strip()
+            if not stripped:
+                continue
+            number, separator, remainder = stripped.partition(". ")
+            if number.isdigit() and separator:
+                if current:
+                    items.append(current)
+                current = {"title": remainder.strip(), "details": []}
+                continue
+            if stripped.startswith("- ") and current is not None:
+                current["details"].append(stripped[2:].strip())
+        if current:
+            items.append(current)
+        return items
+
+    cycle_window_key_map = {
+        "Start date": "start_date",
+        "Goal race date": "goal_race_date",
+        "Total duration": "total_duration",
+        "Last full review": "last_full_review",
+    }
+    cycle_window: dict[str, str] = {}
+    for item in clean_items("Cycle Window"):
+        if ":" not in item:
+            continue
+        key, value = item.split(":", 1)
+        normalized_key = cycle_window_key_map.get(key.strip(), key.strip().lower().replace(" ", "_"))
+        cycle_window[normalized_key] = translate_text(value.strip())
+
+    blocks: list[dict[str, Any]] = []
+    for index, entry in enumerate(numbered_items("Revised Block Structure"), start=1):
+        block = {"index": index, "title": translate_text(entry["title"]), "dates": "-", "duration": "-", "focus": "-"}
+        for detail in entry["details"]:
+            if detail.startswith("Dates:"):
+                block["dates"] = translate_text(detail.split(":", 1)[1].strip())
+            elif detail.startswith("Duration:"):
+                block["duration"] = translate_text(detail.split(":", 1)[1].strip())
+            elif detail.startswith("Focus:"):
+                block["focus"] = translate_text(detail.split(":", 1)[1].strip())
+        blocks.append(block)
+
+    def translated_items(name: str) -> list[str]:
+        return [translate_text(item) for item in clean_items(name)]
+
+    def translated_numbered_items(name: str) -> list[dict[str, Any]]:
+        return [
+            {
+                "title": translate_text(item["title"]),
+                "details": [translate_text(detail) for detail in item["details"]],
+            }
+            for item in numbered_items(name)
+        ]
+
+    return {
+        "cycle_window": cycle_window,
+        "goal_race": translated_items("Main Goal Race"),
+        "pre_cycle_race": translated_items("Pre-Cycle Race"),
+        "interpretation": translated_items("Coaching Interpretation Of The Goal"),
+        "current_level": translated_items("Current Level Audit"),
+        "planning_logic": translated_items("Planning Logic"),
+        "blocks": blocks,
+        "weekly_structure": translated_numbered_items("Weekly Structure Principles"),
+        "volume_progression": translated_items("Volume Progression"),
+        "intensity_rules": translated_items("Intensity Rules"),
+        "checkpoints": translated_numbered_items("Checkpoints"),
+        "calibration_rule": translated_items("Calibration Rule"),
+    }
+
+
 def home_page_data() -> dict[str, Any]:
     dashboard = dashboard_payload()
     week = week_page_data()
@@ -797,6 +1141,7 @@ def home_page_data() -> dict[str, Any]:
         "recent_reviews": recent_reviews,
         "planned_count": len(workouts),
         "review_count": len(reviews),
+        "progress_metrics": progress_metrics(),
     }
 
 
@@ -1002,6 +1347,14 @@ async def races(request: Request) -> HTMLResponse:
     if redirect:
         return redirect
     return templates.TemplateResponse(request, "races.html", template_context(request, races=races_page_data()))
+
+
+@app.get("/master-plan", response_class=HTMLResponse)
+async def master_plan(request: Request) -> HTMLResponse:
+    redirect = auth_guard(request)
+    if redirect:
+        return redirect
+    return templates.TemplateResponse(request, "master_plan.html", template_context(request, master_plan=master_plan_page_data()))
 
 
 @app.get("/system", response_class=HTMLResponse)

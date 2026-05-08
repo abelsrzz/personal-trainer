@@ -89,7 +89,7 @@ source .venv/bin/activate
 python scripts/garmin/coach_sync.py --date YYYY-MM-DD
 ```
 
-Este comando importa actividades Garmin, intenta importar metricas diarias, revisa el entrenamiento planificado del dia si existe y genera:
+Este comando importa actividades Garmin, intenta importar metricas diarias, intenta sincronizar perfil Garmin del atleta, revisa el entrenamiento planificado del dia si existe y genera:
 
 - `athlete/status_dashboard.md`
 - `planning/coach_decision.md`
@@ -210,16 +210,22 @@ Ejemplos de servicios `systemd`:
 
 El proyecto incluye una interfaz web de solo lectura para consultar la capa operativa del entorno agentico.
 
-Que muestra esta primera version:
+Qué muestra la web actual:
 
 - resumen ejecutivo del estado actual
-- semana activa
-- dashboard del atleta
-- decision operativa del coach
-- entrenamientos planificados
+- entrenamientos planificados en vistas `week`, `list` y `calendar`
+- dashboard del atleta con la decisión operativa integrada
 - entrenamientos completados y sus revisiones
 - perfil del atleta, periostio y carreras
 - estado basico del sistema
+
+Notas de estructura:
+
+- `/planned-workouts` concentra la planificación futura.
+- `/planned-workouts?view=week` es la vista semanal integrada.
+- `/week` redirige a la vista semanal dentro de planificados.
+- `/dashboard` integra también la antigua lectura de `decision`.
+- `/decision` redirige a `/dashboard`.
 
 Dependencias:
 

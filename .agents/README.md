@@ -60,5 +60,6 @@ Coach automation files:
 - Use `planning/coach_decision.md` as the first load-management signal before changing the active week.
 - Use the playbook, selection matrix, evaluation rules and response profile as mandatory default context for planning and replanning.
 - Use `planning/context_automation_policy.md` to decide which athlete, race, block, zone, shoe and goal files are mandatory for the current task.
+- In the web portal, treat `dashboard` as the unified analysis view; the separate decision route is legacy redirect behavior.
 - For remote Telegram operation, run `opencode serve` locally and then `python scripts/telegram/opencode_bot.py`.
 - Remote Telegram operation defaults to `openai/gpt-5.4` with default reasoning; `/model` changes the per-chat model override.

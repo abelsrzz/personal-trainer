@@ -39,7 +39,7 @@ python scripts/garmin/review_planned_session.py --date YYYY-MM-DD
 python scripts/garmin/coach_sync.py --date YYYY-MM-DD --skip-garmin
 ```
 
-For normal end-to-end post-workout operation, prefer `coach_sync.py --date YYYY-MM-DD` because it imports, reviews when possible and refreshes the dashboard/decision.
+For normal end-to-end post-workout operation, prefer `coach_sync.py --date YYYY-MM-DD` because it imports, reviews when possible and refreshes the analysis outputs used by planning.
 
 ## Output Rules
 

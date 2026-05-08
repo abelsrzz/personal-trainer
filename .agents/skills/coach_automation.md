@@ -27,6 +27,11 @@ python scripts/garmin/coach_engine.py --as-of YYYY-MM-DD --days 28
 - `planning/coach_decision.md`: operative green/yellow/red decision
 - `planning/coach_decision.json`: structured decision data
 
+## Web Interpretation
+
+- In the web portal, `dashboard` is the main analysis page.
+- The operative decision layer is shown inside `dashboard`; the old separate `decision` route is only a redirect.
+
 ## Decision Interpretation
 
 - `green`: maintain plan and allow only small progression if shin status is quiet.

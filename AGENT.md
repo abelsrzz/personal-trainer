@@ -94,6 +94,7 @@ The system must act as an intelligent coach, planner and reviewer.
 - Coach engine: `scripts/garmin/coach_engine.py`
 - Status dashboard: `athlete/status_dashboard.md`
 - Coach decision: `planning/coach_decision.md`
+- Coach decision JSON: `planning/coach_decision.json`
 - Garmin athlete snapshot: `training/completed/imports/garmin/profile/athlete_profile_snapshot.json`
 - 35:00 gates: `planning/goal_gates.yaml`
 - 35:00 gates explainer: `planning/goal_gates.md`
@@ -131,7 +132,8 @@ python scripts/garmin/coach_engine.py --as-of YYYY-MM-DD --days 28
 
 ## Coach Automation Rules
 
-- Prefer `coach_sync.py` after Garmin-linked workouts because it imports, reviews when possible and refreshes dashboard/decision files.
+- Prefer `coach_sync.py` after Garmin-linked workouts because it imports, reviews when possible and refreshes the analysis outputs used by planning.
+- Treat `athlete/status_dashboard.md` as the main human-readable analysis output; the web dashboard integrates the decision layer there.
 - Prefer `coach_sync.py` after Garmin-linked work because it should also refresh athlete profile, resting HR, max HR, VO2max and gear when Garmin provides them.
 - Use `coach_sync.py --skip-garmin` when working only from already imported local data.
 - Read `athlete/status_dashboard.md` and `planning/coach_decision.md` before modifying the active week.
@@ -151,9 +153,16 @@ python scripts/garmin/coach_engine.py --as-of YYYY-MM-DD --days 28
 - Do not force threshold or race pace estimates without data.
 - Recalibrate the long-term goal from checkpoints.
 - Current limiter is aerobic durability and shin tolerance more than isolated speed.
-- Use `coach_sync.py` after Garmin-linked training to refresh imports, reviews, dashboard and decision files.
+- Use `coach_sync.py` after Garmin-linked training to refresh imports, reviews and analysis outputs.
 - Remote Telegram access uses `opencode serve` plus `scripts/telegram/opencode_bot.py`; only commit or push when explicitly requested.
 - Remote Telegram access defaults to model `openai/gpt-5.4` with OpenCode default reasoning; use `/model` in Telegram to override per chat.
+
+## Web Portal Notes
+
+- `planned-workouts` is the single future-planning area, with `week`, `list` and `calendar` views.
+- `/week` is kept only as a redirect to `planned-workouts?view=week`.
+- `dashboard` is the main analysis page and already includes the operative decision context.
+- `/decision` is kept only as a redirect to `/dashboard`.
 
 ## Communication Rules For Future Sessions
 

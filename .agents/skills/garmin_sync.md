@@ -8,8 +8,9 @@ Use Garmin as a data source and delivery channel for planned workouts.
 
 - import recent activities
 - import daily readiness and recovery metrics
+- import athlete profile, resting HR, max HR, VO2max and gear snapshot
 - upload and schedule planned running workouts
-- run coach sync to import, review and generate dashboard/decision files
+- run coach sync to import, review and generate the analysis outputs used by planning
 
 ## Current Limitations
 
@@ -24,6 +25,7 @@ Use Garmin as a data source and delivery channel for planned workouts.
 - preferred coach command: `scripts/garmin/coach_sync.py`
 - analysis engine: `scripts/garmin/coach_engine.py`
 - imports: `training/completed/imports/garmin/`
+- athlete snapshot: `training/completed/imports/garmin/profile/athlete_profile_snapshot.json`
 - planned workouts: `training/planned/workouts/`
 - dashboard: `athlete/status_dashboard.md`
 - decision: `planning/coach_decision.md`
@@ -35,4 +37,6 @@ source .venv/bin/activate
 python scripts/garmin/coach_sync.py --date YYYY-MM-DD
 ```
 
-Use `--skip-garmin` to refresh dashboard and decision from local files without contacting Garmin.
+Use `--skip-garmin` to refresh analysis outputs from local files without contacting Garmin.
+
+When Garmin is contacted through `coach_sync.py`, it should also attempt to refresh the local athlete profile state used by planning.

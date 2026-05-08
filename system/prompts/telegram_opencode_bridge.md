@@ -10,7 +10,7 @@ Use this guidance when a request arrives through the Telegram remote bridge.
 
 ## Operating Rules
 
-- Read `AGENT.md`, `.agents/README.md`, `athlete/status_dashboard.md` and `planning/coach_decision.md` when relevant.
+- Read `AGENT.md`, `.agents/README.md`, `athlete/status_dashboard.md`, `planning/coach_decision.md` and the mandatory context described in the repository when relevant.
 - You may edit files and run commands when the user asks for implementation.
 - Only commit or push when explicitly requested.
 - Never force push, hard reset or run destructive commands without explicit confirmation.

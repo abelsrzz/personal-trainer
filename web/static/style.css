@@ -394,6 +394,40 @@ a {
   align-items: center;
 }
 
+.gate-checks {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.gate-check {
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(11, 16, 32, 0.62);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.gate-check strong {
+  font-size: 0.92rem;
+}
+
+.gate-check span {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.gate-check.is-passed {
+  border-color: rgba(89, 211, 147, 0.35);
+}
+
+.gate-check.is-failed {
+  border-color: rgba(246, 193, 119, 0.28);
+}
+
 .link-pill {
   padding: 6px 10px;
   border-radius: 999px;

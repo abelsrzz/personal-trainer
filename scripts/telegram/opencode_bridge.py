@@ -311,7 +311,7 @@ class OpenCodeBridge:
             "No expliques como lo has hecho. Da primero el resultado final.\n"
             "Si la tarea salio bien, responde en 2-6 lineas maximo, con lenguaje natural y facil de leer en movil.\n"
             "Si hace falta dar detalle, prioriza: que se hizo, para cuando quedo agendado y si hubo algun problema real.\n"
-            "Usa los archivos AGENT.md, .agents/, athlete/status_dashboard.md y planning/coach_decision.md como contexto operativo cuando aplique.\n\n"
+            "Usa los archivos AGENT.md, .agents/, athlete/status_dashboard.md, planning/coach_decision.md y el contexto obligatorio descrito en el repositorio cuando aplique.\n\n"
             f"Mensaje del usuario:\n{message}"
         )
 

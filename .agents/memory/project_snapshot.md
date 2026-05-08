@@ -11,6 +11,7 @@
 - Coach engine added for dashboard, load decision and 35:00 gates
 - Coach sync added as the preferred one-command Garmin workflow
 - Garmin athlete profile sync added to update local athlete profile, zones, health and shoes from Garmin data
+- Web portal simplified: planned workouts unified under one planning area and decision merged into dashboard
 - Telegram remote OpenCode bridge added for self-hosted access
 - First Garmin workout upload and scheduling already proven
 
@@ -56,6 +57,7 @@
 - When Garmin is contacted, athlete profile state should also be refreshed so planning can use updated resting HR, max HR, VO2max and gear.
 - Read `athlete/status_dashboard.md` for load, risk, 35:00 gates and rough performance estimate.
 - Read `planning/coach_decision.md` for the operative green/yellow/red decision.
+- For web interpretation, treat the dashboard page as the single analysis surface; the old separate decision page is now only a redirect.
 - Read `planning/coaching_playbook.md` as the default prescription policy.
 - Read `planning/session_selection_matrix.yaml` before selecting workout families.
 - Read `planning/workout_evaluation_rules.md` after completed-session reviews and before replanning.

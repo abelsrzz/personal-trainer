@@ -571,6 +571,22 @@ a {
   border-top: 3px solid rgba(132, 220, 198, 0.26);
 }
 
+.cycle-current-block {
+  border-color: rgba(132, 220, 198, 0.34);
+  box-shadow: inset 0 0 0 1px rgba(132, 220, 198, 0.2);
+}
+
+.cycle-hero {
+  background:
+    radial-gradient(circle at top right, rgba(132, 220, 198, 0.12), transparent 34%),
+    rgba(21, 29, 49, 0.9);
+}
+
+.cycle-layout,
+.cycle-guidance-grid {
+  align-items: start;
+}
+
 .master-plan-duration {
   margin: 0;
   color: var(--accent);

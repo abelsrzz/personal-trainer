@@ -3,12 +3,12 @@ zones:
     resting_hr: 54
     max_hr: 197
     threshold_hr: null
-    z0: "<130"
+    z0: <130
     z1: 131-140
     z2: 141-155
     z3: 156-170
     z4: 171-185
-    z5: ">185"
+    z5: '>185'
   pace:
     easy: 6:00-7:30/km
     marathon: null
@@ -29,10 +29,14 @@ zones:
       date: 2026-02-07
       distance: 10.08km
       pace: 4:26/km
-      fastest_10k_split: 44:23
+      fastest_10k_split: 2663
       average_hr: 186
     current_5k_pace: 4:15/km
     current_interval_capability:
       date: 2026-04-16
       session: 4x1000@3:56-4:01/km
       note: High-cost interval ability, not current 10k pace.
+  data_sources:
+    garmin:
+      last_sync: '2026-05-08T19:35:14.266148Z'
+      profile_snapshot: training/completed/imports/garmin/profile/athlete_profile_snapshot.json

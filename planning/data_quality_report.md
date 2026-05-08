@@ -1,0 +1,33 @@
+# Garmin Data Quality Report
+
+- Fecha de analisis: `2026-05-08`
+- Ultima actividad importada: `2026-05-07`
+- Ultimo daily importado: `2026-05-08`
+
+## Cobertura
+
+- `activities`: `yes`
+- `daily_metrics`: `yes`
+- `hrv`: `yes`
+- `training_readiness`: `no`
+- `resting_heart_rate`: `yes`
+- `training_status`: `yes`
+- `running_tolerance`: `no`
+
+## Snapshot Diario Disponible
+
+- HRV: `137864769.0`
+- Training readiness: `-`
+- Resting HR: `59.0`
+- Training status: `{'userId': 137864769, 'mostRecentVO2Max': None, 'mostRecentTrainingLoadBalance': None, 'mostRecentTrainingStatus': None, 'heatAltitudeAcclimationDTO': None}`
+
+## Mejoras Sugeridas
+
+- Integrar HRV reciente en la decision de carga y en el dashboard.
+- Comparar resting HR reciente con baseline para detectar fatiga o deriva.
+- Traducir training status a una señal visible de forma y tolerancia de carga.
+
+## Gaps
+
+- training_readiness
+- running_tolerance

@@ -7,7 +7,9 @@
 
 ## Motivos
 
-- Sin banderas rojas objetivas en los datos locales disponibles.
+- El bloque activo prioriza reconstruccion, consistencia y tolerancia tisular antes de ritmos agresivos.
+- El limitador principal declarado sigue siendo la durabilidad aerobica; la construccion debe respetarlo.
+- La automatizacion prioriza como backbone de calidad: cruise_intervals, tempo_broken, tempo_continuous.
 
 ## Regla Operativa
 

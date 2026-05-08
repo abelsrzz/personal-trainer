@@ -28,13 +28,13 @@
         <div class="nav-group">
           <p class="nav-label">Análisis</p>
           <a class="{{ 'active' if current_path == '/dashboard' else '' }}" href="/dashboard">Dashboard</a>
+          <a class="{{ 'active' if current_path == '/cycle' else '' }}" href="/cycle">Ciclo activo</a>
         </div>
         <div class="nav-group">
           <p class="nav-label">Contexto</p>
           <a class="{{ 'active' if current_path == '/athlete' else '' }}" href="/athlete">Atleta</a>
           <a class="{{ 'active' if current_path == '/races' else '' }}" href="/races">Carreras</a>
           <a class="{{ 'active' if current_path == '/master-plan' else '' }}" href="/master-plan">Plan general</a>
-          <a class="{{ 'active' if current_path == '/system' else '' }}" href="/system">Sistema</a>
         </div>
       </nav>
       <a class="logout" href="/logout">Cerrar sesión</a>

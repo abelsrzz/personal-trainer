@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-08T12:19:52.506750+00:00",
+  "generated_at": "2026-05-08T19:34:45.379788+00:00",
   "as_of": "2026-05-08",
   "lookback_days": 28,
   "activity_count_total": 59,
@@ -10,7 +10,9 @@
     "action": "maintain_or_progress_carefully",
     "recommendation": "Mantener plan y permitir progresion pequena si el periostio sigue en 0-2/10.",
     "reasons": [
-      "Sin banderas rojas objetivas en los datos locales disponibles."
+      "El bloque activo prioriza reconstruccion, consistencia y tolerancia tisular antes de ritmos agresivos.",
+      "El limitador principal declarado sigue siendo la durabilidad aerobica; la construccion debe respetarlo.",
+      "La automatizacion prioriza como backbone de calidad: cruise_intervals, tempo_broken, tempo_continuous."
     ],
     "windows": {
       "last_7_days": {
@@ -58,7 +60,83 @@
       "shoes": null,
       "notes": "Reevaluacion manual. Dolor tibial actual 1/10 y cansancio subjetivo 0/10; sin empeoramiento relevante reportado."
     },
-    "latest_high_risk_review": null
+    "latest_high_risk_review": null,
+    "daily_signals": {
+      "snapshot": {
+        "hrv": 137864769.0,
+        "training_readiness": null,
+        "resting_heart_rate": 59.0,
+        "training_status": {
+          "userId": 137864769,
+          "mostRecentVO2Max": null,
+          "mostRecentTrainingLoadBalance": null,
+          "mostRecentTrainingStatus": null,
+          "heatAltitudeAcclimationDTO": null
+        }
+      },
+      "baseline_hrv": 137864769.0,
+      "hrv_flag": "stable",
+      "readiness_flag": null,
+      "resting_hr_flag": "normal",
+      "training_status_flag": "neutral"
+    },
+    "session_guidance": {
+      "coach_state": "green",
+      "shin_band": "green",
+      "block": "block_1",
+      "target_distance": "10k",
+      "primary": [
+        "tempo_broken",
+        "aerobic_steady",
+        "easy_plus_strides",
+        "easy_recovery",
+        "easy_z2",
+        "long_run"
+      ],
+      "optional": [
+        "short_hills_power",
+        "technique_drills_strides"
+      ],
+      "avoid": [
+        "short_intervals_vo2",
+        "medium_intervals_vo2",
+        "ten_k_specific_continuous",
+        "long_run_quality",
+        "hills_strength",
+        "five_k_specific_reps",
+        "marathon_specific_blocks"
+      ],
+      "quality_volume_cap": "low_to_medium",
+      "selection_order": [
+        "coach_state",
+        "shin_band",
+        "active_block",
+        "target_distance",
+        "recent_completed_stimulus",
+        "desired_fatigue_cost"
+      ]
+    },
+    "active_context": {
+      "cycle_id": "2026-05-25_padron_10k",
+      "active_block": "Block 1: Reset, consistency and tissue tolerance",
+      "goal_race_name": "XXIV Padron 10k",
+      "goal_race_priority": "S",
+      "days_to_goal_race": 274,
+      "preferred_plan_columns": [
+        "day",
+        "description",
+        "distance",
+        "pace_or_hr",
+        "shoes"
+      ],
+      "primary_limiter": "aerobic_durability",
+      "default_quality_backbone": [
+        "cruise_intervals",
+        "tempo_broken",
+        "tempo_continuous"
+      ],
+      "available_race_count": 4
+    }
   },
   "goal_gates": {
     "status": "unsupported_now",
@@ -142,8 +220,72 @@
     }
   ],
   "daily_metrics": {
-    "available_days": 0,
-    "latest_date": null,
-    "source": "none"
+    "available_days": 15,
+    "latest_date": "2026-05-08",
+    "source": "garmin_daily",
+    "latest_hrv": 137864769.0,
+    "latest_training_readiness": null,
+    "latest_resting_heart_rate": 59.0,
+    "latest_training_status": {
+      "userId": 137864769,
+      "mostRecentVO2Max": null,
+      "mostRecentTrainingLoadBalance": null,
+      "mostRecentTrainingStatus": null,
+      "heatAltitudeAcclimationDTO": null
+    }
+  },
+  "data_quality": {
+    "available": {
+      "activities": true,
+      "daily_metrics": true,
+      "hrv": true,
+      "training_readiness": false,
+      "resting_heart_rate": true,
+      "training_status": true,
+      "running_tolerance": false
+    },
+    "missing": [
+      "training_readiness",
+      "running_tolerance"
+    ],
+    "latest_daily_date": "2026-05-08",
+    "latest_activity_date": "2026-05-07",
+    "daily_snapshot": {
+      "hrv": 137864769.0,
+      "training_readiness": null,
+      "resting_heart_rate": 59.0,
+      "training_status": {
+        "userId": 137864769,
+        "mostRecentVO2Max": null,
+        "mostRecentTrainingLoadBalance": null,
+        "mostRecentTrainingStatus": null,
+        "heatAltitudeAcclimationDTO": null
+      }
+    },
+    "improvements": [
+      "Integrar HRV reciente en la decision de carga y en el dashboard.",
+      "Comparar resting HR reciente con baseline para detectar fatiga o deriva.",
+      "Traducir training status a una se\u00f1al visible de forma y tolerancia de carga."
+    ]
+  },
+  "running_tolerance": {},
+  "active_context": {
+    "cycle_id": "2026-05-25_padron_10k",
+    "active_block": "Block 1: Reset, consistency and tissue tolerance",
+    "goal_race": {
+      "id": "xxiv_padron_10k_2027",
+      "name": "XXIV Padron 10k",
+      "date": "2027-02-06",
+      "priority": "S",
+      "distance": "10k",
+      "goal": {
+        "type": "time_and_pace",
+        "value": 2100,
+        "target_pace": "3:30/km"
+      },
+      "coaching_note": "35:00 is aspirational and must be unlocked by checkpoint evidence before being used as training pace."
+    },
+    "days_to_goal_race": 274,
+    "available_race_count": 4
   }
 }

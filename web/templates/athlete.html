@@ -4,6 +4,9 @@
 <section class="panel">
   <p class="eyebrow">Perfil</p>
   <h2>{{ athlete.profile.name }}</h2>
+  {% for message in athlete.capability_messages %}
+  <p class="alert">{{ message }}</p>
+  {% endfor %}
   <div class="cards four">
     <article class="card"><h3>Edad</h3><p class="metric">{{ athlete.profile.age }}</p></article>
     <article class="card"><h3>Peso</h3><p class="metric">{{ athlete.profile.weight_kg }} kg</p></article>
@@ -41,5 +44,27 @@
       {% endfor %}
     </div>
   </article>
+</section>
+
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Calzado</p>
+      <h3>Zapatillas y kilometraje</h3>
+    </div>
+    <span class="badge">{{ athlete.shoes|length }} pares</span>
+  </div>
+  <div class="cards three">
+    {% for shoe in athlete.shoes %}
+    <article class="card">
+      <h3>{{ shoe.model }}</h3>
+      <p class="metric">{{ shoe.distance_km or 0 }} km</p>
+      <p class="muted">Uso: {{ shoe.usage or '-' }}</p>
+      <p class="muted">Notas: {{ shoe.notes or '-' }}</p>
+    </article>
+    {% else %}
+    <p class="muted">No hay zapatillas registradas.</p>
+    {% endfor %}
+  </div>
 </section>
 {% endblock %}

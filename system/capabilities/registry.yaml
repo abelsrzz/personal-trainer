@@ -1,0 +1,89 @@
+capabilities:
+  shoes_mileage:
+    description: Keep shoe mileage fresh from Garmin gear before using it in web or planning.
+    source_of_truth: garmin
+    local_cache:
+      - athlete/shoes.yaml
+      - training/completed/imports/garmin/profile/athlete_profile_snapshot.json
+    freshness:
+      strategy: refresh_before_read
+      max_age_minutes: 0
+    sync:
+      command:
+        - python
+        - scripts/garmin/sync_garmin.py
+        - import-athlete-profile
+      post_command:
+        - python
+        - scripts/garmin/athlete_sync.py
+    consumers:
+      - web:/athlete
+      - planning:weekly_planner
+      - planning:workout_loading
+    stale_behavior: show_cached_with_warning
+  athlete_profile:
+    description: Refresh athlete profile, resting HR, max HR and VO2max from Garmin before critical reads.
+    source_of_truth: garmin
+    local_cache:
+      - athlete/profile.yaml
+      - athlete/health.yaml
+      - athlete/zones.yaml
+      - training/completed/imports/garmin/profile/athlete_profile_snapshot.json
+    freshness:
+      strategy: refresh_before_read
+      max_age_minutes: 180
+    sync:
+      command:
+        - python
+        - scripts/garmin/sync_garmin.py
+        - import-athlete-profile
+      post_command:
+        - python
+        - scripts/garmin/athlete_sync.py
+    consumers:
+      - web:/athlete
+      - planning:weekly_planner
+      - planning:coach_engine
+    stale_behavior: show_cached_with_warning
+  daily_readiness:
+    description: Refresh Garmin daily readiness and recovery metrics before fatigue-sensitive decisions.
+    source_of_truth: garmin
+    local_cache:
+      - training/completed/imports/garmin/daily/
+    freshness:
+      strategy: refresh_before_decision
+      max_age_minutes: 720
+    sync:
+      command:
+        - python
+        - scripts/garmin/sync_garmin.py
+        - import-daily
+        - --days
+        - "14"
+    consumers:
+      - planning:coach_engine
+      - web:/dashboard
+      - agents:garmin_sync
+    stale_behavior: show_cached_with_warning
+  coach_decision:
+    description: Rebuild the coaching decision from the latest local and Garmin-derived context.
+    source_of_truth: derived
+    local_cache:
+      - planning/coach_decision.json
+      - planning/coach_decision.md
+      - athlete/status_dashboard.md
+    freshness:
+      strategy: refresh_before_decision
+      max_age_minutes: 360
+    sync:
+      command:
+        - python
+        - scripts/garmin/coach_sync.py
+        - --date
+        - today
+    consumers:
+      - web:/
+      - web:/dashboard
+      - telegram:/status
+      - telegram:/dashboard
+    stale_behavior: show_cached_with_warning

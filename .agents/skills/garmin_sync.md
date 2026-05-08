@@ -24,11 +24,14 @@ Use Garmin as a data source and delivery channel for planned workouts.
 - script: `scripts/garmin/sync_garmin.py`
 - preferred coach command: `scripts/garmin/coach_sync.py`
 - analysis engine: `scripts/garmin/coach_engine.py`
+- capability engine: `scripts/system/capability_engine.py`
+- capability registry: `system/capabilities/registry.yaml`
 - imports: `training/completed/imports/garmin/`
 - athlete snapshot: `training/completed/imports/garmin/profile/athlete_profile_snapshot.json`
 - planned workouts: `training/planned/workouts/`
 - dashboard: `athlete/status_dashboard.md`
 - decision: `planning/coach_decision.md`
+- data quality report: `planning/data_quality_report.md`
 
 ## Preferred Post-Workout Flow
 
@@ -40,3 +43,7 @@ python scripts/garmin/coach_sync.py --date YYYY-MM-DD
 Use `--skip-garmin` to refresh analysis outputs from local files without contacting Garmin.
 
 When Garmin is contacted through `coach_sync.py`, it should also attempt to refresh the local athlete profile state used by planning.
+
+When a registered capability depends on Garmin, prefer satisfying it through the capability engine before reading the local cache directly.
+
+The system should also review `planning/data_quality_report.md` to discover newly available Garmin metrics and prioritize automation improvements.

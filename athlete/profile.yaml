@@ -14,10 +14,14 @@ athlete:
       min: 7
       max: 10
     preferred_quality_days:
-      - Tuesday
-      - Thursday
+    - Tuesday
+    - Thursday
     preferred_long_run_day: Sunday
     constraints:
-      - Work schedule 07:30-15:00
+    - Work schedule 07:30-15:00
   current_context:
     strength_sessions_per_week: 1
+  data_sources:
+    garmin:
+      last_sync: '2026-05-08T19:35:14.266148Z'
+      profile_snapshot: training/completed/imports/garmin/profile/athlete_profile_snapshot.json

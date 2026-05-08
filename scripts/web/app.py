@@ -15,6 +15,7 @@ from fastapi import FastAPI, Form, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from scripts.system.capability_engine import ensure_fresh
 from starlette.middleware.sessions import SessionMiddleware
 
 
@@ -27,6 +28,7 @@ GARMIN_ACTIVITY_DIR = ROOT / "training" / "completed" / "imports" / "garmin" / "
 GARMIN_DAILY_DIR = ROOT / "training" / "completed" / "imports" / "garmin" / "daily"
 RACES_DIR = ROOT / "races"
 MASTER_PLAN_PATH = ROOT / "planning" / "master_plan.md"
+ACTIVE_CYCLE_PATH = ROOT / "planning" / "cycles" / "active.yaml"
 WEB_CONFIG_PATH = ROOT / "web" / "web_config.yaml"
 WEB_LOG_PATH = ROOT / "web" / "web_debug.log"
 
@@ -143,6 +145,11 @@ def day_label(value: str) -> str:
         return value
     names = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
     return f"{names[parsed.weekday()]} {parsed.day:02d}/{parsed.month:02d}/{parsed.year}"
+
+
+def active_cycle_data() -> dict[str, Any]:
+    payload = load_yaml(ACTIVE_CYCLE_PATH).get("cycle", {})
+    return payload if isinstance(payload, dict) else {}
 
 
 def garmin_activity_url(activity_id: int | str | None) -> str | None:
@@ -471,11 +478,50 @@ def planned_upload_data(workout_stem: str, schedule_date: str) -> dict[str, Any]
 
 
 def dashboard_payload() -> dict[str, Any]:
+    decision_capability = ensure_fresh("coach_decision")
     path = ROOT / "planning" / "coach_decision.json"
     payload = load_json(path) if path.exists() else {}
+    payload["capability_messages"] = [message for message in [decision_capability.warning] if message]
+
+    session_family_labels = {
+        "easy_recovery": "Rodaje de recuperacion",
+        "recovery_plus_mobility": "Recuperacion con movilidad",
+        "easy_z2": "Rodaje aerobico Z2",
+        "easy_plus_strides": "Rodaje facil con rectas",
+        "technique_drills_strides": "Tecnica y rectas",
+        "aerobic_steady": "Aerobico sostenido",
+        "cruise_intervals": "Cruise intervals",
+        "tempo_continuous": "Tempo continuo",
+        "tempo_broken": "Tempo fraccionado",
+        "short_intervals_economy": "Series cortas de economia",
+        "short_intervals_vo2": "Series cortas VO2max",
+        "medium_intervals_vo2": "Series medias VO2max",
+        "ten_k_specific_reps": "Repeticiones especificas 10k",
+        "ten_k_specific_continuous": "Continuo especifico 10k",
+        "five_k_specific_reps": "Repeticiones especificas 5k",
+        "half_marathon_specific_blocks": "Bloques especificos de media maraton",
+        "long_run": "Tirada larga",
+        "long_run_quality": "Tirada larga con calidad",
+        "hills_strength": "Cuestas de fuerza",
+        "short_hills_power": "Cuestas cortas de potencia",
+        "mixed_tempo_plus_fast": "Mixto tempo mas rapido",
+        "fartlek_structured": "Fartlek estructurado",
+        "progression_finish_fast": "Progresivo con final vivo",
+        "race_activation": "Activacion de carrera",
+        "marathon_specific_blocks": "Bloques especificos de maraton",
+        "polarized_aerobic_with_spikes": "Aerobico polarizado con toques rapidos",
+    }
+
+    def humanize_session_family(value: str) -> str:
+        return session_family_labels.get(value, value.replace("_", " ").capitalize())
+
     if payload.get("decision"):
         payload["decision"]["status_label"] = decision_status_label(payload["decision"].get("status"))
         payload["decision"]["action_label"] = decision_action_label(payload["decision"].get("action"))
+        guidance = payload["decision"].get("session_guidance", {})
+        guidance["primary_labels"] = [humanize_session_family(item) for item in guidance.get("primary", [])]
+        guidance["avoid_labels"] = [humanize_session_family(item) for item in guidance.get("avoid", [])]
+        guidance["optional_labels"] = [humanize_session_family(item) for item in guidance.get("optional", [])]
     if payload.get("goal_gates"):
         payload["goal_gates"]["status_label"] = goal_status_label(payload["goal_gates"].get("status"))
         metrics = payload["goal_gates"].get("metrics", {})
@@ -766,15 +812,21 @@ def completed_review_detail(slug: str) -> dict[str, Any] | None:
 
 
 def athlete_page_data() -> dict[str, Any]:
+    shoes_capability = ensure_fresh("shoes_mileage")
+    profile_capability = ensure_fresh("athlete_profile")
     profile = load_yaml(ROOT / "athlete" / "profile.yaml").get("athlete", {})
     health = load_yaml(ROOT / "athlete" / "health.yaml").get("health", {})
     shin = load_yaml(ROOT / "athlete" / "shin_tracker.yaml").get("shin_tracker", {})
+    shoes = load_yaml(ROOT / "athlete" / "shoes.yaml").get("shoes", [])
     entries = list(reversed(shin.get("entries") or []))
+    capability_messages = [message for message in [shoes_capability.warning, profile_capability.warning] if message]
     return {
         "profile": profile,
         "health": health,
         "shin": shin,
         "entries": entries,
+        "shoes": shoes if isinstance(shoes, list) else [],
+        "capability_messages": capability_messages,
     }
 
 
@@ -968,28 +1020,10 @@ def calendar_month_data_combined(month: str | None, kind: str = "all", status: s
         raise
 
 
-def system_page_data() -> dict[str, Any]:
-    coach_path = ROOT / "planning" / "coach_decision.json"
-    activity_count = len(list(GARMIN_ACTIVITY_DIR.glob("*/summary.json")))
-    daily_count = len(
-        [path for path in GARMIN_DAILY_DIR.glob("*.json") if not path.name.startswith("last_import") and not path.name.startswith("running_tolerance")]
-    )
-    review_count = len(list(COMPLETED_REVIEW_DIR.glob("*.analysis.json")))
-    planned_count = len([path for path in PLANNED_WORKOUTS_DIR.glob("*.yaml") if path.name not in {"library_run_templates.yaml", "workout_template.yaml"}])
-    race_count = len(list(RACES_DIR.glob("**/*.yaml")))
-    return {
-        "coach_generated_at": format_datetime(load_json(coach_path).get("generated_at")) if coach_path.exists() else "-",
-        "activity_count": activity_count,
-        "daily_count": daily_count,
-        "review_count": review_count,
-        "planned_count": planned_count,
-        "race_count": race_count,
-        "week_pdf_exists": (ROOT / "planning" / "weeks" / "generated" / "semana_actual.pdf").exists(),
-    }
-
-
 def master_plan_page_data() -> dict[str, Any]:
-    text = read_text(MASTER_PLAN_PATH)
+    active_cycle = active_cycle_data()
+    master_plan_path = ROOT / str(active_cycle.get("master_plan_path") or MASTER_PLAN_PATH.relative_to(ROOT))
+    text = read_text(master_plan_path)
     sections: dict[str, list[str]] = {}
     current_section: str | None = None
     for line in text.splitlines():
@@ -1112,6 +1146,7 @@ def master_plan_page_data() -> dict[str, Any]:
         ]
 
     return {
+        "active_cycle": active_cycle,
         "cycle_window": cycle_window,
         "goal_race": translated_items("Main Goal Race"),
         "pre_cycle_race": translated_items("Pre-Cycle Race"),
@@ -1127,8 +1162,27 @@ def master_plan_page_data() -> dict[str, Any]:
     }
 
 
+def cycle_page_data() -> dict[str, Any]:
+    dashboard = dashboard_payload()
+    master_plan = master_plan_page_data()
+    active_cycle = active_cycle_data()
+    blocks = master_plan.get("blocks", [])
+    active_block_name = dashboard.get("active_context", {}).get("active_block")
+    current_block = next((block for block in blocks if block.get("title") == active_block_name), blocks[0] if blocks else None)
+    return {
+        "active_cycle": active_cycle,
+        "dashboard": dashboard,
+        "master_plan": master_plan,
+        "current_block": current_block,
+        "goal_race": dashboard.get("active_context", {}).get("goal_race"),
+        "days_to_goal_race": dashboard.get("active_context", {}).get("days_to_goal_race"),
+        "session_guidance": dashboard.get("decision", {}).get("session_guidance", {}),
+    }
+
+
 def home_page_data() -> dict[str, Any]:
     dashboard = dashboard_payload()
+    active_cycle = active_cycle_data()
     week = week_page_data()
     workouts = planned_workouts()
     reviews = completed_reviews()
@@ -1136,6 +1190,7 @@ def home_page_data() -> dict[str, Any]:
     recent_reviews = reviews[:5]
     return {
         "dashboard": dashboard,
+        "active_cycle": active_cycle,
         "week": week,
         "upcoming": upcoming[:5] if upcoming else workouts[:5],
         "recent_reviews": recent_reviews,
@@ -1349,20 +1404,20 @@ async def races(request: Request) -> HTMLResponse:
     return templates.TemplateResponse(request, "races.html", template_context(request, races=races_page_data()))
 
 
+@app.get("/cycle", response_class=HTMLResponse)
+async def cycle(request: Request) -> HTMLResponse:
+    redirect = auth_guard(request)
+    if redirect:
+        return redirect
+    return templates.TemplateResponse(request, "cycle.html", template_context(request, cycle=cycle_page_data()))
+
+
 @app.get("/master-plan", response_class=HTMLResponse)
 async def master_plan(request: Request) -> HTMLResponse:
     redirect = auth_guard(request)
     if redirect:
         return redirect
     return templates.TemplateResponse(request, "master_plan.html", template_context(request, master_plan=master_plan_page_data()))
-
-
-@app.get("/system", response_class=HTMLResponse)
-async def system(request: Request) -> HTMLResponse:
-    redirect = auth_guard(request)
-    if redirect:
-        return redirect
-    return templates.TemplateResponse(request, "system.html", template_context(request, system=system_page_data()))
 
 
 @app.get("/healthz")

@@ -1,0 +1,19 @@
+{
+  "capabilities": {
+    "shoes_mileage": {
+      "last_attempted_sync": "2026-05-08T19:35:14.420524+00:00",
+      "last_error": null,
+      "last_successful_sync": "2026-05-08T19:35:14.420524+00:00"
+    },
+    "athlete_profile": {
+      "last_attempted_sync": "2026-05-08T19:34:19.010173+00:00",
+      "last_error": null,
+      "last_successful_sync": "2026-05-08T19:34:19.010173+00:00"
+    },
+    "coach_decision": {
+      "last_attempted_sync": "2026-05-08T19:34:45.400179+00:00",
+      "last_error": null,
+      "last_successful_sync": "2026-05-08T19:34:45.400179+00:00"
+    }
+  }
+}

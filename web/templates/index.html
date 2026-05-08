@@ -6,9 +6,13 @@
     <p class="eyebrow">Resumen operativo</p>
     <h2>{{ dashboard.decision.status_label if dashboard.decision else "Sin datos todavía" }}</h2>
     <p>{{ dashboard.decision.recommendation if dashboard.decision else "Aún no hay suficiente información para mostrar una recomendación." }}</p>
+    {% for message in dashboard.capability_messages or [] %}
+    <p class="alert">{{ message }}</p>
+    {% endfor %}
   </div>
   <div class="hero-meta">
     <span>Analisis: {{ dashboard.as_of or "-" }}</span>
+    <span>Ciclo: {{ active_cycle.id or '-' }}</span>
     <span>Revisiones: {{ review_count }}</span>
     <span>Planificados: {{ planned_count }}</span>
   </div>
@@ -21,9 +25,9 @@
     <p class="muted">{{ dashboard.decision.reasons[0] if dashboard.decision and dashboard.decision.reasons else "Sin motivo disponible." }}</p>
   </article>
   <article class="card">
-    <h3>Semana activa</h3>
-    <p class="metric">{{ week.rows|length }}</p>
-    <p class="muted">Sesiones visibles en el plan actual.</p>
+    <h3>Ciclo activo</h3>
+    <p class="metric">{{ active_cycle.id or '-' }}</p>
+    <p class="muted"><a class="action-link" href="/cycle">Abrir vista de ciclo</a></p>
   </article>
   <article class="card">
     <h3>Objetivo principal</h3>

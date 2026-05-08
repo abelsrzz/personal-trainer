@@ -18,9 +18,16 @@ GARMIN_DAILY_ROOT = ROOT / "training" / "completed" / "imports" / "garmin" / "da
 REVIEW_ROOT = ROOT / "training" / "completed" / "reviews"
 SHIN_TRACKER_PATH = ROOT / "athlete" / "shin_tracker.yaml"
 GOAL_GATES_PATH = ROOT / "planning" / "goal_gates.yaml"
+ACTIVE_CYCLE_PATH = ROOT / "planning" / "cycles" / "active.yaml"
+PREFERENCES_PATH = ROOT / "athlete" / "preferences.yaml"
+RESPONSE_PROFILE_PATH = ROOT / "athlete" / "response_profile.yaml"
+SESSION_SELECTION_MATRIX_PATH = ROOT / "planning" / "session_selection_matrix.yaml"
+RACES_ROOT = ROOT / "races"
 STATUS_DASHBOARD_PATH = ROOT / "athlete" / "status_dashboard.md"
 COACH_DECISION_MD_PATH = ROOT / "planning" / "coach_decision.md"
 COACH_DECISION_JSON_PATH = ROOT / "planning" / "coach_decision.json"
+GARMIN_COVERAGE_REPORT_PATH = ROOT / "planning" / "data_quality_report.md"
+RUNNING_TOLERANCE_PATH = GARMIN_DAILY_ROOT / "running_tolerance_weekly.json"
 
 
 def parse_args() -> argparse.Namespace:
@@ -172,6 +179,349 @@ def load_daily_metrics() -> list[dict[str, Any]]:
         metrics.append({"date": metric_date, "payload": payload, "source_path": str(path.relative_to(ROOT))})
     metrics.sort(key=lambda item: item["date"])
     return metrics
+
+
+def load_running_tolerance() -> dict[str, Any]:
+    if not RUNNING_TOLERANCE_PATH.exists():
+        return {}
+    try:
+        payload = load_json(RUNNING_TOLERANCE_PATH)
+    except (json.JSONDecodeError, OSError):
+        return {}
+    return payload if isinstance(payload, dict) else {}
+
+
+def load_active_cycle() -> dict[str, Any]:
+    payload = load_yaml(ACTIVE_CYCLE_PATH).get("cycle", {})
+    return payload if isinstance(payload, dict) else {}
+
+
+def load_preferences() -> dict[str, Any]:
+    payload = load_yaml(PREFERENCES_PATH).get("preferences", {})
+    return payload if isinstance(payload, dict) else {}
+
+
+def load_response_profile() -> dict[str, Any]:
+    payload = load_yaml(RESPONSE_PROFILE_PATH).get("response_profile", {})
+    return payload if isinstance(payload, dict) else {}
+
+
+def load_session_selection_matrix() -> dict[str, Any]:
+    payload = load_yaml(SESSION_SELECTION_MATRIX_PATH).get("session_selection_matrix", {})
+    return payload if isinstance(payload, dict) else {}
+
+
+def load_races() -> list[dict[str, Any]]:
+    races: list[dict[str, Any]] = []
+    for path in sorted(RACES_ROOT.glob("**/*.yaml")):
+        payload = load_yaml(path)
+        if not isinstance(payload, dict):
+            continue
+        race_date = parse_local_date(payload.get("date"))
+        if race_date is None:
+            continue
+        races.append(
+            {
+                "id": payload.get("id") or path.stem,
+                "name": payload.get("name") or path.stem,
+                "date": race_date,
+                "priority": str(payload.get("priority") or "").upper(),
+                "distance": str(payload.get("distance") or payload.get("distance_km") or ""),
+                "goal": payload.get("goal") or {},
+                "coaching_note": payload.get("coaching_note") or "",
+            }
+        )
+    races.sort(key=lambda item: item["date"])
+    return races
+
+
+def active_block_from_master_plan(as_of: date, active_cycle: dict[str, Any]) -> dict[str, Any]:
+    master_plan_path = ROOT / str(active_cycle.get("master_plan_path") or "planning/master_plan.md")
+    text = master_plan_path.read_text(encoding="utf-8") if master_plan_path.exists() else ""
+    blocks: list[dict[str, Any]] = []
+    current: dict[str, Any] | None = None
+    for raw_line in text.splitlines():
+        line = raw_line.strip()
+        number, separator, remainder = line.partition(". ")
+        if number.isdigit() and separator and remainder.startswith("`"):
+            if current:
+                blocks.append(current)
+            current = {"name": remainder.strip("`").strip(), "start": None, "end": None}
+            continue
+        if current and line.startswith("- Dates:"):
+            date_text = line.split(":", 1)[1].strip().replace("`", "")
+            if " to " in date_text:
+                start_text, end_text = date_text.split(" to ", 1)
+                current["start"] = parse_local_date(start_text.strip())
+                current["end"] = parse_local_date(end_text.strip())
+    if current:
+        blocks.append(current)
+    for block in blocks:
+        if block.get("start") and block.get("end") and block["start"] <= as_of <= block["end"]:
+            return block
+    return blocks[0] if blocks else {}
+
+
+def active_context(as_of: date) -> dict[str, Any]:
+    cycle = load_active_cycle()
+    races = load_races()
+    goal_race_slug = str(cycle.get("goal_race_slug") or "").lower()
+    goal_race = next((race for race in races if goal_race_slug and goal_race_slug in str(race.get("id") or "").lower()), None)
+    if goal_race is None:
+        goal_race = next((race for race in races if race.get("priority") == "S"), None)
+    block = active_block_from_master_plan(as_of, cycle)
+    days_to_goal_race = (goal_race["date"] - as_of).days if goal_race and goal_race.get("date") else None
+    response_profile = load_response_profile()
+    preferences = load_preferences()
+    selection_matrix = load_session_selection_matrix()
+    return {
+        "cycle": cycle,
+        "goal_race": goal_race,
+        "days_to_goal_race": days_to_goal_race,
+        "active_block": block,
+        "response_profile": response_profile,
+        "preferences": preferences,
+        "selection_matrix": selection_matrix,
+        "races": races,
+    }
+
+
+def block_key(block_name: str | None) -> str | None:
+    normalized = str(block_name or "").lower()
+    if "block 1" in normalized or "bloque 1" in normalized:
+        return "block_1"
+    if "block 2" in normalized or "bloque 2" in normalized:
+        return "block_2"
+    if "block 3" in normalized or "bloque 3" in normalized:
+        return "block_3"
+    if "block 4" in normalized or "bloque 4" in normalized:
+        return "block_4"
+    if "block 5" in normalized or "bloque 5" in normalized:
+        return "block_5"
+    if "block 6" in normalized or "bloque 6" in normalized:
+        return "block_6"
+    return None
+
+
+def target_distance_key(goal_race: dict[str, Any] | None) -> str:
+    raw = str((goal_race or {}).get("distance") or "general").lower()
+    if "10" in raw:
+        return "10k"
+    if "5" in raw:
+        return "5k"
+    if "21" in raw or "half" in raw:
+        return "21k"
+    if "42" in raw or "marathon" in raw:
+        return "marathon"
+    return "general"
+
+
+def shin_band(shin_pain: int | None) -> str:
+    if shin_pain is None or shin_pain <= 2:
+        return "green"
+    if shin_pain == 3:
+        return "yellow"
+    return "red"
+
+
+def derive_session_guidance(context: dict[str, Any], coach_state: str, shin_pain: int | None) -> dict[str, Any]:
+    matrix = context.get("selection_matrix", {})
+    rules = matrix.get("rules", [])
+    block = block_key(context.get("active_block", {}).get("name"))
+    target_distance = target_distance_key(context.get("goal_race"))
+    current_shin_band = shin_band(shin_pain)
+    primary: list[str] = []
+    optional: list[str] = []
+    avoid: list[str] = []
+    quality_volume_cap = None
+
+    for rule in rules:
+        when = rule.get("when", {})
+        if when.get("coach_state") and when.get("coach_state") != coach_state:
+            continue
+        if when.get("block") and when.get("block") != block:
+            continue
+        if when.get("target_distance") and when.get("target_distance") != target_distance:
+            continue
+        recommend = rule.get("recommend", {})
+        if recommend:
+            primary.extend(recommend.get("primary", []))
+            optional.extend(recommend.get("optional", []))
+            avoid.extend(rule.get("avoid", []))
+            quality_volume_cap = rule.get("quality_volume_cap") or quality_volume_cap
+
+    for rule in rules:
+        when = rule.get("when", {})
+        if when.get("shin_band") != current_shin_band:
+            continue
+        override = rule.get("override", {})
+        remove = set(override.get("remove", []))
+        prefer = override.get("prefer", [])
+        primary = [item for item in primary if item not in remove]
+        optional = [item for item in optional if item not in remove]
+        avoid.extend(list(remove))
+        primary = prefer + [item for item in primary if item not in prefer]
+
+    positive_bias = [item.get("family") for item in context.get("response_profile", {}).get("workout_response", {}).get("likely_positive", []) if item.get("family")]
+    careful_bias = [item.get("family") for item in context.get("response_profile", {}).get("workout_response", {}).get("use_carefully", []) if item.get("family")]
+    lower_priority = [item.get("family") for item in context.get("response_profile", {}).get("workout_response", {}).get("likely_lower_priority", []) if item.get("family")]
+
+    ordered_primary = [item for item in positive_bias if item in primary] + [item for item in primary if item not in positive_bias and item not in lower_priority]
+    avoid = list(dict.fromkeys(avoid + careful_bias + lower_priority))
+
+    return {
+        "coach_state": coach_state,
+        "shin_band": current_shin_band,
+        "block": block,
+        "target_distance": target_distance,
+        "primary": list(dict.fromkeys(ordered_primary)),
+        "optional": list(dict.fromkeys(optional)),
+        "avoid": list(dict.fromkeys(avoid)),
+        "quality_volume_cap": quality_volume_cap,
+        "selection_order": matrix.get("interpretation", {}).get("selection_order", []),
+    }
+
+
+def nested_get(payload: dict[str, Any], *keys: str) -> Any:
+    current: Any = payload
+    for key in keys:
+        if not isinstance(current, dict):
+            return None
+        current = current.get(key)
+    return current
+
+
+def first_numeric(value: Any) -> float | None:
+    if value is None:
+        return None
+    if isinstance(value, (int, float)):
+        return float(value)
+    if isinstance(value, list):
+        for item in value:
+            numeric = first_numeric(item)
+            if numeric is not None:
+                return numeric
+    if isinstance(value, dict):
+        for nested in value.values():
+            numeric = first_numeric(nested)
+            if numeric is not None:
+                return numeric
+    return None
+
+
+def daily_metric_snapshot(metrics: list[dict[str, Any]], as_of: date) -> dict[str, Any]:
+    candidates = [item for item in metrics if item["date"] <= as_of]
+    if not candidates:
+        return {}
+    latest = candidates[-1]["payload"]
+    return {
+        "hrv": first_numeric(latest.get("hrv")),
+        "training_readiness": first_numeric(latest.get("training_readiness")),
+        "resting_heart_rate": first_numeric(nested_get(latest, "heart_rates", "restingHeartRate")) or first_numeric(latest.get("heart_rates")),
+        "training_status": nested_get(latest, "training_status", "mostRecentTrainingStatus", "trainingStatus")
+        or nested_get(latest, "training_status", "trainingStatus")
+        or latest.get("training_status"),
+    }
+
+
+def classify_daily_signals(metrics: list[dict[str, Any]], activities: list[dict[str, Any]], as_of: date) -> dict[str, Any]:
+    snapshot = daily_metric_snapshot(metrics, as_of)
+    last_28 = aggregate_window(activities, as_of - timedelta(days=27), as_of)
+    daily_window = [item for item in metrics if as_of - timedelta(days=6) <= item["date"] <= as_of]
+    hrv_values = [first_numeric(item["payload"].get("hrv")) for item in daily_window]
+    hrv_values = [value for value in hrv_values if value is not None]
+    readiness = snapshot.get("training_readiness")
+    resting_hr = snapshot.get("resting_heart_rate")
+    avg_run_hr = last_28.get("avg_hr")
+    baseline_hrv = sum(hrv_values) / len(hrv_values) if hrv_values else None
+
+    hrv_flag = None
+    if snapshot.get("hrv") is not None and baseline_hrv is not None and baseline_hrv > 0:
+        hrv_ratio = float(snapshot["hrv"]) / baseline_hrv
+        if hrv_ratio < 0.85:
+            hrv_flag = "low"
+        elif hrv_ratio > 1.1:
+            hrv_flag = "high"
+        else:
+            hrv_flag = "stable"
+
+    readiness_flag = None
+    if readiness is not None:
+        if readiness < 35:
+            readiness_flag = "low"
+        elif readiness < 60:
+            readiness_flag = "moderate"
+        else:
+            readiness_flag = "good"
+
+    resting_hr_flag = None
+    if resting_hr is not None and avg_run_hr is not None:
+        if resting_hr >= 60:
+            resting_hr_flag = "high"
+        elif resting_hr <= 50:
+            resting_hr_flag = "low"
+        else:
+            resting_hr_flag = "normal"
+
+    training_status_text = str(snapshot.get("training_status") or "").lower()
+    training_status_flag = None
+    if training_status_text:
+        if any(keyword in training_status_text for keyword in ["recovery", "detraining", "strained", "overreaching"]):
+            training_status_flag = "caution"
+        elif any(keyword in training_status_text for keyword in ["productive", "maintaining", "peaking"]):
+            training_status_flag = "positive"
+        else:
+            training_status_flag = "neutral"
+
+    return {
+        "snapshot": snapshot,
+        "baseline_hrv": baseline_hrv,
+        "hrv_flag": hrv_flag,
+        "readiness_flag": readiness_flag,
+        "resting_hr_flag": resting_hr_flag,
+        "training_status_flag": training_status_flag,
+    }
+
+
+def garmin_data_quality_report(daily: list[dict[str, Any]], activities: list[dict[str, Any]], as_of: date) -> dict[str, Any]:
+    daily_snapshot = daily_metric_snapshot(daily, as_of)
+    daily_available = bool(daily)
+    running_tolerance = load_running_tolerance()
+    latest_daily = daily[-1]["date"].isoformat() if daily else None
+    activity_latest = activities[-1]["date"].isoformat() if activities else None
+    available = {
+        "activities": bool(activities),
+        "daily_metrics": daily_available,
+        "hrv": daily_snapshot.get("hrv") is not None,
+        "training_readiness": daily_snapshot.get("training_readiness") is not None,
+        "resting_heart_rate": daily_snapshot.get("resting_heart_rate") is not None,
+        "training_status": daily_snapshot.get("training_status") is not None,
+        "running_tolerance": bool(running_tolerance),
+    }
+    missing = [name for name, present in available.items() if not present and name not in {"activities", "daily_metrics"}]
+    improvements = []
+    if available["hrv"]:
+        improvements.append("Integrar HRV reciente en la decision de carga y en el dashboard.")
+    if available["training_readiness"]:
+        improvements.append("Usar training readiness para bloquear progresiones cuando Garmin marque baja preparacion.")
+    if available["resting_heart_rate"]:
+        improvements.append("Comparar resting HR reciente con baseline para detectar fatiga o deriva.")
+    if available["training_status"]:
+        improvements.append("Traducir training status a una señal visible de forma y tolerancia de carga.")
+    if available["running_tolerance"]:
+        improvements.append("Usar running tolerance para limitar aumentos de carga cuando Garmin marque baja tolerancia.")
+    if not daily_available:
+        improvements.append("Importar daily metrics de Garmin con regularidad para desbloquear HRV, readiness y resting HR.")
+    if not activities:
+        improvements.append("Importar actividades recientes de Garmin antes de cualquier analisis de rendimiento.")
+    return {
+        "available": available,
+        "missing": missing,
+        "latest_daily_date": latest_daily,
+        "latest_activity_date": activity_latest,
+        "daily_snapshot": daily_snapshot,
+        "improvements": improvements,
+    }
 
 
 def load_shin_entries() -> list[dict[str, Any]]:
@@ -376,6 +726,8 @@ def build_decision(activities: list[dict[str, Any]], reviews: list[dict[str, Any
     risky_review = latest_high_risk_review(reviews, as_of)
     shin_entry = latest_shin_entry(shin_entries, as_of)
     shin_pain = max_shin_pain(shin_entry)
+    daily_signals = classify_daily_signals(load_daily_metrics(), activities, as_of)
+    context = active_context(as_of)
     reasons: list[str] = []
     status = "green"
     action = "maintain_or_progress_carefully"
@@ -398,6 +750,40 @@ def build_decision(activities: list[dict[str, Any]], reviews: list[dict[str, Any
     if last_7["avg_hr"] and last_7["avg_hr"] > 152 and last_7["avg_pace_s_per_km"] and last_7["avg_pace_s_per_km"] > 420:
         reasons.append("Rodajes recientes muestran pulso alto para ritmo facil; senal de fatiga, calor o baja eficiencia actual.")
         status = "yellow" if status == "green" else status
+    if daily_signals["readiness_flag"] == "low":
+        reasons.append("Garmin readiness reciente es baja; no conviene progresar carga.")
+        status = "red" if status == "red" else "yellow"
+    elif daily_signals["readiness_flag"] == "moderate" and status == "green":
+        reasons.append("Garmin readiness reciente es intermedia; mejor consolidar antes de subir carga.")
+        status = "yellow"
+    if daily_signals["hrv_flag"] == "low":
+        reasons.append("HRV reciente por debajo de su rango inmediato; posible señal de fatiga o recuperacion incompleta.")
+        status = "yellow" if status == "green" else status
+    if daily_signals["resting_hr_flag"] == "high":
+        reasons.append("Resting HR reciente relativamente alta; vigilar estres o recuperacion.")
+        status = "yellow" if status == "green" else status
+    if daily_signals["training_status_flag"] == "caution":
+        reasons.append("Training status de Garmin sugiere prudencia en la carga actual.")
+        status = "yellow" if status == "green" else status
+
+    active_block_name = str(context.get("active_block", {}).get("name") or "").lower()
+    if "reset" in active_block_name or "consistency" in active_block_name:
+        reasons.append("El bloque activo prioriza reconstruccion, consistencia y tolerancia tisular antes de ritmos agresivos.")
+        if status == "green":
+            action = "maintain_or_progress_carefully"
+
+    days_to_goal_race = context.get("days_to_goal_race")
+    if isinstance(days_to_goal_race, int) and 0 <= days_to_goal_race <= 14:
+        reasons.append(f"La carrera objetivo esta a {days_to_goal_race} dias; la carga debe proteger frescura y ejecucion.")
+        status = "yellow" if status == "green" else status
+
+    profile_summary = context.get("response_profile", {}).get("summary", {})
+    if profile_summary.get("primary_limiter") == "aerobic_durability":
+        reasons.append("El limitador principal declarado sigue siendo la durabilidad aerobica; la construccion debe respetarlo.")
+
+    default_quality_backbone = context.get("response_profile", {}).get("automation_rules", {}).get("default_quality_backbone", [])
+    if default_quality_backbone:
+        reasons.append("La automatizacion prioriza como backbone de calidad: " + ", ".join(default_quality_backbone[:3]) + ".")
 
     if status == "red":
         action = "reduce_or_replace_quality"
@@ -411,6 +797,8 @@ def build_decision(activities: list[dict[str, Any]], reviews: list[dict[str, Any
     if not reasons:
         reasons.append("Sin banderas rojas objetivas en los datos locales disponibles.")
 
+    session_guidance = derive_session_guidance(context, status, shin_pain)
+
     return {
         "as_of": as_of.isoformat(),
         "status": status,
@@ -421,17 +809,71 @@ def build_decision(activities: list[dict[str, Any]], reviews: list[dict[str, Any
         "volume_spike_pct": volume_spike,
         "latest_shin_entry": shin_entry,
         "latest_high_risk_review": risky_review,
+        "daily_signals": daily_signals,
+        "session_guidance": session_guidance,
+        "active_context": {
+            "cycle_id": context.get("cycle", {}).get("id"),
+            "active_block": context.get("active_block", {}).get("name"),
+            "goal_race_name": context.get("goal_race", {}).get("name") if context.get("goal_race") else None,
+            "goal_race_priority": context.get("goal_race", {}).get("priority") if context.get("goal_race") else None,
+            "days_to_goal_race": context.get("days_to_goal_race"),
+            "preferred_plan_columns": context.get("preferences", {}).get("weekly_plan_format", {}).get("columns", []),
+            "primary_limiter": profile_summary.get("primary_limiter"),
+            "default_quality_backbone": default_quality_backbone,
+            "available_race_count": len(context.get("races", [])),
+        },
     }
 
 
 def summarize_daily(metrics: list[dict[str, Any]], as_of: date, days: int) -> dict[str, Any]:
     start = as_of - timedelta(days=days - 1)
     window = [item for item in metrics if start <= item["date"] <= as_of]
+    snapshot = daily_metric_snapshot(metrics, as_of)
     return {
         "available_days": len(window),
         "latest_date": window[-1]["date"].isoformat() if window else None,
         "source": "garmin_daily" if window else "none",
+        "latest_hrv": snapshot.get("hrv"),
+        "latest_training_readiness": snapshot.get("training_readiness"),
+        "latest_resting_heart_rate": snapshot.get("resting_heart_rate"),
+        "latest_training_status": snapshot.get("training_status"),
     }
+
+
+def render_data_quality_report(payload: dict[str, Any]) -> str:
+    quality = payload["data_quality"]
+    daily = payload["daily_metrics"]
+    lines = [
+        "# Garmin Data Quality Report",
+        "",
+        f"- Fecha de analisis: `{payload['as_of']}`",
+        f"- Ultima actividad importada: `{quality['latest_activity_date'] or '-'}`",
+        f"- Ultimo daily importado: `{quality['latest_daily_date'] or '-'}`",
+        "",
+        "## Cobertura",
+        "",
+    ]
+    for key, present in quality["available"].items():
+        lines.append(f"- `{key}`: `{'yes' if present else 'no'}`")
+    lines.extend([
+        "",
+        "## Snapshot Diario Disponible",
+        "",
+        f"- HRV: `{fmt_float(daily.get('latest_hrv'))}`",
+        f"- Training readiness: `{fmt_float(daily.get('latest_training_readiness'))}`",
+        f"- Resting HR: `{fmt_float(daily.get('latest_resting_heart_rate'))}`",
+        f"- Training status: `{daily.get('latest_training_status') or '-'}`",
+        "",
+        "## Mejoras Sugeridas",
+        "",
+    ])
+    for item in quality["improvements"]:
+        lines.append(f"- {item}")
+    if quality["missing"]:
+        lines.extend(["", "## Gaps", ""])
+        for item in quality["missing"]:
+            lines.append(f"- {item}")
+    return "\n".join(lines)
 
 
 def render_dashboard(payload: dict[str, Any]) -> str:
@@ -533,6 +975,7 @@ def build_payload(as_of: date, days: int) -> dict[str, Any]:
     shin_entries = load_shin_entries()
     start = as_of - timedelta(days=days - 1)
     decision = build_decision(activities, reviews, shin_entries, as_of)
+    context = active_context(as_of)
     return {
         "generated_at": datetime.now(UTC).isoformat(),
         "as_of": as_of.isoformat(),
@@ -544,6 +987,15 @@ def build_payload(as_of: date, days: int) -> dict[str, Any]:
         "performance_estimate": performance_estimate(activities, as_of),
         "weekly_volume": weekly_volume(activities, start, as_of),
         "daily_metrics": summarize_daily(daily, as_of, days),
+        "data_quality": garmin_data_quality_report(daily, activities, as_of),
+        "running_tolerance": load_running_tolerance(),
+        "active_context": {
+            "cycle_id": context.get("cycle", {}).get("id"),
+            "active_block": context.get("active_block", {}).get("name"),
+            "goal_race": context.get("goal_race"),
+            "days_to_goal_race": context.get("days_to_goal_race"),
+            "available_race_count": len(context.get("races", [])),
+        },
     }
 
 
@@ -555,6 +1007,7 @@ def main() -> None:
         save_json(COACH_DECISION_JSON_PATH, payload)
         save_text(STATUS_DASHBOARD_PATH, render_dashboard(payload))
         save_text(COACH_DECISION_MD_PATH, render_decision(payload))
+        save_text(GARMIN_COVERAGE_REPORT_PATH, render_data_quality_report(payload))
     print(json.dumps({"status": payload["decision"]["status"], "action": payload["decision"]["action"], "as_of": payload["as_of"]}, indent=2, ensure_ascii=True))
 
 

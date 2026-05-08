@@ -8,6 +8,7 @@
     <p>Vista operativa del ciclo completo, sus bloques y las reglas que gobiernan la progresion.</p>
   </div>
   <div class="hero-meta">
+    <span>Ciclo: {{ master_plan.active_cycle.id or '-' }}</span>
     <span>Inicio: {{ master_plan.cycle_window.start_date or '-' }}</span>
     <span>Objetivo: {{ master_plan.cycle_window.goal_race_date or '-' }}</span>
     <span>Duracion: {{ master_plan.cycle_window.total_duration or '-' }}</span>

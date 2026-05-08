@@ -1,9 +1,11 @@
 health:
   current_issues:
-    - Left shin periosteum discomfort
+  - Left shin periosteum discomfort
   past_injuries:
-    - Tibial periostitis
+  - Tibial periostitis
   medical_constraints: []
   sleep_notes: null
   stress_notes: null
   recovery_notes: General sensations recently poor
+  garmin_metrics:
+    last_sync: '2026-05-08T19:35:14.266148Z'

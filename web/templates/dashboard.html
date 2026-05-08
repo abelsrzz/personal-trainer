@@ -6,10 +6,14 @@
     <p class="eyebrow">Lectura operativa</p>
     <h2>{{ dashboard.decision.status_label }}</h2>
     <p>{{ dashboard.decision.recommendation }}</p>
+    {% for message in dashboard.capability_messages or [] %}
+    <p class="alert">{{ message }}</p>
+    {% endfor %}
   </div>
   <div class="hero-meta">
     <span>As of: {{ dashboard.as_of }}</span>
     <span>Ventana: {{ dashboard.lookback_days }} días</span>
+    <span>Bloque: {{ dashboard.active_context.active_block or '-' }}</span>
     <span>{{ dashboard.goal_gates.status_label }}</span>
   </div>
 </section>
@@ -21,14 +25,14 @@
     <p class="muted">La decisión manda sobre la próxima microprogresión.</p>
   </article>
   <article class="card">
-    <h3>Carga 7 días</h3>
+    <h3>Carga reciente</h3>
     <p class="metric">{{ "%.1f"|format(dashboard.decision.windows.last_7_days.km) }} km</p>
     <p class="muted">{{ dashboard.decision.windows.last_7_days.runs }} carreras, {{ dashboard.decision.windows.last_7_days.quality_runs }} exigentes.</p>
   </article>
   <article class="card">
-    <h3>Tendencia de carga</h3>
-    <p class="metric">{{ "%.0f"|format(dashboard.decision.volume_spike_pct) if dashboard.decision.volume_spike_pct is not none else '-' }}%</p>
-    <p class="muted">Cambio del último bloque de 7 días frente al anterior.</p>
+    <h3>Carrera objetivo</h3>
+    <p class="metric">{{ dashboard.active_context.days_to_goal_race if dashboard.active_context.days_to_goal_race is not none else '-' }}</p>
+    <p class="muted">Dias para {{ dashboard.active_context.goal_race.name if dashboard.active_context.goal_race else 'la carrera principal' }}.</p>
   </article>
   <article class="card">
     <h3>Estimacion 10k</h3>
@@ -36,7 +40,7 @@
     <p class="muted">{{ dashboard.performance_estimate.method }}</p>
   </article>
   <article class="card">
-    <h3>Gates del objetivo</h3>
+    <h3>Checkpoints del objetivo</h3>
     <p class="metric">{{ dashboard.goal_gates.passed_count }}/{{ dashboard.goal_gates.total_gates }}</p>
     <p class="muted">{{ dashboard.goal_gates.status_label }}</p>
   </article>
@@ -76,9 +80,9 @@
 
       <div class="list-item static">
         <div>
-          <strong>Motivos de la decisión</strong>
+          <strong>Motivos principales</strong>
           <ul class="plain-list inline-plain-list">
-            {% for reason in dashboard.decision.reasons %}
+            {% for reason in dashboard.decision.reasons[:4] %}
             <li>{{ reason }}</li>
             {% endfor %}
           </ul>
@@ -90,7 +94,7 @@
     <div class="panel-head">
       <div>
         <p class="eyebrow">Vigilancia</p>
-        <h3>Señales que mandan</h3>
+        <h3>Semaforos del momento</h3>
       </div>
     </div>
     <div class="list compact-list">
@@ -110,10 +114,17 @@
       </div>
       <div class="list-item static">
         <div>
-          <strong>Frecuencia y densidad</strong>
-          <p>{{ dashboard.decision.windows.last_7_days.runs }} sesiones en 7 días y {{ dashboard.decision.windows.last_28_days.runs }} en 28 días.</p>
+          <strong>Frecuencia</strong>
+          <p>{{ dashboard.decision.windows.last_7_days.runs }} sesiones en 7 dias y {{ dashboard.decision.windows.last_28_days.runs }} en 28 dias.</p>
         </div>
         <span class="badge">Carga</span>
+      </div>
+      <div class="list-item static">
+        <div>
+          <strong>Recuperacion Garmin</strong>
+          <p>HRV {{ dashboard.daily_metrics.latest_hrv if dashboard.daily_metrics.latest_hrv is not none else '-' }}, readiness {{ dashboard.daily_metrics.latest_training_readiness if dashboard.daily_metrics.latest_training_readiness is not none else '-' }}, resting HR {{ dashboard.daily_metrics.latest_resting_heart_rate if dashboard.daily_metrics.latest_resting_heart_rate is not none else '-' }}.</p>
+        </div>
+        <span class="badge">Daily</span>
       </div>
       {% if dashboard.decision.latest_shin_entry %}
       <div class="list-item static">
@@ -169,7 +180,39 @@
 <section class="panel">
   <div class="panel-head">
     <div>
-      <p class="eyebrow">Histórico corto</p>
+      <p class="eyebrow">Seleccion de sesiones</p>
+      <h3>Lo que tiene mas sentido ahora</h3>
+    </div>
+    <span class="badge">{{ dashboard.decision.session_guidance.quality_volume_cap or '-' }}</span>
+  </div>
+  <div class="split">
+    <article class="panel">
+      <h3>Priorizar</h3>
+      <ul class="plain-list">
+        {% for item in dashboard.decision.session_guidance.primary_labels %}
+        <li>{{ item }}</li>
+        {% else %}
+        <li>-</li>
+        {% endfor %}
+      </ul>
+    </article>
+    <article class="panel">
+      <h3>Evitar o vigilar</h3>
+      <ul class="plain-list">
+        {% for item in dashboard.decision.session_guidance.avoid_labels %}
+        <li>{{ item }}</li>
+        {% else %}
+        <li>-</li>
+        {% endfor %}
+      </ul>
+    </article>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Historico corto</p>
       <h3>Volumen semanal reciente</h3>
     </div>
   </div>

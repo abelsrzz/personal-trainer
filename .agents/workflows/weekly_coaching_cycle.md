@@ -25,6 +25,12 @@ The operational week always runs from Monday to Sunday.
 8. generate the next `planning/weeks/semana_actual.md`
 9. generate `planning/weeks/generated/semana_actual.pdf` and send it by Telegram
 
+## Cycle Lifecycle
+
+- Use `python scripts/system/close_cycle.py` to snapshot and close the active cycle before replacing the master plan for a new objective.
+- Use `python scripts/system/start_cycle.py` to define the next active cycle manifest.
+- Treat `planning/cycles/active.yaml` as the current cycle pointer while legacy active files remain in place.
+
 ## Replanning Triggers
 
 - poor workout execution with meaningful cause
@@ -46,3 +52,9 @@ The operational week always runs from Monday to Sunday.
 - `python scripts/garmin/coach_sync.py --date YYYY-MM-DD` should also refresh Garmin athlete profile state unless explicitly skipped.
 - Garmin-synced resting HR, max HR, VO2max and gear should flow into local athlete files before planning whenever available.
 - Local athlete files remain the source of truth used by planning, but Garmin is the preferred upstream source for those fields.
+
+## Dynamic Capabilities
+
+- Before using dynamic athlete or planning data, prefer the capability registry in `system/capabilities/registry.yaml` over direct file reads.
+- If a capability exists, refresh it according to its freshness policy before planning or replanning.
+- If Garmin can provide the metric, try Garmin first and only fall back to the local cache with an explicit stale warning.

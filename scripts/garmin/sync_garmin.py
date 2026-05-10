@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import logging
 import os
 from datetime import date, datetime, timedelta
 from pathlib import Path
@@ -23,6 +24,8 @@ ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_CREDENTIALS_PATH = ROOT / "garmin" / "local_credentials.yaml"
 DEFAULT_IMPORT_ROOT = ROOT / "training" / "completed" / "imports" / "garmin"
 DEFAULT_WORKOUTS_ROOT = ROOT / "training" / "planned" / "workouts"
+
+logger = logging.getLogger("garmin.sync")
 
 
 def parse_args() -> argparse.Namespace:
@@ -67,6 +70,20 @@ def load_yaml(path: Path) -> dict[str, Any]:
         return yaml.safe_load(handle) or {}
 
 
+def setup_logging() -> None:
+    level_name = str(os.getenv("GARMIN_SYNC_LOG_LEVEL") or "INFO").upper()
+    level = getattr(logging, level_name, logging.INFO)
+    logging.basicConfig(level=level, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
+
+
+def preview_json(value: Any, limit: int = 500) -> str:
+    text = json.dumps(value, ensure_ascii=True, default=json_default) if not isinstance(value, str) else value
+    compact = " ".join(text.split())
+    if len(compact) <= limit:
+        return compact
+    return compact[:limit] + "..."
+
+
 def ensure_dir(path: Path) -> None:
     path.mkdir(parents=True, exist_ok=True)
 
@@ -109,8 +126,14 @@ def load_credentials(path: Path) -> dict[str, str]:
 
 
 def login(credentials: dict[str, str]) -> Garmin:
+    logger.info(
+        "Logging into Garmin email=%s token_store=%s",
+        credentials["email"],
+        credentials["token_store"],
+    )
     client = Garmin(credentials["email"], credentials["password"])
     client.login(credentials["token_store"])
+    logger.info("Garmin login successful")
     return client
 
 
@@ -443,32 +466,61 @@ def schedule_workout_file(client: Garmin, workout_file: Path) -> None:
     upload_mode = "structured_targets"
     normalized_sport = str(sport).strip().lower()
     prefers_other_fallback = normalized_sport in {"mobility", "stretching", "other"}
+    logger.info(
+        "Scheduling workout file=%s name=%s date=%s sport=%s prefers_other_fallback=%s",
+        str(workout_path.relative_to(ROOT)),
+        workout.get("name"),
+        schedule_date,
+        sport,
+        prefers_other_fallback,
+    )
 
     try:
         payload = build_workout_payload(spec, include_targets=True)
+        logger.info("Uploading Garmin workout mode=%s payload_preview=%s", upload_mode, preview_json(payload.to_dict()))
         response = client.upload_workout(payload.to_dict())
     except Exception as exc:
+        logger.warning("Structured Garmin upload failed file=%s error=%s", str(workout_path.relative_to(ROOT)), exc)
         if prefers_other_fallback:
             upload_mode = "other_workout_fallback"
             print(f"Structured upload failed, retrying as Garmin other workout: {exc}")
             try:
-                response = client.upload_workout(build_other_workout_dict(spec, include_targets=False))
+                other_payload = build_other_workout_dict(spec, include_targets=False)
+                logger.info("Uploading Garmin workout mode=%s payload_preview=%s", upload_mode, preview_json(other_payload))
+                response = client.upload_workout(other_payload)
             except Exception as other_exc:
                 upload_mode = "fitness_equipment_fallback"
                 print(f"Garmin other workout failed, retrying as fitness equipment: {other_exc}")
                 payload = build_workout_payload({"workout": {**workout, "sport": "fitness_equipment"}}, include_targets=False)
+                logger.warning("Garmin other upload failed file=%s error=%s", str(workout_path.relative_to(ROOT)), other_exc)
+                logger.info("Uploading Garmin workout mode=%s payload_preview=%s", upload_mode, preview_json(payload.to_dict()))
                 response = client.upload_workout(payload.to_dict())
         else:
             upload_mode = "no_target_fallback"
             print(f"Structured target upload failed, retrying without targets: {exc}")
             payload = build_workout_payload(spec, include_targets=False)
+            logger.info("Uploading Garmin workout mode=%s payload_preview=%s", upload_mode, preview_json(payload.to_dict()))
             response = client.upload_workout(payload.to_dict())
 
     workout_id = response.get("workoutId") or response.get("id")
     if not workout_id:
         raise ValueError(f"Could not determine workout_id from Garmin response: {response}")
 
+    logger.info(
+        "Garmin workout uploaded file=%s workout_id=%s upload_mode=%s response_preview=%s",
+        str(workout_path.relative_to(ROOT)),
+        workout_id,
+        upload_mode,
+        preview_json(response),
+    )
     scheduled = client.schedule_workout(workout_id, schedule_date)
+    logger.info(
+        "Garmin workout scheduled file=%s workout_id=%s date=%s response_preview=%s",
+        str(workout_path.relative_to(ROOT)),
+        workout_id,
+        schedule_date,
+        preview_json(scheduled),
+    )
     target_dir = DEFAULT_WORKOUTS_ROOT / schedule_date
     ensure_dir(target_dir)
     save_json(target_dir / f"{workout_path.stem}.garmin_upload.json", {
@@ -592,6 +644,7 @@ def import_athlete_profile(client: Garmin) -> None:
 
 
 def main() -> None:
+    setup_logging()
     args = parse_args()
     credentials = load_credentials(args.credentials)
     client = login(credentials)

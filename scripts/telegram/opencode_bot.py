@@ -5,6 +5,8 @@ from __future__ import annotations
 import argparse
 import asyncio
 import json
+import logging
+import os
 import sys
 from contextlib import suppress
 from datetime import date
@@ -33,12 +35,24 @@ from opencode_bridge import (
 ROOT = Path(__file__).resolve().parents[2]
 MAX_TELEGRAM_MESSAGE = 3900
 
+logger = logging.getLogger("telegram.opencode_bot")
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Telegram bot bridge for remote OpenCode access")
     parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG_PATH)
     parser.add_argument("--check-config", action="store_true", help="Validate config without starting polling")
     return parser.parse_args()
+
+
+def setup_logging() -> None:
+    # Keep logs simple and greppable in systemd/nohup.
+    level_name = str(os.getenv("TELEGRAM_BOT_LOG_LEVEL") or "INFO").upper()
+    level = getattr(logging, level_name, logging.INFO)
+    logging.basicConfig(
+        level=level,
+        format="%(asctime)s %(levelname)s %(name)s: %(message)s",
+    )
 
 
 def get_config(context: ContextTypes.DEFAULT_TYPE) -> RemoteBotConfig:
@@ -160,6 +174,7 @@ async def new_session(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
     if await reject_if_unauthorized(update, context):
         return
     get_store(context).clear_session(chat_id(update))
+    logger.info("Session cleared chat_id=%s", chat_id(update))
     await send_long_text(update, "Sesion OpenCode olvidada. El proximo mensaje creara una sesion nueva.")
 
 
@@ -296,8 +311,16 @@ def blocked_by_policy(text: str, config: RemoteBotConfig) -> str | None:
 
 async def dispatch_to_opencode(update: Update, context: ContextTypes.DEFAULT_TYPE, text: str, confirmed: bool = False) -> None:
     config = get_config(context)
+    current_chat_id = chat_id(update)
+    logger.info(
+        "Incoming message chat_id=%s confirmed=%s chars=%s",
+        current_chat_id,
+        confirmed,
+        len(text or ""),
+    )
     policy_error = blocked_by_policy(text, config)
     if policy_error:
+        logger.warning("Blocked by policy chat_id=%s reason=%s", current_chat_id, policy_error)
         await send_long_text(update, policy_error)
         return
 
@@ -305,26 +328,77 @@ async def dispatch_to_opencode(update: Update, context: ContextTypes.DEFAULT_TYP
         reason = confirmation_reason(text, config.opencode.require_confirmation_patterns)
         if reason:
             confirmation_id = get_store(context).set_confirmation(chat_id(update), text, reason)
+            logger.warning(
+                "Sensitive action requires confirmation chat_id=%s reason=%s confirmation_id=%s",
+                current_chat_id,
+                reason,
+                confirmation_id,
+            )
             await send_long_text(update, f"Accion sensible bloqueada: {reason}\nConfirma con /confirm {confirmation_id}")
             return
 
     locks = get_locks(context)
     lock = locks.setdefault(chat_id(update), asyncio.Lock())
     if lock.locked():
+        logger.warning("Per-chat lock already held chat_id=%s", current_chat_id)
         await send_long_text(update, "Ya hay una tarea OpenCode en curso para este chat. Espera a que termine.")
         return
 
     async with lock:
         action_task = asyncio.create_task(keep_chat_action(update.effective_chat, ChatAction.TYPING))
         try:
-            result = await get_bridge(context).send(chat_id(update), text)
+            bridge = get_bridge(context)
+            health = await bridge.health_check()
+            logger.info(
+                "OpenCode health chat_id=%s ok=%s attach=%s detail=%s version=%s",
+                current_chat_id,
+                health.ok,
+                health.attach,
+                health.detail,
+                health.opencode_version,
+            )
+            if not health.ok:
+                logger.error("OpenCode health failed chat_id=%s detail=%s", current_chat_id, health.detail)
+                await send_long_text(update, health.user_message)
+                return
+
+            async def notify_started(message: str) -> None:
+                await send_long_text(update, message)
+
+            result = await bridge.send(chat_id(update), text, health=health, on_started=notify_started)
+        except Exception as exc:
+            logger.exception("Unexpected OpenCode failure chat_id=%s error=%s", current_chat_id, exc)
+            await send_long_text(
+                update,
+                "Problema operativo mientras OpenCode procesaba la respuesta. Revisa el log del bot para ver el detalle.",
+            )
+            return
         finally:
             action_task.cancel()
             with suppress(asyncio.CancelledError):
                 await action_task
         response = result.text
         if result.returncode != 0:
+            logger.error(
+                "OpenCode error trace_id=%s chat_id=%s exit=%s model=%s session_id=%s stderr_len=%s stderr_preview=%s",
+                result.trace_id or "-",
+                current_chat_id,
+                result.returncode,
+                result.model,
+                result.session_id or "-",
+                len(result.stderr or ""),
+                " ".join((result.stderr or "").split())[:220],
+            )
             response = f"OpenCode devolvio exit {result.returncode}.\n\n{response}"
+        else:
+            logger.info(
+                "OpenCode success trace_id=%s chat_id=%s model=%s session_id=%s response_chars=%s",
+                result.trace_id or "-",
+                current_chat_id,
+                result.model,
+                result.session_id or "-",
+                len(response or ""),
+            )
         await send_long_text(update, response)
 
 
@@ -369,10 +443,18 @@ def build_application(config: RemoteBotConfig) -> Application:
 
 def main() -> None:
     args = parse_args()
+    setup_logging()
     config = load_config(args.config)
     if args.check_config:
         print(json.dumps(sanitized_config(config), indent=2, ensure_ascii=True))
         return
+    logger.info(
+        "Starting bot allowed_chat_ids=%s server_url=%s project_dir=%s default_model=%s",
+        ",".join(config.telegram.allowed_chat_ids),
+        config.opencode.server_url,
+        str(config.opencode.project_dir),
+        config.opencode.model,
+    )
     application = build_application(config)
     application.run_polling(close_loop=False)
 

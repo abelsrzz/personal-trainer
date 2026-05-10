@@ -5,14 +5,16 @@ from __future__ import annotations
 import argparse
 import asyncio
 import json
+import logging
 import os
 import re
 import secrets
-import subprocess
+import socket
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any
+from typing import Any, Awaitable, Callable
+from urllib.parse import urlparse
 
 import yaml
 
@@ -21,6 +23,17 @@ ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_CONFIG_PATH = ROOT / "telegram" / "bot_config.yaml"
 DEFAULT_OPENCODE_MODEL = "openai/gpt-5.4"
 ANSI_RE = re.compile(r"\x1b\[[0-9;]*m")
+
+logger = logging.getLogger("telegram.opencode_bridge")
+
+
+def setup_logging() -> None:
+    level_name = str(os.getenv("TELEGRAM_BRIDGE_LOG_LEVEL") or os.getenv("TELEGRAM_BOT_LOG_LEVEL") or "INFO").upper()
+    level = getattr(logging, level_name, logging.INFO)
+    logging.basicConfig(
+        level=level,
+        format="%(asctime)s %(levelname)s %(name)s: %(message)s",
+    )
 
 
 @dataclass(frozen=True)
@@ -59,6 +72,16 @@ class BridgeResult:
     model: str
     returncode: int
     stderr: str = ""
+    trace_id: str = ""
+
+
+@dataclass(frozen=True)
+class BridgeHealth:
+    ok: bool
+    attach: bool
+    user_message: str
+    detail: str = ""
+    opencode_version: str = ""
 
 
 def load_yaml(path: Path) -> dict[str, Any]:
@@ -106,7 +129,7 @@ def load_config(path: Path = DEFAULT_CONFIG_PATH) -> RemoteBotConfig:
             server_url=str(opencode_data.get("server_url") or "http://127.0.0.1:4096").strip(),
             project_dir=project_dir,
             session_store=session_store,
-            timeout_s=int(opencode_data.get("timeout_s") or 1800),
+            timeout_s=int(opencode_data.get("timeout_s") or 3600),
             allow_commit=bool(opencode_data.get("allow_commit", True)),
             allow_push=bool(opencode_data.get("allow_push", True)),
             dangerously_skip_permissions=bool(opencode_data.get("dangerously_skip_permissions", False)),
@@ -166,6 +189,12 @@ class SessionStore:
         session = data["sessions"].get(str(chat_id), {})
         return session.get("session_id")
 
+    def get_session_backend(self, chat_id: int | str) -> str | None:
+        data = self.load()
+        session = data["sessions"].get(str(chat_id), {})
+        backend = session.get("backend")
+        return str(backend) if backend else None
+
     def get_model(self, chat_id: int | str) -> str | None:
         data = self.load()
         session = data["sessions"].get(str(chat_id), {})
@@ -185,12 +214,13 @@ class SessionStore:
         session["model_updated_at"] = datetime.now(UTC).isoformat()
         self.save(data)
 
-    def set_session(self, chat_id: int | str, session_id: str, title: str) -> None:
+    def set_session(self, chat_id: int | str, session_id: str, title: str, backend: str) -> None:
         data = self.load()
         existing = data["sessions"].get(str(chat_id), {})
         data["sessions"][str(chat_id)] = {
             "session_id": session_id,
             "title": title,
+            "backend": backend,
             **({"model": existing["model"]} if existing.get("model") else {}),
             **({"model_updated_at": existing["model_updated_at"]} if existing.get("model_updated_at") else {}),
             "updated_at": datetime.now(UTC).isoformat(),
@@ -202,7 +232,10 @@ class SessionStore:
         session = data["sessions"].get(str(chat_id), {})
         model = session.get("model")
         if model:
-            data["sessions"][str(chat_id)] = {"model": model, "model_updated_at": session.get("model_updated_at")}
+            data["sessions"][str(chat_id)] = {
+                "model": model,
+                "model_updated_at": session.get("model_updated_at"),
+            }
         else:
             data["sessions"].pop(str(chat_id), None)
         self.save(data)
@@ -239,26 +272,106 @@ def normalize_model_name(value: Any) -> str:
         return DEFAULT_OPENCODE_MODEL
     text = text.replace(" ", "-")
     if "/" not in text and text.startswith("gpt"):
-        return f"openai/{text}"
+        # If the user types just "gpt-5.2", keep the same provider as default.
+        provider = DEFAULT_OPENCODE_MODEL.split("/", 1)[0] if "/" in DEFAULT_OPENCODE_MODEL else "openai"
+        return f"{provider}/{text}"
     return text
 
 
-async def run_command(command: list[str], cwd: Path, timeout_s: int) -> tuple[int, str, str]:
-    process = await asyncio.create_subprocess_exec(
-        *command,
-        cwd=str(cwd),
-        stdout=asyncio.subprocess.PIPE,
-        stderr=asyncio.subprocess.PIPE,
-    )
+def _server_host_port(server_url: str) -> tuple[str, int] | None:
+    try:
+        parsed = urlparse(server_url)
+    except Exception:
+        return None
+    if not parsed.scheme or not parsed.hostname:
+        return None
+    port = parsed.port
+    if port is None:
+        port = 443 if parsed.scheme == "https" else 80
+    return parsed.hostname, port
+
+
+def probe_opencode_server(server_url: str, timeout_s: float = 2.0) -> str | None:
+    """Fast reachability probe to avoid long hangs.
+
+    Note: some server setups accept TCP but never answer HTTP. We treat that as
+    unresponsive and avoid using --attach.
+    """
+    target = _server_host_port(server_url)
+    if not target:
+        return f"OpenCode server_url invalida: {server_url}"
+    host, port = target
+    try:
+        with socket.create_connection((host, port), timeout=timeout_s) as sock:
+            sock.settimeout(timeout_s)
+            request = (
+                f"GET /config HTTP/1.1\r\nHost: {host}:{port}\r\nConnection: close\r\n\r\n"
+            ).encode("ascii", errors="ignore")
+            sock.sendall(request)
+            first = sock.recv(1)
+            if first:
+                return None
+            return f"OpenCode server no devuelve respuesta HTTP en {server_url}"
+    except OSError as exc:
+        # In practice `socket.timeout`/`TimeoutError` can bubble up as OSError.
+        if isinstance(exc, TimeoutError) or getattr(exc, "errno", None) is None and "timed out" in str(exc).lower():
+            return (
+                f"OpenCode server no responde a HTTP en {server_url} ({host}:{port}): timeout. "
+                "Puede estar colgado; reinicia `opencode serve` o deja que el bot use ejecucion local."
+            )
+        return (
+            f"OpenCode server no alcanzable en {server_url} ({host}:{port}): {exc}. "
+            "Asegurate de tener `opencode serve` corriendo y que el bot use la URL correcta."
+        )
+
+
+def preview_text(value: str, limit: int = 500) -> str:
+    compact = " ".join((value or "").split())
+    if len(compact) <= limit:
+        return compact
+    return compact[:limit] + "..."
+
+
+async def run_command(
+    command: list[str],
+    cwd: Path,
+    timeout_s: int,
+    on_started: Callable[[], Awaitable[None]] | None = None,
+) -> tuple[int, str, str]:
+    try:
+        process = await asyncio.create_subprocess_exec(
+            *command,
+            cwd=str(cwd),
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+        )
+    except OSError as exc:
+        return 127, "", f"Command failed to start: {exc}"
+    if on_started is not None:
+        await on_started()
     try:
         stdout_bytes, stderr_bytes = await asyncio.wait_for(process.communicate(), timeout=timeout_s)
     except asyncio.TimeoutError:
         process.kill()
         await process.wait()
-        return 124, "", f"Command timed out after {timeout_s}s"
+        return 124, "", (
+            f"Command timed out after {timeout_s}s. "
+            "La tarea de OpenCode excedio el limite del bot; prueba una peticion mas concreta o aumenta opencode_remote.timeout_s."
+        )
     stdout = stdout_bytes.decode("utf-8", errors="replace")
     stderr = stderr_bytes.decode("utf-8", errors="replace")
-    return process.returncode or 0, strip_ansi(stdout), strip_ansi(stderr)
+
+    rc = process.returncode or 0
+    clean_stdout = strip_ansi(stdout)
+    clean_stderr = strip_ansi(stderr)
+    # Some opencode runs can succeed but produce no output depending on mode.
+    # Keep a short debug sample to understand what's happening.
+    if rc == 0 and not clean_stdout and not clean_stderr:
+        logger.warning(
+            "Command produced no output rc=0 cmd=%s",
+            " ".join(command[:8]) + (" ..." if len(command) > 8 else ""),
+        )
+    return rc, clean_stdout, clean_stderr
 
 
 def extract_sessions(payload: Any) -> list[dict[str, Any]]:
@@ -315,16 +428,74 @@ class OpenCodeBridge:
             f"Mensaje del usuario:\n{message}"
         )
 
-    def build_run_command(self, prompt: str, session_id: str | None, title: str | None, model: str) -> list[str]:
-        command = [
-            "opencode",
-            "run",
-            "--attach",
-            self.config.server_url,
-            "--dir",
-            str(self.config.project_dir),
-        ]
+    async def health_check(self) -> BridgeHealth:
+        if not self.config.enabled:
+            return BridgeHealth(
+                ok=False,
+                attach=False,
+                user_message="Problema operativo: el bridge de OpenCode esta deshabilitado en la configuracion.",
+                detail="OpenCode remote bridge disabled in config.",
+            )
+        if not self.config.project_dir.exists():
+            return BridgeHealth(
+                ok=False,
+                attach=False,
+                user_message=f"Problema operativo: no existe el directorio del proyecto `{self.config.project_dir}`.",
+                detail=f"Project dir does not exist: {self.config.project_dir}",
+            )
+
+        returncode, stdout, stderr = await run_command(["opencode", "--version"], self.config.project_dir, 10)
+        version = (stdout or stderr).strip()
+        if returncode != 0:
+            detail = stderr or stdout or "opencode --version failed"
+            return BridgeHealth(
+                ok=False,
+                attach=False,
+                user_message=(
+                    "Problema operativo: no puedo arrancar OpenCode en este momento. "
+                    "Revisa la instalacion o el entorno del bot."
+                ),
+                detail=detail,
+                opencode_version=version,
+            )
+
+        probe_error = probe_opencode_server(self.config.server_url)
+        if probe_error is None:
+            return BridgeHealth(
+                ok=True,
+                attach=True,
+                user_message="OpenCode procesando respuesta.",
+                detail="OpenCode server reachable.",
+                opencode_version=version,
+            )
+
+        return BridgeHealth(
+            ok=True,
+            attach=False,
+            user_message=(
+                "OpenCode procesando respuesta. El servidor remoto no responde, pero sigo en modo local."
+            ),
+            detail=probe_error,
+            opencode_version=version,
+        )
+
+    def build_run_command(
+        self,
+        prompt: str,
+        session_id: str | None,
+        title: str | None,
+        model: str,
+        *,
+        attach: bool,
+    ) -> list[str]:
+        command = ["opencode", "run"]
+        if attach:
+            command.extend(["--attach", self.config.server_url])
+        command.extend(["--dir", str(self.config.project_dir)])
         command.extend(["--model", model])
+        # Keep default format so stdout contains the assistant answer.
+        # Also print internal logs to stderr to help debugging if stdout is empty.
+        command.append("--print-logs")
         if self.config.dangerously_skip_permissions:
             command.append("--dangerously-skip-permissions")
         if session_id:
@@ -336,12 +507,15 @@ class OpenCodeBridge:
 
     async def discover_session_id(self, title: str) -> str | None:
         command = ["opencode", "session", "list", "--format", "json", "--max-count", "20"]
+        logger.info("Discovering session id by title=%s", title)
         returncode, stdout, _stderr = await run_command(command, self.config.project_dir, 30)
         if returncode != 0 or not stdout:
+            logger.warning("Session list failed: exit=%s stdout_len=%s", returncode, len(stdout or ""))
             return None
         try:
             payload = json.loads(stdout)
         except json.JSONDecodeError:
+            logger.warning("Session list returned invalid JSON")
             return None
         sessions = extract_sessions(payload)
         for item in sessions:
@@ -349,29 +523,164 @@ class OpenCodeBridge:
                 return session_id_from_item(item)
         return session_id_from_item(sessions[0]) if sessions else None
 
-    async def send(self, chat_id: int | str, message: str) -> BridgeResult:
-        if not self.config.enabled:
-            return BridgeResult("OpenCode remote bridge is disabled in config.", None, self.config.model, 1)
-        if not self.config.project_dir.exists():
-            return BridgeResult(f"Project dir does not exist: {self.config.project_dir}", None, self.config.model, 1)
+    async def send(
+        self,
+        chat_id: int | str,
+        message: str,
+        health: BridgeHealth | None = None,
+        on_started: Callable[[str], Awaitable[None]] | None = None,
+    ) -> BridgeResult:
+        health = health or await self.health_check()
+        if not health.ok:
+            return BridgeResult(health.user_message, None, self.config.model, 1, stderr=health.detail)
 
         session_id = self.store.get_session(chat_id)
+        session_backend = self.store.get_session_backend(chat_id)
         model = self.store.get_model(chat_id) or self.config.model
+        trace_id = secrets.token_hex(4)
         title = None if session_id else f"telegram-{chat_id}-{datetime.now(UTC).strftime('%Y%m%d%H%M%S')}"
         prompt = self.build_prompt(message)
-        command = self.build_run_command(prompt, session_id, title, model)
-        returncode, stdout, stderr = await run_command(command, self.config.project_dir, self.config.timeout_s)
+
+        probe_error = health.detail if not health.attach else None
+        attach = health.attach
+        if not attach:
+            logger.warning("OpenCode server unresponsive; using local run (no --attach): %s", probe_error)
+
+        backend = "attach" if attach else "local"
+        # If the previous session was created using a different backend, do not
+        # attempt to continue it.
+        if session_id and session_backend and session_backend != backend:
+            logger.warning(
+                "Session backend mismatch chat_id=%s session_backend=%s current_backend=%s; starting new session",
+                str(chat_id),
+                session_backend,
+                backend,
+            )
+            session_id = None
+            title = f"telegram-{chat_id}-{datetime.now(UTC).strftime('%Y%m%d%H%M%S')}"
+
+        # Legacy stored sessions (before backend tracking) are unsafe for attach.
+        # They are the exact source of the current Telegram hang.
+        if attach and session_id and not session_backend:
+            logger.warning(
+                "Legacy attach session without backend metadata chat_id=%s session_id=%s; starting fresh",
+                str(chat_id),
+                session_id,
+            )
+            session_id = None
+            title = f"telegram-{chat_id}-{datetime.now(UTC).strftime('%Y%m%d%H%M%S')}"
+
+        command = self.build_run_command(prompt, session_id, title, model, attach=attach)
+
+        # Do not log the full prompt (can include user/private data).
+        command_preview = command[:-1]
+        logger.info(
+            "OpenCode run start trace_id=%s chat_id=%s session_id=%s model=%s title=%s cmd=%s prompt_chars=%s message_preview=%s",
+            trace_id,
+            str(chat_id),
+            session_id or "-",
+            model,
+            title or "-",
+            " ".join(command_preview),
+            len(prompt),
+            preview_text(message, 180),
+        )
+        started_message = (
+            "OpenCode ya esta procesando la respuesta."
+            if attach
+            else "OpenCode ya esta procesando la respuesta en modo local."
+        )
+
+        async def notify_started_once() -> None:
+            if on_started is not None:
+                await on_started(started_message)
+
+        started = asyncio.get_running_loop().time()
+        first_timeout_s = min(self.config.timeout_s, 25) if attach else self.config.timeout_s
+        returncode, stdout, stderr = await run_command(
+            command,
+            self.config.project_dir,
+            first_timeout_s,
+            on_started=notify_started_once,
+        )
+        elapsed_s = asyncio.get_running_loop().time() - started
+        logger.info(
+            "OpenCode run done trace_id=%s chat_id=%s exit=%s elapsed_s=%.2f timeout_s=%s stdout_len=%s stderr_len=%s stdout_preview=%s stderr_preview=%s",
+            trace_id,
+            str(chat_id),
+            returncode,
+            elapsed_s,
+            first_timeout_s,
+            len(stdout or ""),
+            len(stderr or ""),
+            preview_text(stdout, 220),
+            preview_text(stderr, 220),
+        )
+
+        if attach and returncode == 124:
+            logger.warning("Attach run timed out; retrying locally trace_id=%s chat_id=%s", trace_id, str(chat_id))
+            command = self.build_run_command(prompt, session_id, title, model, attach=False)
+            started_retry = asyncio.get_running_loop().time()
+            returncode, stdout, stderr = await run_command(command, self.config.project_dir, self.config.timeout_s)
+            elapsed_retry_s = asyncio.get_running_loop().time() - started_retry
+            logger.info(
+                "OpenCode local retry done trace_id=%s chat_id=%s exit=%s elapsed_s=%.2f stdout_len=%s stderr_len=%s stdout_preview=%s stderr_preview=%s",
+                trace_id,
+                str(chat_id),
+                returncode,
+                elapsed_retry_s,
+                len(stdout or ""),
+                len(stderr or ""),
+                preview_text(stdout, 220),
+                preview_text(stderr, 220),
+            )
+
+        # On some setups, `opencode run --attach` can succeed but return no
+        # assistant text. If that happens, retry locally once.
+        if attach and returncode == 0 and not (stdout or "").strip():
+            logger.warning(
+                "Attach run produced no stdout; retrying locally trace_id=%s chat_id=%s stderr_len=%s",
+                trace_id,
+                str(chat_id),
+                len(stderr or ""),
+            )
+            # Avoid continuing an attach-created session when switching backend.
+            session_id = None
+            command = self.build_run_command(prompt, session_id, title, model, attach=False)
+            started_retry2 = asyncio.get_running_loop().time()
+            returncode, stdout, stderr = await run_command(command, self.config.project_dir, self.config.timeout_s)
+            elapsed_retry2_s = asyncio.get_running_loop().time() - started_retry2
+            logger.info(
+                "OpenCode local retry2 done trace_id=%s chat_id=%s exit=%s elapsed_s=%.2f stdout_len=%s stderr_len=%s stdout_preview=%s stderr_preview=%s",
+                trace_id,
+                str(chat_id),
+                returncode,
+                elapsed_retry2_s,
+                len(stdout or ""),
+                len(stderr or ""),
+                preview_text(stdout, 220),
+                preview_text(stderr, 220),
+            )
 
         if not session_id and title and returncode == 0:
             discovered = await self.discover_session_id(title)
             if discovered:
                 session_id = discovered
-                self.store.set_session(chat_id, session_id, title)
+                self.store.set_session(chat_id, session_id, title, backend=backend)
+                logger.info("Session stored chat_id=%s session_id=%s title=%s", str(chat_id), session_id, title)
+            else:
+                logger.warning("Could not discover session id for title=%s", title)
 
-        text = stdout or stderr or "OpenCode finished without output."
+        text = (stdout or "").strip()
+        if not text:
+            # Do not dump internal logs to Telegram; instruct to check bot logs.
+            text = (
+                "OpenCode no devolvio respuesta de texto. "
+                "Revisa el log del bot/bridge para ver el motivo (timeout, provider, permisos)."
+            )
         if len(text) > self.config.max_response_chars:
             text = text[: self.config.max_response_chars] + "\n\n[Respuesta truncada por limite del bot]"
-        return BridgeResult(text=text, session_id=session_id, model=model, returncode=returncode, stderr=stderr)
+        return BridgeResult(text=text, session_id=session_id, model=model, returncode=returncode, stderr=stderr, trace_id=trace_id)
 
 
 def command_mentions_commit_or_push(text: str) -> tuple[bool, bool]:
@@ -396,6 +705,7 @@ def main() -> None:
     parser.add_argument("--chat-id", default="local-test")
     parser.add_argument("--message", help="Send a test message through the bridge")
     args = parser.parse_args()
+    setup_logging()
     config = load_config(args.config)
     if args.check_config:
         print(json.dumps(sanitized_config(config), indent=2, ensure_ascii=True))

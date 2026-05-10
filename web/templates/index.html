@@ -1,6 +1,43 @@
 {% extends "base.html" %}
 {% block title %}Inicio | RunPilot{% endblock %}
 {% block content %}
+{% if workspace and not workspace.ready %}
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Proyecto en preparacion</p>
+      <h2>Faltan archivos antes de activar la consulta operativa completa</h2>
+    </div>
+    <span class="badge warn">Setup pendiente</span>
+  </div>
+  {% for message in workspace.messages %}
+  <p class="alert">{{ message }}</p>
+  {% endfor %}
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Estado</th>
+          <th>Elemento</th>
+          <th>Ruta</th>
+          <th>Uso</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in workspace.checks %}
+        <tr>
+          <td>{{ 'OK' if item.exists else 'Falta' }}</td>
+          <td>{{ item.label }}</td>
+          <td><code>{{ item.path }}</code></td>
+          <td>{{ item.purpose }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endif %}
+
 <section class="hero">
   <div>
     <p class="eyebrow">Resumen operativo</p>

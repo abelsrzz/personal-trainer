@@ -1,6 +1,22 @@
 {% extends "base.html" %}
 {% block title %}Dashboard | RunPilot{% endblock %}
 {% block content %}
+{% if dashboard.decision.status == 'unknown' %}
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Dashboard no disponible todavia</p>
+      <h2>Faltan datos operativos para generar analisis</h2>
+    </div>
+    <span class="badge warn">Pendiente</span>
+  </div>
+  <p>{{ dashboard.decision.recommendation }}</p>
+  {% for reason in dashboard.decision.reasons %}
+  <p class="alert">{{ reason }}</p>
+  {% endfor %}
+</section>
+{% endif %}
+
 <section class="hero compact">
   <div>
     <p class="eyebrow">Lectura operativa</p>
@@ -11,8 +27,8 @@
     {% endfor %}
   </div>
   <div class="hero-meta">
-    <span>As of: {{ dashboard.as_of }}</span>
-    <span>Ventana: {{ dashboard.lookback_days }} días</span>
+    <span>As of: {{ dashboard.as_of or '-' }}</span>
+    <span>Ventana: {{ dashboard.lookback_days or '-' }} días</span>
     <span>Bloque: {{ dashboard.active_context.active_block or '-' }}</span>
     <span>{{ dashboard.goal_gates.status_label }}</span>
   </div>
@@ -174,6 +190,9 @@
       <span class="badge {{ 'ok' if gate.passed else 'warn' }}">{{ 'OK' if gate.passed else 'NO' }}</span>
     </div>
     {% endfor %}
+    {% if not dashboard.goal_gates.gates %}
+    <p class="muted">Los checkpoints apareceran cuando exista un plan activo y una decision automatica.</p>
+    {% endif %}
   </div>
 </section>
 
@@ -227,5 +246,8 @@
     </div>
     {% endfor %}
   </div>
+  {% if not dashboard.weekly_volume %}
+  <p class="muted">Todavia no hay historico suficiente para mostrar volumen semanal.</p>
+  {% endif %}
 </section>
 {% endblock %}

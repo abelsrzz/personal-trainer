@@ -19,6 +19,7 @@
           <th>Distancia</th>
           <th>Desnivel</th>
           <th>Goal</th>
+          <th>Resultado</th>
         </tr>
       </thead>
       <tbody>
@@ -30,9 +31,18 @@
           <td>{{ race.distance_km }} km</td>
           <td>{{ race.elevation_gain_m }} m</td>
           <td>{{ race.goal }}</td>
+          <td>
+            {% if race.completed_review_slug %}
+            <a href="/completed/{{ race.completed_review_slug }}">Revisada</a>
+            {% if race.completed_review_pace %}<span> · {{ race.completed_review_pace }}</span>{% endif %}
+            {% if race.completed_review_score %}<span> · {{ race.completed_review_score }}/10</span>{% endif %}
+            {% else %}
+            Pendiente
+            {% endif %}
+          </td>
         </tr>
         {% else %}
-        <tr><td colspan="6">No hay carreras registradas.</td></tr>
+        <tr><td colspan="7">No hay carreras registradas.</td></tr>
         {% endfor %}
       </tbody>
     </table>

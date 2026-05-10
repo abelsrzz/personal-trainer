@@ -1,6 +1,18 @@
 {% extends "base.html" %}
 {% block title %}Plan general | RunPilot{% endblock %}
 {% block content %}
+{% if not master_plan.exists %}
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Plan general no disponible</p>
+      <h2>Todavia no existe `planning/master_plan.md`</h2>
+    </div>
+    <span class="badge warn">Pendiente</span>
+  </div>
+  <p>Cuando el plan exista, esta vista se activara automaticamente.</p>
+</section>
+{% else %}
 <section class="hero">
   <div>
     <p class="eyebrow">Estructura del ciclo</p>
@@ -145,4 +157,5 @@
     {% endfor %}
   </ul>
 </section>
+{% endif %}
 {% endblock %}

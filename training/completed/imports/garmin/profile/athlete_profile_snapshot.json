@@ -1,5 +1,5 @@
 {
-  "synced_at": "2026-05-08T19:35:14.266148Z",
+  "synced_at": "2026-05-09T20:04:59.737719Z",
   "raw": {
     "get_user_summary": {
       "error": "Garmin.get_user_summary() missing 1 required positional argument: 'cdate'"
@@ -68,13 +68,13 @@
         "golfSpeedUnit": null,
         "externalBottomTime": null,
         "availableTrainingDays": [
-          "SATURDAY",
           "MONDAY",
-          "THURSDAY",
-          "TUESDAY",
           "WEDNESDAY",
+          "SATURDAY",
           "FRIDAY",
-          "SUNDAY"
+          "SUNDAY",
+          "TUESDAY",
+          "THURSDAY"
         ],
         "preferredLongTrainingDays": [
           "SUNDAY"
@@ -381,10 +381,10 @@
         "activityStartDateTimeLocal": null,
         "activityStartDateTimeLocalFormatted": null,
         "value": 1.0,
-        "prStartTimeGmt": 1778104800000,
-        "prStartTimeGmtFormatted": "2026-05-06T22:00:00.0",
-        "prStartTimeLocal": 1778112000000,
-        "prStartTimeLocalFormatted": "2026-05-07T00:00:00.0",
+        "prStartTimeGmt": 1778277600000,
+        "prStartTimeGmtFormatted": "2026-05-08T22:00:00.0",
+        "prStartTimeLocal": 1778284800000,
+        "prStartTimeLocalFormatted": "2026-05-09T00:00:00.0",
         "prTypeLabelKey": null,
         "poolLengthUnit": null
       },

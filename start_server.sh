@@ -243,6 +243,14 @@ stop_process() {
   fi
 }
 
+ensure_runtime_or_install() {
+  if [[ -x "$PYTHON_BIN" ]]; then
+    return 0
+  fi
+  echo "Python runtime not found. Running install first..."
+  install_runtime
+}
+
 stop_server() {
   stop_process "Web portal" "$WEB_PID_FILE"
   stop_process "Telegram bot" "$BOT_PID_FILE"
@@ -290,6 +298,7 @@ case "$command" in
   restart)
     stop_server
     sleep 1
+    ensure_runtime_or_install
     start_server
     ;;
   status)

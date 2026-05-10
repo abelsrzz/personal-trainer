@@ -31,6 +31,8 @@ MASTER_PLAN_PATH = ROOT / "planning" / "master_plan.md"
 ACTIVE_CYCLE_PATH = ROOT / "planning" / "cycles" / "active.yaml"
 WEB_CONFIG_PATH = ROOT / "web" / "web_config.yaml"
 WEB_LOG_PATH = ROOT / "web" / "web_debug.log"
+ACTIVE_WEEK_PATH = ROOT / "planning" / "weeks" / "semana_actual.md"
+COACH_DECISION_PATH = ROOT / "planning" / "coach_decision.json"
 
 
 logger = logging.getLogger("running_coach_web")
@@ -148,8 +150,99 @@ def day_label(value: str) -> str:
 
 
 def active_cycle_data() -> dict[str, Any]:
-    payload = load_yaml(ACTIVE_CYCLE_PATH).get("cycle", {})
+    payload = load_optional_yaml(ACTIVE_CYCLE_PATH).get("cycle", {})
     return payload if isinstance(payload, dict) else {}
+
+
+def workspace_status() -> dict[str, Any]:
+    checks = [
+        {
+            "key": "athlete_profile",
+            "label": "Perfil estructurado",
+            "path": "athlete/profile.yaml",
+            "required": True,
+            "exists": (ROOT / "athlete" / "profile.yaml").exists(),
+            "purpose": "Guardar los datos base del atleta.",
+        },
+        {
+            "key": "races",
+            "label": "Carreras cargadas",
+            "path": "races/**/*.yaml",
+            "required": False,
+            "exists": any(RACES_DIR.glob("**/*.yaml")),
+            "purpose": "Definir objetivos de carrera cuando existan.",
+        },
+        {
+            "key": "master_plan",
+            "label": "Plan general",
+            "path": "planning/master_plan.md",
+            "required": True,
+            "exists": MASTER_PLAN_PATH.exists(),
+            "purpose": "Describir la estrategia global del ciclo.",
+        },
+        {
+            "key": "active_week",
+            "label": "Semana activa",
+            "path": "planning/weeks/semana_actual.md",
+            "required": True,
+            "exists": ACTIVE_WEEK_PATH.exists(),
+            "purpose": "Mostrar la semana operativa actual.",
+        },
+        {
+            "key": "coach_decision",
+            "label": "Decision del coach",
+            "path": "planning/coach_decision.json",
+            "required": False,
+            "exists": COACH_DECISION_PATH.exists(),
+            "purpose": "Activar dashboard analitico y decision automatica.",
+        },
+    ]
+    missing_required = [item for item in checks if item["required"] and not item["exists"]]
+    missing_optional = [item for item in checks if not item["required"] and not item["exists"]]
+    return {
+        "ready": not missing_required,
+        "checks": checks,
+        "missing_required": missing_required,
+        "missing_optional": missing_optional,
+        "messages": [
+            "El proyecto aun no esta completamente preparado para consulta operativa." if missing_required else "La base minima del proyecto ya esta lista.",
+            "Cuando exista `planning/coach_decision.json`, el dashboard mostrara tambien analisis automatizado." if not missing_required else "Faltan algunos archivos base para activar toda la capa operativa.",
+        ],
+    }
+
+
+def empty_dashboard_payload(status: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "as_of": None,
+        "lookback_days": None,
+        "capability_messages": status["messages"],
+        "decision": {
+            "status": "unknown",
+            "status_label": "Proyecto incompleto",
+            "action_label": "Completa los archivos operativos base",
+            "recommendation": "La web esta funcionando, pero todavia faltan archivos minimos para mostrar la capa operativa completa.",
+            "reasons": [f"Falta `{item['path']}`" for item in status["missing_required"]],
+            "windows": {
+                "last_7_days": {"km": 0.0, "runs": 0, "quality_runs": 0},
+                "last_28_days": {"long_run_km": 0.0, "runs": 0},
+            },
+            "session_guidance": {"primary_labels": [], "avoid_labels": [], "optional_labels": [], "quality_volume_cap": None},
+            "latest_injury_entry": None,
+        },
+        "goal_gates": {
+            "status": "unsupported_now",
+            "status_label": "Sin evaluacion disponible",
+            "summary": "Los checkpoints del objetivo apareceran cuando exista plan y decision automatica.",
+            "passed_count": 0,
+            "total_gates": 0,
+            "metrics": {"latest_injury_pain": None},
+            "gates": [],
+        },
+        "active_context": {"active_block": None, "days_to_goal_race": None, "goal_race": None},
+        "performance_estimate": {"current_10k_estimate_s": None, "method": "Sin datos suficientes"},
+        "daily_metrics": {"latest_hrv": None, "latest_training_readiness": None, "latest_resting_heart_rate": None},
+        "weekly_volume": [],
+    }
 
 
 def garmin_activity_url(activity_id: int | str | None) -> str | None:
@@ -463,9 +556,10 @@ def parse_week_table(content: str) -> list[dict[str, str]]:
 
 
 def week_page_data() -> dict[str, Any]:
-    path = ROOT / "planning" / "weeks" / "semana_actual.md"
+    path = ACTIVE_WEEK_PATH
     content = read_text(path)
     return {
+        "exists": path.exists(),
         "content": content,
         "rows": parse_week_table(content),
         "pdf_exists": (ROOT / "planning" / "weeks" / "generated" / "semana_actual.pdf").exists(),
@@ -478,8 +572,11 @@ def planned_upload_data(workout_stem: str, schedule_date: str) -> dict[str, Any]
 
 
 def dashboard_payload() -> dict[str, Any]:
+    status = workspace_status()
+    if not COACH_DECISION_PATH.exists():
+        return empty_dashboard_payload(status)
     decision_capability = ensure_fresh("coach_decision")
-    path = ROOT / "planning" / "coach_decision.json"
+    path = COACH_DECISION_PATH
     payload = load_json(path) if path.exists() else {}
     payload["capability_messages"] = [message for message in [decision_capability.warning] if message]
 
@@ -814,16 +911,16 @@ def completed_review_detail(slug: str) -> dict[str, Any] | None:
 def athlete_page_data() -> dict[str, Any]:
     shoes_capability = ensure_fresh("shoes_mileage")
     profile_capability = ensure_fresh("athlete_profile")
-    profile = load_yaml(ROOT / "athlete" / "profile.yaml").get("athlete", {})
-    health = load_yaml(ROOT / "athlete" / "health.yaml").get("health", {})
-    shin = load_yaml(ROOT / "athlete" / "shin_tracker.yaml").get("shin_tracker", {})
-    shoes = load_yaml(ROOT / "athlete" / "shoes.yaml").get("shoes", [])
-    entries = list(reversed(shin.get("entries") or []))
+    profile = load_optional_yaml(ROOT / "athlete" / "profile.yaml").get("athlete", {})
+    health = load_optional_yaml(ROOT / "athlete" / "health.yaml").get("health", {})
+    injury = load_optional_yaml(ROOT / "athlete" / "injury_tracker.yaml").get("injury_tracker", {})
+    shoes = load_optional_yaml(ROOT / "athlete" / "shoes.yaml").get("shoes", [])
+    entries = list(reversed(injury.get("entries") or []))
     capability_messages = [message for message in [shoes_capability.warning, profile_capability.warning] if message]
     return {
         "profile": profile,
         "health": health,
-        "shin": shin,
+        "injury": injury,
         "entries": entries,
         "shoes": shoes if isinstance(shoes, list) else [],
         "capability_messages": capability_messages,
@@ -831,6 +928,7 @@ def athlete_page_data() -> dict[str, Any]:
 
 
 def races_page_data() -> list[dict[str, Any]]:
+    reviews_by_date = {item["date"]: item for item in completed_reviews() if item.get("date")}
     races: list[dict[str, Any]] = []
     for path in sorted(RACES_DIR.glob("**/*.yaml")):
         raw_payload = load_yaml(path)
@@ -839,15 +937,21 @@ def races_page_data() -> list[dict[str, Any]]:
             continue
         goal = payload.get("goal") or {}
         goal_value = goal.get("value") if isinstance(goal, dict) else goal
+        race_date = iso_date_string(payload.get("date"))
+        linked_review = reviews_by_date.get(race_date)
         races.append(
             {
                 "name": payload.get("name") or path.stem,
-                "date": iso_date_string(payload.get("date")),
+                "date": race_date,
                 "priority": priority_label(payload.get("priority")),
                 "distance_km": payload.get("distance_km") or payload.get("distance") or "-",
                 "elevation_gain_m": payload.get("elevation_gain_m") or "-",
                 "location": payload.get("location") or "-",
                 "goal": goal_value or "-",
+                "completed_review_slug": linked_review.get("slug") if linked_review else None,
+                "completed_review_score": linked_review.get("score") if linked_review else None,
+                "completed_review_pace": linked_review.get("pace") if linked_review else None,
+                "completed_review_traffic_light": linked_review.get("traffic_light") if linked_review else None,
             }
         )
     races.sort(key=lambda item: item["date"])
@@ -1023,6 +1127,23 @@ def calendar_month_data_combined(month: str | None, kind: str = "all", status: s
 def master_plan_page_data() -> dict[str, Any]:
     active_cycle = active_cycle_data()
     master_plan_path = ROOT / str(active_cycle.get("master_plan_path") or MASTER_PLAN_PATH.relative_to(ROOT))
+    if not master_plan_path.exists():
+        return {
+            "exists": False,
+            "active_cycle": active_cycle,
+            "cycle_window": {},
+            "goal_race": [],
+            "pre_cycle_race": [],
+            "interpretation": [],
+            "current_level": [],
+            "planning_logic": [],
+            "blocks": [],
+            "weekly_structure": [],
+            "volume_progression": [],
+            "intensity_rules": [],
+            "checkpoints": [],
+            "calibration_rule": [],
+        }
     text = read_text(master_plan_path)
     sections: dict[str, list[str]] = {}
     current_section: str | None = None
@@ -1146,6 +1267,7 @@ def master_plan_page_data() -> dict[str, Any]:
         ]
 
     return {
+        "exists": True,
         "active_cycle": active_cycle,
         "cycle_window": cycle_window,
         "goal_race": translated_items("Main Goal Race"),
@@ -1181,6 +1303,7 @@ def cycle_page_data() -> dict[str, Any]:
 
 
 def home_page_data() -> dict[str, Any]:
+    status = workspace_status()
     dashboard = dashboard_payload()
     active_cycle = active_cycle_data()
     week = week_page_data()
@@ -1189,6 +1312,7 @@ def home_page_data() -> dict[str, Any]:
     upcoming = [item for item in workouts if parse_iso_date(item["date"]) and parse_iso_date(item["date"]) >= date.today()]
     recent_reviews = reviews[:5]
     return {
+        "workspace": status,
         "dashboard": dashboard,
         "active_cycle": active_cycle,
         "week": week,
@@ -1302,7 +1426,7 @@ async def dashboard(request: Request) -> HTMLResponse:
     redirect = auth_guard(request)
     if redirect:
         return redirect
-    return templates.TemplateResponse(request, "dashboard.html", template_context(request, dashboard=dashboard_payload()))
+    return templates.TemplateResponse(request, "dashboard.html", template_context(request, dashboard=dashboard_payload(), workspace=workspace_status()))
 
 
 @app.get("/decision", response_class=HTMLResponse)
@@ -1330,7 +1454,7 @@ async def planned_workouts_page(request: Request, view: str = "list", month: str
     return templates.TemplateResponse(
         request,
         "planned_workouts.html",
-        template_context(request, workouts=items, current_view=current_view, calendar=calendar_data, selected_kind=kind, selected_status=status, week=week_page_data()),
+        template_context(request, workouts=items, current_view=current_view, calendar=calendar_data, selected_kind=kind, selected_status=status, week=week_page_data(), workspace=workspace_status()),
     )
 
 
@@ -1345,7 +1469,7 @@ async def calendar_page(request: Request, month: str | None = None, kind: str = 
     return templates.TemplateResponse(
         request,
         "planned_workouts.html",
-        template_context(request, workouts=workouts, current_view="calendar", calendar=calendar_month_data_combined(month, kind=kind, status=status), selected_kind=kind, selected_status=status),
+        template_context(request, workouts=workouts, current_view="calendar", calendar=calendar_month_data_combined(month, kind=kind, status=status), selected_kind=kind, selected_status=status, week=week_page_data(), workspace=workspace_status()),
     )
 
 
@@ -1393,7 +1517,7 @@ async def athlete(request: Request) -> HTMLResponse:
     redirect = auth_guard(request)
     if redirect:
         return redirect
-    return templates.TemplateResponse(request, "athlete.html", template_context(request, athlete=athlete_page_data()))
+    return templates.TemplateResponse(request, "athlete.html", template_context(request, athlete=athlete_page_data(), workspace=workspace_status()))
 
 
 @app.get("/races", response_class=HTMLResponse)
@@ -1401,7 +1525,7 @@ async def races(request: Request) -> HTMLResponse:
     redirect = auth_guard(request)
     if redirect:
         return redirect
-    return templates.TemplateResponse(request, "races.html", template_context(request, races=races_page_data()))
+    return templates.TemplateResponse(request, "races.html", template_context(request, races=races_page_data(), workspace=workspace_status()))
 
 
 @app.get("/cycle", response_class=HTMLResponse)
@@ -1409,7 +1533,7 @@ async def cycle(request: Request) -> HTMLResponse:
     redirect = auth_guard(request)
     if redirect:
         return redirect
-    return templates.TemplateResponse(request, "cycle.html", template_context(request, cycle=cycle_page_data()))
+    return templates.TemplateResponse(request, "cycle.html", template_context(request, cycle=cycle_page_data(), workspace=workspace_status()))
 
 
 @app.get("/master-plan", response_class=HTMLResponse)
@@ -1417,7 +1541,7 @@ async def master_plan(request: Request) -> HTMLResponse:
     redirect = auth_guard(request)
     if redirect:
         return redirect
-    return templates.TemplateResponse(request, "master_plan.html", template_context(request, master_plan=master_plan_page_data()))
+    return templates.TemplateResponse(request, "master_plan.html", template_context(request, master_plan=master_plan_page_data(), workspace=workspace_status()))
 
 
 @app.get("/healthz")

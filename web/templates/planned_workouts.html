@@ -1,6 +1,19 @@
 {% extends "base.html" %}
 {% block title %}Planificados | RunPilot{% endblock %}
 {% block content %}
+{% if current_view == 'week' and week and not week.exists %}
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Semana activa no disponible</p>
+      <h2>Aun no existe `planning/weeks/semana_actual.md`</h2>
+    </div>
+    <span class="badge warn">Pendiente</span>
+  </div>
+  <p>Genera primero el plan inicial para poder consultar la vista semanal.</p>
+</section>
+{% endif %}
+
 <section class="panel">
   <div class="panel-head">
     <div>

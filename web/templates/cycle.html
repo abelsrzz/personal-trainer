@@ -1,6 +1,18 @@
 {% extends "base.html" %}
 {% block title %}Ciclo activo | RunPilot{% endblock %}
 {% block content %}
+{% if not cycle.master_plan.exists %}
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Ciclo no disponible</p>
+      <h2>Aun no hay plan general ni ciclo activo que mostrar</h2>
+    </div>
+    <span class="badge warn">Pendiente</span>
+  </div>
+  <p>Esta vista se activara cuando exista `planning/master_plan.md` y, opcionalmente, `planning/cycles/active.yaml`.</p>
+</section>
+{% else %}
 <section class="hero cycle-hero">
   <div>
     <p class="eyebrow">Ciclo activo</p>
@@ -110,4 +122,5 @@
     {% endfor %}
   </div>
 </section>
+{% endif %}
 {% endblock %}

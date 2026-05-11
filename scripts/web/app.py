@@ -6,6 +6,7 @@ import json
 import calendar
 import logging
 import os
+import re
 import subprocess
 import sys
 from datetime import date, datetime
@@ -244,7 +245,7 @@ def empty_dashboard_payload(status: dict[str, Any]) -> dict[str, Any]:
                 "last_28_days": {"long_run_km": 0.0, "runs": 0},
             },
             "session_guidance": {"primary_labels": [], "avoid_labels": [], "optional_labels": [], "quality_volume_cap": None},
-            "latest_injury_entry": None,
+            "latest_shin_entry": None,
         },
         "goal_gates": {
             "status": "unsupported_now",
@@ -252,12 +253,33 @@ def empty_dashboard_payload(status: dict[str, Any]) -> dict[str, Any]:
             "summary": "Los checkpoints del objetivo apareceran cuando exista plan y decision automatica.",
             "passed_count": 0,
             "total_gates": 0,
-            "metrics": {"latest_injury_pain": None},
+            "metrics": {"latest_shin_pain": None},
             "gates": [],
         },
         "active_context": {"active_block": None, "days_to_goal_race": None, "goal_race": None},
         "performance_estimate": {"current_10k_estimate_s": None, "method": "Sin datos suficientes"},
         "daily_metrics": {"latest_hrv": None, "latest_training_readiness": None, "latest_resting_heart_rate": None},
+        "readiness_card": {
+            "state": "missing",
+            "label": "Sin readiness disponible",
+            "tone": "warn",
+            "summary": "Faltan señales diarias para traducir el estado de hoy a una acción clara.",
+            "action": "Apóyate en la decisión global y mantén margen conservador.",
+            "detail": "No hay métricas diarias suficientes o están desactualizadas.",
+            "source_label": "Sin dato diario",
+            "signals": [],
+        },
+        "protection_mode": {
+            "active": False,
+            "key": "normal_build",
+            "label": "Construccion normal",
+            "tone": "ok",
+            "summary": "Sin modo lesion activo.",
+            "allowed_progression": "Se puede progresar con cautela normal.",
+            "guidance_note": "",
+            "quality_cap_label": None,
+            "triggers": [],
+        },
         "weekly_volume": [],
     }
 
@@ -514,6 +536,15 @@ def event_matches_filters(event: dict[str, Any], kind: str, status: str) -> bool
     return True
 
 
+def calendar_event_sort_key(event: dict[str, Any]) -> tuple[int, str, str]:
+    source_order = {"race": 0, "review": 1, "completed": 2, "planned": 3}
+    return (
+        source_order.get(str(event.get("source") or ""), 9),
+        str(event.get("title") or ""),
+        str(event.get("status") or ""),
+    )
+
+
 def traffic_light_class(value: str | None) -> str:
     normalized = str(value or "").lower()
     return {
@@ -662,6 +693,538 @@ def completed_feedback_items() -> dict[str, dict[str, Any]]:
 def completed_feedback_detail(slug: str) -> dict[str, Any] | None:
     item = completed_feedback_items().get(slug)
     return item if isinstance(item, dict) else None
+
+
+def response_pattern_badge(status: str) -> dict[str, str]:
+    mapping = {
+        "positive": {"label": "Favorable", "tone": "ok"},
+        "mixed": {"label": "Mixto", "tone": ""},
+        "watch": {"label": "Vigilar", "tone": "warn"},
+        "unknown": {"label": "Sin datos", "tone": ""},
+    }
+    return mapping.get(status, mapping["unknown"])
+
+
+def to_int_or_none(value: Any) -> int | None:
+    if value is None or value == "":
+        return None
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def athlete_response_patterns() -> dict[str, Any]:
+    records: list[dict[str, Any]] = []
+    for payload in completed_feedback_items().values():
+        athlete_feedback = payload.get("athlete_feedback", {}) if isinstance(payload, dict) else {}
+        if not isinstance(athlete_feedback, dict):
+            continue
+        records.append(
+            {
+                "date": iso_date_string(payload.get("date")),
+                "updated_at": str(payload.get("updated_at") or ""),
+                "rpe": to_int_or_none(athlete_feedback.get("rpe")),
+                "pain_level": to_int_or_none(athlete_feedback.get("pain_level")),
+                "pain_location": str(athlete_feedback.get("pain_location") or "").strip(),
+                "compliance": str(athlete_feedback.get("compliance") or "").strip(),
+                "time_feeling": str(athlete_feedback.get("time_feeling") or "").strip(),
+                "note": str(athlete_feedback.get("note") or "").strip(),
+            }
+        )
+
+    records.sort(key=lambda item: (item["date"], item["updated_at"]), reverse=True)
+    recent = records[:6]
+    if not recent:
+        return {
+            "headline": "Todavia no hay feedback suficiente para aprender patrones del atleta.",
+            "window_label": "Sin sesiones con feedback",
+            "patterns": [
+                {
+                    "label": "Tolerancia reciente",
+                    "status": "unknown",
+                    "badge": response_pattern_badge("unknown"),
+                    "summary": "Aun no hay sesiones valoradas.",
+                },
+                {
+                    "label": "Dolor reportado",
+                    "status": "unknown",
+                    "badge": response_pattern_badge("unknown"),
+                    "summary": "No hay senales subjetivas de dolor todavia.",
+                },
+                {
+                    "label": "Adherencia",
+                    "status": "unknown",
+                    "badge": response_pattern_badge("unknown"),
+                    "summary": "No se puede estimar cumplimiento aun.",
+                },
+            ],
+            "notes": [],
+        }
+
+    rpe_values = [item["rpe"] for item in recent if item.get("rpe") is not None]
+    pain_values = [item["pain_level"] for item in recent if item.get("pain_level") is not None]
+    avg_rpe = sum(rpe_values) / len(rpe_values) if rpe_values else None
+    avg_pain = sum(pain_values) / len(pain_values) if pain_values else None
+    high_pain_count = sum(1 for value in pain_values if value >= 4)
+    high_rpe_count = sum(1 for value in rpe_values if value >= 8)
+    modified_or_aborted = sum(1 for item in recent if item.get("compliance") in {"modified", "aborted"})
+    location_counts: dict[str, int] = {}
+    for item in recent:
+        pain_level = item.get("pain_level")
+        if pain_level is not None and pain_level >= 3 and item.get("pain_location"):
+            key = str(item["pain_location"]).lower()
+            location_counts[key] = location_counts.get(key, 0) + 1
+    repeated_location = max(location_counts, key=location_counts.get) if location_counts else ""
+    repeated_location_count = location_counts.get(repeated_location, 0)
+
+    compliance_score_map = {"full": 1.0, "partial": 0.6, "modified": 0.35, "aborted": 0.0}
+    compliance_scores = [compliance_score_map.get(item.get("compliance"), 0.5) for item in recent]
+    adherence_score = sum(compliance_scores) / len(compliance_scores) if compliance_scores else 0.0
+
+    tolerance_status = "mixed"
+    tolerance_summary = "La carga parece tolerable, pero aun sin patron totalmente limpio."
+    if avg_pain is not None and avg_rpe is not None:
+        if avg_pain <= 2.0 and avg_rpe <= 6.5 and modified_or_aborted == 0:
+            tolerance_status = "positive"
+            tolerance_summary = "Las ultimas sesiones sugieren que la carga reciente se esta absorbiendo bien."
+        elif avg_pain >= 4.0 or high_rpe_count >= 2 or modified_or_aborted >= 2:
+            tolerance_status = "watch"
+            tolerance_summary = "La respuesta reciente apunta a un coste alto; conviene frenar progresion o recortar densidad."
+
+    pain_status = "mixed"
+    pain_summary = "El dolor existe, pero sin una alarma repetida clara en el feedback reciente."
+    if avg_pain is not None:
+        if avg_pain <= 2.0 and high_pain_count == 0:
+            pain_status = "positive"
+            pain_summary = "El dolor reportado esta en zona tranquila durante las ultimas sesiones con feedback."
+        elif high_pain_count >= 2 or (repeated_location and repeated_location_count >= 2):
+            pain_status = "watch"
+            location_text = f" en {repeated_location}" if repeated_location else ""
+            pain_summary = f"Se repite dolor relevante{location_text}; esto deberia pesar en la siguiente decision de carga."
+
+    adherence_status = "mixed"
+    adherence_summary = "La adherencia es utilizable, pero todavia con desviaciones en la ejecucion."
+    if adherence_score >= 0.85:
+        adherence_status = "positive"
+        adherence_summary = "El atleta esta completando casi todo lo previsto sin necesidad de grandes ajustes."
+    elif adherence_score < 0.55:
+        adherence_status = "watch"
+        adherence_summary = "La adherencia reciente es fragil; el plan puede estar pidiendo mas de lo que cabe absorber o encajar."
+
+    notes = [
+        {"date": item["date"], "note": item["note"], "summary": feedback_summary({"athlete_feedback": item})}
+        for item in recent
+        if item.get("note")
+    ][:3]
+    return {
+        "headline": "Patrones simples derivados del feedback subjetivo reciente.",
+        "window_label": f"Ultimas {len(recent)} sesiones con feedback",
+        "patterns": [
+            {
+                "label": "Tolerancia reciente",
+                "status": tolerance_status,
+                "badge": response_pattern_badge(tolerance_status),
+                "summary": tolerance_summary,
+            },
+            {
+                "label": "Dolor reportado",
+                "status": pain_status,
+                "badge": response_pattern_badge(pain_status),
+                "summary": pain_summary,
+            },
+            {
+                "label": "Adherencia",
+                "status": adherence_status,
+                "badge": response_pattern_badge(adherence_status),
+                "summary": adherence_summary,
+            },
+        ],
+        "notes": notes,
+    }
+
+
+def adaptation_triggers(dashboard: dict[str, Any]) -> dict[str, Any]:
+    decision = dashboard.get("decision", {}) if isinstance(dashboard, dict) else {}
+    reasons = decision.get("reasons", []) if isinstance(decision.get("reasons"), list) else []
+    daily_signals = decision.get("daily_signals", {}) if isinstance(decision.get("daily_signals"), dict) else {}
+    goal_metrics = dashboard.get("goal_gates", {}).get("metrics", {}) if isinstance(dashboard.get("goal_gates"), dict) else {}
+    response_patterns = dashboard.get("response_patterns", {}) if isinstance(dashboard.get("response_patterns"), dict) else {}
+    reviews = completed_reviews()
+    latest_review = reviews[0] if reviews else None
+    recent_feedback = completed_feedback_items()
+    recent_feedback_item = None
+    if latest_review:
+        recent_feedback_item = recent_feedback.get(latest_review.get("slug"))
+    athlete_feedback = recent_feedback_item.get("athlete_feedback", {}) if isinstance(recent_feedback_item, dict) else {}
+    athlete_feedback = athlete_feedback if isinstance(athlete_feedback, dict) else {}
+
+    triggers: list[dict[str, Any]] = []
+
+    volume_spike = decision.get("volume_spike_pct")
+    hrv_flag = str(daily_signals.get("hrv_flag") or "").strip()
+    readiness_flag = str(daily_signals.get("readiness_flag") or "").strip()
+    resting_hr_flag = str(daily_signals.get("resting_hr_flag") or "").strip()
+    fatigue_active = False
+    fatigue_reasons: list[str] = []
+    if volume_spike is not None and float(volume_spike) >= 25.0:
+        fatigue_active = True
+        fatigue_reasons.append(f"Volumen 7d +{round(float(volume_spike))}% frente a la semana previa")
+    if hrv_flag in {"low", "suppressed"}:
+        fatigue_active = True
+        fatigue_reasons.append("HRV por debajo de la banda habitual")
+    if readiness_flag in {"low", "poor"}:
+        fatigue_active = True
+        fatigue_reasons.append("Readiness diaria baja")
+    if resting_hr_flag == "high":
+        fatigue_active = True
+        fatigue_reasons.append("Pulso en reposo por encima de lo normal")
+    if decision.get("status") == "red" and reasons:
+        fatigue_reasons.append(str(reasons[0]))
+    triggers.append(
+        {
+            "key": "fatigue",
+            "label": "Fatiga / carga",
+            "active": fatigue_active,
+            "badge": response_pattern_badge("watch" if fatigue_active else "positive"),
+            "summary": "; ".join(fatigue_reasons[:2]) if fatigue_reasons else "No hay senal clara de fatiga aguda en los datos visibles.",
+            "plan_change": "Bajar coste de la siguiente sesion: quitar calidad, recortar volumen o mover a rodaje muy facil." if fatigue_active else "Se puede mantener la estructura actual sin progresar por este trigger.",
+        }
+    )
+
+    latest_shin_pain = goal_metrics.get("latest_shin_pain")
+    pain_pattern = next((item for item in response_patterns.get("patterns", []) if item.get("label") == "Dolor reportado"), None)
+    pain_active = bool((latest_shin_pain is not None and float(latest_shin_pain) > 2.0) or (pain_pattern and pain_pattern.get("status") == "watch"))
+    pain_reasons: list[str] = []
+    if latest_shin_pain is not None:
+        pain_reasons.append(f"Periostio actual {latest_shin_pain}/10")
+    if pain_pattern and pain_pattern.get("status") == "watch":
+        pain_reasons.append(str(pain_pattern.get("summary") or ""))
+    triggers.append(
+        {
+            "key": "pain",
+            "label": "Dolor / lesion",
+            "active": pain_active,
+            "badge": response_pattern_badge("watch" if pain_active else "positive"),
+            "summary": "; ".join([item for item in pain_reasons if item][:2]) if pain_reasons else "No hay senal clara de dolor que obligue a adaptar por si sola.",
+            "plan_change": "Proteger tejido: evitar impacto de calidad, bajar agresividad mecanica o incluso descansar." if pain_active else "No hace falta ajustar el plan por dolor ahora mismo.",
+        }
+    )
+
+    time_feeling = str(athlete_feedback.get("time_feeling") or "").strip()
+    compliance = str(athlete_feedback.get("compliance") or "").strip()
+    action_keys = [
+        str((item or {}).get("action") or "")
+        for item in planned_workout_actions().values()
+        if isinstance(item, dict)
+    ]
+    time_active = time_feeling in {"tight", "cut_short"} or "alternative_requested" in action_keys
+    time_signals: list[str] = []
+    if time_feeling in FEEDBACK_TIME_FEELING_LABELS:
+        time_signals.append(FEEDBACK_TIME_FEELING_LABELS[time_feeling])
+    if "alternative_requested" in action_keys:
+        time_signals.append("Hay una sesion marcada con alternativa solicitada")
+    if compliance in {"partial", "modified"} and time_feeling in {"tight", "cut_short"}:
+        time_signals.append("La ejecucion reciente ya se vio recortada por agenda")
+    triggers.append(
+        {
+            "key": "time",
+            "label": "Tiempo disponible",
+            "active": time_active,
+            "badge": response_pattern_badge("watch" if time_active else "positive"),
+            "summary": "; ".join(time_signals[:2]) if time_signals else "No hay senal reciente de que la agenda este rompiendo el plan.",
+            "plan_change": "Sustituir por version corta, compacta o mas facil de encajar sin perder continuidad." if time_active else "No hace falta compactar la sesion por agenda.",
+        }
+    )
+
+    adherence_pattern = next((item for item in response_patterns.get("patterns", []) if item.get("label") == "Adherencia"), None)
+    execution_active = False
+    execution_signals: list[str] = []
+    if latest_review and str(latest_review.get("traffic_light") or "").lower() in {"amarillo", "rojo"}:
+        execution_active = True
+        execution_signals.append(f"Ultima review en {latest_review.get('traffic_light')}")
+    if compliance in {"modified", "aborted", "partial"}:
+        execution_active = True
+        execution_signals.append(FEEDBACK_COMPLIANCE_LABELS.get(compliance, compliance))
+    if adherence_pattern and adherence_pattern.get("status") == "watch":
+        execution_active = True
+        execution_signals.append(str(adherence_pattern.get("summary") or ""))
+    triggers.append(
+        {
+            "key": "execution",
+            "label": "Ejecucion real",
+            "active": execution_active,
+            "badge": response_pattern_badge("watch" if execution_active else "positive"),
+            "summary": "; ".join([item for item in execution_signals if item][:2]) if execution_signals else "La ejecucion reciente no obliga por si sola a cambiar el siguiente paso.",
+            "plan_change": "Repetir familia mas controlable o bajar densidad antes de volver a progresar." if execution_active else "La siguiente progresion no necesita frenarse por ejecucion.",
+        }
+    )
+
+    active_count = sum(1 for item in triggers if item["active"])
+    return {
+        "headline": "Mapa simple trigger -> cambio de plan para explicar por que RunPilot adapta la siguiente decision.",
+        "summary": f"{active_count} trigger(s) activos ahora mismo.",
+        "triggers": triggers,
+    }
+
+
+def active_trigger_labels(dashboard: dict[str, Any]) -> list[str]:
+    items = dashboard.get("adaptation_triggers", {}).get("triggers", []) if isinstance(dashboard, dict) else []
+    return [str(item.get("label") or "") for item in items if isinstance(item, dict) and item.get("active") and item.get("label")]
+
+
+def planned_workout_replan_data(
+    workout: dict[str, Any],
+    dashboard: dict[str, Any] | None = None,
+    linked_review: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    dashboard = dashboard or dashboard_payload()
+    action_state = workout.get("action_state") if isinstance(workout.get("action_state"), dict) else None
+    action_key = str((action_state or {}).get("action") or "")
+    action_updated_at = format_datetime((action_state or {}).get("updated_at")) if action_state else None
+    decision = dashboard.get("decision", {}) if isinstance(dashboard, dict) else {}
+    trigger_labels = active_trigger_labels(dashboard)
+    primary_labels = list((decision.get("session_guidance", {}) or {}).get("primary_labels") or [])
+    recommendation = str(decision.get("recommendation") or "").strip()
+    workout_date = parse_iso_date(workout.get("date"))
+    is_upcoming = bool(workout_date and workout_date >= date.today())
+    status = "original"
+    label = "Original"
+    tone = ""
+    summary = "La sesion sigue tal como estaba planificada."
+    cause = "Sin trigger visible que obligue a cambiarla."
+    changed_at = None
+    variant = None
+
+    if action_key == "alternative_requested":
+        status = "adjusted"
+        label = "Ajustada"
+        tone = "warn"
+        summary = "El atleta pidio una alternativa para esta sesion."
+        cause = "Cambio manual desde la web para adaptar la sesion al contexto del dia."
+        changed_at = action_updated_at
+        variant = primary_labels[0] if primary_labels else None
+    elif action_key == "skipped":
+        status = "adjusted"
+        label = "Ajustada"
+        tone = "warn"
+        summary = "La sesion quedo marcada como no realizada."
+        cause = "La siguiente decision deberia recolocar o absorber esta carga perdida."
+        changed_at = action_updated_at
+    elif linked_review:
+        athlete_feedback = linked_review.get("athlete_feedback", {}).get("athlete_feedback", {}) if isinstance(linked_review.get("athlete_feedback"), dict) else {}
+        compliance = str(athlete_feedback.get("compliance") or "").strip()
+        if compliance in {"partial", "modified", "aborted"}:
+            status = "adjusted"
+            label = "Ajustada"
+            tone = "warn"
+            summary = "La ejecucion real no coincidió del todo con lo prescrito."
+            cause = FEEDBACK_COMPLIANCE_LABELS.get(compliance, "Feedback subjetivo con desviacion de la sesion.")
+            changed_at = format_datetime(linked_review.get("athlete_feedback", {}).get("updated_at")) if linked_review.get("athlete_feedback") else None
+        elif str(linked_review.get("traffic_light") or "").lower() in {"amarillo", "rojo"}:
+            status = "adjusted"
+            label = "Ajustada"
+            tone = "warn"
+            summary = "La review de la sesion pide prudencia antes de progresar."
+            cause = str(linked_review.get("compliance_note") or "").strip()
+    elif is_upcoming and decision.get("status") == "red" and workout.get("session_kind") in {"quality", "long_run"}:
+        status = "protected"
+        label = "Protegida"
+        tone = "warn"
+        summary = "La sesion deberia ejecutarse en version protectora o sustituirse."
+        cause = ", ".join(trigger_labels[:2]) if trigger_labels else recommendation or "La decision actual del coach esta en rojo."
+        changed_at = dashboard.get("as_of")
+        variant = primary_labels[0] if primary_labels else None
+    elif is_upcoming and decision.get("status") == "yellow" and workout.get("session_kind") == "quality":
+        status = "adjusted"
+        label = "Ajustable"
+        tone = "warn"
+        summary = "Conviene hacerla con margen o recorte si el dia no acompana."
+        cause = ", ".join(trigger_labels[:2]) if trigger_labels else recommendation or "La decision actual pide cautela."
+        changed_at = dashboard.get("as_of")
+        variant = primary_labels[0] if primary_labels else None
+
+    return {
+        "status": status,
+        "label": label,
+        "tone": tone,
+        "summary": summary,
+        "cause": cause,
+        "changed_at": changed_at,
+        "variant": variant,
+        "is_changed": status in {"adjusted", "protected", "adjustable"},
+    }
+
+
+def protection_mode_payload(dashboard: dict[str, Any]) -> dict[str, Any]:
+    decision = dashboard.get("decision", {}) if isinstance(dashboard, dict) else {}
+    goal_metrics = dashboard.get("goal_gates", {}).get("metrics", {}) if isinstance(dashboard.get("goal_gates"), dict) else {}
+    response_patterns = dashboard.get("response_patterns", {}) if isinstance(dashboard.get("response_patterns"), dict) else {}
+    latest_shin_entry = decision.get("latest_shin_entry") if isinstance(decision.get("latest_shin_entry"), dict) else {}
+    latest_shin_pain = goal_metrics.get("latest_shin_pain")
+    pain_pattern = next((item for item in response_patterns.get("patterns", []) if item.get("label") == "Dolor reportado"), None)
+    adherence_pattern = next((item for item in response_patterns.get("patterns", []) if item.get("label") == "Adherencia"), None)
+    fatigue_trigger = next((item for item in dashboard.get("adaptation_triggers", {}).get("triggers", []) if item.get("key") == "fatigue"), None)
+    shin_band = str((decision.get("session_guidance", {}) or {}).get("shin_band") or "").strip().lower()
+    next_morning = latest_shin_entry.get("pain_next_morning") if isinstance(latest_shin_entry, dict) else None
+    triggers: list[str] = []
+
+    pain_value = float(latest_shin_pain) if latest_shin_pain is not None else None
+    if pain_value is not None and pain_value >= 4.0:
+        triggers.append(f"Periostio {pain_value:.0f}/10")
+    if next_morning is not None and float(next_morning) >= 4.0:
+        triggers.append("Reaccion alta al dia siguiente")
+    if shin_band == "red":
+        triggers.append("Banda tibial roja")
+    if pain_pattern and pain_pattern.get("status") == "watch":
+        triggers.append("Dolor subjetivo repetido")
+
+    if triggers:
+        return {
+            "active": True,
+            "key": "injury_protection",
+            "label": "Modo lesion",
+            "tone": "warn",
+            "summary": "La prioridad pasa a proteger tejido y reducir el coste mecanico antes de volver a construir.",
+            "allowed_progression": "No se permite progresar carga. Solo mantener o reducir hasta volver a banda verde.",
+            "guidance_note": "Evita calidad, cuestas y tiradas largas agresivas. Usa solo rodajes muy faciles, movilidad o descanso.",
+            "quality_cap_label": "sin calidad",
+            "triggers": triggers,
+        }
+
+    return_triggers: list[str] = []
+    if (pain_value is not None and pain_value >= 2.0) or shin_band == "yellow":
+        return_triggers.append("Periostio aun sensible")
+    if next_morning is not None and float(next_morning) >= 2.0:
+        return_triggers.append("Hay reaccion al dia siguiente")
+    if adherence_pattern and adherence_pattern.get("status") == "watch":
+        return_triggers.append("La tolerancia todavia no es repetible")
+    if fatigue_trigger and fatigue_trigger.get("active"):
+        return_triggers.append("La fatiga actual desaconseja progresar")
+    if decision.get("status") in {"red", "yellow"} and str(decision.get("recommendation") or ""):
+        return_triggers.append("La decision diaria aun pide prudencia")
+    if return_triggers:
+        return {
+            "active": True,
+            "key": "return_to_running",
+            "label": "Modo retorno",
+            "tone": "warn",
+            "summary": "El sistema debe priorizar continuidad, control de FC y respuesta del periostio antes de volver a empujar.",
+            "allowed_progression": "Solo progresion minima y ganada: repetir familias seguras antes de aumentar densidad o ritmo.",
+            "guidance_note": "Prioriza rodajes suaves, recuperacion y sesiones de bajo coste. La calidad solo entra si la semana sale limpia.",
+            "quality_cap_label": "mini-progresion",
+            "triggers": return_triggers[:3],
+        }
+
+    return {
+        "active": False,
+        "key": "normal_build",
+        "label": "Construccion normal",
+        "tone": "ok",
+        "summary": "No hay senales suficientes para activar un modo lesion o retorno.",
+        "allowed_progression": "Se puede progresar con prudencia normal del bloque.",
+        "guidance_note": "",
+        "quality_cap_label": None,
+        "triggers": [],
+    }
+
+
+def readiness_card_payload(dashboard: dict[str, Any]) -> dict[str, Any]:
+    daily_metrics = dashboard.get("daily_metrics", {}) if isinstance(dashboard, dict) else {}
+    data_quality = dashboard.get("data_quality", {}) if isinstance(dashboard, dict) else {}
+    decision = dashboard.get("decision", {}) if isinstance(dashboard, dict) else {}
+    daily_signals = decision.get("daily_signals", {}) if isinstance(decision.get("daily_signals"), dict) else {}
+    protection_mode = dashboard.get("protection_mode", {}) if isinstance(dashboard, dict) else {}
+
+    latest_date = parse_iso_date(daily_metrics.get("latest_date") or data_quality.get("latest_daily_date"))
+    stale = latest_date is None or latest_date < date.today()
+    readiness = daily_metrics.get("latest_training_readiness")
+    hrv = daily_metrics.get("latest_hrv")
+    resting_hr = daily_metrics.get("latest_resting_heart_rate")
+    hrv_flag = str(daily_signals.get("hrv_flag") or "").strip()
+    readiness_flag = str(daily_signals.get("readiness_flag") or "").strip()
+    resting_hr_flag = str(daily_signals.get("resting_hr_flag") or "").strip()
+    signals: list[str] = []
+
+    if readiness is not None:
+        signals.append(f"Readiness {int(readiness)}")
+    elif data_quality.get("available", {}).get("training_readiness") is False:
+        signals.append("Readiness no disponible")
+    if hrv is not None:
+        signals.append(f"HRV {int(hrv)}")
+    if resting_hr is not None:
+        signals.append(f"Resting HR {int(resting_hr)}")
+
+    if stale:
+        return {
+            "state": "stale",
+            "label": "Readiness desactualizada",
+            "tone": "warn",
+            "summary": "La última señal diaria no es de hoy, así que conviene leerla con cautela.",
+            "action": "No tomes decisiones finas por readiness. Usa el modo de protección y la decisión global como referencia principal.",
+            "detail": f"Último dato diario: {latest_date.isoformat() if latest_date else '-'}.",
+            "source_label": latest_date.isoformat() if latest_date else "Sin fecha diaria",
+            "signals": signals,
+        }
+
+    if protection_mode.get("active"):
+        return {
+            "state": "protected",
+            "label": "Readiness protegida",
+            "tone": "warn",
+            "summary": "Aunque las señales diarias no sean malas, hoy manda el contexto de protección o retorno.",
+            "action": protection_mode.get("allowed_progression") or "Mantén la progresión limitada.",
+            "detail": protection_mode.get("summary") or "El modo actual impone prudencia adicional.",
+            "source_label": latest_date.isoformat() if latest_date else "Hoy",
+            "signals": signals,
+        }
+
+    if readiness_flag in {"low", "poor"} or hrv_flag in {"low", "suppressed"} or resting_hr_flag == "high":
+        return {
+            "state": "protected",
+            "label": "Readiness protegida",
+            "tone": "warn",
+            "summary": "Las señales diarias sugieren no empujar hoy aunque el plan original lo permita.",
+            "action": "Recorta intensidad o cambia a versión fácil si el día no se siente limpio.",
+            "detail": "Una o más señales diarias salen de la banda cómoda esperada.",
+            "source_label": latest_date.isoformat() if latest_date else "Hoy",
+            "signals": signals,
+        }
+
+    if readiness is not None and int(readiness) >= 75 and hrv_flag in {"stable", "good", "high"} and resting_hr_flag in {"normal", "low", ""}:
+        return {
+            "state": "fresh",
+            "label": "Readiness fresca",
+            "tone": "ok",
+            "summary": "Las señales diarias son suficientemente limpias para ejecutar lo previsto sin añadir protección extra.",
+            "action": "Puedes seguir la sesión del día tal como está, manteniendo la prudencia normal del bloque.",
+            "detail": "Readiness alta o señales estables de HRV y pulso en reposo.",
+            "source_label": latest_date.isoformat() if latest_date else "Hoy",
+            "signals": signals,
+        }
+
+    if any(item for item in [readiness, hrv, resting_hr] if item is not None):
+        return {
+            "state": "neutral",
+            "label": "Readiness neutra",
+            "tone": "",
+            "summary": "No hay una señal diaria fuerte ni para apretar ni para proteger más de la cuenta.",
+            "action": "Sigue el plan con margen y deja que la sensación de calentamiento confirme la sesión.",
+            "detail": "Las métricas disponibles no disparan ni verde claro ni alerta directa.",
+            "source_label": latest_date.isoformat() if latest_date else "Hoy",
+            "signals": signals,
+        }
+
+    return {
+        "state": "missing",
+        "label": "Sin readiness disponible",
+        "tone": "warn",
+        "summary": "Faltan señales diarias para traducir el estado de hoy a una acción clara.",
+        "action": "Apóyate en la decisión global y mantén margen conservador.",
+        "detail": "No hay métricas diarias suficientes o están desactualizadas.",
+        "source_label": latest_date.isoformat() if latest_date else "Sin dato diario",
+        "signals": signals,
+    }
 
 
 def feedback_badge(feedback: dict[str, Any] | None) -> dict[str, str] | None:
@@ -854,13 +1417,64 @@ def parse_week_table(content: str) -> list[dict[str, str]]:
     return rows
 
 
+def parse_week_date_window(content: str) -> tuple[date | None, date | None]:
+    match = re.search(r"Del `(?P<start>\d{4}-\d{2}-\d{2})` al `(?P<end>\d{4}-\d{2}-\d{2})`", content)
+    if not match:
+        return None, None
+    return parse_iso_date(match.group("start")), parse_iso_date(match.group("end"))
+
+
+def resolve_week_row_date(label: str, start_date: date | None, end_date: date | None) -> str | None:
+    if not start_date or not end_date:
+        return None
+    match = re.search(r"(\d{1,2})$", str(label).strip())
+    if not match:
+        return None
+    day_number = int(match.group(1))
+    current = start_date
+    while current <= end_date:
+        if current.day == day_number:
+            return current.isoformat()
+        current = current.fromordinal(current.toordinal() + 1)
+    return None
+
+
 def week_page_data() -> dict[str, Any]:
     path = ACTIVE_WEEK_PATH
     content = read_text(path)
+    rows = parse_week_table(content)
+    start_date, end_date = parse_week_date_window(content)
+    dashboard = dashboard_payload()
+    planned_by_date = {item.get("date"): item for item in planned_workouts(dashboard) if item.get("date")}
+    reviews_by_date = {item.get("date"): item for item in completed_reviews() if item.get("date")}
+    enriched_rows: list[dict[str, Any]] = []
+    for row in rows:
+        row_date = resolve_week_row_date(row.get("day", ""), start_date, end_date)
+        linked_workout = planned_by_date.get(row_date) if row_date else None
+        linked_review = reviews_by_date.get(row_date) if row_date else None
+        replan = planned_workout_replan_data(linked_workout, dashboard, linked_review) if linked_workout else {
+            "status": "original",
+            "label": "Original",
+            "tone": "",
+            "summary": "Sin ajuste visible para este bloque.",
+            "cause": "-",
+            "changed_at": None,
+            "variant": None,
+            "is_changed": False,
+        }
+        enriched_rows.append(
+            {
+                **row,
+                "date": row_date,
+                "linked_workout": linked_workout,
+                "linked_review": linked_review,
+                "replan": replan,
+            }
+        )
     return {
         "exists": path.exists(),
         "content": content,
-        "rows": parse_week_table(content),
+        "rows": enriched_rows,
         "pdf_exists": (ROOT / "planning" / "weeks" / "generated" / "semana_actual.pdf").exists(),
     }
 
@@ -937,12 +1551,22 @@ def retry_garmin_workout_sync(slug: str, username: str | None) -> tuple[bool, st
 
 def dashboard_payload() -> dict[str, Any]:
     status = workspace_status()
+    response_patterns = athlete_response_patterns()
     if not COACH_DECISION_PATH.exists():
-        return empty_dashboard_payload(status)
+        payload = empty_dashboard_payload(status)
+        payload["response_patterns"] = response_patterns
+        payload["adaptation_triggers"] = adaptation_triggers(payload)
+        payload["protection_mode"] = protection_mode_payload(payload)
+        payload["readiness_card"] = readiness_card_payload(payload)
+        return payload
     decision_capability = ensure_fresh("coach_decision")
     path = COACH_DECISION_PATH
     payload = load_json(path) if path.exists() else {}
     payload["capability_messages"] = [message for message in [decision_capability.warning] if message]
+    payload["response_patterns"] = response_patterns
+    payload["adaptation_triggers"] = adaptation_triggers(payload)
+    payload["protection_mode"] = protection_mode_payload(payload)
+    payload["readiness_card"] = readiness_card_payload(payload)
 
     session_family_labels = {
         "easy_recovery": "Rodaje de recuperacion",
@@ -983,6 +1607,16 @@ def dashboard_payload() -> dict[str, Any]:
         guidance["primary_labels"] = [humanize_session_family(item) for item in guidance.get("primary", [])]
         guidance["avoid_labels"] = [humanize_session_family(item) for item in guidance.get("avoid", [])]
         guidance["optional_labels"] = [humanize_session_family(item) for item in guidance.get("optional", [])]
+        protection_mode = payload.get("protection_mode", {})
+        if protection_mode.get("active"):
+            guidance["protection_note"] = protection_mode.get("guidance_note")
+            if protection_mode.get("quality_cap_label"):
+                guidance["quality_volume_cap"] = protection_mode.get("quality_cap_label")
+            if protection_mode.get("key") == "injury_protection":
+                guidance["primary_labels"] = ["Rodaje de recuperacion", "Recuperacion con movilidad"]
+                guidance["avoid_labels"] = list(dict.fromkeys(["Tempo continuo", "Cruise intervals", "Tirada larga con calidad"] + list(guidance.get("avoid_labels") or [])))
+            elif protection_mode.get("key") == "return_to_running":
+                guidance["primary_labels"] = ["Rodaje aerobico Z2", "Rodaje de recuperacion"]
     if payload.get("goal_gates"):
         payload["goal_gates"]["status_label"] = goal_status_label(payload["goal_gates"].get("status"))
         metrics = payload["goal_gates"].get("metrics", {})
@@ -1151,6 +1785,18 @@ def progress_metrics() -> list[dict[str, Any]]:
             }
         )
 
+    protection_mode = dashboard.get("protection_mode", {}) if isinstance(dashboard, dict) else {}
+    if protection_mode.get("active"):
+        metrics.append(
+            {
+                "label": "Progreso permitido ahora",
+                "value": 15 if protection_mode.get("key") == "injury_protection" else 35,
+                "value_label": protection_mode.get("label") or "Protegido",
+                "detail": protection_mode.get("allowed_progression") or "La progresion queda limitada por el modo actual.",
+                "tone": "warn",
+            }
+        )
+
     goal_gate_status = str(dashboard.get("goal_gates", {}).get("status") or "").lower()
     goal_probability_map = {
         "unsupported_now": 18,
@@ -1160,6 +1806,10 @@ def progress_metrics() -> list[dict[str, Any]]:
     }
     if goal_gate_status:
         probability = goal_probability_map.get(goal_gate_status, 0)
+        if protection_mode.get("key") == "injury_protection":
+            probability = min(probability, 25)
+        elif protection_mode.get("key") == "return_to_running":
+            probability = min(probability, 45)
         metrics.append(
             {
                 "label": "Posibilidades de cumplir el objetivo",
@@ -1188,10 +1838,67 @@ def progress_metrics() -> list[dict[str, Any]]:
     return metrics
 
 
-def planned_workouts() -> list[dict[str, Any]]:
+def progress_page_data() -> dict[str, Any]:
+    dashboard = dashboard_payload()
+    master_plan = master_plan_page_data()
+    metrics = progress_metrics()
+    goal_gates = dashboard.get("goal_gates", {}) if isinstance(dashboard.get("goal_gates"), dict) else {}
+    protection_mode = dashboard.get("protection_mode", {}) if isinstance(dashboard.get("protection_mode"), dict) else {}
+    response_patterns = dashboard.get("response_patterns", {}) if isinstance(dashboard.get("response_patterns"), dict) else {}
+    goal_race = dashboard.get("active_context", {}).get("goal_race") if isinstance(dashboard.get("active_context"), dict) else None
+
+    headline = goal_gates.get("status_label") or "Progreso no disponible"
+    summary = goal_gates.get("summary") or "Todavia no hay una lectura suficiente del progreso contra el objetivo."
+    if protection_mode.get("active"):
+        summary = f"{summary} Ahora mismo el sistema esta en {protection_mode.get('label', 'modo protegido').lower()}, asi que el progreso se mide primero por control y continuidad."
+
+    focus_items: list[str] = []
+    for gate in goal_gates.get("gates", []):
+        if not gate.get("passed") and gate.get("next_step"):
+            focus_items.append(str(gate.get("next_step")))
+    focus_items = focus_items[:4]
+
+    strengths: list[str] = []
+    for gate in goal_gates.get("gates", []):
+        if gate.get("passed"):
+            strengths.append(f"Checkpoint superado: {gate.get('name')}")
+    for pattern in response_patterns.get("patterns", []):
+        if pattern.get("status") == "positive":
+            strengths.append(str(pattern.get("summary") or ""))
+    strengths = [item for item in strengths if item][:4]
+
+    watchouts: list[str] = []
+    if protection_mode.get("active") and protection_mode.get("triggers"):
+        watchouts.extend([str(item) for item in protection_mode.get("triggers", []) if item])
+    else:
+        for item in dashboard.get("adaptation_triggers", {}).get("triggers", []):
+            if item.get("active"):
+                watchouts.append(str(item.get("summary") or ""))
+    watchouts = [item for item in watchouts if item][:4]
+
+    compact_metrics = metrics[:4]
+    return {
+        "headline": headline,
+        "summary": summary,
+        "goal_race": goal_race,
+        "goal_gates": goal_gates,
+        "metrics": compact_metrics,
+        "all_metrics": metrics,
+        "weekly_volume": dashboard.get("weekly_volume", []),
+        "strengths": strengths,
+        "watchouts": watchouts,
+        "focus_items": focus_items,
+        "protection_mode": protection_mode,
+        "master_plan": master_plan,
+    }
+
+
+def planned_workouts(dashboard: dict[str, Any] | None = None) -> list[dict[str, Any]]:
     workouts: list[dict[str, Any]] = []
     actions = planned_workout_actions()
     retry_states = garmin_retry_states()
+    dashboard = dashboard or dashboard_payload()
+    reviews_by_date = {item.get("date"): item for item in completed_reviews() if item.get("date")}
     for path in sorted(PLANNED_WORKOUTS_DIR.glob("*.yaml")):
         if path.name == "library_run_templates.yaml" or path.name == "workout_template.yaml":
             continue
@@ -1206,6 +1913,17 @@ def planned_workouts() -> list[dict[str, Any]]:
         action_state = actions.get(path.stem) if isinstance(actions.get(path.stem), dict) else None
         retry_state = retry_states.get(path.stem) if isinstance(retry_states.get(path.stem), dict) else None
         workout_url = garmin_scheduled_workout_url(scheduled_id) or garmin_workout_url(workout_id, payload.get("sport"))
+        linked_review = reviews_by_date.get(schedule_date)
+        replan = planned_workout_replan_data(
+            {
+                "slug": path.stem,
+                "date": schedule_date,
+                "session_kind": kind,
+                "action_state": action_state,
+            },
+            dashboard,
+            linked_review,
+        )
         workouts.append(
             {
                 "slug": path.stem,
@@ -1226,6 +1944,7 @@ def planned_workouts() -> list[dict[str, Any]]:
                 "session_color_class": color_class,
                 "action_state": action_state,
                 "action_badge": action_display_data((action_state or {}).get("action")),
+                "replan": replan,
                 "payload": payload,
             }
         )
@@ -1290,14 +2009,13 @@ def completed_review_detail(slug: str) -> dict[str, Any] | None:
 
 
 def athlete_page_data() -> dict[str, Any]:
-    shoes_capability = ensure_fresh("shoes_mileage")
     profile_capability = ensure_fresh("athlete_profile")
     profile = load_optional_yaml(ROOT / "athlete" / "profile.yaml").get("athlete", {})
     health = load_optional_yaml(ROOT / "athlete" / "health.yaml").get("health", {})
     injury = load_optional_yaml(ROOT / "athlete" / "injury_tracker.yaml").get("injury_tracker", {})
     shoes = load_optional_yaml(ROOT / "athlete" / "shoes.yaml").get("shoes", [])
     entries = list(reversed(injury.get("entries") or []))
-    capability_messages = [message for message in [shoes_capability.warning, profile_capability.warning] if message]
+    capability_messages = [message for message in [profile_capability.warning] if message]
     return {
         "profile": profile,
         "health": health,
@@ -1347,18 +2065,138 @@ def races_by_day() -> dict[str, list[dict[str, Any]]]:
     return items
 
 
+def comparison_badge(status: str) -> dict[str, str]:
+    mapping = {
+        "matched": {"label": "Comparado", "tone": "ok"},
+        "planned_only": {"label": "Sin ejecutar", "tone": "warn"},
+        "completed_only": {"label": "Sin plan enlazado", "tone": "warn"},
+    }
+    return mapping.get(status, {"label": status, "tone": ""})
+
+
+def compare_day_plan_vs_execution(planned_items: list[dict[str, Any]], completed_items: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    comparisons: list[dict[str, Any]] = []
+    planned_by_slug = {item.get("slug"): item for item in planned_items if item.get("slug")}
+    matched_slugs: set[str] = set()
+
+    for review in completed_items:
+        payload = review.get("payload", {}) if isinstance(review.get("payload"), dict) else {}
+        embedded_planned = payload.get("planned", {}) if isinstance(payload.get("planned"), dict) else {}
+        compliance = payload.get("compliance", {}) if isinstance(payload.get("compliance"), dict) else {}
+        slug = review.get("slug")
+        planned_item = planned_by_slug.get(slug) if slug else None
+        if planned_item and slug:
+            matched_slugs.add(slug)
+
+        planned_name = (planned_item or {}).get("name") or embedded_planned.get("name") or "-"
+        planned_duration = (planned_item or {}).get("estimated_duration") or format_duration(embedded_planned.get("estimated_duration_s"))
+        planned_hr_min = embedded_planned.get("primary_hr_min")
+        planned_hr_max = embedded_planned.get("primary_hr_max")
+        planned_hr = (
+            f"{int(planned_hr_min)}-{int(planned_hr_max)} ppm"
+            if planned_hr_min is not None and planned_hr_max is not None
+            else "-"
+        )
+        planned_distance_km = float(embedded_planned.get("distance_m") or 0.0) / 1000.0 if embedded_planned.get("distance_m") is not None else None
+        actual_distance_km = review.get("distance_km")
+        actual_duration = review.get("duration")
+        actual_hr = f"{review.get('avg_hr')} ppm" if review.get("avg_hr") not in {None, '-'} else "-"
+        deltas = []
+        if compliance.get("distance_diff_m") is not None:
+            deltas.append(f"Distancia {int(round(float(compliance.get('distance_diff_m') or 0.0)))} m")
+        if compliance.get("duration_diff_s_vs_est") is not None:
+            deltas.append(f"Duracion {int(round(float(compliance.get('duration_diff_s_vs_est') or 0.0)))} s")
+        if compliance.get("pct_above_hr_zone") is not None:
+            deltas.append(f"{float(compliance.get('pct_above_hr_zone') or 0.0):.1f}% por encima de zona")
+        comparisons.append(
+            {
+                "status": "matched",
+                "badge": comparison_badge("matched"),
+                "planned_name": planned_name,
+                "actual_name": review.get("activity_name") or review.get("name") or "-",
+                "planned_kind_label": (planned_item or {}).get("session_kind_label") or review.get("session_kind_label") or "-",
+                "actual_kind_label": review.get("session_kind_label") or "-",
+                "planned_distance": f"{planned_distance_km:.2f} km" if planned_distance_km is not None else "-",
+                "actual_distance": f"{float(actual_distance_km):.2f} km" if actual_distance_km is not None else "-",
+                "planned_duration": planned_duration or "-",
+                "actual_duration": actual_duration or "-",
+                "planned_hr": planned_hr,
+                "actual_hr": actual_hr,
+                "result": review.get("traffic_light") or "-",
+                "result_note": review.get("compliance_note") or "Sin lectura disponible.",
+                "deltas": deltas,
+            }
+        )
+
+    for planned in planned_items:
+        slug = planned.get("slug")
+        if slug and slug in matched_slugs:
+            continue
+        planned_distance_m = planned.get("payload", {}).get("distance_m") if isinstance(planned.get("payload"), dict) else None
+        comparisons.append(
+            {
+                "status": "planned_only",
+                "badge": comparison_badge("planned_only"),
+                "planned_name": planned.get("name") or "-",
+                "actual_name": "Sin actividad enlazada",
+                "planned_kind_label": planned.get("session_kind_label") or "-",
+                "actual_kind_label": "-",
+                "planned_distance": f"{float(planned_distance_m) / 1000.0:.2f} km" if planned_distance_m is not None else "-",
+                "actual_distance": "-",
+                "planned_duration": planned.get("estimated_duration") or "-",
+                "actual_duration": "-",
+                "planned_hr": "-",
+                "actual_hr": "-",
+                "result": "Pendiente",
+                "result_note": "La sesion estaba prescrita pero no hay ejecucion enlazada para este dia.",
+                "deltas": [],
+            }
+        )
+
+    planned_slugs = {item.get("slug") for item in planned_items if item.get("slug")}
+    for review in completed_items:
+        slug = review.get("slug")
+        if slug and slug in planned_slugs:
+            continue
+        if slug and any(item.get("actual_name") == (review.get("activity_name") or review.get("name") or "-") for item in comparisons if item.get("status") == "matched"):
+            continue
+        comparisons.append(
+            {
+                "status": "completed_only",
+                "badge": comparison_badge("completed_only"),
+                "planned_name": "Sin plan enlazado",
+                "actual_name": review.get("activity_name") or review.get("name") or "-",
+                "planned_kind_label": "-",
+                "actual_kind_label": review.get("session_kind_label") or "-",
+                "planned_distance": "-",
+                "actual_distance": f"{float(review.get('distance_km') or 0.0):.2f} km",
+                "planned_duration": "-",
+                "actual_duration": review.get("duration") or "-",
+                "planned_hr": "-",
+                "actual_hr": f"{review.get('avg_hr')} ppm" if review.get("avg_hr") not in {None, '-'} else "-",
+                "result": review.get("traffic_light") or "-",
+                "result_note": "Hay ejecucion para este dia pero no se ha podido enlazar a una sesion prescrita.",
+                "deltas": [],
+            }
+        )
+
+    return comparisons
+
+
 def calendar_day_data(day: str) -> dict[str, Any]:
     planned_items = [item for item in planned_workouts() if item.get("date") == day]
     completed_items = [item for item in completed_reviews() if item.get("date") == day]
     race_items = races_by_day().get(day, [])
     reviews = completed_items
     summary_items = len(planned_items) + len(completed_items) + len(race_items)
+    comparison = compare_day_plan_vs_execution(planned_items, completed_items)
     return {
         "date": day,
         "date_label": day_label(day),
         "today_plan": today_plan_data(day) if day == date.today().isoformat() else None,
         "planned_items": planned_items,
         "completed_items": completed_items,
+        "comparison": comparison,
         "reviews": reviews,
         "races": race_items,
         "daily_summary": {
@@ -1378,49 +2216,80 @@ def calendar_events() -> list[dict[str, Any]]:
     events: list[dict[str, Any]] = []
     review_items = completed_reviews()
     planned_items = planned_workouts()
-    reviews_by_date = {item["date"]: item for item in review_items if isinstance(item, dict) and item.get("date")}
-    completed_by_date = {item["date"]: item for item in review_items if isinstance(item, dict) and item.get("date")}
-    planned_by_date = {item["date"]: item for item in planned_items if isinstance(item, dict) and item.get("date")}
+    reviews_by_date: dict[str, list[dict[str, Any]]] = {}
+    planned_by_date: dict[str, list[dict[str, Any]]] = {}
+    for item in review_items:
+        if isinstance(item, dict) and item.get("date"):
+            reviews_by_date.setdefault(item["date"], []).append(item)
+    for item in planned_items:
+        if isinstance(item, dict) and item.get("date"):
+            planned_by_date.setdefault(item["date"], []).append(item)
 
-    all_dates = sorted(day for day in (set(planned_by_date) | set(completed_by_date)) if parse_iso_date(day))
+    all_dates = sorted(day for day in (set(planned_by_date) | set(reviews_by_date)) if parse_iso_date(day))
     for day in all_dates:
-        planned = planned_by_date.get(day)
-        review = reviews_by_date.get(day)
-        completed = completed_by_date.get(day)
-        primary_source = review or planned or completed or {}
-        primary_kind = primary_source.get("session_kind") or "other"
-        status = event_status(
-            {
-                "planned_workout": planned,
-                "completed_review": completed,
-                "review": review,
-                "race": None,
-            }
-        )
-        title = primary_source.get("name")
-        events.append(
-            {
-                "date": day,
-                "title": title or day,
-                "kind": primary_kind,
-                "source": "review" if review else ("planned" if planned else "completed"),
-                "planned_workout": planned,
-                "completed_review": completed,
-                "review": review,
-                "race": None,
-                "garmin_activity_url": (completed or {}).get("garmin_activity_url"),
-                "garmin_workout_url": (planned or completed or {}).get("garmin_workout_url"),
-                "status": status,
-                "status_label": event_status_label(status),
-                "score": (review or {}).get("score"),
-                "traffic_light": (review or {}).get("traffic_light"),
-                "traffic_light_class": traffic_light_class((review or {}).get("traffic_light")),
-                "detail_url": f"/calendar/day/{day}",
-                "session_kind_label": session_kind_label(primary_kind),
-                "session_color_class": session_color_class(primary_kind),
-                "badges": [badge for badge in ["Plan" if planned else None, "Hecho" if completed else None, "Revisión" if review else None] if badge],
-            }
-        )
+        planned_for_day = planned_by_date.get(day, [])
+        reviews_for_day = reviews_by_date.get(day, [])
+        for planned in planned_for_day:
+            status = "matched_completed" if reviews_for_day else "planned_only"
+            events.append(
+                {
+                    "date": day,
+                    "title": planned.get("name") or day,
+                    "kind": planned.get("session_kind") or "other",
+                    "source": "planned",
+                    "planned_workout": planned,
+                    "completed_review": reviews_for_day[0] if reviews_for_day else None,
+                    "review": reviews_for_day[0] if reviews_for_day else None,
+                    "race": None,
+                    "garmin_activity_url": None,
+                    "garmin_workout_url": planned.get("garmin_workout_url"),
+                    "status": status,
+                    "status_label": event_status_label(status),
+                    "score": None,
+                    "traffic_light": None,
+                    "traffic_light_class": "",
+                    "detail_url": f"/calendar/day/{day}",
+                    "session_kind_label": planned.get("session_kind_label") or session_kind_label(planned.get("session_kind") or "other"),
+                    "session_color_class": planned.get("session_color_class") or session_color_class(planned.get("session_kind") or "other"),
+                    "replan": planned.get("replan"),
+                    "badges": [
+                        badge
+                        for badge in [
+                            "Plan",
+                            (planned.get("replan") or {}).get("label") if (planned.get("replan") or {}).get("is_changed") else None,
+                        ]
+                        if badge
+                    ],
+                }
+            )
+        for review in reviews_for_day:
+            has_planned = bool(planned_for_day)
+            status = "reviewed" if has_planned else "completed_unplanned"
+            events.append(
+                {
+                    "date": day,
+                    "title": review.get("activity_name") or review.get("name") or day,
+                    "kind": review.get("session_kind") or "other",
+                    "source": "review",
+                    "planned_workout": planned_for_day[0] if planned_for_day else None,
+                    "completed_review": review,
+                    "review": review,
+                    "race": None,
+                    "garmin_activity_url": review.get("garmin_activity_url"),
+                    "garmin_workout_url": review.get("garmin_workout_url"),
+                    "status": status,
+                    "status_label": event_status_label(status),
+                    "score": review.get("score"),
+                    "traffic_light": review.get("traffic_light"),
+                    "traffic_light_class": traffic_light_class(review.get("traffic_light")),
+                    "detail_url": f"/calendar/day/{day}",
+                    "session_kind_label": review.get("session_kind_label") or session_kind_label(review.get("session_kind") or "other"),
+                    "session_color_class": review.get("session_color_class") or session_color_class(review.get("session_kind") or "other"),
+                    "replan": None,
+                    "badges": [badge for badge in ["Revision", "Hecho"] if badge],
+                }
+            )
+    events.sort(key=calendar_event_sort_key)
     return events
 
 
@@ -1428,7 +2297,9 @@ def calendar_month_data_combined(month: str | None, kind: str = "all", status: s
     try:
         workout_events = calendar_events()
         races = races_by_day()
-        event_by_day = {event["date"]: event for event in workout_events}
+        events_by_day: dict[str, list[dict[str, Any]]] = {}
+        for event in workout_events:
+            events_by_day.setdefault(event["date"], []).append(event)
         for race_date, race_items in races.items():
             logger.info("calendar race candidate date=%s items=%s", race_date, len(race_items))
             if not parse_iso_date(race_date):
@@ -1437,14 +2308,8 @@ def calendar_month_data_combined(month: str | None, kind: str = "all", status: s
             if not race_items or not isinstance(race_items[0], dict):
                 logger.warning("calendar skipping malformed race items date=%s", race_date)
                 continue
-            if race_date in event_by_day:
-                event_by_day[race_date]["race"] = race_items[0]
-                event_by_day[race_date].setdefault("badges", []).append("Carrera")
-                if not event_by_day[race_date].get("review"):
-                    event_by_day[race_date]["status"] = "race_day"
-                    event_by_day[race_date]["status_label"] = "Carrera"
-                continue
-            event_by_day[race_date] = {
+            events_by_day.setdefault(race_date, []).append(
+                {
                 "date": race_date,
                 "title": race_items[0].get("name") or race_date,
                 "kind": "race",
@@ -1463,10 +2328,18 @@ def calendar_month_data_combined(month: str | None, kind: str = "all", status: s
                 "detail_url": f"/calendar/day/{race_date}",
                 "session_kind_label": session_kind_label("race"),
                 "session_color_class": session_color_class("race"),
+                "replan": None,
                 "badges": ["Carrera"],
-            }
-        filtered_event_by_day = {day: event for day, event in event_by_day.items() if event_matches_filters(event, kind, status)}
-        available_months = sorted({day[:7] for day in event_by_day if parse_iso_date(day)})
+                }
+            )
+        for day, items in events_by_day.items():
+            items.sort(key=calendar_event_sort_key)
+        filtered_event_by_day = {
+            day: [item for item in items if event_matches_filters(item, kind, status)]
+            for day, items in events_by_day.items()
+        }
+        filtered_event_by_day = {day: items for day, items in filtered_event_by_day.items() if items}
+        available_months = sorted({day[:7] for day in events_by_day if parse_iso_date(day)})
         selected = month if month in available_months else None
         if not selected:
             today_month = date.today().strftime("%Y-%m")
@@ -1485,7 +2358,7 @@ def calendar_month_data_combined(month: str | None, kind: str = "all", status: s
                         "day": day.day,
                         "in_month": day.month == month_number,
                         "is_today": day == date.today(),
-                        "event": filtered_event_by_day.get(iso_day),
+                        "events": filtered_event_by_day.get(iso_day, []),
                         "detail_url": f"/calendar/day/{iso_day}",
                     }
                 )
@@ -2010,6 +2883,14 @@ async def cycle(request: Request) -> HTMLResponse:
     if redirect:
         return redirect
     return templates.TemplateResponse(request, "cycle.html", template_context(request, cycle=cycle_page_data(), workspace=workspace_status()))
+
+
+@app.get("/progress", response_class=HTMLResponse)
+async def progress(request: Request) -> HTMLResponse:
+    redirect = auth_guard(request)
+    if redirect:
+        return redirect
+    return templates.TemplateResponse(request, "progress.html", template_context(request, progress=progress_page_data(), workspace=workspace_status()))
 
 
 @app.get("/master-plan", response_class=HTMLResponse)

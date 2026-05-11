@@ -7,7 +7,7 @@ capabilities:
       - training/completed/imports/garmin/profile/athlete_profile_snapshot.json
     freshness:
       strategy: refresh_before_read
-      max_age_minutes: 0
+      max_age_minutes: 180
     sync:
       command:
         - python
@@ -28,6 +28,7 @@ capabilities:
       - athlete/profile.yaml
       - athlete/health.yaml
       - athlete/zones.yaml
+      - athlete/shoes.yaml
       - training/completed/imports/garmin/profile/athlete_profile_snapshot.json
     freshness:
       strategy: refresh_before_read

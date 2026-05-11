@@ -377,6 +377,7 @@ a {
   border-radius: 10px;
   background: var(--panel);
   border-left: 4px solid transparent;
+  min-width: 0;
 }
 
 .calendar-item.session-easy,

@@ -2,7 +2,7 @@
 
 ## Current Phase
 
-- `phase_02_feedback_loop`
+- `phase_06_automation_mastery`
 
 ## In Progress
 
@@ -10,9 +10,9 @@
 
 ## Ready Next
 
-1. `RP-06` Exponer patrones basicos de respuesta del atleta.
-2. `RP-10` Consolidar tarjeta de readiness diaria.
-3. `RP-07` Definir triggers de adaptacion visibles.
+1. `AP-02` Automatizar deteccion de actividades nuevas.
+2. `AP-03` Encadenar import, review, decision y progreso por evento.
+3. `AP-04` Integrar feedback subjetivo en el motor automatico.
 
 ## Blocked
 
@@ -39,3 +39,23 @@
 - Queda activa `phase_02_feedback_loop` con `RP-04` como siguiente foco operativo.
 - Se completa `RP-04` con una especificacion implementable de feedback subjetivo, almacenamiento local separado y mapeo claro de vistas y rutas.
 - Se completa `RP-05` con captura web de feedback, persistencia por sesion y resumen visible en detalle, dia y listado de completados.
+
+### 2026-05-11
+
+- Se completa `RP-06` mostrando patrones basicos derivados del feedback subjetivo reciente dentro del dashboard.
+- Se reduce el coste de carga en `/athlete` evitando refrescos Garmin duplicados en cada visita.
+- Se completa `RP-07` con triggers visibles de fatiga, dolor, tiempo y ejecucion, junto con su traduccion explicita a cambios de plan en el dashboard.
+- Se completa `RP-08` mostrando en semana, lista, calendario y dia cuando una sesion sigue original, queda ajustada o entra en modo protegido, con causa y momento visible.
+- Se completa `RP-09` activando un modo explicito de lesion o retorno que endurece el guidance y limita el progreso visible cuando el contexto lo exige.
+- Se completa `RP-10` consolidando una tarjeta diaria de readiness con estado fresco, neutro, protegido o desactualizado y accion recomendada para hoy.
+- Se completa `RP-11` haciendo que el calendario mensual soporte multiples eventos por dia sin perder acceso al detalle diario.
+- Se completa `RP-12` mostrando en el detalle del dia una comparacion explicita entre lo prescrito y lo ejecutado, con diferencias visibles y estado de emparejamiento.
+- Se completa `RP-13` definiendo un onboarding guiado Garmin-first con pasos, datos minimos, reglas de inferencia y archivos objetivo para futura implementacion.
+- Se completa `RP-14` creando una vista dedicada de progreso contra objetivo con lectura clara, focos actuales, riesgos y checkpoints en lenguaje no tecnico.
+
+### 2026-05-12
+
+- Se cierra el plan `RP-01` a `RP-14` como completado.
+- Se abre `phase_06_automation_mastery` para eliminar dependencia de pasos manuales tras entrenos completados.
+- Se fija como nueva prioridad convertir el sistema en un pipeline automatico post-entreno, Garmin-first, idempotente y observable.
+- Se completa `AP-01` definiendo la capability `post_workout_refresh` con contrato claro de trigger, entradas, salidas, estado persistente e idempotencia.

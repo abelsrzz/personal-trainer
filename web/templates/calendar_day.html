@@ -82,6 +82,16 @@
         <div>
           <strong><a href="/planned-workouts/{{ workout.slug }}">{{ workout.name }}</a></strong>
           <p class="muted">{{ workout.description }}</p>
+          {% if workout.replan and workout.replan.is_changed %}
+          <p>{{ workout.replan.summary }}</p>
+          <p class="muted"><strong>Causa:</strong> {{ workout.replan.cause }}</p>
+          {% if workout.replan.changed_at %}
+          <p class="muted"><strong>Detectado:</strong> {{ workout.replan.changed_at }}</p>
+          {% endif %}
+          {% if workout.replan.variant %}
+          <p class="muted"><strong>Version sugerida:</strong> {{ workout.replan.variant }}</p>
+          {% endif %}
+          {% endif %}
           <div class="inline-actions">
             <form method="post" action="/planned-workouts/{{ workout.slug }}/action">
               <input type="hidden" name="action" value="done">
@@ -102,6 +112,9 @@
         </div>
         <div class="item-meta">
           <span class="badge kind-badge">{{ workout.session_kind_label }}</span>
+          {% if workout.replan %}
+          <span class="badge {{ workout.replan.tone }}">{{ workout.replan.label }}</span>
+          {% endif %}
           {% if workout.action_badge %}
           <span class="badge {{ workout.action_badge.tone }}">{{ workout.action_badge.label }}</span>
           {% endif %}
@@ -149,6 +162,42 @@
       {% endfor %}
     </div>
   </article>
+</section>
+
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Comparacion diaria</p>
+      <h3>Plan vs ejecucion</h3>
+    </div>
+    <span class="badge">{{ calendar_day.comparison|length }} comparaciones</span>
+  </div>
+  <div class="list compact-list">
+    {% for item in calendar_day.comparison %}
+    <div class="list-item static {{ 'status-green' if item.status == 'matched' else 'status-yellow' }}">
+      <div>
+        <strong>{{ item.planned_name }}</strong>
+        <p class="muted">Plan: {{ item.planned_kind_label }} · {{ item.planned_distance }} · {{ item.planned_duration }} · {{ item.planned_hr }}</p>
+        <p><strong>Ejecutado:</strong> {{ item.actual_name }}</p>
+        <p class="muted">Real: {{ item.actual_kind_label }} · {{ item.actual_distance }} · {{ item.actual_duration }} · {{ item.actual_hr }}</p>
+        <p>{{ item.result_note }}</p>
+        {% if item.deltas %}
+        <div class="mini-badges">
+          {% for delta in item.deltas %}
+          <span class="mini-badge">{{ delta }}</span>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+      <div class="item-meta">
+        <span class="badge {{ item.badge.tone }}">{{ item.badge.label }}</span>
+        <span class="badge">{{ item.result }}</span>
+      </div>
+    </div>
+    {% else %}
+    <p class="muted">Todavia no hay suficiente informacion para comparar plan y ejecucion en este dia.</p>
+    {% endfor %}
+  </div>
 </section>
 
 <section class="split">

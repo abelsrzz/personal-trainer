@@ -144,11 +144,16 @@
   {% endif %}
 </section>
 
-<section class="cards three">
+<section class="cards four">
   <article class="card status-{{ dashboard.decision.status if dashboard.decision else 'unknown' }}">
     <h3>Recomendacion actual</h3>
     <p class="metric">{{ dashboard.decision.action_label if dashboard.decision else "-" }}</p>
     <p class="muted">{{ dashboard.decision.reasons[0] if dashboard.decision and dashboard.decision.reasons else "Sin motivo disponible." }}</p>
+  </article>
+  <article class="card">
+    <h3>Readiness diaria</h3>
+    <p class="metric">{{ dashboard.readiness_card.label }}</p>
+    <p class="muted">{{ dashboard.readiness_card.action }}</p>
   </article>
   <article class="card">
     <h3>Ciclo activo</h3>
@@ -159,6 +164,7 @@
     <h3>Objetivo principal</h3>
     <p class="metric">{{ dashboard.goal_gates.status_label if dashboard.goal_gates else "-" }}</p>
     <p class="muted">{{ dashboard.goal_gates.summary if dashboard.goal_gates else "Sin evaluación disponible." }}</p>
+    <p class="muted"><a class="action-link" href="/progress">Abrir vista de progreso</a></p>
   </article>
 </section>
 

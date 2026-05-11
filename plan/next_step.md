@@ -2,22 +2,22 @@
 
 ## Active Item
 
-- `RP-06` Exponer patrones basicos de respuesta del atleta
+- `AP-02` Automatizar deteccion de actividades nuevas
 
 ## Why This Next
 
-- `RP-05` ya captura feedback subjetivo y lo deja persistido por sesion.
-- El siguiente salto de valor es convertir ese dato en patrones simples y legibles.
-- Esto permite que el dashboard empiece a mostrar aprendizaje real del atleta y no solo analisis de ejecucion.
+- `AP-01` ya deja definido el contrato de `post_workout_refresh`.
+- El siguiente cuello de botella es disparar ese pipeline sin tener que ejecutar comandos manuales.
+- Hace falta detectar actividades nuevas de forma local, fiable e idempotente.
 
 ## Expected Output
 
-1. Reglas simples para resumir tolerancia, dolor y adherencia.
-2. Campos derivados claros a partir del feedback guardado.
-3. Ubicacion concreta en dashboard o vistas relacionadas.
-4. Lista exacta de cambios para implementacion de `RP-06`.
+1. Trigger automatico local para nuevas actividades.
+2. Estado persistente de ultima actividad vista y procesada.
+3. Arranque automatico del pipeline sin comando manual.
+4. Base segura para encadenar el resto del flujo post-entreno.
 
 ## Completion Check
 
-- Existe una definicion clara de patrones basicos accionables.
-- El siguiente paso de build puede implementarlos sin ambiguedad.
+- Existe trigger automatico local sin comando manual.
+- El sistema detecta actividad nueva y arranca el pipeline.

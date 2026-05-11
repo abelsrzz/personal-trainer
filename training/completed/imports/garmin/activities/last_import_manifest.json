@@ -1,16 +1,15 @@
 {
-  "generated_at": "2026-05-10T15:42:55.006391Z",
+  "generated_at": "2026-05-11T09:25:59.242001Z",
   "days": 14,
   "limit": 40,
   "activity_type": "running",
-  "imported_count": 7,
+  "imported_count": 6,
   "imported_activity_ids": [
     22823255797,
     22822541135,
     22798592588,
     22776053069,
     22693329165,
-    22680042702,
-    22664185552
+    22680042702
   ]
 }

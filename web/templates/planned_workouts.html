@@ -67,12 +67,31 @@
           <div class="planned-week-dayline">
             <strong>{{ row.day }}</strong>
             <span class="badge kind-badge">{{ row.distance if row.distance else '-' }}</span>
+            {% if row.replan %}
+            <span class="badge {{ row.replan.tone }}">{{ row.replan.label }}</span>
+            {% endif %}
           </div>
           <p class="planned-week-description">{{ row.description }}</p>
           <p class="muted planned-week-target">{{ row.target }}</p>
+          {% if row.date %}
+          <p class="muted">{{ row.date }}</p>
+          {% endif %}
+          {% if row.replan and row.replan.is_changed %}
+          <p>{{ row.replan.summary }}</p>
+          <p class="muted"><strong>Causa:</strong> {{ row.replan.cause }}</p>
+          {% if row.replan.changed_at %}
+          <p class="muted"><strong>Detectado:</strong> {{ row.replan.changed_at }}</p>
+          {% endif %}
+          {% if row.replan.variant %}
+          <p class="muted"><strong>Version sugerida:</strong> {{ row.replan.variant }}</p>
+          {% endif %}
+          {% endif %}
         </div>
         <div class="item-meta planned-week-meta">
           <span class="badge kind-badge">{{ row.shoes if row.shoes else '-' }}</span>
+          {% if row.linked_workout %}
+          <a class="ghost-link" href="/planned-workouts/{{ row.linked_workout.slug }}">Detalle</a>
+          {% endif %}
         </div>
       </article>
       {% else %}
@@ -136,21 +155,26 @@
       {% for day in week %}
       <div class="calendar-cell {{ '' if day.in_month else 'muted-cell' }} {{ 'today' if day.is_today else '' }}">
         <div class="calendar-day">{{ day.day }}</div>
-        {% if day.event %}
+        {% if day.events %}
         <div class="calendar-items">
-          <a href="{{ day.detail_url }}" class="calendar-item {{ day.event.session_color_class }} {{ day.event.traffic_light_class }}">
-            <strong>{{ day.event.title }}</strong>
-            <span>{{ day.event.session_kind_label }}</span>
-            <span>{{ day.event.status_label }}</span>
+          {% for event in day.events %}
+          <a href="{{ day.detail_url }}" class="calendar-item {{ event.session_color_class }} {{ event.traffic_light_class }}">
+            <strong>{{ event.title }}</strong>
+            <span>{{ event.session_kind_label }}</span>
+            <span>{{ event.status_label }}</span>
+            {% if event.replan and event.replan.is_changed %}
+            <span>{{ event.replan.label }} · {{ event.replan.cause }}</span>
+            {% endif %}
             <div class="mini-badges">
-              {% for badge in day.event.badges %}
+              {% for badge in event.badges %}
               <span class="mini-badge">{{ badge }}</span>
               {% endfor %}
             </div>
-            {% if day.event.score %}
-            <span>Score {{ day.event.score }}/10</span>
+            {% if event.score %}
+            <span>Score {{ event.score }}/10</span>
             {% endif %}
           </a>
+          {% endfor %}
         </div>
         {% endif %}
       </div>
@@ -165,9 +189,19 @@
         <strong><a href="/calendar/day/{{ workout.date }}">{{ workout.date }}</a></strong>
         <p><a href="/planned-workouts/{{ workout.slug }}">{{ workout.name }}</a></p>
         <p class="muted">{{ workout.description }}</p>
+        {% if workout.replan and workout.replan.is_changed %}
+        <p>{{ workout.replan.summary }}</p>
+        <p class="muted"><strong>Causa:</strong> {{ workout.replan.cause }}</p>
+        {% if workout.replan.changed_at %}
+        <p class="muted"><strong>Detectado:</strong> {{ workout.replan.changed_at }}</p>
+        {% endif %}
+        {% endif %}
       </div>
       <div class="item-meta">
         <span class="badge kind-badge">{{ workout.session_kind_label }}</span>
+        {% if workout.replan %}
+        <span class="badge {{ workout.replan.tone }}">{{ workout.replan.label }}</span>
+        {% endif %}
         {% if workout.garmin_status_badge %}
         <span class="badge {{ workout.garmin_status_badge.tone }}">{{ workout.garmin_status_badge.label }}</span>
         {% endif %}

@@ -1,25 +1,24 @@
 {
-  "generated_at": "2026-05-10T15:43:16.578959+00:00",
-  "as_of": "2026-05-10",
+  "generated_at": "2026-05-11T09:26:31.163216+00:00",
+  "as_of": "2026-05-11",
   "lookback_days": 28,
   "activity_count_total": 61,
   "review_count_total": 3,
   "decision": {
-    "as_of": "2026-05-10",
+    "as_of": "2026-05-11",
     "status": "red",
     "action": "reduce_or_replace_quality",
     "recommendation": "Reducir carga inmediata: cambiar la proxima calidad por rodaje muy facil o descanso, y mantener FC capada.",
     "reasons": [
-      "Subida de volumen 7d de 79%.",
-      "Resting HR reciente relativamente alta; vigilar estres o recuperacion.",
+      "Subida de volumen 7d de 225%.",
       "El bloque activo prioriza reconstruccion, consistencia y tolerancia tisular antes de ritmos agresivos.",
       "El limitador principal declarado sigue siendo la durabilidad aerobica; la construccion debe respetarlo.",
       "La automatizacion prioriza como backbone de calidad: cruise_intervals, tempo_broken, tempo_continuous."
     ],
     "windows": {
       "last_7_days": {
-        "start": "2026-05-04",
-        "end": "2026-05-10",
+        "start": "2026-05-05",
+        "end": "2026-05-11",
         "runs": 4,
         "km": 26.18118994140625,
         "duration_s": 9541.346801757812,
@@ -29,29 +28,29 @@
         "long_run_km": 10.8192099609375
       },
       "previous_7_days": {
-        "start": "2026-04-27",
-        "end": "2026-05-03",
-        "runs": 2,
-        "km": 14.65116015625,
-        "duration_s": 5676.594970703125,
-        "avg_pace_s_per_km": 387.4502025890121,
-        "avg_hr": 157.39745394382334,
+        "start": "2026-04-28",
+        "end": "2026-05-04",
+        "runs": 1,
+        "km": 8.045740234375,
+        "duration_s": 2799.489990234375,
+        "avg_pace_s_per_km": 347.9468524566207,
+        "avg_hr": 165.0,
         "quality_runs": 1,
         "long_run_km": 8.045740234375
       },
       "last_28_days": {
-        "start": "2026-04-13",
-        "end": "2026-05-10",
-        "runs": 13,
-        "km": 91.65120996093749,
-        "duration_s": 35803.31188964844,
-        "avg_pace_s_per_km": 390.64745468071953,
-        "avg_hr": 155.9557147779492,
+        "start": "2026-04-14",
+        "end": "2026-05-11",
+        "runs": 12,
+        "km": 83.53372998046875,
+        "duration_s": 32572.512817382812,
+        "avg_pace_s_per_km": 389.93245991767253,
+        "avg_hr": 156.64563750443745,
         "quality_runs": 5,
         "long_run_km": 10.8192099609375
       }
     },
-    "volume_spike_pct": 78.69704284297025,
+    "volume_spike_pct": 225.4043652757828,
     "latest_shin_entry": {
       "date": "2026-05-08",
       "pain_during": 1,
@@ -67,7 +66,7 @@
       "snapshot": {
         "hrv": 137864769.0,
         "training_readiness": null,
-        "resting_heart_rate": 60.0,
+        "resting_heart_rate": 56.0,
         "training_status": {
           "userId": 137864769,
           "mostRecentVO2Max": null,
@@ -79,7 +78,7 @@
       "baseline_hrv": 137864769.0,
       "hrv_flag": "stable",
       "readiness_flag": null,
-      "resting_hr_flag": "high",
+      "resting_hr_flag": "normal",
       "training_status_flag": "neutral"
     },
     "session_guidance": {
@@ -121,7 +120,7 @@
       "active_block": "Block 1: Reset, consistency and tissue tolerance",
       "goal_race_name": "XXIV Padron 10k",
       "goal_race_priority": "S",
-      "days_to_goal_race": 272,
+      "days_to_goal_race": 271,
       "preferred_plan_columns": [
         "day",
         "description",
@@ -144,7 +143,7 @@
     "passed_count": 0,
     "total_gates": 4,
     "metrics": {
-      "avg_weekly_km_28d": 22.912802490234373,
+      "avg_weekly_km_28d": 20.883432495117187,
       "long_run_km_28d": 10.8192099609375,
       "best_5k_s_90d": 1335.8609619140625,
       "best_10k_s_180d": 2663.23095703125,
@@ -155,7 +154,7 @@
       {
         "name": "Base estable",
         "passed": false,
-        "evidence": "Media 4 semanas 22.9 km/sem, tirada larga 10.8 km, revisiones rojas 0, periostio 1."
+        "evidence": "Media 4 semanas 20.9 km/sem, tirada larga 10.8 km, revisiones rojas 0, periostio 1."
       },
       {
         "name": "Umbral competitivo",
@@ -165,7 +164,7 @@
       {
         "name": "Precondicion 35:00",
         "passed": false,
-        "evidence": "Media 22.9 km/sem, tirada 10.8 km, 5k 22:16, riesgo 0."
+        "evidence": "Media 20.9 km/sem, tirada 10.8 km, 5k 22:16, riesgo 0."
       },
       {
         "name": "Seleccion 35:00",
@@ -185,8 +184,8 @@
   "weekly_volume": [
     {
       "week": "2026-W16",
-      "km": 38.2404296875,
-      "runs": 5,
+      "km": 30.122949707031253,
+      "runs": 4,
       "quality_runs": 1,
       "long_run_km": 10.0062197265625
     },
@@ -213,12 +212,12 @@
     }
   ],
   "daily_metrics": {
-    "available_days": 17,
-    "latest_date": "2026-05-10",
+    "available_days": 18,
+    "latest_date": "2026-05-11",
     "source": "garmin_daily",
     "latest_hrv": 137864769.0,
     "latest_training_readiness": null,
-    "latest_resting_heart_rate": 60.0,
+    "latest_resting_heart_rate": 56.0,
     "latest_training_status": {
       "userId": 137864769,
       "mostRecentVO2Max": null,
@@ -241,12 +240,12 @@
       "training_readiness",
       "running_tolerance"
     ],
-    "latest_daily_date": "2026-05-10",
+    "latest_daily_date": "2026-05-11",
     "latest_activity_date": "2026-05-09",
     "daily_snapshot": {
       "hrv": 137864769.0,
       "training_readiness": null,
-      "resting_heart_rate": 60.0,
+      "resting_heart_rate": 56.0,
       "training_status": {
         "userId": 137864769,
         "mostRecentVO2Max": null,
@@ -278,7 +277,7 @@
       },
       "coaching_note": "35:00 is aspirational and must be unlocked by checkpoint evidence before being used as training pace."
     },
-    "days_to_goal_race": 272,
+    "days_to_goal_race": 271,
     "available_race_count": 4
   }
 }

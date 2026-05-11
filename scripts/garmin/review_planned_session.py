@@ -30,6 +30,8 @@ def parse_args() -> argparse.Namespace:
         default=ROOT / "garmin" / "local_credentials.yaml",
         help="Path to local Garmin credentials YAML",
     )
+    parser.add_argument("--activity-id", type=int, default=None, help="Specific Garmin activity ID to review")
+    parser.add_argument("--use-local-imports-only", action="store_true", help="Do not contact Garmin; use already imported local activity files only")
     parser.add_argument("--force", action="store_true", help="Regenerate outputs even if review already exists")
     return parser.parse_args()
 
@@ -91,6 +93,30 @@ def select_activity(activities: list[dict[str, Any]], planned: dict[str, Any], d
     if planned_distance is None:
         return sorted(same_day, key=lambda item: item.get("startTimeLocal", ""))[0]
     return min(same_day, key=lambda item: abs(float(item.get("distance") or 0.0) - planned_distance))
+
+
+def load_local_running_activities(day: str) -> list[dict[str, Any]]:
+    imported: list[dict[str, Any]] = []
+    for path in sorted(DEFAULT_IMPORT_ROOT.glob(f"activities/{day}_*/summary.json")):
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            continue
+        if not isinstance(payload, dict):
+            continue
+        if payload.get("activityType", {}).get("typeKey") != "running":
+            continue
+        imported.append(payload)
+    if not imported:
+        raise FileNotFoundError(f"No local Garmin running activities found for {day}")
+    return imported
+
+
+def select_activity_by_id(activities: list[dict[str, Any]], activity_id: int) -> dict[str, Any]:
+    match = next((item for item in activities if int(item.get("activityId") or 0) == activity_id), None)
+    if match is None:
+        raise FileNotFoundError(f"No Garmin activity with id {activity_id} available for review")
+    return match
 
 
 def flatten_steps(steps: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -843,8 +869,11 @@ def main() -> None:
         raise FileExistsError(f"Review already exists at {review_path}; use --force to regenerate")
 
     planned = load_yaml(planned_workout_path)
-    activities = import_recent_running_activities(args.date, args.credentials, args.days, args.limit)
-    activity = select_activity(activities, planned, args.date)
+    if args.use_local_imports_only:
+        activities = load_local_running_activities(args.date)
+    else:
+        activities = import_recent_running_activities(args.date, args.credentials, args.days, args.limit)
+    activity = select_activity_by_id(activities, args.activity_id) if args.activity_id is not None else select_activity(activities, planned, args.date)
     activity_dir = DEFAULT_IMPORT_ROOT / "activities" / f"{args.date}_{activity['activityId']}"
     summary = json.loads((activity_dir / "summary.json").read_text(encoding="utf-8"))
     details = json.loads((activity_dir / "details.json").read_text(encoding="utf-8"))

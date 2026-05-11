@@ -32,7 +32,7 @@ Replanify the current week if:
 
 ```bash
 source .venv/bin/activate
-python scripts/garmin/coach_sync.py --date YYYY-MM-DD
+python scripts/garmin/post_workout_refresh.py
 ```
 
 Use `--skip-garmin` if Garmin data is already imported.

@@ -2,14 +2,14 @@
 
 ## Import Flow
 
-1. prefer `python scripts/garmin/coach_sync.py --date YYYY-MM-DD` for normal post-workout operation
+1. prefer `python scripts/garmin/post_workout_refresh.py` for normal post-workout operation
 2. import recent activities with `sync_garmin.py` only when low-level import control is needed
 3. import daily metrics with `sync_garmin.py` only when low-level import control is needed
 4. analyze imported data through `athlete/status_dashboard.md` and `planning/coach_decision.md`
 
 ## Offline Analysis Flow
 
-1. use `python scripts/garmin/coach_sync.py --date YYYY-MM-DD --skip-garmin` when Garmin should not be contacted
+1. use `python scripts/garmin/coach_sync.py --date YYYY-MM-DD --skip-garmin` only for manual local rebuilds when Garmin should not be contacted
 2. confirm `athlete/status_dashboard.md`, `planning/coach_decision.md` and `planning/coach_decision.json` were refreshed
 3. use the generated decision before changing weekly planning
 

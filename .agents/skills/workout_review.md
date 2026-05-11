@@ -24,7 +24,7 @@ Evaluate completed training in a way that is useful for coaching decisions.
 
 ```bash
 source .venv/bin/activate
-python scripts/garmin/coach_sync.py --date YYYY-MM-DD
+python scripts/garmin/post_workout_refresh.py
 ```
 
 If Garmin data is already local, use `--skip-garmin`.

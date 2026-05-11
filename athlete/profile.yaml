@@ -23,5 +23,5 @@ athlete:
     strength_sessions_per_week: 1
   data_sources:
     garmin:
-      last_sync: '2026-05-11T19:02:19.774085Z'
+      last_sync: '2026-05-11T19:44:30.800316Z'
       profile_snapshot: training/completed/imports/garmin/profile/athlete_profile_snapshot.json

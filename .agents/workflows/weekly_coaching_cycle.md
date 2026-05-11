@@ -5,17 +5,17 @@ The operational week always runs from Monday to Sunday.
 ## Daily Or Post-Workout
 
 1. capture completed workout manually or from Garmin
-2. if Garmin-linked, run `python scripts/garmin/coach_sync.py --date YYYY-MM-DD` unless the user asks not to contact Garmin
+2. if Garmin-linked, prefer the automatic pipeline `python scripts/garmin/post_workout_refresh.py` unless the user explicitly wants a manual rebuild path
 3. if working offline, run `python scripts/garmin/coach_sync.py --date YYYY-MM-DD --skip-garmin`
 4. read `planning/coach_decision.md` and `athlete/status_dashboard.md`
 5. read `planning/context_automation_policy.md` to load the mandatory review and replanning context
 6. read `planning/workout_evaluation_rules.md` before deciding whether the completed session justifies progression, repetition, regression or replacement
 7. decide whether to keep or replanify the current week
-8. update `athlete/shin_tracker.yaml` if the athlete reports periosteum pain
+8. validate `athlete/shin_tracker.yaml` if the athlete reports periosteum pain and the automatic promotion lacks context
 
 ## Sunday Cycle
 
-1. refresh local coach status with `python scripts/garmin/coach_sync.py --date YYYY-MM-DD --skip-garmin` if no fresh dashboard exists
+1. refresh local coach status with `python scripts/garmin/coach_sync.py --date YYYY-MM-DD --skip-garmin` only if the automatic pipeline is unavailable and no fresh dashboard exists
 2. review the current week
 3. archive the outgoing week when needed
 4. read active block instructions
@@ -49,7 +49,7 @@ The operational week always runs from Monday to Sunday.
 
 ## Garmin Athlete State Sync
 
-- `python scripts/garmin/coach_sync.py --date YYYY-MM-DD` should also refresh Garmin athlete profile state unless explicitly skipped.
+- `python scripts/garmin/post_workout_refresh.py` is now the default post-workout trigger and should be assumed active when automation is healthy.
 - Garmin-synced resting HR, max HR, VO2max and gear should flow into local athlete files before planning whenever available.
 - Local athlete files remain the source of truth used by planning, but Garmin is the preferred upstream source for those fields.
 

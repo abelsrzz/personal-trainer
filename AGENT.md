@@ -119,6 +119,15 @@ The system must act as an intelligent coach, planner and reviewer.
 
 ## Garmin Commands
 
+Default automatic post-workout trigger:
+
+```bash
+source .venv/bin/activate
+python scripts/garmin/post_workout_refresh.py
+```
+
+Manual Garmin operations and recovery paths:
+
 ```bash
 source .venv/bin/activate
 python scripts/garmin/sync_garmin.py import-activities --days 14 --limit 30
@@ -132,17 +141,17 @@ python scripts/garmin/coach_engine.py --as-of YYYY-MM-DD --days 28
 
 ## Coach Automation Rules
 
-- Prefer `coach_sync.py` after Garmin-linked workouts because it imports, reviews when possible and refreshes the analysis outputs used by planning.
+- The default post-workout operating model is the automatic pipeline driven by `scripts/garmin/post_workout_refresh.py` and its persisted state.
 - Treat `athlete/status_dashboard.md` as the main human-readable analysis output; the web dashboard integrates the decision layer there.
-- Prefer `coach_sync.py` after Garmin-linked work because it should also refresh athlete profile, resting HR, max HR, VO2max and gear when Garmin provides them.
-- Use `coach_sync.py --skip-garmin` when working only from already imported local data.
+- Use `post_workout_refresh.py` as the default trigger for newly completed activities; use `coach_sync.py` only for manual recovery, troubleshooting or forced rebuilds.
+- Use `coach_sync.py --skip-garmin` only when working manually from already imported local data.
 - Read `athlete/status_dashboard.md` and `planning/coach_decision.md` before modifying the active week.
 - Read `planning/coaching_playbook.md`, `planning/session_selection_matrix.yaml`, `planning/workout_evaluation_rules.md` and `athlete/response_profile.yaml` as default operational context before planning, replanning or creating workouts.
 - Read `planning/context_automation_policy.md` to determine all mandatory supporting context files for the current task.
 - When Garmin athlete snapshot data exists, use it through the synced local athlete files as active planning context.
 - Treat `red` as reduce or replace quality, `yellow` as maintain without increasing load, and `green` as allow only small progression if the shin is quiet.
 - Keep `planning/goal_gates.yaml` as the source of truth for whether `35:00` can influence training paces.
-- Update `athlete/shin_tracker.yaml` when periosteum pain is reported during, after or the next morning.
+- `athlete/shin_tracker.yaml` can now be auto-promoted from subjective feedback; update it manually only when the automatic promotion is missing context or needs correction.
 
 ## Planning Principles
 
@@ -153,7 +162,7 @@ python scripts/garmin/coach_engine.py --as-of YYYY-MM-DD --days 28
 - Do not force threshold or race pace estimates without data.
 - Recalibrate the long-term goal from checkpoints.
 - Current limiter is aerobic durability and shin tolerance more than isolated speed.
-- Use `coach_sync.py` after Garmin-linked training to refresh imports, reviews and analysis outputs.
+- Prefer validating the automatic pipeline health instead of manually rerunning imports after Garmin-linked training.
 - Remote Telegram access uses `opencode serve` plus `scripts/telegram/opencode_bot.py`; only commit or push when explicitly requested.
 - Remote Telegram access defaults to model `openai/gpt-5.4` with OpenCode default reasoning; use `/model` in Telegram to override per chat.
 

@@ -1,5 +1,5 @@
 {
-  "synced_at": "2026-05-11T19:02:19.774085Z",
+  "synced_at": "2026-05-11T19:44:30.800316Z",
   "raw": {
     "get_user_summary": {
       "error": "Garmin.get_user_summary() missing 1 required positional argument: 'cdate'"
@@ -68,13 +68,13 @@
         "golfSpeedUnit": null,
         "externalBottomTime": null,
         "availableTrainingDays": [
-          "TUESDAY",
-          "SATURDAY",
           "WEDNESDAY",
-          "THURSDAY",
+          "MONDAY",
           "SUNDAY",
-          "FRIDAY",
-          "MONDAY"
+          "SATURDAY",
+          "THURSDAY",
+          "TUESDAY",
+          "FRIDAY"
         ],
         "preferredLongTrainingDays": [
           "SUNDAY"

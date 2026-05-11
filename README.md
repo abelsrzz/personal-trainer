@@ -82,7 +82,14 @@ Importar metricas diarias para enriquecer recuperacion y estado:
 python scripts/garmin/sync_garmin.py import-daily --days 14
 ```
 
-Comando unico de entrenador:
+Trigger automatico post-entreno recomendado:
+
+```bash
+source .venv/bin/activate
+python scripts/garmin/post_workout_refresh.py
+```
+
+Rebuild manual del flujo heredado por fecha:
 
 ```bash
 source .venv/bin/activate
@@ -114,7 +121,7 @@ python scripts/garmin/sync_garmin.py import-athlete-profile
 python scripts/garmin/athlete_sync.py
 ```
 
-`coach_sync.py` intenta hacerlo automaticamente salvo que se use `--skip-athlete-profile`.
+`coach_sync.py` sigue siendo util como rebuild manual, pero el camino por defecto tras un entreno completado es `post_workout_refresh.py` o su timer `systemd`.
 
 Plantillas reutilizables para convertir en sesiones fechadas:
 
@@ -205,6 +212,24 @@ Ejemplos de servicios `systemd`:
 
 - `deploy/systemd/opencode-server.service.example`
 - `deploy/systemd/opencode-telegram-bot.service.example`
+- `deploy/systemd/post-workout-refresh.service.example`
+- `deploy/systemd/post-workout-refresh.timer.example`
+
+Polling automatico post-entreno:
+
+```bash
+source .venv/bin/activate
+python scripts/garmin/post_workout_refresh.py
+```
+
+Este comando:
+
+- importa actividades Garmin recientes
+- detecta actividades nuevas no vistas antes
+- persiste estado en `system/state/post_workout_refresh_state.json`
+- dispara el pipeline post-entreno para cada fecha nueva detectada
+
+En despliegue local, la via recomendada es usar el timer `systemd` de ejemplo para ejecutarlo cada `5 min`.
 
 ## Portal Web
 

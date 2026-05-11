@@ -22,6 +22,9 @@
     <p class="eyebrow">Lectura operativa</p>
     <h2>{{ dashboard.decision.status_label }}</h2>
     <p>{{ dashboard.decision.recommendation }}</p>
+    {% if dashboard.protection_mode.active %}
+    <p class="alert"><strong>{{ dashboard.protection_mode.label }}:</strong> {{ dashboard.protection_mode.summary }}</p>
+    {% endif %}
     {% for message in dashboard.capability_messages or [] %}
     <p class="alert">{{ message }}</p>
     {% endfor %}
@@ -56,11 +59,114 @@
     <p class="muted">{{ dashboard.performance_estimate.method }}</p>
   </article>
   <article class="card">
+    <h3>Modo actual</h3>
+    <p class="metric">{{ dashboard.protection_mode.label }}</p>
+    <p class="muted">{{ dashboard.protection_mode.allowed_progression }}</p>
+  </article>
+  <article class="card">
     <h3>Checkpoints del objetivo</h3>
     <p class="metric">{{ dashboard.goal_gates.passed_count }}/{{ dashboard.goal_gates.total_gates }}</p>
     <p class="muted">{{ dashboard.goal_gates.status_label }}</p>
   </article>
 </section>
+
+<section class="panel {{ 'status-green' if dashboard.automation_pipeline.healthy else 'status-yellow' }}">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Automatizacion</p>
+      <h3>Salud del pipeline post-entreno</h3>
+    </div>
+    <span class="badge {{ 'ok' if dashboard.automation_pipeline.healthy else 'warn' }}">{{ dashboard.automation_pipeline.status_label }}</span>
+  </div>
+  <p>{{ dashboard.automation_pipeline.summary }}</p>
+  <p class="muted">Ultimo run correcto: {{ dashboard.automation_pipeline.last_successful_run or '-' }}. Ultimo procesado: {{ dashboard.automation_pipeline.last_processed_at or '-' }}.</p>
+  <div class="today-plan-tags">
+    <span class="mini-badge">Seen {{ dashboard.automation_pipeline.last_seen_activity_id or '-' }}</span>
+    <span class="mini-badge">Processed {{ dashboard.automation_pipeline.last_processed_activity_id or '-' }}</span>
+    <span class="mini-badge">Detections {{ dashboard.automation_pipeline.last_run.detected_count }}</span>
+  </div>
+  <div class="split">
+    <article class="panel">
+      <h3>Ultimas actividades</h3>
+      <div class="list compact-list">
+        {% for item in dashboard.automation_pipeline.recent_activities %}
+        <div class="list-item static">
+          <div>
+            <strong>{{ item.activity_date }}</strong>
+            <p>{{ item.activity_name or item.activity_id }}</p>
+          </div>
+          <span class="badge {{ 'ok' if item.result == 'success' else 'warn' }}">{{ item.result }}</span>
+        </div>
+        {% else %}
+        <p class="muted">Todavia no hay actividades procesadas por el pipeline.</p>
+        {% endfor %}
+      </div>
+    </article>
+    <article class="panel">
+      <h3>Ultimos feedback updates</h3>
+      <div class="list compact-list">
+        {% for item in dashboard.automation_pipeline.recent_feedback_updates %}
+        <div class="list-item static">
+          <div>
+            <strong>{{ item.date }}</strong>
+            <p>{{ item.slug }}</p>
+          </div>
+          <span class="badge {{ 'ok' if item.result == 'success' else 'warn' }}">{{ item.result }}</span>
+        </div>
+        {% else %}
+        <p class="muted">Todavia no hay feedback updates procesados automaticamente.</p>
+        {% endfor %}
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="panel status-{{ dashboard.readiness_card.state }}">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Readiness diaria</p>
+      <h3>{{ dashboard.readiness_card.label }}</h3>
+    </div>
+    <span class="badge {{ dashboard.readiness_card.tone }}">{{ dashboard.readiness_card.source_label }}</span>
+  </div>
+  <p>{{ dashboard.readiness_card.summary }}</p>
+  <p><strong>Accion para hoy:</strong> {{ dashboard.readiness_card.action }}</p>
+  <p class="muted">{{ dashboard.readiness_card.detail }}</p>
+  {% if dashboard.readiness_card.signals %}
+  <div class="today-plan-tags">
+    {% for item in dashboard.readiness_card.signals %}
+    <span class="mini-badge">{{ item }}</span>
+    {% endfor %}
+  </div>
+  {% endif %}
+</section>
+
+{% if dashboard.protection_mode.active %}
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Proteccion</p>
+      <h3>{{ dashboard.protection_mode.label }}</h3>
+    </div>
+    <span class="badge {{ dashboard.protection_mode.tone }}">Activo</span>
+  </div>
+  <p>{{ dashboard.protection_mode.summary }}</p>
+  <p><strong>Progreso permitido:</strong> {{ dashboard.protection_mode.allowed_progression }}</p>
+  {% if dashboard.protection_mode.guidance_note %}
+  <p class="muted">{{ dashboard.protection_mode.guidance_note }}</p>
+  {% endif %}
+  <div class="list compact-list">
+    {% for item in dashboard.protection_mode.triggers %}
+    <div class="list-item static status-yellow">
+      <div>
+        <strong>Trigger</strong>
+        <p>{{ item }}</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
 
 <section class="split">
   <article class="panel">
@@ -138,7 +244,7 @@
       <div class="list-item static">
         <div>
           <strong>Recuperacion Garmin</strong>
-          <p>HRV {{ dashboard.daily_metrics.latest_hrv if dashboard.daily_metrics.latest_hrv is not none else '-' }}, readiness {{ dashboard.daily_metrics.latest_training_readiness if dashboard.daily_metrics.latest_training_readiness is not none else '-' }}, resting HR {{ dashboard.daily_metrics.latest_resting_heart_rate if dashboard.daily_metrics.latest_resting_heart_rate is not none else '-' }}.</p>
+          <p>{{ dashboard.readiness_card.label }}. HRV {{ dashboard.daily_metrics.latest_hrv if dashboard.daily_metrics.latest_hrv is not none else '-' }}, readiness {{ dashboard.daily_metrics.latest_training_readiness if dashboard.daily_metrics.latest_training_readiness is not none else '-' }}, resting HR {{ dashboard.daily_metrics.latest_resting_heart_rate if dashboard.daily_metrics.latest_resting_heart_rate is not none else '-' }}.</p>
         </div>
         <span class="badge">Daily</span>
       </div>
@@ -157,6 +263,62 @@
       {% endif %}
     </div>
   </article>
+</section>
+
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Aprendizaje del atleta</p>
+      <h3>Patrones basicos de respuesta</h3>
+    </div>
+    <span class="badge">{{ dashboard.response_patterns.window_label }}</span>
+  </div>
+  <p>{{ dashboard.response_patterns.headline }}</p>
+  <div class="cards three">
+    {% for pattern in dashboard.response_patterns.patterns %}
+    <article class="card status-{{ pattern.status }}">
+      <p class="eyebrow">{{ pattern.label }}</p>
+      <p><span class="badge {{ pattern.badge.tone }}">{{ pattern.badge.label }}</span></p>
+      <p>{{ pattern.summary }}</p>
+    </article>
+    {% endfor %}
+  </div>
+  {% if dashboard.response_patterns.notes %}
+  <div class="list compact-list">
+    {% for item in dashboard.response_patterns.notes %}
+    <div class="list-item static">
+      <div>
+        <strong>{{ item.date }}</strong>
+        <p>{{ item.note }}</p>
+      </div>
+      <span class="badge">{{ item.summary }}</span>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+</section>
+
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Adaptacion visible</p>
+      <h3>Triggers que pueden cambiar el plan</h3>
+    </div>
+    <span class="badge">{{ dashboard.adaptation_triggers.summary }}</span>
+  </div>
+  <p>{{ dashboard.adaptation_triggers.headline }}</p>
+  <div class="list compact-list">
+    {% for item in dashboard.adaptation_triggers.triggers %}
+    <div class="list-item static {{ 'status-yellow' if item.active else 'status-green' }}">
+      <div>
+        <strong>{{ item.label }}</strong>
+        <p>{{ item.summary }}</p>
+        <p class="muted"><strong>Si se activa:</strong> {{ item.plan_change }}</p>
+      </div>
+      <span class="badge {{ item.badge.tone }}">{{ 'Activo' if item.active else 'Quieto' }}</span>
+    </div>
+    {% endfor %}
+  </div>
 </section>
 
 <section class="panel">
@@ -226,6 +388,9 @@
       </ul>
     </article>
   </div>
+  {% if dashboard.decision.session_guidance.protection_note %}
+  <p class="muted"><strong>Nota de proteccion:</strong> {{ dashboard.decision.session_guidance.protection_note }}</p>
+  {% endif %}
 </section>
 
 <section class="panel">

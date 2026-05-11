@@ -27,7 +27,7 @@ pip install -r requirements.txt
 python scripts/garmin/sync_garmin.py import-activities --days 14 --limit 30
 python scripts/garmin/sync_garmin.py import-daily --days 14
 python scripts/garmin/sync_garmin.py schedule-workout-file training/planned/workouts/2026-05-04_rodaje_10km_z2.yaml
-python scripts/garmin/coach_sync.py --date YYYY-MM-DD
+python scripts/garmin/post_workout_refresh.py
 python scripts/garmin/coach_sync.py --date YYYY-MM-DD --skip-garmin
 python scripts/garmin/coach_engine.py --as-of YYYY-MM-DD --days 28
 python scripts/garmin/sync_garmin.py import-athlete-profile

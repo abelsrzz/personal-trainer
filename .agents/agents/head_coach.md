@@ -37,7 +37,7 @@ Act as the primary decision-maker for training planning.
 
 ```bash
 source .venv/bin/activate
-python scripts/garmin/coach_sync.py --date YYYY-MM-DD
+python scripts/garmin/post_workout_refresh.py
 python scripts/garmin/coach_sync.py --date YYYY-MM-DD --skip-garmin
 ```
 

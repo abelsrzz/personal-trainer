@@ -16,6 +16,7 @@ ROOT = Path(__file__).resolve().parents[2]
 GARMIN_ACTIVITY_ROOT = ROOT / "training" / "completed" / "imports" / "garmin" / "activities"
 GARMIN_DAILY_ROOT = ROOT / "training" / "completed" / "imports" / "garmin" / "daily"
 REVIEW_ROOT = ROOT / "training" / "completed" / "reviews"
+FEEDBACK_ROOT = ROOT / "training" / "completed" / "feedback"
 SHIN_TRACKER_PATH = ROOT / "athlete" / "shin_tracker.yaml"
 GOAL_GATES_PATH = ROOT / "planning" / "goal_gates.yaml"
 ACTIVE_CYCLE_PATH = ROOT / "planning" / "cycles" / "active.yaml"
@@ -162,6 +163,32 @@ def load_reviews() -> list[dict[str, Any]]:
         reviews.append(payload)
     reviews.sort(key=lambda item: item["review_date"])
     return reviews
+
+
+def load_feedback() -> list[dict[str, Any]]:
+    feedback_items: list[dict[str, Any]] = []
+    for path in sorted(FEEDBACK_ROOT.glob("*.feedback.json")):
+        try:
+            payload = load_json(path)
+        except (json.JSONDecodeError, OSError):
+            continue
+        if not isinstance(payload, dict):
+            continue
+        feedback_date = parse_local_date(payload.get("date"))
+        athlete_feedback = payload.get("athlete_feedback") if isinstance(payload.get("athlete_feedback"), dict) else {}
+        if feedback_date is None or not isinstance(athlete_feedback, dict):
+            continue
+        feedback_items.append(
+            {
+                **payload,
+                "feedback_date": feedback_date,
+                "athlete_feedback": athlete_feedback,
+                "slug": path.stem.replace(".feedback", ""),
+                "source_path": str(path.relative_to(ROOT)),
+            }
+        )
+    feedback_items.sort(key=lambda item: (item["feedback_date"], str(item.get("updated_at") or "")))
+    return feedback_items
 
 
 def load_daily_metrics() -> list[dict[str, Any]]:
@@ -595,6 +622,16 @@ def latest_high_risk_review(reviews: list[dict[str, Any]], as_of: date, days: in
     return risky[-1] if risky else None
 
 
+def recent_feedback_items(feedback_items: list[dict[str, Any]], as_of: date, days: int = 7) -> list[dict[str, Any]]:
+    start = as_of - timedelta(days=days - 1)
+    return [item for item in feedback_items if start <= item["feedback_date"] <= as_of]
+
+
+def latest_feedback(feedback_items: list[dict[str, Any]], as_of: date) -> dict[str, Any] | None:
+    candidates = [item for item in feedback_items if item["feedback_date"] <= as_of]
+    return candidates[-1] if candidates else None
+
+
 def latest_shin_entry(entries: list[dict[str, Any]], as_of: date) -> dict[str, Any] | None:
     candidates = [entry for entry in entries if entry["date"] <= as_of]
     return candidates[-1] if candidates else None
@@ -613,7 +650,7 @@ def best_split(activities: list[dict[str, Any]], key: str, start: date, end: dat
     return min(values) if values else None
 
 
-def evaluate_goal_gates(activities: list[dict[str, Any]], reviews: list[dict[str, Any]], shin_entries: list[dict[str, Any]], as_of: date) -> dict[str, Any]:
+def evaluate_goal_gates(activities: list[dict[str, Any]], reviews: list[dict[str, Any]], feedback_items: list[dict[str, Any]], shin_entries: list[dict[str, Any]], as_of: date) -> dict[str, Any]:
     config = load_yaml(GOAL_GATES_PATH).get("goal_gates", {})
     thresholds = config.get("thresholds", {})
     start_28 = as_of - timedelta(days=27)
@@ -626,15 +663,22 @@ def evaluate_goal_gates(activities: list[dict[str, Any]], reviews: list[dict[str
     high_risk_count = len(
         [item for item in reviews if start_28 <= item["review_date"] <= as_of and (item.get("risk_level") == "alto" or int(item.get("score") or 10) <= 4)]
     )
+    subjective_alerts_28d = len([
+        item for item in feedback_items if start_28 <= item["feedback_date"] <= as_of and (
+            int(item.get("athlete_feedback", {}).get("pain_level") or 0) >= 4
+            or str(item.get("athlete_feedback", {}).get("compliance") or "") in {"aborted", "modified"}
+        )
+    ])
+    total_risk_events = high_risk_count + subjective_alerts_28d
     shin_pain = max_shin_pain(latest_shin_entry(shin_entries, as_of))
 
     foundation = {
         "name": "Base estable",
         "passed": avg_weekly_km >= float(thresholds.get("foundation_avg_weekly_km", 40))
         and last_28["long_run_km"] >= float(thresholds.get("foundation_long_run_km", 14))
-        and high_risk_count == 0
+        and total_risk_events == 0
         and (shin_pain is None or shin_pain <= 2),
-        "evidence": f"Media 4 semanas {avg_weekly_km:.1f} km/sem, tirada larga {last_28['long_run_km']:.1f} km, revisiones rojas {high_risk_count}, periostio {shin_pain if shin_pain is not None else '-'}.",
+        "evidence": f"Media 4 semanas {avg_weekly_km:.1f} km/sem, tirada larga {last_28['long_run_km']:.1f} km, alertas {total_risk_events}, periostio {shin_pain if shin_pain is not None else '-'}.",
     }
     threshold_gate = {
         "name": "Umbral competitivo",
@@ -647,9 +691,9 @@ def evaluate_goal_gates(activities: list[dict[str, Any]], reviews: list[dict[str
         and last_28["long_run_km"] >= float(thresholds.get("specific_long_run_km", 16))
         and best_5k is not None
         and best_5k <= float(thresholds.get("specific_5k_s", 18 * 60))
-        and high_risk_count == 0
+        and total_risk_events == 0
         and (shin_pain is None or shin_pain <= 2),
-        "evidence": f"Media {avg_weekly_km:.1f} km/sem, tirada {last_28['long_run_km']:.1f} km, 5k {seconds_to_time(best_5k)}, riesgo {high_risk_count}.",
+        "evidence": f"Media {avg_weekly_km:.1f} km/sem, tirada {last_28['long_run_km']:.1f} km, 5k {seconds_to_time(best_5k)}, alertas {total_risk_events}.",
     }
     final_gate = {
         "name": "Seleccion 35:00",
@@ -685,7 +729,8 @@ def evaluate_goal_gates(activities: list[dict[str, Any]], reviews: list[dict[str
             "long_run_km_28d": last_28["long_run_km"],
             "best_5k_s_90d": best_5k,
             "best_10k_s_180d": best_10k,
-            "high_risk_reviews_28d": high_risk_count,
+            "high_risk_reviews_28d": total_risk_events,
+            "subjective_alerts_28d": subjective_alerts_28d,
             "latest_shin_pain": shin_pain,
         },
         "gates": gates,
@@ -715,7 +760,7 @@ def performance_estimate(activities: list[dict[str, Any]], as_of: date) -> dict[
     }
 
 
-def build_decision(activities: list[dict[str, Any]], reviews: list[dict[str, Any]], shin_entries: list[dict[str, Any]], as_of: date) -> dict[str, Any]:
+def build_decision(activities: list[dict[str, Any]], reviews: list[dict[str, Any]], feedback_items: list[dict[str, Any]], shin_entries: list[dict[str, Any]], as_of: date) -> dict[str, Any]:
     last_7 = aggregate_window(activities, as_of - timedelta(days=6), as_of)
     prev_7 = aggregate_window(activities, as_of - timedelta(days=13), as_of - timedelta(days=7))
     last_28 = aggregate_window(activities, as_of - timedelta(days=27), as_of)
@@ -724,6 +769,8 @@ def build_decision(activities: list[dict[str, Any]], reviews: list[dict[str, Any
         volume_spike = ((last_7["km"] - prev_7["km"]) / prev_7["km"]) * 100.0
 
     risky_review = latest_high_risk_review(reviews, as_of)
+    latest_feedback_item = latest_feedback(feedback_items, as_of)
+    recent_feedback = recent_feedback_items(feedback_items, as_of)
     shin_entry = latest_shin_entry(shin_entries, as_of)
     shin_pain = max_shin_pain(shin_entry)
     daily_signals = classify_daily_signals(load_daily_metrics(), activities, as_of)
@@ -765,6 +812,35 @@ def build_decision(activities: list[dict[str, Any]], reviews: list[dict[str, Any
     if daily_signals["training_status_flag"] == "caution":
         reasons.append("Training status de Garmin sugiere prudencia en la carga actual.")
         status = "yellow" if status == "green" else status
+
+    latest_athlete_feedback = latest_feedback_item.get("athlete_feedback", {}) if latest_feedback_item else {}
+    latest_pain_level = int(latest_athlete_feedback.get("pain_level") or 0) if latest_athlete_feedback else 0
+    latest_compliance = str(latest_athlete_feedback.get("compliance") or "") if latest_athlete_feedback else ""
+    latest_rpe = int(latest_athlete_feedback.get("rpe") or 0) if latest_athlete_feedback else 0
+    if latest_pain_level >= 4:
+        reasons.append(f"Feedback subjetivo reciente con dolor {latest_pain_level}/10; conviene proteger carga.")
+        status = "red"
+    elif latest_pain_level == 3 and status != "red":
+        reasons.append("Feedback subjetivo reciente con dolor 3/10; no conviene progresar carga.")
+        status = "yellow"
+    if latest_compliance == "aborted":
+        reasons.append("La ultima sesion fue cortada por el atleta; hay que asumir coste alto o mala tolerancia actual.")
+        status = "red"
+    elif latest_compliance in {"modified", "partial"} and status == "green":
+        reasons.append("La ultima sesion no se completo exactamente como estaba prescrita; mejor consolidar antes de progresar.")
+        status = "yellow"
+    if latest_rpe >= 9 and status == "green":
+        reasons.append("La ultima sesion se percibio muy exigente (RPE alto); conviene prudencia en la siguiente decision.")
+        status = "yellow"
+    recent_subjective_alerts = [
+        item
+        for item in recent_feedback
+        if int(item.get("athlete_feedback", {}).get("pain_level") or 0) >= 4
+        or str(item.get("athlete_feedback", {}).get("compliance") or "") in {"aborted", "modified"}
+    ]
+    if len(recent_subjective_alerts) >= 2:
+        reasons.append("El feedback subjetivo reciente repite señales de mala tolerancia o dolor; no toca progresar.")
+        status = "red" if status == "red" else "yellow"
 
     active_block_name = str(context.get("active_block", {}).get("name") or "").lower()
     if "reset" in active_block_name or "consistency" in active_block_name:
@@ -809,6 +885,7 @@ def build_decision(activities: list[dict[str, Any]], reviews: list[dict[str, Any
         "volume_spike_pct": volume_spike,
         "latest_shin_entry": shin_entry,
         "latest_high_risk_review": risky_review,
+        "latest_feedback": latest_feedback_item,
         "daily_signals": daily_signals,
         "session_guidance": session_guidance,
         "active_context": {
@@ -971,11 +1048,13 @@ def render_decision(payload: dict[str, Any]) -> str:
 def build_payload(as_of: date, days: int) -> dict[str, Any]:
     activities = load_activity_summaries()
     reviews = load_reviews()
+    feedback_items = load_feedback()
     daily = load_daily_metrics()
     shin_entries = load_shin_entries()
     start = as_of - timedelta(days=days - 1)
-    decision = build_decision(activities, reviews, shin_entries, as_of)
+    decision = build_decision(activities, reviews, feedback_items, shin_entries, as_of)
     context = active_context(as_of)
+    latest_feedback_item = latest_feedback(feedback_items, as_of)
     return {
         "generated_at": datetime.now(UTC).isoformat(),
         "as_of": as_of.isoformat(),
@@ -983,12 +1062,16 @@ def build_payload(as_of: date, days: int) -> dict[str, Any]:
         "activity_count_total": len(activities),
         "review_count_total": len(reviews),
         "decision": decision,
-        "goal_gates": evaluate_goal_gates(activities, reviews, shin_entries, as_of),
+        "goal_gates": evaluate_goal_gates(activities, reviews, feedback_items, shin_entries, as_of),
         "performance_estimate": performance_estimate(activities, as_of),
         "weekly_volume": weekly_volume(activities, start, as_of),
         "daily_metrics": summarize_daily(daily, as_of, days),
         "data_quality": garmin_data_quality_report(daily, activities, as_of),
         "running_tolerance": load_running_tolerance(),
+        "feedback_summary": {
+            "available_count": len(feedback_items),
+            "latest_date": latest_feedback_item["feedback_date"].isoformat() if latest_feedback_item else None,
+        },
         "active_context": {
             "cycle_id": context.get("cycle", {}).get("id"),
             "active_block": context.get("active_block", {}).get("name"),

@@ -409,17 +409,19 @@ class OpenCodeBridge:
         self.config = config
         self.store = SessionStore(config.session_store)
 
-    def build_prompt(self, message: str) -> str:
+    def build_prompt(self, message: str, channel: str = "telegram") -> str:
+        channel_name = "Telegram" if channel == "telegram" else "web"
+        response_target = "Telegram" if channel == "telegram" else "la web"
         return (
-            "Contexto remoto Telegram para el proyecto personal-trainer.\n"
-            "Actua como OpenCode dentro de este repositorio. Responde de forma clara, breve y apta para Telegram.\n"
+            f"Contexto remoto {channel_name} para el proyecto personal-trainer.\n"
+            f"Actua como OpenCode dentro de este repositorio. Responde de forma clara, breve y apta para {response_target}.\n"
             "Puedes editar archivos y ejecutar comandos si el usuario lo pide.\n"
             "Solo hagas commit o push si el usuario lo pide explicitamente. Sigue protocolo git seguro: no force push, no reset destructivo sin confirmacion.\n"
             "Regla obligatoria: si el usuario pide planificar, agendar, crear o poner un entrenamiento, la tarea NO esta completa hasta que exista el YAML en training/planned/workouts, se haya intentado subir/agendar en Garmin y la respuesta indique resultado real. No respondas solo con una propuesta en chat salvo que el usuario pida explicitamente no agendarlo.\n"
             "Si el entrenamiento no encaja como running estructurado, usa fallback Garmin tipo other y, si falla, fitness_equipment.\n"
-            "Desde Telegram SI puedes modificar datos operativos del entrenador: athlete/, races/, planning/, training/ y generar salidas derivadas como status_dashboard, coach_decision o PDF semanal cuando corresponda.\n"
-            "Desde Telegram NO puedes modificar la web, el sistema agentico, scripts, prompts, .agents, system, deploy, requirements, configuraciones del bot o el funcionamiento del programa.\n"
-            "Si el usuario pide cambiar comportamiento del sistema o codigo, no lo hagas desde Telegram: responde que esa clase de cambio debe hacerse fuera del canal remoto.\n"
+            "Desde este canal SI puedes modificar datos operativos del entrenador: athlete/, races/, planning/, training/ y generar salidas derivadas como status_dashboard, coach_decision o PDF semanal cuando corresponda.\n"
+            "Desde este canal NO puedes modificar la web, el sistema agentico, scripts, prompts, .agents, system, deploy, requirements, configuraciones del bot o el funcionamiento del programa.\n"
+            "Si el usuario pide cambiar comportamiento del sistema o codigo, no lo hagas desde este canal remoto: responde que esa clase de cambio debe hacerse fuera del canal remoto.\n"
             "No narres pasos intermedios, progreso interno, comandos ejecutados, archivos modificados ni detalles tecnicos salvo que el usuario los pida explicitamente.\n"
             "No expliques como lo has hecho. Da primero el resultado final.\n"
             "Si la tarea salio bien, responde en 2-6 lineas maximo, con lenguaje natural y facil de leer en movil.\n"
@@ -529,6 +531,7 @@ class OpenCodeBridge:
         message: str,
         health: BridgeHealth | None = None,
         on_started: Callable[[str], Awaitable[None]] | None = None,
+        channel: str = "telegram",
     ) -> BridgeResult:
         health = health or await self.health_check()
         if not health.ok:
@@ -539,7 +542,7 @@ class OpenCodeBridge:
         model = self.store.get_model(chat_id) or self.config.model
         trace_id = secrets.token_hex(4)
         title = None if session_id else f"telegram-{chat_id}-{datetime.now(UTC).strftime('%Y%m%d%H%M%S')}"
-        prompt = self.build_prompt(message)
+        prompt = self.build_prompt(message, channel=channel)
 
         probe_error = health.detail if not health.attach else None
         attach = health.attach

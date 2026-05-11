@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import json
 import calendar
 import logging
@@ -14,10 +15,20 @@ from typing import Any
 
 import yaml
 from fastapi import FastAPI, Form, Request
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from scripts.system.capability_engine import ensure_fresh
+from scripts.telegram.opencode_bridge import (
+    DEFAULT_CONFIG_PATH as OPENCODE_REMOTE_CONFIG_PATH,
+    DEFAULT_OPENCODE_MODEL,
+    OpenCodeBridge,
+    OpenCodeRemoteConfig,
+    SessionStore,
+    command_mentions_commit_or_push,
+    confirmation_reason,
+    normalize_model_name,
+)
 from starlette.middleware.sessions import SessionMiddleware
 
 
@@ -39,6 +50,10 @@ COACH_DECISION_PATH = ROOT / "planning" / "coach_decision.json"
 PLANNED_ACTIONS_PATH = ROOT / "system" / "state" / "planned_workout_actions.json"
 GARMIN_RETRY_STATE_PATH = ROOT / "system" / "state" / "garmin_retry_state.json"
 GARMIN_SYNC_SCRIPT = ROOT / "scripts" / "garmin" / "sync_garmin.py"
+WEB_CHAT_UI_STATE_PATH = ROOT / "system" / "state" / "web_chat_ui.json"
+
+
+WEB_CHAT_LOCKS: dict[str, asyncio.Lock] = {}
 
 
 logger = logging.getLogger("running_coach_web")
@@ -550,6 +565,150 @@ def template_context(request: Request, **values: Any) -> dict[str, Any]:
     }
     context.update(values)
     return context
+
+
+def web_chat_identity(request: Request) -> str:
+    return f"web:{request.session.get('username') or 'unknown'}"
+
+
+def normalize_runtime_path(value: str | Path) -> Path:
+    path = Path(value)
+    if path.is_absolute():
+        return path
+    return (ROOT / path).resolve()
+
+
+def load_web_chat_remote_config() -> tuple[OpenCodeRemoteConfig | None, str | None]:
+    if not OPENCODE_REMOTE_CONFIG_PATH.exists():
+        return None, f"Falta `telegram/{OPENCODE_REMOTE_CONFIG_PATH.name}` con la configuracion de `opencode_remote`."
+
+    opencode_data = load_optional_yaml(OPENCODE_REMOTE_CONFIG_PATH).get("opencode_remote") or {}
+    if not isinstance(opencode_data, dict) or not opencode_data:
+        return None, "No existe el bloque `opencode_remote` en la configuracion del bridge."
+
+    try:
+        return (
+            OpenCodeRemoteConfig(
+                enabled=bool(opencode_data.get("enabled", True)),
+                server_url=str(opencode_data.get("server_url") or "http://127.0.0.1:4096").strip(),
+                project_dir=normalize_runtime_path(opencode_data.get("project_dir") or ROOT),
+                session_store=normalize_runtime_path(opencode_data.get("session_store") or "telegram/opencode_sessions.json"),
+                timeout_s=int(opencode_data.get("timeout_s") or 3600),
+                allow_commit=bool(opencode_data.get("allow_commit", True)),
+                allow_push=bool(opencode_data.get("allow_push", True)),
+                dangerously_skip_permissions=bool(opencode_data.get("dangerously_skip_permissions", False)),
+                model=normalize_model_name(opencode_data.get("model") or DEFAULT_OPENCODE_MODEL),
+                max_response_chars=int(opencode_data.get("max_response_chars") or 12000),
+                require_confirmation_patterns=tuple(
+                    str(item).lower() for item in opencode_data.get("require_confirmation_patterns", []) if str(item).strip()
+                ),
+            ),
+            None,
+        )
+    except (TypeError, ValueError) as exc:
+        return None, f"Configuracion opencode_remote invalida: {exc}"
+
+
+def web_chat_ui_store() -> dict[str, Any]:
+    payload = load_optional_json(WEB_CHAT_UI_STATE_PATH, {"users": {}})
+    users = payload.get("users") if isinstance(payload, dict) else None
+    if not isinstance(users, dict):
+        return {"users": {}}
+    return payload
+
+
+def web_chat_history(user_key: str) -> list[dict[str, Any]]:
+    payload = web_chat_ui_store()
+    user_state = payload["users"].get(user_key, {})
+    messages = user_state.get("messages") if isinstance(user_state, dict) else []
+    return messages if isinstance(messages, list) else []
+
+
+def save_web_chat_history(user_key: str, messages: list[dict[str, Any]]) -> None:
+    payload = web_chat_ui_store()
+    user_state = payload["users"].setdefault(user_key, {})
+    user_state["messages"] = messages[-80:]
+    user_state["updated_at"] = datetime.now().isoformat()
+    write_json(WEB_CHAT_UI_STATE_PATH, payload)
+
+
+def append_web_chat_message(user_key: str, role: str, text: str, *, model: str | None = None, error: bool = False) -> None:
+    messages = web_chat_history(user_key)
+    messages.append(
+        {
+            "role": role,
+            "text": str(text or "").strip(),
+            "created_at": datetime.now().isoformat(),
+            "model": model,
+            "error": error,
+        }
+    )
+    save_web_chat_history(user_key, messages)
+
+
+def clear_web_chat_history(user_key: str) -> None:
+    payload = web_chat_ui_store()
+    user_state = payload["users"].setdefault(user_key, {})
+    user_state["messages"] = []
+    user_state["updated_at"] = datetime.now().isoformat()
+    write_json(WEB_CHAT_UI_STATE_PATH, payload)
+
+
+def clear_web_chat_confirmation(store: SessionStore, user_key: str) -> None:
+    data = store.load()
+    data.get("confirmations", {}).pop(user_key, None)
+    store.save(data)
+
+
+def web_chat_pending_confirmation(store: SessionStore, user_key: str) -> dict[str, Any] | None:
+    pending = store.load().get("confirmations", {}).get(user_key)
+    if not isinstance(pending, dict):
+        return None
+    return {
+        "id": str(pending.get("id") or "").strip(),
+        "reason": str(pending.get("reason") or "Confirmacion requerida.").strip(),
+        "created_at": pending.get("created_at"),
+        "preview": preview_user_message(str(pending.get("message") or "")),
+    }
+
+
+def preview_user_message(text: str, limit: int = 220) -> str:
+    compact = " ".join((text or "").split())
+    if len(compact) <= limit:
+        return compact
+    return compact[:limit] + "..."
+
+
+def web_chat_policy_block(text: str, config: OpenCodeRemoteConfig) -> str | None:
+    wants_commit, wants_push = command_mentions_commit_or_push(text)
+    if wants_commit and not config.allow_commit:
+        return "Los commits estan deshabilitados en `opencode_remote.allow_commit`."
+    if wants_push and not config.allow_push:
+        return "Los push estan deshabilitados en `opencode_remote.allow_push`."
+    return None
+
+
+def web_chat_state(request: Request, config: OpenCodeRemoteConfig | None, config_error: str | None = None) -> dict[str, Any]:
+    user_key = web_chat_identity(request)
+    store = SessionStore(config.session_store) if config else None
+    active_model = (store.get_model(user_key) if store else None) or (config.model if config else DEFAULT_OPENCODE_MODEL)
+    session_id = store.get_session(user_key) if store else None
+    return {
+        "available": bool(config and not config_error),
+        "error": config_error,
+        "history": web_chat_history(user_key),
+        "active_model": active_model,
+        "default_model": config.model if config else DEFAULT_OPENCODE_MODEL,
+        "session_id": session_id,
+        "pending_confirmation": web_chat_pending_confirmation(store, user_key) if store else None,
+        "config_path": str(OPENCODE_REMOTE_CONFIG_PATH.relative_to(ROOT)),
+    }
+
+
+def json_auth_guard(request: Request) -> JSONResponse | None:
+    if authenticated(request):
+        return None
+    return JSONResponse({"ok": False, "error": "Sesion no valida."}, status_code=401)
 
 
 ACTION_LABELS = {
@@ -2018,6 +2177,164 @@ async def master_plan(request: Request) -> HTMLResponse:
     if redirect:
         return redirect
     return templates.TemplateResponse(request, "master_plan.html", template_context(request, master_plan=master_plan_page_data(), workspace=workspace_status()))
+
+
+@app.get("/chat", response_class=HTMLResponse)
+async def chat_page(request: Request) -> HTMLResponse:
+    redirect = auth_guard(request)
+    if redirect:
+        return redirect
+    config, config_error = load_web_chat_remote_config()
+    return templates.TemplateResponse(request, "chat.html", template_context(request, chat_state=web_chat_state(request, config, config_error)))
+
+
+@app.post("/chat/messages")
+async def chat_messages(request: Request) -> JSONResponse:
+    unauthorized = json_auth_guard(request)
+    if unauthorized:
+        return unauthorized
+
+    try:
+        payload = await request.json()
+    except json.JSONDecodeError:
+        payload = {}
+
+    if not isinstance(payload, dict):
+        return JSONResponse({"ok": False, "error": "Payload no valido."}, status_code=400)
+
+    config, config_error = load_web_chat_remote_config()
+    if not config:
+        return JSONResponse(
+            {"ok": False, "error": config_error or "Chat no disponible.", "state": web_chat_state(request, None, config_error)},
+            status_code=503,
+        )
+
+    store = SessionStore(config.session_store)
+    user_key = web_chat_identity(request)
+
+    if payload.get("cancel_confirmation"):
+        clear_web_chat_confirmation(store, user_key)
+        return JSONResponse(
+            {"ok": True, "message": "Confirmacion cancelada.", "state": web_chat_state(request, config)},
+            status_code=200,
+        )
+
+    confirmed = bool(payload.get("confirm"))
+    if confirmed:
+        confirmation_id = str(payload.get("confirmation_id") or "").strip()
+        pending = store.pop_confirmation(user_key, confirmation_id)
+        if not pending:
+            return JSONResponse(
+                {"ok": False, "error": "La confirmacion ya no existe o no coincide.", "state": web_chat_state(request, config)},
+                status_code=409,
+            )
+        message = str(pending.get("message") or "").strip()
+    else:
+        message = str(payload.get("message") or "").strip()
+
+    if not message:
+        return JSONResponse({"ok": False, "error": "Escribe un mensaje antes de enviar."}, status_code=400)
+
+    policy_error = web_chat_policy_block(message, config)
+    if policy_error:
+        return JSONResponse(
+            {"ok": False, "error": policy_error, "state": web_chat_state(request, config)},
+            status_code=403,
+        )
+
+    if not confirmed:
+        reason = confirmation_reason(message, config.require_confirmation_patterns)
+        if reason:
+            confirmation_id = store.set_confirmation(user_key, message, reason)
+            state = web_chat_state(request, config)
+            return JSONResponse(
+                {
+                    "ok": True,
+                    "needs_confirmation": True,
+                    "confirmation_id": confirmation_id,
+                    "message": "Accion sensible detectada. Confirmala antes de ejecutarla.",
+                    "state": state,
+                },
+                status_code=202,
+            )
+
+    lock = WEB_CHAT_LOCKS.setdefault(user_key, asyncio.Lock())
+    if lock.locked():
+        return JSONResponse(
+            {"ok": False, "error": "Ya hay una peticion en curso para este usuario.", "state": web_chat_state(request, config)},
+            status_code=409,
+        )
+
+    async with lock:
+        bridge = OpenCodeBridge(config)
+        result = await bridge.send(user_key, message, channel="web")
+
+    append_web_chat_message(user_key, "user", message)
+    append_web_chat_message(user_key, "assistant", result.text, model=result.model, error=result.returncode != 0)
+    return JSONResponse(
+        {
+            "ok": result.returncode == 0,
+            "message": None if result.returncode == 0 else "OpenCode devolvio una respuesta con incidencia operativa.",
+            "state": web_chat_state(request, config),
+        },
+        status_code=200,
+    )
+
+
+@app.post("/chat/session/reset")
+async def chat_session_reset(request: Request) -> JSONResponse:
+    unauthorized = json_auth_guard(request)
+    if unauthorized:
+        return unauthorized
+
+    config, config_error = load_web_chat_remote_config()
+    user_key = web_chat_identity(request)
+    clear_web_chat_history(user_key)
+    if not config:
+        return JSONResponse(
+            {"ok": False, "error": config_error or "Chat no disponible.", "state": web_chat_state(request, None, config_error)},
+            status_code=503,
+        )
+
+    store = SessionStore(config.session_store)
+    store.clear_session(user_key)
+    clear_web_chat_confirmation(store, user_key)
+    return JSONResponse({"ok": True, "message": "Sesion reiniciada.", "state": web_chat_state(request, config)}, status_code=200)
+
+
+@app.post("/chat/model")
+async def chat_model(request: Request) -> JSONResponse:
+    unauthorized = json_auth_guard(request)
+    if unauthorized:
+        return unauthorized
+
+    try:
+        payload = await request.json()
+    except json.JSONDecodeError:
+        payload = {}
+
+    if not isinstance(payload, dict):
+        return JSONResponse({"ok": False, "error": "Payload no valido."}, status_code=400)
+
+    config, config_error = load_web_chat_remote_config()
+    if not config:
+        return JSONResponse(
+            {"ok": False, "error": config_error or "Chat no disponible.", "state": web_chat_state(request, None, config_error)},
+            status_code=503,
+        )
+
+    store = SessionStore(config.session_store)
+    user_key = web_chat_identity(request)
+    raw_model = str(payload.get("model") or "").strip()
+    if str(payload.get("action") or "").strip().lower() in {"reset", "default"}:
+        store.clear_model(user_key)
+        return JSONResponse({"ok": True, "message": "Modelo reseteado al valor por defecto.", "state": web_chat_state(request, config)}, status_code=200)
+
+    if not raw_model:
+        return JSONResponse({"ok": False, "error": "Indica un modelo valido."}, status_code=400)
+
+    store.set_model(user_key, normalize_model_name(raw_model))
+    return JSONResponse({"ok": True, "message": "Modelo activo actualizado.", "state": web_chat_state(request, config)}, status_code=200)
 
 
 @app.get("/healthz")

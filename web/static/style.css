@@ -828,6 +828,102 @@ td {
   border: 1px solid var(--line);
 }
 
+.hidden {
+  display: none;
+}
+
+.chat-layout,
+.chat-panel,
+.chat-side-panel,
+.chat-thread,
+.chat-bubble,
+.chat-bubble-head,
+.chat-confirmation,
+.chat-composer-actions {
+  display: flex;
+}
+
+.chat-layout,
+.chat-panel,
+.chat-side-panel,
+.chat-thread {
+  flex-direction: column;
+}
+
+.chat-layout {
+  align-items: start;
+}
+
+.chat-panel,
+.chat-side-panel {
+  gap: 16px;
+}
+
+.chat-thread {
+  gap: 12px;
+  min-height: 320px;
+  max-height: 62vh;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.chat-bubble {
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: rgba(11, 16, 32, 0.76);
+}
+
+.chat-bubble.user {
+  border-color: rgba(132, 220, 198, 0.26);
+}
+
+.chat-bubble.assistant {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.chat-bubble-head,
+.chat-composer-actions,
+.chat-confirmation {
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.chat-bubble-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.chat-bubble-body {
+  margin: 0;
+  padding: 14px;
+}
+
+.chat-runtime-note,
+.chat-confirmation {
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(246, 193, 119, 0.24);
+  background: rgba(38, 28, 10, 0.38);
+}
+
+.chat-confirmation {
+  align-items: flex-start;
+}
+
+.chat-composer {
+  margin-top: auto;
+}
+
+.small {
+  font-size: 0.84rem;
+}
+
 .form {
   display: flex;
   flex-direction: column;
@@ -897,6 +993,10 @@ td {
 
   .today-plan-side {
     align-items: flex-start;
+  }
+
+  .chat-thread {
+    max-height: none;
   }
 }
 

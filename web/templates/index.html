@@ -99,6 +99,71 @@
         <span class="mini-badge">{{ item }}</span>
         {% endfor %}
       </div>
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Check-in diario</p>
+            <h4>Antes de entrenar</h4>
+          </div>
+          {% if today_plan.daily_checkin.decision %}
+          <span class="badge {{ today_plan.daily_checkin.decision.badge.tone }}">{{ today_plan.daily_checkin.decision.badge.label }}</span>
+          {% endif %}
+        </div>
+        <p class="muted">Formulario rapido de 20 segundos para ajustar el plan del dia.</p>
+        {% if today_plan.daily_checkin.decision %}
+        <p><strong>{{ today_plan.daily_checkin.decision.headline }}</strong></p>
+        <p>{{ today_plan.daily_checkin.decision.summary }}</p>
+        <p class="muted">Score {{ today_plan.daily_checkin.decision.score }}/100{% if today_plan.daily_checkin.updated_at %} · Actualizado {{ today_plan.daily_checkin.updated_at }}{% endif %}</p>
+        <div class="today-plan-tags">
+          {% for item in today_plan.daily_checkin.decision.reasons %}
+          <span class="mini-badge">{{ item }}</span>
+          {% endfor %}
+        </div>
+        {% endif %}
+        <form class="form" method="post" action="/daily-checkin">
+          <input type="hidden" name="day" value="{{ today_plan.date }}">
+          <input type="hidden" name="next_url" value="/">
+          <div class="cards three">
+            <label>Energía
+              <select name="energy">
+                {% for value in range(1, 6) %}
+                <option value="{{ value }}" {% if today_plan.daily_checkin.form_values.energy == value %}selected{% endif %}>{{ value }}/5</option>
+                {% endfor %}
+              </select>
+            </label>
+            <label>Sueño
+              <select name="sleep">
+                {% for value in range(1, 6) %}
+                <option value="{{ value }}" {% if today_plan.daily_checkin.form_values.sleep == value %}selected{% endif %}>{{ value }}/5</option>
+                {% endfor %}
+              </select>
+            </label>
+            <label>Dolor/molestia
+              <select name="pain">
+                {% for value in range(0, 11) %}
+                <option value="{{ value }}" {% if today_plan.daily_checkin.form_values.pain == value %}selected{% endif %}>{{ value }}/10</option>
+                {% endfor %}
+              </select>
+            </label>
+            <label>Ganas de entrenar
+              <select name="motivation">
+                {% for value in range(1, 6) %}
+                <option value="{{ value }}" {% if today_plan.daily_checkin.form_values.motivation == value %}selected{% endif %}>{{ value }}/5</option>
+                {% endfor %}
+              </select>
+            </label>
+            <label>Tiempo real (min)
+              <input type="number" name="available_minutes" min="0" max="300" value="{{ today_plan.daily_checkin.form_values.available_minutes }}">
+            </label>
+            <label>Nota
+              <input type="text" name="note" maxlength="200" value="{{ today_plan.daily_checkin.form_values.note }}" placeholder="Opcional">
+            </label>
+          </div>
+          <div class="inline-actions">
+            <button class="cta-button" type="submit">Guardar check-in</button>
+          </div>
+        </form>
+      </section>
     </div>
 
     <div class="today-plan-side">
@@ -131,7 +196,17 @@
     <form method="post" action="/planned-workouts/{{ today_plan.planned_workout.slug }}/action">
       <input type="hidden" name="action" value="alternative_requested">
       <input type="hidden" name="next_url" value="/">
-      <button class="cta-button" type="submit">Necesito alternativa</button>
+      <button class="cta-button" type="submit">Alternativa automatica</button>
+    </form>
+    <form method="post" action="/planned-workouts/{{ today_plan.planned_workout.slug }}/replan">
+      <input type="hidden" name="strategy" value="move_next_day">
+      <input type="hidden" name="next_url" value="/">
+      <button class="cta-button" type="submit">Mover a otro dia</button>
+    </form>
+    <form method="post" action="/planned-workouts/{{ today_plan.planned_workout.slug }}/replan">
+      <input type="hidden" name="strategy" value="skip_recompose_week">
+      <input type="hidden" name="next_url" value="/">
+      <button class="cta-button cta-warn" type="submit">No entreno hoy</button>
     </form>
     {% if today_plan.action_state %}
     <form method="post" action="/planned-workouts/{{ today_plan.planned_workout.slug }}/action">

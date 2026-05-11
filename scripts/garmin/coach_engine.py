@@ -615,6 +615,20 @@ def weekly_volume(activities: list[dict[str, Any]], start: date, end: date) -> l
     ]
 
 
+def iso_week_window(anchor: date) -> tuple[date, date]:
+    start = anchor - timedelta(days=anchor.weekday())
+    end = start + timedelta(days=6)
+    return start, end
+
+
+def completed_week_windows(as_of: date) -> tuple[tuple[date, date], tuple[date, date]]:
+    last_completed_end = as_of - timedelta(days=as_of.weekday() + 1)
+    last_completed_start = last_completed_end - timedelta(days=6)
+    previous_end = last_completed_start - timedelta(days=1)
+    previous_start = previous_end - timedelta(days=6)
+    return (last_completed_start, last_completed_end), (previous_start, previous_end)
+
+
 def latest_high_risk_review(reviews: list[dict[str, Any]], as_of: date, days: int = 7) -> dict[str, Any] | None:
     start = as_of - timedelta(days=days - 1)
     candidates = [item for item in reviews if start <= item["review_date"] <= as_of]
@@ -764,9 +778,15 @@ def build_decision(activities: list[dict[str, Any]], reviews: list[dict[str, Any
     last_7 = aggregate_window(activities, as_of - timedelta(days=6), as_of)
     prev_7 = aggregate_window(activities, as_of - timedelta(days=13), as_of - timedelta(days=7))
     last_28 = aggregate_window(activities, as_of - timedelta(days=27), as_of)
+    (last_week_start, last_week_end), (prev_week_start, prev_week_end) = completed_week_windows(as_of)
+    last_complete_week = aggregate_window(activities, last_week_start, last_week_end)
+    previous_complete_week = aggregate_window(activities, prev_week_start, prev_week_end)
     volume_spike = None
     if prev_7["km"] > 0:
         volume_spike = ((last_7["km"] - prev_7["km"]) / prev_7["km"]) * 100.0
+    weekly_spike = None
+    if previous_complete_week["km"] > 0:
+        weekly_spike = ((last_complete_week["km"] - previous_complete_week["km"]) / previous_complete_week["km"]) * 100.0
 
     risky_review = latest_high_risk_review(reviews, as_of)
     latest_feedback_item = latest_feedback(feedback_items, as_of)
@@ -788,9 +808,11 @@ def build_decision(activities: list[dict[str, Any]], reviews: list[dict[str, Any
     elif shin_pain is not None and shin_pain == 3 and status != "red":
         reasons.append("Periostio en 3/10: no conviene aumentar carga.")
         status = "yellow"
-    if volume_spike is not None and volume_spike > 30 and last_7["km"] >= 25:
-        reasons.append(f"Subida de volumen 7d de {volume_spike:.0f}%.")
-        status = "red" if volume_spike > 50 else "yellow"
+    if weekly_spike is not None and weekly_spike > 30 and last_complete_week["km"] >= 25:
+        reasons.append(
+            f"Subida de volumen semanal de {weekly_spike:.0f}% ({previous_complete_week['km']:.1f} -> {last_complete_week['km']:.1f} km entre semanas completas)."
+        )
+        status = "red" if weekly_spike > 50 else "yellow"
     if last_7["quality_runs"] >= 3:
         reasons.append(f"Demasiada densidad de calidad: {last_7['quality_runs']} sesiones exigentes en 7 dias.")
         status = "red"
@@ -881,8 +903,15 @@ def build_decision(activities: list[dict[str, Any]], reviews: list[dict[str, Any
         "action": action,
         "recommendation": recommendation,
         "reasons": reasons,
-        "windows": {"last_7_days": last_7, "previous_7_days": prev_7, "last_28_days": last_28},
+        "windows": {
+            "last_7_days": last_7,
+            "previous_7_days": prev_7,
+            "last_28_days": last_28,
+            "last_complete_week": last_complete_week,
+            "previous_complete_week": previous_complete_week,
+        },
         "volume_spike_pct": volume_spike,
+        "weekly_spike_pct": weekly_spike,
         "latest_shin_entry": shin_entry,
         "latest_high_risk_review": risky_review,
         "latest_feedback": latest_feedback_item,
@@ -959,6 +988,8 @@ def render_dashboard(payload: dict[str, Any]) -> str:
     estimate = payload["performance_estimate"]
     last_7 = decision["windows"]["last_7_days"]
     last_28 = decision["windows"]["last_28_days"]
+    last_week = decision["windows"]["last_complete_week"]
+    prev_week = decision["windows"]["previous_complete_week"]
     weekly = payload["weekly_volume"][-8:]
     lines = [
         "# Athlete Status Dashboard",
@@ -971,9 +1002,10 @@ def render_dashboard(payload: dict[str, Any]) -> str:
         "## Carga Reciente",
         "",
         f"- Ultimos 7 dias: `{last_7['km']:.1f} km`, `{last_7['runs']}` carreras, `{last_7['quality_runs']}` exigentes, tirada larga `{last_7['long_run_km']:.1f} km`.",
+        f"- Ultima semana completa: `{last_week['km']:.1f} km` vs semana previa `{prev_week['km']:.1f} km` (`{pct(decision.get('weekly_spike_pct'))}`).",
         f"- Ultimos 28 dias: `{last_28['km']:.1f} km`, `{last_28['runs']}` carreras, media `{last_28['km'] / 4.0:.1f} km/sem`.",
         f"- Ritmo medio 7d: `{seconds_to_pace(last_7['avg_pace_s_per_km'])}`, FC media `{fmt_float(last_7['avg_hr'])}`.",
-            f"- Cambio vs 7 dias previos: `{pct(decision['volume_spike_pct'])}`.",
+            f"- Ventana movil 7d vs 7d previos: `{pct(decision['volume_spike_pct'])}`.",
             "",
             "## Predictor De Marca",
             "",

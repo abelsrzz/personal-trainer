@@ -1,0 +1,73 @@
+supplements:
+  - id: creatine_monohydrate
+    name: Creatina
+    category: creatine
+    format: powder
+    serving_size: 5
+    serving_unit: g
+    carbs_per_serving_g: 0
+    sodium_mg: 0
+    caffeine_mg: 0
+    protein_g: 0
+    enabled: true
+    notes: Dosis habitual diaria de mantenimiento.
+  - id: whey_protein
+    name: Proteina
+    category: protein
+    format: powder
+    serving_size: 30
+    serving_unit: g
+    carbs_per_serving_g: 3
+    sodium_mg: 60
+    caffeine_mg: 0
+    protein_g: 24
+    enabled: true
+    notes: Tomar sobre todo tras sesiones duras o cuando no haya comida cercana.
+  - id: maltodextrin
+    name: Maltodextrina
+    category: carbs
+    format: powder
+    serving_size: 30
+    serving_unit: g
+    carbs_per_serving_g: 28
+    sodium_mg: 0
+    caffeine_mg: 0
+    protein_g: 0
+    enabled: true
+    notes: Base principal para pre, durante y post en mezcla con fructosa.
+  - id: fructose
+    name: Fructosa
+    category: carbs
+    format: powder
+    serving_size: 15
+    serving_unit: g
+    carbs_per_serving_g: 15
+    sodium_mg: 0
+    caffeine_mg: 0
+    protein_g: 0
+    enabled: true
+    notes: Complemento de la maltodextrina para aumentar tolerancia de absorcion.
+  - id: evolytes
+    name: Electrolitos Evolytes
+    category: electrolytes
+    format: tabs
+    serving_size: 1
+    serving_unit: tab
+    carbs_per_serving_g: 0
+    sodium_mg: 500
+    caffeine_mg: 0
+    protein_g: 0
+    enabled: true
+    notes: Opcion principal para hidratacion con sodio sin cafeina.
+  - id: sub9_pro_salts
+    name: SUB9 PRO SALTS ELECTROLYTES
+    category: electrolytes_caffeine
+    format: capsule
+    serving_size: 1
+    serving_unit: cap
+    carbs_per_serving_g: 0
+    sodium_mg: 250
+    caffeine_mg: 40
+    protein_g: 0
+    enabled: true
+    notes: Opcion con cafeina para sesiones/carreras clave si se tolera bien.

@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% block title %}Qué hago ahora | RunPilot{% endblock %}
+{% block content %}
+<section class="hero compact">
+  <div>
+    <p class="eyebrow">Centro de decisiones</p>
+    <h2>{{ decision_center.current_decision.action_label }}</h2>
+    <p>{{ decision_center.current_decision.recommendation }}</p>
+  </div>
+  <div class="hero-meta">
+    <span>{{ decision_center.current_decision.status_label }}</span>
+    <span>{{ decision_center.dashboard.as_of or '-' }}</span>
+    <span>{{ decision_center.dashboard.active_context.active_block or '-' }}</span>
+  </div>
+</section>
+
+<section class="cards four">
+  <article class="card status-{{ decision_center.current_decision.status }}">
+    <h3>Decisión actual</h3>
+    <p class="metric">{{ decision_center.current_decision.status_label }}</p>
+    <p class="muted">{{ decision_center.current_decision.action_label }}</p>
+  </article>
+  <article class="card">
+    <h3>Plan de hoy</h3>
+    <p class="metric">{{ decision_center.today_plan.status_label }}</p>
+    <p class="muted">{{ decision_center.today_plan.planned_workout.name if decision_center.today_plan.planned_workout else 'Sin sesión cargada' }}</p>
+  </article>
+  <article class="card">
+    <h3>Readiness</h3>
+    <p class="metric">{{ decision_center.dashboard.readiness_card.label }}</p>
+    <p class="muted">{{ decision_center.dashboard.readiness_card.action }}</p>
+  </article>
+  <article class="card">
+    <h3>Protección</h3>
+    <p class="metric">{{ decision_center.dashboard.protection_mode.label }}</p>
+    <p class="muted">{{ decision_center.dashboard.protection_mode.allowed_progression }}</p>
+  </article>
+</section>
+
+<section class="split">
+  <article class="panel">
+    <div class="panel-head">
+      <div>
+        <p class="eyebrow">Por qué</p>
+        <h3>Razones ordenadas por impacto</h3>
+      </div>
+      <span class="badge">{{ decision_center.impact_reasons|length }} señales</span>
+    </div>
+    <div class="list compact-list">
+      {% for item in decision_center.impact_reasons %}
+      <div class="list-item static {{ 'status-yellow' if item.tone == 'warn' else '' }}">
+        <div>
+          <strong>{{ item.rank }}. Motivo</strong>
+          <p>{{ item.label }}</p>
+        </div>
+      </div>
+      {% else %}
+      <p class="muted">No hay razones estructuradas disponibles todavía.</p>
+      {% endfor %}
+    </div>
+  </article>
+  <article class="panel">
+    <div class="panel-head">
+      <div>
+        <p class="eyebrow">Cambios</p>
+        <h3>Qué cambiar esta semana</h3>
+      </div>
+    </div>
+    <div class="list compact-list">
+      {% for item in decision_center.changes_this_week %}
+      <div class="list-item static">
+        <div>
+          <p>{{ item }}</p>
+        </div>
+      </div>
+      {% else %}
+      <p class="muted">No hay cambios adicionales sugeridos.</p>
+      {% endfor %}
+    </div>
+  </article>
+</section>
+
+<section class="split">
+  <article class="panel">
+    <div class="panel-head">
+      <div>
+        <p class="eyebrow">Priorizar</p>
+        <h3>Sesiones a proteger o ejecutar</h3>
+      </div>
+    </div>
+    <div class="list compact-list">
+      {% for item in decision_center.prioritized_sessions %}
+      <div class="list-item static {{ item.session_color_class }}">
+        <div>
+          <strong><a href="/planned-workouts/{{ item.slug }}">{{ item.name }}</a></strong>
+          <p>{{ item.date }} · {{ item.session_kind_label }} · {{ item.estimated_duration }}</p>
+          <p class="muted">{{ item.description }}</p>
+        </div>
+        <span class="badge">Priorizar</span>
+      </div>
+      {% else %}
+      <p class="muted">No hay sesiones próximas para priorizar.</p>
+      {% endfor %}
+    </div>
+  </article>
+  <article class="panel">
+    <div class="panel-head">
+      <div>
+        <p class="eyebrow">Evitar</p>
+        <h3>Sesiones a no forzar ahora</h3>
+      </div>
+    </div>
+    <div class="list compact-list">
+      {% for item in decision_center.avoided_sessions %}
+      <div class="list-item static status-yellow {{ item.session_color_class }}">
+        <div>
+          <strong><a href="/planned-workouts/{{ item.slug }}">{{ item.name }}</a></strong>
+          <p>{{ item.date }} · {{ item.session_kind_label }} · {{ item.estimated_duration }}</p>
+          <p class="muted">{{ item.description }}</p>
+        </div>
+        <span class="badge warn">Evitar</span>
+      </div>
+      {% else %}
+      <p class="muted">No hay sesiones claramente desaconsejadas con el estado actual.</p>
+      {% endfor %}
+    </div>
+  </article>
+</section>
+
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Acciones directas</p>
+      <h3>Qué puedes hacer ahora mismo</h3>
+    </div>
+  </div>
+  <div class="action-grid">
+    {% for item in decision_center.direct_actions %}
+      {% if item.type == 'link' %}
+      <a class="cta-button {{ 'cta-warn' if item.tone == 'warn' else '' }}" href="{{ item.url }}">{{ item.label }}</a>
+      {% else %}
+      <form method="post" action="{{ item.url }}">
+        <input type="hidden" name="strategy" value="{{ item.strategy }}">
+        <input type="hidden" name="next_url" value="{{ item.next_url }}">
+        <button class="cta-button {{ 'cta-warn' if item.tone == 'warn' else '' }}" type="submit">{{ item.label }}</button>
+      </form>
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Guía de sesión</p>
+      <h3>Qué familias de trabajo convienen ahora</h3>
+    </div>
+  </div>
+  <div class="split">
+    <article class="panel">
+      <h3>Recomendadas</h3>
+      <div class="today-plan-tags">
+        {% for item in decision_center.guidance.primary_labels %}
+        <span class="mini-badge">{{ item }}</span>
+        {% else %}
+        <span class="mini-badge">Sin guía principal</span>
+        {% endfor %}
+      </div>
+    </article>
+    <article class="panel">
+      <h3>A evitar</h3>
+      <div class="today-plan-tags">
+        {% for item in decision_center.guidance.avoid_labels[:6] %}
+        <span class="mini-badge mini-badge-warn">{{ item }}</span>
+        {% else %}
+        <span class="mini-badge">Sin restricciones fuertes</span>
+        {% endfor %}
+      </div>
+    </article>
+  </div>
+</section>
+{% endblock %}

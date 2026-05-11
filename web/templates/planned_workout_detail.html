@@ -26,6 +26,30 @@
   {% endif %}
 </section>
 
+{% if workout.fueling and workout.fueling.entries %}
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Fueling</p>
+      <h3>Recomendación nutricional operativa</h3>
+    </div>
+    <a href="/fueling">Abrir vista completa</a>
+  </div>
+  <div class="list compact-list">
+    {% for entry in workout.fueling.entries %}
+    <div class="list-item static">
+      <div>
+        <strong>{{ entry.time_label }} · {{ entry.phase }}</strong>
+        <p>{{ entry.recommendation }}</p>
+        <p class="muted">{{ entry.quantity }} · {{ entry.products_label }}</p>
+        <p class="muted">{{ entry.reason }}</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
 <section class="panel">
   <div class="panel-head">
     <div>
@@ -64,6 +88,51 @@
       <button class="cta-button cta-subtle" type="submit">Limpiar estado</button>
     </form>
     {% endif %}
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Replanificacion</p>
+      <h3>Aplicar una alternativa real</h3>
+    </div>
+    {% if workout.replan and workout.replan.is_changed %}
+    <span class="badge {{ workout.replan.tone }}">{{ workout.replan.label }}</span>
+    {% endif %}
+  </div>
+  <p class="muted">Estas acciones cambian la sesion visible en la web y dejan trazabilidad de la decision tomada.</p>
+  {% if workout.replan and workout.replan.is_changed %}
+  <p><strong>{{ workout.replan.summary }}</strong></p>
+  <p class="muted"><strong>Causa:</strong> {{ workout.replan.cause }}</p>
+  {% if workout.replan.changed_at %}
+  <p class="muted"><strong>Aplicada:</strong> {{ workout.replan.changed_at }}</p>
+  {% endif %}
+  {% if workout.replan_state and workout.replan_state.original_date and workout.replan_state.original_date != workout.date %}
+  <p class="muted"><strong>Fecha original:</strong> {{ workout.replan_state.original_date }} · <strong>Nueva fecha:</strong> {{ workout.date }}</p>
+  {% endif %}
+  {% endif %}
+  <div class="action-grid">
+    <form method="post" action="/planned-workouts/{{ workout.slug }}/replan">
+      <input type="hidden" name="strategy" value="auto_today">
+      <input type="hidden" name="next_url" value="/planned-workouts/{{ workout.slug }}">
+      <button class="cta-button" type="submit">Alternativa automatica para hoy</button>
+    </form>
+    <form method="post" action="/planned-workouts/{{ workout.slug }}/replan">
+      <input type="hidden" name="strategy" value="move_next_day">
+      <input type="hidden" name="next_url" value="/planned-workouts/{{ workout.slug }}">
+      <button class="cta-button" type="submit">Mover sesion a otro dia</button>
+    </form>
+    <form method="post" action="/planned-workouts/{{ workout.slug }}/replan">
+      <input type="hidden" name="strategy" value="reduce_keep_goal">
+      <input type="hidden" name="next_url" value="/planned-workouts/{{ workout.slug }}">
+      <button class="cta-button" type="submit">Bajar carga y mantener objetivo</button>
+    </form>
+    <form method="post" action="/planned-workouts/{{ workout.slug }}/replan">
+      <input type="hidden" name="strategy" value="skip_recompose_week">
+      <input type="hidden" name="next_url" value="/planned-workouts/{{ workout.slug }}">
+      <button class="cta-button cta-warn" type="submit">No entreno hoy, recompon la semana</button>
+    </form>
   </div>
 </section>
 

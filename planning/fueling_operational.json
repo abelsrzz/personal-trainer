@@ -1,0 +1,926 @@
+{
+  "generated_at": "2026-05-11T21:21:37.972844+00:00",
+  "athlete": {
+    "weight_kg": 64.2
+  },
+  "supplements": [
+    {
+      "id": "creatine_monohydrate",
+      "name": "Creatina",
+      "category": "creatine",
+      "format": "powder",
+      "serving_size": 5,
+      "serving_unit": "g",
+      "carbs_per_serving_g": 0,
+      "sodium_mg": 0,
+      "caffeine_mg": 0,
+      "protein_g": 0,
+      "enabled": true,
+      "notes": "Dosis habitual diaria de mantenimiento."
+    },
+    {
+      "id": "whey_protein",
+      "name": "Proteina",
+      "category": "protein",
+      "format": "powder",
+      "serving_size": 30,
+      "serving_unit": "g",
+      "carbs_per_serving_g": 3,
+      "sodium_mg": 60,
+      "caffeine_mg": 0,
+      "protein_g": 24,
+      "enabled": true,
+      "notes": "Tomar sobre todo tras sesiones duras o cuando no haya comida cercana."
+    },
+    {
+      "id": "maltodextrin",
+      "name": "Maltodextrina",
+      "category": "carbs",
+      "format": "powder",
+      "serving_size": 30,
+      "serving_unit": "g",
+      "carbs_per_serving_g": 28,
+      "sodium_mg": 0,
+      "caffeine_mg": 0,
+      "protein_g": 0,
+      "enabled": true,
+      "notes": "Base principal para pre, durante y post en mezcla con fructosa."
+    },
+    {
+      "id": "fructose",
+      "name": "Fructosa",
+      "category": "carbs",
+      "format": "powder",
+      "serving_size": 15,
+      "serving_unit": "g",
+      "carbs_per_serving_g": 15,
+      "sodium_mg": 0,
+      "caffeine_mg": 0,
+      "protein_g": 0,
+      "enabled": true,
+      "notes": "Complemento de la maltodextrina para aumentar tolerancia de absorcion."
+    },
+    {
+      "id": "evolytes",
+      "name": "Electrolitos Evolytes",
+      "category": "electrolytes",
+      "format": "tabs",
+      "serving_size": 1,
+      "serving_unit": "tab",
+      "carbs_per_serving_g": 0,
+      "sodium_mg": 500,
+      "caffeine_mg": 0,
+      "protein_g": 0,
+      "enabled": true,
+      "notes": "Opcion principal para hidratacion con sodio sin cafeina."
+    },
+    {
+      "id": "sub9_pro_salts",
+      "name": "SUB9 PRO SALTS ELECTROLYTES",
+      "category": "electrolytes_caffeine",
+      "format": "capsule",
+      "serving_size": 1,
+      "serving_unit": "cap",
+      "carbs_per_serving_g": 0,
+      "sodium_mg": 250,
+      "caffeine_mg": 40,
+      "protein_g": 0,
+      "enabled": true,
+      "notes": "Opcion con cafeina para sesiones/carreras clave si se tolera bien."
+    }
+  ],
+  "races": [
+    {
+      "id": "11_das_vias_2026",
+      "name": "11 Das Vias",
+      "date": "2026-05-09",
+      "distance": "11km",
+      "priority": "C",
+      "goal": "-",
+      "plan": {
+        "entries": [
+          {
+            "context_type": "race",
+            "context_id": "11_das_vias_2026",
+            "date": "2026-05-07",
+            "time_label": "Durante el dia",
+            "phase": "carb_load",
+            "recommendation": "Apuntar a 321 g de hidratos en el dia, priorizando comidas faciles de digerir.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa",
+            "quantity": "321 g CHO/dia",
+            "reason": "Asegura glucogeno suficiente para competir sin llegar vacio al dia de carrera."
+          },
+          {
+            "context_type": "race",
+            "context_id": "11_das_vias_2026",
+            "date": "2026-05-08",
+            "time_label": "Durante el dia",
+            "phase": "carb_load",
+            "recommendation": "Apuntar a 385 g de hidratos en el dia, priorizando comidas faciles de digerir.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa",
+            "quantity": "385 g CHO/dia",
+            "reason": "Asegura glucogeno suficiente para competir sin llegar vacio al dia de carrera."
+          },
+          {
+            "context_type": "race",
+            "context_id": "11_das_vias_2026",
+            "date": "2026-05-08",
+            "time_label": "Distribuido en el dia",
+            "phase": "hydration",
+            "recommendation": "Beber entre 2.2 y 2.6 L repartidos y a\u00f1adir sodio si hace calor.",
+            "products": [
+              {
+                "id": "evolytes",
+                "name": "Electrolitos Evolytes"
+              }
+            ],
+            "products_label": "Electrolitos Evolytes",
+            "quantity": "2.2-2.6 L",
+            "reason": "Llegar bien hidratado mejora tolerancia al ritmo y reduce el coste final."
+          },
+          {
+            "context_type": "race",
+            "context_id": "11_das_vias_2026",
+            "date": "2026-05-09",
+            "time_label": "T-3h",
+            "phase": "pre",
+            "recommendation": "Comida previa con 96 g de hidratos y muy baja en fibra/grasa.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa",
+            "quantity": "96 g CHO",
+            "reason": "Llegar con energia disponible sin pesadez gastrointestinal."
+          },
+          {
+            "context_type": "race",
+            "context_id": "11_das_vias_2026",
+            "date": "2026-05-09",
+            "time_label": "T-45m",
+            "phase": "pre",
+            "recommendation": "Top-up peque\u00f1o si llegas con hambre o la salida se retrasa.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa",
+            "quantity": "20-25 g CHO",
+            "reason": "Ayuda a no arrancar con sensacion de vacio sin cargar de mas el estomago."
+          },
+          {
+            "context_type": "race",
+            "context_id": "11_das_vias_2026",
+            "date": "2026-05-09",
+            "time_label": "T-30m",
+            "phase": "pre",
+            "recommendation": "Cafeina opcional solo si ya esta probada en entrenos o carreras.",
+            "products": [
+              {
+                "id": "sub9_pro_salts",
+                "name": "SUB9 PRO SALTS ELECTROLYTES"
+              }
+            ],
+            "products_label": "SUB9 PRO SALTS ELECTROLYTES",
+            "quantity": "40 mg cafeina",
+            "reason": "Puede mejorar activacion y foco, pero no conviene estrenarla el dia de carrera."
+          },
+          {
+            "context_type": "race",
+            "context_id": "11_das_vias_2026",
+            "date": "2026-05-09",
+            "time_label": "Durante",
+            "phase": "during",
+            "recommendation": "Tomar hidratos y sodio de forma fraccionada si la carrera supera ~60 min o si hace calor.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              },
+              {
+                "id": "evolytes",
+                "name": "Electrolitos Evolytes"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa + Electrolitos Evolytes",
+            "quantity": "30-45 g CHO/h + sodio",
+            "reason": "Mantener disponibilidad de energia y limitar la deriva de rendimiento al final."
+          },
+          {
+            "context_type": "race",
+            "context_id": "11_das_vias_2026",
+            "date": "2026-05-09",
+            "time_label": "T+30m",
+            "phase": "post",
+            "recommendation": "Recuperacion inmediata con proteina, creatina y algo de hidratos si no comes pronto.",
+            "products": [
+              {
+                "id": "whey_protein",
+                "name": "Proteina"
+              },
+              {
+                "id": "creatine_monohydrate",
+                "name": "Creatina"
+              },
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              }
+            ],
+            "products_label": "Proteina + Creatina + Maltodextrina",
+            "quantity": "20-30 g proteina + 3-5 g creatina + 40-60 g CHO",
+            "reason": "Acelera recuperacion y reduce el impacto del esfuerzo sobre la siguiente semana."
+          }
+        ],
+        "predicted_time": "49:06",
+        "predicted_pace": "4:28/km"
+      }
+    },
+    {
+      "id": "xxix_carreira_popular_concello_de_ordes_2026",
+      "name": "XXIX CARREIRA POPULAR CONCELLO DE ORDES",
+      "date": "2026-05-24",
+      "distance": "8.5k",
+      "priority": "B",
+      "goal": "4:10-4:20/km",
+      "plan": {
+        "entries": [
+          {
+            "context_type": "race",
+            "context_id": "xxix_carreira_popular_concello_de_ordes_2026",
+            "date": "2026-05-22",
+            "time_label": "Durante el dia",
+            "phase": "carb_load",
+            "recommendation": "Apuntar a 321 g de hidratos en el dia, priorizando comidas faciles de digerir.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa",
+            "quantity": "321 g CHO/dia",
+            "reason": "Asegura glucogeno suficiente para competir sin llegar vacio al dia de carrera."
+          },
+          {
+            "context_type": "race",
+            "context_id": "xxix_carreira_popular_concello_de_ordes_2026",
+            "date": "2026-05-23",
+            "time_label": "Durante el dia",
+            "phase": "carb_load",
+            "recommendation": "Apuntar a 385 g de hidratos en el dia, priorizando comidas faciles de digerir.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa",
+            "quantity": "385 g CHO/dia",
+            "reason": "Asegura glucogeno suficiente para competir sin llegar vacio al dia de carrera."
+          },
+          {
+            "context_type": "race",
+            "context_id": "xxix_carreira_popular_concello_de_ordes_2026",
+            "date": "2026-05-23",
+            "time_label": "Distribuido en el dia",
+            "phase": "hydration",
+            "recommendation": "Beber entre 2.2 y 2.6 L repartidos y a\u00f1adir sodio si hace calor.",
+            "products": [
+              {
+                "id": "evolytes",
+                "name": "Electrolitos Evolytes"
+              }
+            ],
+            "products_label": "Electrolitos Evolytes",
+            "quantity": "2.2-2.6 L",
+            "reason": "Llegar bien hidratado mejora tolerancia al ritmo y reduce el coste final."
+          },
+          {
+            "context_type": "race",
+            "context_id": "xxix_carreira_popular_concello_de_ordes_2026",
+            "date": "2026-05-24",
+            "time_label": "T-3h",
+            "phase": "pre",
+            "recommendation": "Comida previa con 77 g de hidratos y muy baja en fibra/grasa.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa",
+            "quantity": "77 g CHO",
+            "reason": "Llegar con energia disponible sin pesadez gastrointestinal."
+          },
+          {
+            "context_type": "race",
+            "context_id": "xxix_carreira_popular_concello_de_ordes_2026",
+            "date": "2026-05-24",
+            "time_label": "T-45m",
+            "phase": "pre",
+            "recommendation": "Top-up peque\u00f1o si llegas con hambre o la salida se retrasa.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa",
+            "quantity": "20-25 g CHO",
+            "reason": "Ayuda a no arrancar con sensacion de vacio sin cargar de mas el estomago."
+          },
+          {
+            "context_type": "race",
+            "context_id": "xxix_carreira_popular_concello_de_ordes_2026",
+            "date": "2026-05-24",
+            "time_label": "T-30m",
+            "phase": "pre",
+            "recommendation": "Cafeina opcional solo si ya esta probada en entrenos o carreras.",
+            "products": [
+              {
+                "id": "sub9_pro_salts",
+                "name": "SUB9 PRO SALTS ELECTROLYTES"
+              }
+            ],
+            "products_label": "SUB9 PRO SALTS ELECTROLYTES",
+            "quantity": "40 mg cafeina",
+            "reason": "Puede mejorar activacion y foco, pero no conviene estrenarla el dia de carrera."
+          },
+          {
+            "context_type": "race",
+            "context_id": "xxix_carreira_popular_concello_de_ordes_2026",
+            "date": "2026-05-24",
+            "time_label": "Durante",
+            "phase": "during",
+            "recommendation": "Para esta distancia basta con peque\u00f1os sorbos de agua/electrolitos si hace calor o hay espera larga.",
+            "products": [
+              {
+                "id": "evolytes",
+                "name": "Electrolitos Evolytes"
+              }
+            ],
+            "products_label": "Electrolitos Evolytes",
+            "quantity": "A demanda",
+            "reason": "La prioridad es llegar bien preparado al inicio; durante no hace falta meter mucho si la prueba es corta."
+          },
+          {
+            "context_type": "race",
+            "context_id": "xxix_carreira_popular_concello_de_ordes_2026",
+            "date": "2026-05-24",
+            "time_label": "T+30m",
+            "phase": "post",
+            "recommendation": "Recuperacion inmediata con proteina, creatina y algo de hidratos si no comes pronto.",
+            "products": [
+              {
+                "id": "whey_protein",
+                "name": "Proteina"
+              },
+              {
+                "id": "creatine_monohydrate",
+                "name": "Creatina"
+              },
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              }
+            ],
+            "products_label": "Proteina + Creatina + Maltodextrina",
+            "quantity": "20-30 g proteina + 3-5 g creatina + 40-60 g CHO",
+            "reason": "Acelera recuperacion y reduce el impacto del esfuerzo sobre la siguiente semana."
+          }
+        ],
+        "predicted_time": "37:22",
+        "predicted_pace": "4:24/km"
+      }
+    },
+    {
+      "id": "vi_carreira_5k_el_canario_2026",
+      "name": "VI CARREIRA 5K EL CANARIO",
+      "date": "2026-06-28",
+      "distance": "5k",
+      "priority": "A",
+      "goal": "sub_20:00",
+      "plan": {
+        "entries": [
+          {
+            "context_type": "race",
+            "context_id": "vi_carreira_5k_el_canario_2026",
+            "date": "2026-06-27",
+            "time_label": "Durante el dia",
+            "phase": "carb_load",
+            "recommendation": "Apuntar a 321 g de hidratos en el dia, priorizando comidas faciles de digerir.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa",
+            "quantity": "321 g CHO/dia",
+            "reason": "Asegura glucogeno suficiente para competir sin llegar vacio al dia de carrera."
+          },
+          {
+            "context_type": "race",
+            "context_id": "vi_carreira_5k_el_canario_2026",
+            "date": "2026-06-27",
+            "time_label": "Distribuido en el dia",
+            "phase": "hydration",
+            "recommendation": "Beber entre 2.2 y 2.6 L repartidos y a\u00f1adir sodio si hace calor.",
+            "products": [
+              {
+                "id": "evolytes",
+                "name": "Electrolitos Evolytes"
+              }
+            ],
+            "products_label": "Electrolitos Evolytes",
+            "quantity": "2.2-2.6 L",
+            "reason": "Llegar bien hidratado mejora tolerancia al ritmo y reduce el coste final."
+          },
+          {
+            "context_type": "race",
+            "context_id": "vi_carreira_5k_el_canario_2026",
+            "date": "2026-06-28",
+            "time_label": "T-3h",
+            "phase": "pre",
+            "recommendation": "Comida previa con 77 g de hidratos y muy baja en fibra/grasa.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa",
+            "quantity": "77 g CHO",
+            "reason": "Llegar con energia disponible sin pesadez gastrointestinal."
+          },
+          {
+            "context_type": "race",
+            "context_id": "vi_carreira_5k_el_canario_2026",
+            "date": "2026-06-28",
+            "time_label": "T-45m",
+            "phase": "pre",
+            "recommendation": "Top-up peque\u00f1o si llegas con hambre o la salida se retrasa.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa",
+            "quantity": "20-25 g CHO",
+            "reason": "Ayuda a no arrancar con sensacion de vacio sin cargar de mas el estomago."
+          },
+          {
+            "context_type": "race",
+            "context_id": "vi_carreira_5k_el_canario_2026",
+            "date": "2026-06-28",
+            "time_label": "T-30m",
+            "phase": "pre",
+            "recommendation": "Cafeina opcional solo si ya esta probada en entrenos o carreras.",
+            "products": [
+              {
+                "id": "sub9_pro_salts",
+                "name": "SUB9 PRO SALTS ELECTROLYTES"
+              }
+            ],
+            "products_label": "SUB9 PRO SALTS ELECTROLYTES",
+            "quantity": "40 mg cafeina",
+            "reason": "Puede mejorar activacion y foco, pero no conviene estrenarla el dia de carrera."
+          },
+          {
+            "context_type": "race",
+            "context_id": "vi_carreira_5k_el_canario_2026",
+            "date": "2026-06-28",
+            "time_label": "Durante",
+            "phase": "during",
+            "recommendation": "Para esta distancia basta con peque\u00f1os sorbos de agua/electrolitos si hace calor o hay espera larga.",
+            "products": [
+              {
+                "id": "evolytes",
+                "name": "Electrolitos Evolytes"
+              }
+            ],
+            "products_label": "Electrolitos Evolytes",
+            "quantity": "A demanda",
+            "reason": "La prioridad es llegar bien preparado al inicio; durante no hace falta meter mucho si la prueba es corta."
+          },
+          {
+            "context_type": "race",
+            "context_id": "vi_carreira_5k_el_canario_2026",
+            "date": "2026-06-28",
+            "time_label": "T+30m",
+            "phase": "post",
+            "recommendation": "Recuperacion inmediata con proteina, creatina y algo de hidratos si no comes pronto.",
+            "products": [
+              {
+                "id": "whey_protein",
+                "name": "Proteina"
+              },
+              {
+                "id": "creatine_monohydrate",
+                "name": "Creatina"
+              },
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              }
+            ],
+            "products_label": "Proteina + Creatina + Maltodextrina",
+            "quantity": "20-30 g proteina + 3-5 g creatina + 40-60 g CHO",
+            "reason": "Acelera recuperacion y reduce el impacto del esfuerzo sobre la siguiente semana."
+          }
+        ],
+        "predicted_time": "21:17",
+        "predicted_pace": "4:15/km"
+      }
+    },
+    {
+      "id": "xxiv_padron_10k_2027",
+      "name": "XXIV Padron 10k",
+      "date": "2027-02-06",
+      "distance": "10k",
+      "priority": "S",
+      "goal": 2100,
+      "plan": {
+        "entries": [
+          {
+            "context_type": "race",
+            "context_id": "xxiv_padron_10k_2027",
+            "date": "2027-02-04",
+            "time_label": "Durante el dia",
+            "phase": "carb_load",
+            "recommendation": "Apuntar a 321 g de hidratos en el dia, priorizando comidas faciles de digerir.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa",
+            "quantity": "321 g CHO/dia",
+            "reason": "Asegura glucogeno suficiente para competir sin llegar vacio al dia de carrera."
+          },
+          {
+            "context_type": "race",
+            "context_id": "xxiv_padron_10k_2027",
+            "date": "2027-02-05",
+            "time_label": "Durante el dia",
+            "phase": "carb_load",
+            "recommendation": "Apuntar a 385 g de hidratos en el dia, priorizando comidas faciles de digerir.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa",
+            "quantity": "385 g CHO/dia",
+            "reason": "Asegura glucogeno suficiente para competir sin llegar vacio al dia de carrera."
+          },
+          {
+            "context_type": "race",
+            "context_id": "xxiv_padron_10k_2027",
+            "date": "2027-02-05",
+            "time_label": "Distribuido en el dia",
+            "phase": "hydration",
+            "recommendation": "Beber entre 2.2 y 2.6 L repartidos y a\u00f1adir sodio si hace calor.",
+            "products": [
+              {
+                "id": "evolytes",
+                "name": "Electrolitos Evolytes"
+              }
+            ],
+            "products_label": "Electrolitos Evolytes",
+            "quantity": "2.2-2.6 L",
+            "reason": "Llegar bien hidratado mejora tolerancia al ritmo y reduce el coste final."
+          },
+          {
+            "context_type": "race",
+            "context_id": "xxiv_padron_10k_2027",
+            "date": "2027-02-06",
+            "time_label": "T-3h",
+            "phase": "pre",
+            "recommendation": "Comida previa con 77 g de hidratos y muy baja en fibra/grasa.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa",
+            "quantity": "77 g CHO",
+            "reason": "Llegar con energia disponible sin pesadez gastrointestinal."
+          },
+          {
+            "context_type": "race",
+            "context_id": "xxiv_padron_10k_2027",
+            "date": "2027-02-06",
+            "time_label": "T-45m",
+            "phase": "pre",
+            "recommendation": "Top-up peque\u00f1o si llegas con hambre o la salida se retrasa.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa",
+            "quantity": "20-25 g CHO",
+            "reason": "Ayuda a no arrancar con sensacion de vacio sin cargar de mas el estomago."
+          },
+          {
+            "context_type": "race",
+            "context_id": "xxiv_padron_10k_2027",
+            "date": "2027-02-06",
+            "time_label": "T-30m",
+            "phase": "pre",
+            "recommendation": "Cafeina opcional solo si ya esta probada en entrenos o carreras.",
+            "products": [
+              {
+                "id": "sub9_pro_salts",
+                "name": "SUB9 PRO SALTS ELECTROLYTES"
+              }
+            ],
+            "products_label": "SUB9 PRO SALTS ELECTROLYTES",
+            "quantity": "40 mg cafeina",
+            "reason": "Puede mejorar activacion y foco, pero no conviene estrenarla el dia de carrera."
+          },
+          {
+            "context_type": "race",
+            "context_id": "xxiv_padron_10k_2027",
+            "date": "2027-02-06",
+            "time_label": "Durante",
+            "phase": "during",
+            "recommendation": "Tomar hidratos y sodio de forma fraccionada si la carrera supera ~60 min o si hace calor.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              },
+              {
+                "id": "evolytes",
+                "name": "Electrolitos Evolytes"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa + Electrolitos Evolytes",
+            "quantity": "30-45 g CHO/h + sodio",
+            "reason": "Mantener disponibilidad de energia y limitar la deriva de rendimiento al final."
+          },
+          {
+            "context_type": "race",
+            "context_id": "xxiv_padron_10k_2027",
+            "date": "2027-02-06",
+            "time_label": "T+30m",
+            "phase": "post",
+            "recommendation": "Recuperacion inmediata con proteina, creatina y algo de hidratos si no comes pronto.",
+            "products": [
+              {
+                "id": "whey_protein",
+                "name": "Proteina"
+              },
+              {
+                "id": "creatine_monohydrate",
+                "name": "Creatina"
+              },
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              }
+            ],
+            "products_label": "Proteina + Creatina + Maltodextrina",
+            "quantity": "20-30 g proteina + 3-5 g creatina + 40-60 g CHO",
+            "reason": "Acelera recuperacion y reduce el impacto del esfuerzo sobre la siguiente semana."
+          }
+        ],
+        "predicted_time": "44:23",
+        "predicted_pace": "4:26/km"
+      }
+    }
+  ],
+  "workouts": [
+    {
+      "slug": "2026-05-15_especifica_controlada_ordes",
+      "name": "Especifica controlada Ordes",
+      "date": "2026-05-15",
+      "plan": {
+        "entries": [
+          {
+            "context_type": "workout",
+            "context_id": "2026-05-15_especifica_controlada_ordes",
+            "date": "2026-05-15",
+            "time_label": "T-90m",
+            "phase": "pre",
+            "recommendation": "Llegar con hidratos disponibles y sin pesadez antes de la sesion exigente.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa",
+            "quantity": "30-60 g CHO",
+            "reason": "Mejora la calidad del entrenamiento y evita recortarlo por falta de energia."
+          },
+          {
+            "context_type": "workout",
+            "context_id": "2026-05-15_especifica_controlada_ordes",
+            "date": "2026-05-15",
+            "time_label": "T+30m",
+            "phase": "post",
+            "recommendation": "Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura.",
+            "products": [
+              {
+                "id": "whey_protein",
+                "name": "Proteina"
+              },
+              {
+                "id": "creatine_monohydrate",
+                "name": "Creatina"
+              },
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              }
+            ],
+            "products_label": "Proteina + Creatina + Maltodextrina",
+            "quantity": "20-30 g proteina + 3-5 g creatina + 30-60 g CHO",
+            "reason": "Acelera recuperacion y ayuda a llegar mejor al siguiente dia util."
+          }
+        ],
+        "is_recommended": true,
+        "intensity": "hard"
+      }
+    },
+    {
+      "slug": "2026-05-17_rodaje_9km_continuidad",
+      "name": "Rodaje 9 km continuidad",
+      "date": "2026-05-17",
+      "plan": {
+        "entries": [
+          {
+            "context_type": "workout",
+            "context_id": "2026-05-17_rodaje_9km_continuidad",
+            "date": "2026-05-17",
+            "time_label": "T-90m",
+            "phase": "pre",
+            "recommendation": "Llegar con hidratos disponibles y sin pesadez antes de la sesion exigente.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa",
+            "quantity": "30-60 g CHO",
+            "reason": "Mejora la calidad del entrenamiento y evita recortarlo por falta de energia."
+          },
+          {
+            "context_type": "workout",
+            "context_id": "2026-05-17_rodaje_9km_continuidad",
+            "date": "2026-05-17",
+            "time_label": "Durante",
+            "phase": "during",
+            "recommendation": "Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              },
+              {
+                "id": "evolytes",
+                "name": "Electrolitos Evolytes"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa + Electrolitos Evolytes",
+            "quantity": "30-45 g CHO/h + sodio",
+            "reason": "Reduce la deriva final y mejora la tolerancia al bloque completo."
+          },
+          {
+            "context_type": "workout",
+            "context_id": "2026-05-17_rodaje_9km_continuidad",
+            "date": "2026-05-17",
+            "time_label": "T+30m",
+            "phase": "post",
+            "recommendation": "Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura.",
+            "products": [
+              {
+                "id": "whey_protein",
+                "name": "Proteina"
+              },
+              {
+                "id": "creatine_monohydrate",
+                "name": "Creatina"
+              },
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              }
+            ],
+            "products_label": "Proteina + Creatina + Maltodextrina",
+            "quantity": "20-30 g proteina + 3-5 g creatina + 30-60 g CHO",
+            "reason": "Acelera recuperacion y ayuda a llegar mejor al siguiente dia util."
+          }
+        ],
+        "is_recommended": true,
+        "intensity": "hard"
+      }
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-11T19:02:20.223028+00:00",
+  "generated_at": "2026-05-11T20:33:46.344030+00:00",
   "as_of": "2026-05-11",
   "lookback_days": 28,
   "activity_count_total": 61,
@@ -10,7 +10,7 @@
     "action": "reduce_or_replace_quality",
     "recommendation": "Reducir carga inmediata: cambiar la proxima calidad por rodaje muy facil o descanso, y mantener FC capada.",
     "reasons": [
-      "Subida de volumen 7d de 225%.",
+      "Subida de volumen semanal de 79% (14.7 -> 26.2 km entre semanas completas).",
       "El bloque activo prioriza reconstruccion, consistencia y tolerancia tisular antes de ritmos agresivos.",
       "El limitador principal declarado sigue siendo la durabilidad aerobica; la construccion debe respetarlo.",
       "La automatizacion prioriza como backbone de calidad: cruise_intervals, tempo_broken, tempo_continuous."
@@ -48,9 +48,32 @@
         "avg_hr": 156.64563750443745,
         "quality_runs": 5,
         "long_run_km": 10.8192099609375
+      },
+      "last_complete_week": {
+        "start": "2026-05-04",
+        "end": "2026-05-10",
+        "runs": 4,
+        "km": 26.18118994140625,
+        "duration_s": 9541.346801757812,
+        "avg_pace_s_per_km": 364.43518507414814,
+        "avg_hr": 161.24484246088028,
+        "quality_runs": 2,
+        "long_run_km": 10.8192099609375
+      },
+      "previous_complete_week": {
+        "start": "2026-04-27",
+        "end": "2026-05-03",
+        "runs": 2,
+        "km": 14.65116015625,
+        "duration_s": 5676.594970703125,
+        "avg_pace_s_per_km": 387.4502025890121,
+        "avg_hr": 157.39745394382334,
+        "quality_runs": 1,
+        "long_run_km": 8.045740234375
       }
     },
     "volume_spike_pct": 225.4043652757828,
+    "weekly_spike_pct": 78.69704284297025,
     "latest_shin_entry": {
       "date": "2026-05-08",
       "pain_during": 1,
@@ -62,6 +85,7 @@
       "notes": "Reevaluacion manual. Dolor tibial actual 1/10 y cansancio subjetivo 0/10; sin empeoramiento relevante reportado."
     },
     "latest_high_risk_review": null,
+    "latest_feedback": null,
     "daily_signals": {
       "snapshot": {
         "hrv": 137864769.0,
@@ -148,13 +172,14 @@
       "best_5k_s_90d": 1335.8609619140625,
       "best_10k_s_180d": 2663.23095703125,
       "high_risk_reviews_28d": 0,
+      "subjective_alerts_28d": 0,
       "latest_shin_pain": 1
     },
     "gates": [
       {
         "name": "Base estable",
         "passed": false,
-        "evidence": "Media 4 semanas 20.9 km/sem, tirada larga 10.8 km, revisiones rojas 0, periostio 1."
+        "evidence": "Media 4 semanas 20.9 km/sem, tirada larga 10.8 km, alertas 0, periostio 1."
       },
       {
         "name": "Umbral competitivo",
@@ -164,7 +189,7 @@
       {
         "name": "Precondicion 35:00",
         "passed": false,
-        "evidence": "Media 20.9 km/sem, tirada 10.8 km, 5k 22:16, riesgo 0."
+        "evidence": "Media 20.9 km/sem, tirada 10.8 km, 5k 22:16, alertas 0."
       },
       {
         "name": "Seleccion 35:00",
@@ -261,6 +286,10 @@
     ]
   },
   "running_tolerance": {},
+  "feedback_summary": {
+    "available_count": 0,
+    "latest_date": null
+  },
   "active_context": {
     "cycle_id": "2026-05-25_padron_10k",
     "active_block": "Block 1: Reset, consistency and tissue tolerance",

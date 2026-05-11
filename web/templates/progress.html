@@ -24,6 +24,83 @@
   {% endfor %}
 </section>
 
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Lectura de forma</p>
+      <h3>¿Vas mejor, igual o peor que hace 4 semanas?</h3>
+    </div>
+    <span class="badge {{ 'ok' if progress.insights.comparison_4w.state == 'mejor' else 'warn' if progress.insights.comparison_4w.state == 'peor' else '' }}">{{ progress.insights.comparison_4w.state|capitalize }}</span>
+  </div>
+  <p>{{ progress.insights.comparison_4w.summary }}</p>
+</section>
+
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Tendencias</p>
+      <h3>Evolución de ritmo, FC y RPE</h3>
+    </div>
+  </div>
+  <div class="cards three">
+    {% for item in progress.insights.trends %}
+    <article class="card">
+      <h3>{{ item.label }}</h3>
+      <p class="metric">{{ item.current }}</p>
+      <p class="muted">Antes: {{ item.previous }} · cambio {{ item.delta }}</p>
+      <p class="muted">{{ item.detail }}</p>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="split">
+  <article class="panel">
+    <div class="panel-head">
+      <div>
+        <p class="eyebrow">Comparables</p>
+        <h3>Mejores sesiones comparables</h3>
+      </div>
+    </div>
+    <div class="list compact-list">
+      {% for item in progress.insights.comparable_sessions %}
+      <div class="list-item static status-green">
+        <div>
+          <strong>{{ item.label }} · {{ item.date }}</strong>
+          <p>{{ item.name }}</p>
+          <p class="muted">{{ item.distance }} · {{ item.pace }} · FC {{ item.avg_hr }}</p>
+        </div>
+        {% if item.url %}
+        <a class="link-pill" href="{{ item.url }}" target="_blank" rel="noreferrer">Garmin</a>
+        {% endif %}
+      </div>
+      {% else %}
+      <p class="muted">Todavía no hay suficientes actividades para detectar sesiones comparables útiles.</p>
+      {% endfor %}
+    </div>
+  </article>
+  <article class="panel">
+    <div class="panel-head">
+      <div>
+        <p class="eyebrow">Bloques</p>
+        <h3>Estimación de forma por bloques</h3>
+      </div>
+    </div>
+    <div class="list compact-list">
+      {% for item in progress.insights.form_blocks %}
+      <div class="list-item static">
+        <div>
+          <strong>{{ item.label }}</strong>
+          <p>{{ item.status }}</p>
+          <p class="muted">{{ item.detail }}</p>
+        </div>
+        <span class="badge">{{ item.metric }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </article>
+</section>
+
 <section class="split">
   <article class="panel">
     <div class="panel-head">

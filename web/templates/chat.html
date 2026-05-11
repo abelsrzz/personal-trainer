@@ -202,13 +202,23 @@
     return data;
   }
 
+  async function refreshState() {
+    const response = await fetch("/chat/state");
+    const data = await response.json();
+    if (data && data.state) {
+      state.data = data.state;
+      renderRuntime();
+    }
+    return data;
+  }
+
   document.getElementById("chat-form").addEventListener("submit", async (event) => {
     event.preventDefault();
     const message = messageEl.value.trim();
     if (!message) return;
     setBusy(true, "OpenCode esta procesando la peticion.");
     try {
-      const data = await postJson("/chat/messages", { message });
+      const data = await postJson("/chat", { message });
       messageEl.value = "";
       statusTextEl.textContent = data.message || (data.needs_confirmation ? "Confirma la accion sensible para continuar." : "Respuesta recibida.");
     } catch (error) {
@@ -224,7 +234,7 @@
     if (!pending || !pending.id) return;
     setBusy(true, "Confirmando accion sensible.");
     try {
-      await postJson("/chat/messages", { confirm: true, confirmation_id: pending.id });
+      await postJson("/chat/confirm", { confirmation_id: pending.id });
       statusTextEl.textContent = "Accion confirmada y enviada a OpenCode.";
     } catch (error) {
       statusTextEl.textContent = error.message;
@@ -237,7 +247,7 @@
     event.preventDefault();
     setBusy(true, "Cancelando confirmacion.");
     try {
-      await postJson("/chat/messages", { cancel_confirmation: true });
+      await postJson("/chat/cancel", {});
       statusTextEl.textContent = "Confirmacion cancelada.";
     } catch (error) {
       statusTextEl.textContent = error.message;
@@ -275,7 +285,7 @@
     event.preventDefault();
     setBusy(true, "Reiniciando sesion.");
     try {
-      await postJson("/chat/session/reset", {});
+      await postJson("/chat/reset", {});
       statusTextEl.textContent = "Sesion reiniciada.";
     } catch (error) {
       statusTextEl.textContent = error.message;
@@ -285,5 +295,6 @@
   });
 
   renderRuntime();
+  refreshState().catch(() => {});
 </script>
 {% endblock %}

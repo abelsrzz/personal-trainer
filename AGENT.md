@@ -99,6 +99,10 @@ The system must act as an intelligent coach, planner and reviewer.
 - 35:00 gates: `planning/goal_gates.yaml`
 - 35:00 gates explainer: `planning/goal_gates.md`
 - Shin tracker: `athlete/shin_tracker.yaml`
+- Supplements catalog: `athlete/supplements.yaml`
+- Fueling plan JSON: `planning/fueling_operational.json`
+- Fueling plan MD: `planning/fueling_operational.md`
+- Fueling engine: `scripts/system/fueling_engine.py`
 - Coaching playbook: `planning/coaching_playbook.md`
 - Session selection matrix: `planning/session_selection_matrix.yaml`
 - Workout evaluation rules: `planning/workout_evaluation_rules.md`
@@ -148,6 +152,7 @@ python scripts/garmin/coach_engine.py --as-of YYYY-MM-DD --days 28
 - Read `athlete/status_dashboard.md` and `planning/coach_decision.md` before modifying the active week.
 - Read `planning/coaching_playbook.md`, `planning/session_selection_matrix.yaml`, `planning/workout_evaluation_rules.md` and `athlete/response_profile.yaml` as default operational context before planning, replanning or creating workouts.
 - Read `planning/context_automation_policy.md` to determine all mandatory supporting context files for the current task.
+- Read `athlete/supplements.yaml` and `planning/fueling_operational.md` when planning races, hard workouts or any pre/during/post fueling guidance.
 - When Garmin athlete snapshot data exists, use it through the synced local athlete files as active planning context.
 - Treat `red` as reduce or replace quality, `yellow` as maintain without increasing load, and `green` as allow only small progression if the shin is quiet.
 - Keep `planning/goal_gates.yaml` as the source of truth for whether `35:00` can influence training paces.
@@ -162,6 +167,7 @@ python scripts/garmin/coach_engine.py --as-of YYYY-MM-DD --days 28
 - Do not force threshold or race pace estimates without data.
 - Recalibrate the long-term goal from checkpoints.
 - Current limiter is aerobic durability and shin tolerance more than isolated speed.
+- Race and hard-workout execution should include practical fueling/hydration guidance when those artifacts exist.
 - Prefer validating the automatic pipeline health instead of manually rerunning imports after Garmin-linked training.
 - Remote Telegram access uses `opencode serve` plus `scripts/telegram/opencode_bot.py`; only commit or push when explicitly requested.
 - Remote Telegram access defaults to model `openai/gpt-5.4` with OpenCode default reasoning; use `/model` in Telegram to override per chat.

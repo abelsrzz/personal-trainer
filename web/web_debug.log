@@ -525,3 +525,89 @@ TypeError: 'datetime.date' object is not subscriptable
 2026-05-11 21:45:32,544 INFO calendar race candidate date=2026-05-24 items=1
 2026-05-11 21:45:32,544 INFO calendar race candidate date=2026-06-28 items=1
 2026-05-11 21:45:32,544 INFO calendar race candidate date=2027-02-06 items=1
+2026-05-11 22:06:11,345 INFO calendar race candidate date=2026-05-09 items=1
+2026-05-11 22:06:11,345 INFO calendar race candidate date=2026-05-24 items=1
+2026-05-11 22:06:11,345 INFO calendar race candidate date=2026-06-28 items=1
+2026-05-11 22:06:11,345 INFO calendar race candidate date=2027-02-06 items=1
+2026-05-11 22:07:00,477 INFO calendar race candidate date=2026-05-09 items=1
+2026-05-11 22:07:00,477 INFO calendar race candidate date=2026-05-24 items=1
+2026-05-11 22:07:00,477 INFO calendar race candidate date=2026-06-28 items=1
+2026-05-11 22:07:00,478 INFO calendar race candidate date=2027-02-06 items=1
+2026-05-11 22:16:46,245 ERROR calendar_month_data_combined failed month=None
+Traceback (most recent call last):
+  File "/home/abel/Documentos/Proyectos/personal-trainer/scripts/web/app.py", line 3036, in calendar_month_data_combined
+    workout_events = calendar_events()
+  File "/home/abel/Documentos/Proyectos/personal-trainer/scripts/web/app.py", line 2956, in calendar_events
+    planned_items = planned_workouts()
+  File "/home/abel/Documentos/Proyectos/personal-trainer/scripts/web/app.py", line 2639, in planned_workouts
+    effective_payload = apply_replan_to_payload(payload, replan_state)
+  File "/home/abel/Documentos/Proyectos/personal-trainer/scripts/web/app.py", line 1239, in apply_replan_to_payload
+    effective_payload = json.loads(json.dumps(payload)) if isinstance(payload, dict) else {}
+                                   ~~~~~~~~~~^^^^^^^^^
+  File "/usr/lib/python3.13/json/__init__.py", line 231, in dumps
+    return _default_encoder.encode(obj)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "/usr/lib/python3.13/json/encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/usr/lib/python3.13/json/encoder.py", line 261, in iterencode
+    return _iterencode(o, 0)
+  File "/usr/lib/python3.13/json/encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+                    f'is not JSON serializable')
+TypeError: Object of type date is not JSON serializable
+2026-05-11 22:17:12,450 INFO calendar race candidate date=2026-05-09 items=1
+2026-05-11 22:17:12,450 INFO calendar race candidate date=2026-05-24 items=1
+2026-05-11 22:17:12,450 INFO calendar race candidate date=2026-06-28 items=1
+2026-05-11 22:17:12,450 INFO calendar race candidate date=2027-02-06 items=1
+2026-05-11 22:17:30,931 INFO calendar race candidate date=2026-05-09 items=1
+2026-05-11 22:17:30,932 INFO calendar race candidate date=2026-05-24 items=1
+2026-05-11 22:17:30,932 INFO calendar race candidate date=2026-06-28 items=1
+2026-05-11 22:17:30,932 INFO calendar race candidate date=2027-02-06 items=1
+2026-05-11 22:20:00,773 INFO calendar race candidate date=2026-05-09 items=1
+2026-05-11 22:20:00,773 INFO calendar race candidate date=2026-05-24 items=1
+2026-05-11 22:20:00,773 INFO calendar race candidate date=2026-06-28 items=1
+2026-05-11 22:20:00,773 INFO calendar race candidate date=2027-02-06 items=1
+2026-05-11 22:20:21,705 INFO calendar race candidate date=2026-05-09 items=1
+2026-05-11 22:20:21,705 INFO calendar race candidate date=2026-05-24 items=1
+2026-05-11 22:20:21,705 INFO calendar race candidate date=2026-06-28 items=1
+2026-05-11 22:20:21,706 INFO calendar race candidate date=2027-02-06 items=1
+2026-05-11 22:23:27,047 INFO calendar race candidate date=2026-05-09 items=1
+2026-05-11 22:23:27,048 INFO calendar race candidate date=2026-05-24 items=1
+2026-05-11 22:23:27,048 INFO calendar race candidate date=2026-06-28 items=1
+2026-05-11 22:23:27,048 INFO calendar race candidate date=2027-02-06 items=1
+2026-05-11 22:32:29,913 INFO calendar race candidate date=2026-05-09 items=1
+2026-05-11 22:32:29,913 INFO calendar race candidate date=2026-05-24 items=1
+2026-05-11 22:32:29,913 INFO calendar race candidate date=2026-06-28 items=1
+2026-05-11 22:32:29,913 INFO calendar race candidate date=2027-02-06 items=1
+2026-05-11 22:34:37,960 INFO calendar race candidate date=2026-05-09 items=1
+2026-05-11 22:34:37,960 INFO calendar race candidate date=2026-05-24 items=1
+2026-05-11 22:34:37,960 INFO calendar race candidate date=2026-06-28 items=1
+2026-05-11 22:34:37,960 INFO calendar race candidate date=2027-02-06 items=1
+2026-05-11 22:38:40,742 INFO calendar race candidate date=2026-05-09 items=1
+2026-05-11 22:38:40,742 INFO calendar race candidate date=2026-05-24 items=1
+2026-05-11 22:38:40,742 INFO calendar race candidate date=2026-06-28 items=1
+2026-05-11 22:38:40,742 INFO calendar race candidate date=2027-02-06 items=1
+2026-05-11 22:39:39,402 INFO calendar race candidate date=2026-05-09 items=1
+2026-05-11 22:39:39,402 INFO calendar race candidate date=2026-05-24 items=1
+2026-05-11 22:39:39,402 INFO calendar race candidate date=2026-06-28 items=1
+2026-05-11 22:39:39,402 INFO calendar race candidate date=2027-02-06 items=1
+2026-05-11 22:39:45,448 INFO calendar race candidate date=2026-05-09 items=1
+2026-05-11 22:39:45,448 INFO calendar race candidate date=2026-05-24 items=1
+2026-05-11 22:39:45,448 INFO calendar race candidate date=2026-06-28 items=1
+2026-05-11 22:39:45,448 INFO calendar race candidate date=2027-02-06 items=1
+2026-05-11 22:45:56,478 INFO calendar race candidate date=2026-05-09 items=1
+2026-05-11 22:45:56,478 INFO calendar race candidate date=2026-05-24 items=1
+2026-05-11 22:45:56,478 INFO calendar race candidate date=2026-06-28 items=1
+2026-05-11 22:45:56,478 INFO calendar race candidate date=2027-02-06 items=1
+2026-05-11 22:54:40,126 INFO calendar race candidate date=2026-05-09 items=1
+2026-05-11 22:54:40,126 INFO calendar race candidate date=2026-05-24 items=1
+2026-05-11 22:54:40,126 INFO calendar race candidate date=2026-06-28 items=1
+2026-05-11 22:54:40,126 INFO calendar race candidate date=2027-02-06 items=1
+2026-05-11 22:55:00,190 INFO calendar race candidate date=2026-05-09 items=1
+2026-05-11 22:55:00,190 INFO calendar race candidate date=2026-05-24 items=1
+2026-05-11 22:55:00,190 INFO calendar race candidate date=2026-06-28 items=1
+2026-05-11 22:55:00,190 INFO calendar race candidate date=2027-02-06 items=1
+2026-05-11 23:12:17,973 INFO calendar race candidate date=2026-05-09 items=1
+2026-05-11 23:12:17,974 INFO calendar race candidate date=2026-05-24 items=1
+2026-05-11 23:12:17,974 INFO calendar race candidate date=2026-06-28 items=1
+2026-05-11 23:12:17,974 INFO calendar race candidate date=2027-02-06 items=1

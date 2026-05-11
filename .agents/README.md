@@ -34,6 +34,9 @@ Coach automation files:
 - `../planning/coach_decision.json`: structured decision data for automation.
 - `../planning/goal_gates.yaml`: measurable gates for whether `35:00` can guide training.
 - `../athlete/shin_tracker.yaml`: structured periosteum symptom log.
+- `../athlete/supplements.yaml`: available supplementation catalog for races and hard sessions.
+- `../planning/fueling_operational.md`: latest practical hydration, carb-load and supplementation guidance.
+- `../planning/fueling_operational.json`: structured fueling plan for automation.
 - `../planning/coaching_playbook.md`: default training prescription policy.
 - `../planning/session_selection_matrix.yaml`: default workout-family selection rules.
 - `../planning/workout_evaluation_rules.md`: post-session progression and regression rules.
@@ -51,7 +54,8 @@ Coach automation files:
 4. Read `../planning/context_automation_policy.md`
 5. Read `../planning/coaching_playbook.md`, `../planning/session_selection_matrix.yaml`, `../planning/workout_evaluation_rules.md` and `../athlete/response_profile.yaml`
 6. Read `../athlete/status_dashboard.md` and `../planning/coach_decision.md` when they exist
-7. Read the relevant agent or skill file for the current task
+7. Read `../athlete/supplements.yaml` and `../planning/fueling_operational.md` when race execution or hard-session fueling is relevant
+8. Read the relevant agent or skill file for the current task
 
 ## Default Automation Rule
 
@@ -60,6 +64,7 @@ Coach automation files:
 - Use `planning/coach_decision.md` as the first load-management signal before changing the active week.
 - Use the playbook, selection matrix, evaluation rules and response profile as mandatory default context for planning and replanning.
 - Use `planning/context_automation_policy.md` to decide which athlete, race, block, zone, shoe and goal files are mandatory for the current task.
+- Include fueling context when preparing race execution, hydration strategy or supplementation around hard training.
 - In the web portal, treat `dashboard` as the unified analysis view; the separate decision route is legacy redirect behavior.
 - For remote Telegram operation, run `opencode serve` locally and then `python scripts/telegram/opencode_bot.py`.
 - Remote Telegram operation defaults to `openai/gpt-5.4` with default reasoning; `/model` changes the per-chat model override.

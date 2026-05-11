@@ -8,9 +8,10 @@
 ## Carga Reciente
 
 - Ultimos 7 dias: `26.2 km`, `4` carreras, `2` exigentes, tirada larga `10.8 km`.
+- Ultima semana completa: `26.2 km` vs semana previa `14.7 km` (`79%`).
 - Ultimos 28 dias: `83.5 km`, `12` carreras, media `20.9 km/sem`.
 - Ritmo medio 7d: `6:04/km`, FC media `161.2`.
-- Cambio vs 7 dias previos: `225%`.
+- Ventana movil 7d vs 7d previos: `225%`.
 
 ## Predictor De Marca
 
@@ -21,7 +22,7 @@
 
 ## Riesgos Detectados
 
-- Subida de volumen 7d de 225%.
+- Subida de volumen semanal de 79% (14.7 -> 26.2 km entre semanas completas).
 - El bloque activo prioriza reconstruccion, consistencia y tolerancia tisular antes de ritmos agresivos.
 - El limitador principal declarado sigue siendo la durabilidad aerobica; la construccion debe respetarlo.
 - La automatizacion prioriza como backbone de calidad: cruise_intervals, tempo_broken, tempo_continuous.
@@ -32,9 +33,9 @@
 - Resumen: Con la evidencia actual, 35:00 sigue siendo aspiracional y no prescribe ritmos.
 - Gates cumplidos: `0/4`
 
-- `NO` Base estable: Media 4 semanas 20.9 km/sem, tirada larga 10.8 km, revisiones rojas 0, periostio 1.
+- `NO` Base estable: Media 4 semanas 20.9 km/sem, tirada larga 10.8 km, alertas 0, periostio 1.
 - `NO` Umbral competitivo: Mejor 5k reciente: 22:16.
-- `NO` Precondicion 35:00: Media 20.9 km/sem, tirada 10.8 km, 5k 22:16, riesgo 0.
+- `NO` Precondicion 35:00: Media 20.9 km/sem, tirada 10.8 km, 5k 22:16, alertas 0.
 - `NO` Seleccion 35:00: 5k 22:16, 10k 44:23.
 
 ## Volumen Semanal

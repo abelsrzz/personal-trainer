@@ -7,7 +7,7 @@
 
 ## Motivos
 
-- Subida de volumen 7d de 225%.
+- Subida de volumen semanal de 79% (14.7 -> 26.2 km entre semanas completas).
 - El bloque activo prioriza reconstruccion, consistencia y tolerancia tisular antes de ritmos agresivos.
 - El limitador principal declarado sigue siendo la durabilidad aerobica; la construccion debe respetarlo.
 - La automatizacion prioriza como backbone de calidad: cruise_intervals, tempo_broken, tempo_continuous.

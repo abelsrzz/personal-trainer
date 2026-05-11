@@ -40,6 +40,8 @@ Files that should be removed or ignored because they no longer match the operati
 - `athlete/status_dashboard.md` when it exists
 - `planning/coach_decision.md` when it exists
 - `athlete/shin_tracker.yaml`
+- `athlete/supplements.yaml`
+- `planning/fueling_operational.md` when it exists
 - `training/completed/imports/garmin/profile/athlete_profile_snapshot.json` when it exists
 
 ### Mandatory For Weekly Planning
@@ -56,6 +58,8 @@ Files that should be removed or ignored because they no longer match the operati
 - `planning/goal_gates.md`
 - `training/planned/workouts/library_run_templates.yaml`
 - all relevant files in `races/<year>/`
+- `athlete/supplements.yaml`
+- `planning/fueling_operational.md` when it exists
 - recent files in `training/completed/reviews/`
 
 ### Mandatory For Workout Creation Or Update
@@ -69,6 +73,8 @@ Files that should be removed or ignored because they no longer match the operati
 - `training/completed/imports/garmin/profile/athlete_profile_snapshot.json` when it exists
 - `planning/goal_gates.yaml`
 - `training/planned/workouts/library_run_templates.yaml`
+- `athlete/supplements.yaml`
+- `planning/fueling_operational.md` when it exists
 - `athlete/status_dashboard.md`
 - `planning/coach_decision.md`
 - `athlete/response_profile.yaml`
@@ -97,6 +103,8 @@ Files that should be removed or ignored because they no longer match the operati
 - `athlete/shoes.yaml`: mandatory whenever a weekly plan or dated workout includes shoe guidance.
 - `planning/goal_gates.md`: mandatory when discussing stretch-goal realism or target pace decisions.
 - `races/<year>/`: mandatory when planning a week that is inside the race horizon or when reprioritizing the cycle.
+- `athlete/supplements.yaml`: mandatory whenever a race or hard session needs pre/during/post fueling guidance.
+- `planning/fueling_operational.md`: mandatory whenever race execution, hydration or supplementation are part of the task.
 
 ### Passive Reference
 

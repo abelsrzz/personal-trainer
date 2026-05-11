@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+import copy
 import json
 import calendar
 import logging
@@ -10,7 +11,7 @@ import os
 import re
 import subprocess
 import sys
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -20,6 +21,11 @@ from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from scripts.system.capability_engine import ensure_fresh
+from scripts.system.fueling_engine import (
+    load_or_build_fueling_payload,
+    race_fueling_lookup,
+    workout_fueling_lookup,
+)
 from scripts.telegram.opencode_bridge import (
     DEFAULT_CONFIG_PATH as OPENCODE_REMOTE_CONFIG_PATH,
     DEFAULT_OPENCODE_MODEL,
@@ -49,6 +55,8 @@ WEB_LOG_PATH = ROOT / "web" / "web_debug.log"
 ACTIVE_WEEK_PATH = ROOT / "planning" / "weeks" / "semana_actual.md"
 COACH_DECISION_PATH = ROOT / "planning" / "coach_decision.json"
 PLANNED_ACTIONS_PATH = ROOT / "system" / "state" / "planned_workout_actions.json"
+PLANNED_REPLANS_PATH = ROOT / "system" / "state" / "planned_workout_replans.json"
+DAILY_CHECKINS_PATH = ROOT / "system" / "state" / "daily_checkins.json"
 GARMIN_RETRY_STATE_PATH = ROOT / "system" / "state" / "garmin_retry_state.json"
 POST_WORKOUT_REFRESH_STATE_PATH = ROOT / "system" / "state" / "post_workout_refresh_state.json"
 GARMIN_SYNC_SCRIPT = ROOT / "scripts" / "garmin" / "sync_garmin.py"
@@ -690,6 +698,14 @@ def load_web_chat_remote_config() -> tuple[OpenCodeRemoteConfig | None, str | No
         return None, f"Configuracion opencode_remote invalida: {exc}"
 
 
+def available_web_chat_config(config: OpenCodeRemoteConfig | None, config_error: str | None) -> tuple[OpenCodeRemoteConfig | None, str | None]:
+    if not config:
+        return None, config_error or "Chat no disponible."
+    if not config.enabled:
+        return None, "El chat web esta deshabilitado en `opencode_remote.enabled`."
+    return config, config_error
+
+
 def web_chat_ui_store() -> dict[str, Any]:
     payload = load_optional_json(WEB_CHAT_UI_STATE_PATH, {"users": {}})
     users = payload.get("users") if isinstance(payload, dict) else None
@@ -786,6 +802,45 @@ def web_chat_state(request: Request, config: OpenCodeRemoteConfig | None, config
     }
 
 
+def chat_state_response(request: Request) -> tuple[OpenCodeRemoteConfig | None, str | None, dict[str, Any]]:
+    config, config_error = load_web_chat_remote_config()
+    config, config_error = available_web_chat_config(config, config_error)
+    return config, config_error, web_chat_state(request, config, config_error)
+
+
+def chat_missing_message_response(request: Request) -> JSONResponse:
+    return JSONResponse({"ok": False, "error": "Escribe un mensaje antes de enviar."}, status_code=400)
+
+
+async def chat_execute_message(request: Request, config: OpenCodeRemoteConfig, message: str) -> JSONResponse:
+    user_key = web_chat_identity(request)
+    lock = WEB_CHAT_LOCKS.setdefault(user_key, asyncio.Lock())
+    if lock.locked():
+        return JSONResponse(
+            {"ok": False, "error": "Ya hay una peticion en curso para este usuario.", "state": web_chat_state(request, config)},
+            status_code=409,
+        )
+
+    async with lock:
+        bridge = OpenCodeBridge(config)
+        result = await bridge.send(user_key, message, channel="web")
+
+    append_web_chat_message(user_key, "user", message)
+    append_web_chat_message(user_key, "assistant", result.text, model=result.model, error=result.returncode != 0)
+    return JSONResponse(
+        {
+            "ok": result.returncode == 0,
+            "message": None if result.returncode == 0 else "OpenCode devolvio una respuesta con incidencia operativa.",
+            "state": web_chat_state(request, config),
+        },
+        status_code=200,
+    )
+
+
+def chat_store_for_request(config: OpenCodeRemoteConfig, request: Request) -> tuple[SessionStore, str]:
+    return SessionStore(config.session_store), web_chat_identity(request)
+
+
 def json_auth_guard(request: Request) -> JSONResponse | None:
     if authenticated(request):
         return None
@@ -796,6 +851,7 @@ ACTION_LABELS = {
     "done": "Marcada como hecha",
     "skipped": "Marcada como no realizada",
     "alternative_requested": "Alternativa solicitada",
+    "replanned": "Replanificacion aplicada",
 }
 
 
@@ -803,6 +859,7 @@ ACTION_BADGES = {
     "done": ("Hecha", "ok"),
     "skipped": ("No realizada", "warn"),
     "alternative_requested": ("Alternativa pedida", "warn"),
+    "replanned": ("Replanificada", "warn"),
 }
 
 FEEDBACK_COMPLIANCE_LABELS = {
@@ -863,6 +920,389 @@ def clear_planned_workout_action(slug: str) -> None:
         return
     workouts.pop(slug, None)
     write_json(PLANNED_ACTIONS_PATH, payload)
+
+
+def planned_workout_replans() -> dict[str, dict[str, Any]]:
+    payload = load_optional_json(PLANNED_REPLANS_PATH, {"workouts": {}})
+    workouts = payload.get("workouts") if isinstance(payload, dict) else {}
+    return workouts if isinstance(workouts, dict) else {}
+
+
+def planned_workout_replan(slug: str) -> dict[str, Any] | None:
+    item = planned_workout_replans().get(slug)
+    return item if isinstance(item, dict) else None
+
+
+def clear_planned_workout_replan(slug: str) -> None:
+    payload = load_optional_json(PLANNED_REPLANS_PATH, {"workouts": {}})
+    if not isinstance(payload, dict):
+        return
+    workouts = payload.get("workouts")
+    if not isinstance(workouts, dict):
+        return
+    workouts.pop(slug, None)
+    write_json(PLANNED_REPLANS_PATH, payload)
+
+
+def daily_checkins() -> dict[str, dict[str, Any]]:
+    payload = load_optional_json(DAILY_CHECKINS_PATH, {"days": {}})
+    days = payload.get("days") if isinstance(payload, dict) else {}
+    return days if isinstance(days, dict) else {}
+
+
+def daily_checkin(day: str) -> dict[str, Any] | None:
+    item = daily_checkins().get(day)
+    return item if isinstance(item, dict) else None
+
+
+def set_daily_checkin(day: str, payload: dict[str, Any]) -> dict[str, Any]:
+    state = load_optional_json(DAILY_CHECKINS_PATH, {"days": {}})
+    if not isinstance(state, dict):
+        state = {"days": {}}
+    days = state.setdefault("days", {})
+    days[day] = payload
+    write_json(DAILY_CHECKINS_PATH, state)
+    return payload
+
+
+def daily_checkin_action_badge(action: str) -> dict[str, str]:
+    mapping = {
+        "keep": {"label": "Mantener", "tone": "ok"},
+        "reduce": {"label": "Suavizar", "tone": "warn"},
+        "move": {"label": "Mover", "tone": "warn"},
+        "cancel": {"label": "Cancelar", "tone": "warn"},
+        "unknown": {"label": "Sin decidir", "tone": ""},
+    }
+    return mapping.get(action, mapping["unknown"])
+
+
+def daily_checkin_decision(checkin: dict[str, Any], planned_workout: dict[str, Any] | None) -> dict[str, Any]:
+    energy = int(checkin.get("energy") or 0)
+    sleep = int(checkin.get("sleep") or 0)
+    pain = int(checkin.get("pain") or 0)
+    motivation = int(checkin.get("motivation") or 0)
+    available_minutes = int(checkin.get("available_minutes") or 0)
+    planned_minutes = 0
+    if planned_workout and isinstance(planned_workout.get("payload"), dict):
+        planned_minutes = int(round(float(planned_workout["payload"].get("estimated_duration_s") or 0) / 60.0))
+
+    reasons: list[str] = []
+    score = 0
+    score += energy * 10
+    score += sleep * 8
+    score += motivation * 7
+    score += max(0, 20 - (pain * 3))
+    if available_minutes > 0:
+        if planned_minutes > 0:
+            time_ratio = available_minutes / max(planned_minutes, 1)
+            if time_ratio >= 1.0:
+                score += 12
+            elif time_ratio >= 0.75:
+                score += 8
+            elif time_ratio >= 0.5:
+                score += 4
+            else:
+                score += 0
+        else:
+            score += 8
+    score = max(0, min(100, score))
+
+    action = "keep"
+    headline = "Mantener el plan"
+    summary = "Las sensaciones previas permiten ejecutar la sesion prevista."
+
+    if pain >= 6:
+        action = "cancel"
+        headline = "Cancelar o descansar"
+        summary = "El dolor reportado es demasiado alto para asumir la sesion de hoy con normalidad."
+        reasons.append(f"Dolor {pain}/10")
+    elif available_minutes > 0 and planned_minutes > 0 and available_minutes < max(20, int(planned_minutes * 0.45)):
+        action = "move"
+        headline = "Mover o recomponer"
+        summary = "El tiempo disponible real no da para una version util de la sesion prevista."
+        reasons.append(f"Solo hay {available_minutes} min reales frente a {planned_minutes} min previstos")
+    elif pain >= 4 or energy <= 2 or sleep <= 2:
+        action = "reduce"
+        headline = "Suavizar la sesion"
+        summary = "Conviene bajar coste hoy y ejecutar una version mas protectora o compacta."
+        if pain >= 4:
+            reasons.append(f"Dolor {pain}/10")
+        if energy <= 2:
+            reasons.append(f"Energia {energy}/5")
+        if sleep <= 2:
+            reasons.append(f"Sueno {sleep}/5")
+    elif motivation <= 2 and score < 70:
+        action = "reduce"
+        headline = "Bajar exigencia"
+        summary = "La disposicion mental no es buena; mejor mantener continuidad con menos coste."
+        reasons.append(f"Ganas de entrenar {motivation}/5")
+    else:
+        if energy >= 4:
+            reasons.append(f"Energia {energy}/5")
+        if sleep >= 4:
+            reasons.append(f"Sueno {sleep}/5")
+        if available_minutes and planned_minutes:
+            reasons.append(f"Tiempo disponible {available_minutes}/{planned_minutes} min")
+
+    if not reasons:
+        reasons.append(f"Score de disponibilidad {score}/100")
+
+    return {
+        "score": score,
+        "action": action,
+        "headline": headline,
+        "summary": summary,
+        "reasons": reasons[:3],
+        "badge": daily_checkin_action_badge(action),
+    }
+
+
+def daily_checkin_form_state(checkin: dict[str, Any] | None, planned_workout: dict[str, Any] | None) -> dict[str, Any]:
+    values = checkin or {}
+    decision = daily_checkin_decision(values, planned_workout) if checkin else None
+    return {
+        "exists": bool(checkin),
+        "form_values": {
+            "energy": int(values.get("energy") or 3),
+            "sleep": int(values.get("sleep") or 3),
+            "pain": int(values.get("pain") or 0),
+            "motivation": int(values.get("motivation") or 3),
+            "available_minutes": int(values.get("available_minutes") or 45),
+            "note": str(values.get("note") or "").strip(),
+        },
+        "updated_at": format_datetime(values.get("updated_at")) if checkin else None,
+        "decision": decision,
+    }
+
+
+def clone_steps(steps: Any) -> list[dict[str, Any]]:
+    if not isinstance(steps, list):
+        return []
+    cloned: list[dict[str, Any]] = []
+    for step in steps:
+        if isinstance(step, dict):
+            cloned.append(copy.deepcopy(step))
+    return cloned
+
+
+def occupied_planned_dates(exclude_slug: str | None = None) -> set[str]:
+    occupied: set[str] = set()
+    for path in sorted(PLANNED_WORKOUTS_DIR.glob("*.yaml")):
+        if path.name in {"library_run_templates.yaml", "workout_template.yaml"}:
+            continue
+        if exclude_slug and path.stem == exclude_slug:
+            continue
+        payload = load_yaml(path).get("workout", {})
+        planned_date = str(payload.get("schedule_date") or "").strip()
+        if planned_date:
+            occupied.add(planned_date)
+    for slug, replan_state in planned_workout_replans().items():
+        if exclude_slug and slug == exclude_slug:
+            continue
+        if not isinstance(replan_state, dict):
+            continue
+        planned_date = str(replan_state.get("effective_date") or "").strip()
+        if planned_date:
+            occupied.add(planned_date)
+    return occupied
+
+
+def next_replan_date(current_date: str, exclude_slug: str) -> str:
+    parsed_current = parse_iso_date(current_date)
+    if not parsed_current:
+        return current_date
+
+    occupied = occupied_planned_dates(exclude_slug=exclude_slug)
+    races = set(races_by_day().keys())
+    week_content = read_text(ACTIVE_WEEK_PATH)
+    start_date, end_date = parse_week_date_window(week_content)
+    rows = parse_week_table(week_content)
+    rest_candidates: list[str] = []
+    if start_date and end_date:
+        for row in rows:
+            row_date = resolve_week_row_date(row.get("day", ""), start_date, end_date)
+            if not row_date or row_date <= current_date:
+                continue
+            description = str(row.get("description") or "").lower()
+            distance = str(row.get("distance") or "").lower()
+            if "carrera" in description or "edicion" in description:
+                continue
+            if row_date in occupied or row_date in races:
+                continue
+            if distance == "0 km" or "descanso" in description or "movilidad" in description:
+                rest_candidates.append(row_date)
+    if rest_candidates:
+        return sorted(rest_candidates)[0]
+
+    for offset in range(1, 8):
+        candidate = parsed_current.fromordinal(parsed_current.toordinal() + offset).isoformat()
+        if candidate in occupied or candidate in races:
+            continue
+        return candidate
+    return parsed_current.fromordinal(parsed_current.toordinal() + 1).isoformat()
+
+
+def make_replan_steps(kind: str, strategy: str, original_name: str, duration_s: int) -> list[dict[str, Any]]:
+    if strategy == "move_next_day":
+        return [
+            {"order": 1, "step_type": "note", "description": f"Mantener la sesion {original_name} en el nuevo dia sugerido."},
+        ]
+    if strategy == "skip_recompose_week":
+        return [
+            {"order": 1, "step_type": "note", "description": "Hoy se convierte en descanso o movilidad suave."},
+            {"order": 2, "step_type": "note", "description": "La carga se recoloca en otro dia de la misma semana con margen."},
+        ]
+    if kind == "quality":
+        if strategy == "reduce_keep_goal":
+            return [
+                {"order": 1, "step_type": "warmup", "description": "10-15 min faciles"},
+                {"order": 2, "step_type": "interval", "description": "Bloque principal compacto: menos repeticiones y sin apretar"},
+                {"order": 3, "step_type": "cooldown", "description": "10 min faciles"},
+            ]
+        return [
+            {"order": 1, "step_type": "warmup", "description": "25-35 min muy faciles"},
+            {"order": 2, "step_type": "cooldown", "description": "Movilidad corta al terminar"},
+        ]
+    if kind == "long_run":
+        return [
+            {"order": 1, "step_type": "warmup", "description": "Rodaje facil mas corto de lo previsto"},
+            {"order": 2, "step_type": "cooldown", "description": "Parar con margen; sin buscar carga extra"},
+        ]
+    if kind in {"easy", "recovery"}:
+        return [
+            {"order": 1, "step_type": "warmup", "description": "Rodaje muy facil y conversacional"},
+            {"order": 2, "step_type": "cooldown", "description": "Cortar antes si no acompana el dia"},
+        ]
+    if kind == "strength":
+        return [
+            {"order": 1, "step_type": "note", "description": "Version corta y sin carga residual alta."},
+        ]
+    return [
+        {"order": 1, "step_type": "note", "description": f"Version adaptada de {original_name}."},
+    ]
+
+
+def generate_replan_proposal(workout: dict[str, Any], strategy: str, dashboard: dict[str, Any]) -> dict[str, Any]:
+    payload = workout.get("payload", {}) if isinstance(workout.get("payload"), dict) else {}
+    original_date = str(workout.get("date") or str(payload.get("schedule_date") or "")).strip()
+    original_name = str(workout.get("name") or payload.get("name") or workout.get("slug") or "Sesion").strip()
+    original_description = str(workout.get("description") or payload.get("description") or "").strip()
+    kind = str(workout.get("session_kind") or "other").strip()
+    original_steps = clone_steps(payload.get("steps"))
+    decision = dashboard.get("decision", {}) if isinstance(dashboard, dict) else {}
+    decision_status = str(decision.get("status") or "").strip().lower()
+    recommendation = str(decision.get("recommendation") or "").strip()
+    original_duration_s = int(payload.get("estimated_duration_s") or 0)
+    effective_date = original_date
+    effective_name = original_name
+    effective_description = original_description
+    effective_kind = kind
+    effective_duration_s = original_duration_s
+    label = "Replanificada"
+    summary = "La sesion se ha adaptado en la web segun el contexto actual."
+    cause = recommendation or "Cambio manual aplicado desde la web."
+    variant = None
+
+    if strategy == "auto_today":
+        label = "Alternativa para hoy"
+        variant = "rodaje muy facil" if kind in {"quality", "long_run"} or decision_status == "red" else "version corta"
+        if kind in {"quality", "long_run"} or decision_status == "red":
+            effective_kind = "recovery"
+            effective_name = f"Alternativa: {original_name}"
+            effective_description = "Cambio automatico para hoy: sustituir la sesion exigente por una version muy facil y de bajo coste."
+            effective_duration_s = max(1500, int(round(original_duration_s * 0.6))) if original_duration_s else 1800
+        else:
+            effective_kind = "easy"
+            effective_name = f"Version corta: {original_name}"
+            effective_description = "Cambio automatico para hoy: mantener continuidad con una version mas corta y facil de encajar."
+            effective_duration_s = max(1200, int(round(original_duration_s * 0.75))) if original_duration_s else 1500
+        summary = "Se ha aplicado una alternativa automatica para hoy."
+    elif strategy == "move_next_day":
+        effective_date = next_replan_date(original_date, str(workout.get("slug") or ""))
+        label = "Movida"
+        summary = f"La sesion se mueve del {original_date} al {effective_date}."
+        cause = "Se recoloca en el siguiente hueco util para no perder la sesion ni solapar la semana."
+        variant = effective_date
+    elif strategy == "reduce_keep_goal":
+        label = "Carga reducida"
+        effective_name = f"{original_name} · version compacta"
+        if kind == "quality":
+            effective_kind = "quality"
+            effective_description = "Version compacta: menos volumen de calidad y mas margen, manteniendo el objetivo semanal."
+            effective_duration_s = max(1500, int(round(original_duration_s * 0.72))) if original_duration_s else 1800
+            variant = "menos repeticiones"
+        elif kind == "long_run":
+            effective_kind = "easy"
+            effective_description = "Version compacta: tirada mas corta y controlada para preservar continuidad sin vaciarte."
+            effective_duration_s = max(2400, int(round(original_duration_s * 0.7))) if original_duration_s else 2700
+            variant = "tirada recortada"
+        else:
+            effective_kind = kind if kind in {"easy", "recovery", "strength"} else "easy"
+            effective_description = "Version compacta: mismo objetivo general, pero con menos coste y mas margen de ejecucion."
+            effective_duration_s = max(900, int(round(original_duration_s * 0.8))) if original_duration_s else 1200
+            variant = "volumen reducido"
+        summary = "Se reduce la carga de la sesion manteniendo el objetivo semanal."
+        cause = "La prioridad es sostener la semana sin perder del todo el estimulo previsto."
+    elif strategy == "skip_recompose_week":
+        effective_date = next_replan_date(original_date, str(workout.get("slug") or ""))
+        label = "Semana recompuesta"
+        effective_name = f"{original_name} · recolocada"
+        effective_description = "Hoy no se entrena. La sesion se recoloca automaticamente en otro hueco de la semana con una version asumible."
+        effective_duration_s = max(1200, int(round(original_duration_s * 0.9))) if original_duration_s else 1500
+        summary = f"Hoy queda liberado y la sesion se recompone para el {effective_date}."
+        cause = "Se prioriza no entrenar hoy sin romper por completo la logica semanal."
+        variant = effective_date
+
+    return {
+        "status": "applied",
+        "strategy": strategy,
+        "label": label,
+        "summary": summary,
+        "cause": cause,
+        "variant": variant,
+        "original_date": original_date,
+        "effective_date": effective_date,
+        "effective_name": effective_name,
+        "effective_description": effective_description,
+        "effective_duration_s": effective_duration_s,
+        "effective_steps": original_steps if strategy == "move_next_day" else make_replan_steps(effective_kind, strategy, original_name, effective_duration_s),
+        "effective_session_kind": effective_kind,
+    }
+
+
+def apply_planned_workout_replan(slug: str, workout: dict[str, Any], strategy: str, dashboard: dict[str, Any], username: str | None) -> dict[str, Any]:
+    proposal = generate_replan_proposal(workout, strategy, dashboard)
+    payload = load_optional_json(PLANNED_REPLANS_PATH, {"workouts": {}})
+    if not isinstance(payload, dict):
+        payload = {"workouts": {}}
+    workouts = payload.setdefault("workouts", {})
+    workouts[slug] = {
+        **proposal,
+        "updated_at": datetime.now().isoformat(),
+        "updated_by": username or "web",
+        "slug": slug,
+        "name": workout.get("name"),
+    }
+    write_json(PLANNED_REPLANS_PATH, payload)
+    set_planned_workout_action(slug, workout, "replanned", username)
+    return workouts[slug]
+
+
+def apply_replan_to_payload(payload: dict[str, Any], replan_state: dict[str, Any] | None) -> dict[str, Any]:
+    effective_payload = copy.deepcopy(payload) if isinstance(payload, dict) else {}
+    if not replan_state:
+        return effective_payload
+    if replan_state.get("effective_name"):
+        effective_payload["name"] = replan_state.get("effective_name")
+    if replan_state.get("effective_description"):
+        effective_payload["description"] = replan_state.get("effective_description")
+    if replan_state.get("effective_date"):
+        effective_payload["schedule_date"] = replan_state.get("effective_date")
+    if replan_state.get("effective_duration_s"):
+        effective_payload["estimated_duration_s"] = replan_state.get("effective_duration_s")
+    if isinstance(replan_state.get("effective_steps"), list):
+        effective_payload["steps"] = clone_steps(replan_state.get("effective_steps"))
+    return effective_payload
 
 
 def garmin_retry_states() -> dict[str, dict[str, Any]]:
@@ -1070,15 +1510,18 @@ def adaptation_triggers(dashboard: dict[str, Any]) -> dict[str, Any]:
 
     triggers: list[dict[str, Any]] = []
 
+    weekly_spike = decision.get("weekly_spike_pct")
     volume_spike = decision.get("volume_spike_pct")
     hrv_flag = str(daily_signals.get("hrv_flag") or "").strip()
     readiness_flag = str(daily_signals.get("readiness_flag") or "").strip()
     resting_hr_flag = str(daily_signals.get("resting_hr_flag") or "").strip()
     fatigue_active = False
     fatigue_reasons: list[str] = []
-    if volume_spike is not None and float(volume_spike) >= 25.0:
+    if weekly_spike is not None and float(weekly_spike) >= 25.0:
         fatigue_active = True
-        fatigue_reasons.append(f"Volumen 7d +{round(float(volume_spike))}% frente a la semana previa")
+        fatigue_reasons.append(f"Volumen semanal +{round(float(weekly_spike))}% frente a la semana completa previa")
+    elif volume_spike is not None and float(volume_spike) >= 40.0:
+        fatigue_reasons.append(f"Ventana movil 7d +{round(float(volume_spike))}% frente a los 7 dias anteriores")
     if hrv_flag in {"low", "suppressed"}:
         fatigue_active = True
         fatigue_reasons.append("HRV por debajo de la banda habitual")
@@ -1188,6 +1631,7 @@ def planned_workout_replan_data(
     linked_review: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     dashboard = dashboard or dashboard_payload()
+    replan_state = workout.get("replan_state") if isinstance(workout.get("replan_state"), dict) else None
     action_state = workout.get("action_state") if isinstance(workout.get("action_state"), dict) else None
     action_key = str((action_state or {}).get("action") or "")
     action_updated_at = format_datetime((action_state or {}).get("updated_at")) if action_state else None
@@ -1205,7 +1649,15 @@ def planned_workout_replan_data(
     changed_at = None
     variant = None
 
-    if action_key == "alternative_requested":
+    if replan_state and replan_state.get("status") == "applied":
+        status = "adjusted"
+        label = str(replan_state.get("label") or "Replanificada")
+        tone = "warn"
+        summary = str(replan_state.get("summary") or "La sesion tiene una replanificacion aplicada.")
+        cause = str(replan_state.get("cause") or "Cambio aplicado desde la web.")
+        changed_at = format_datetime(replan_state.get("updated_at"))
+        variant = str(replan_state.get("variant") or "").strip() or None
+    elif action_key == "alternative_requested":
         status = "adjusted"
         label = "Ajustada"
         tone = "warn"
@@ -1522,6 +1974,8 @@ def today_plan_data(day: str | None = None) -> dict[str, Any]:
     daily_signals = decision.get("daily_signals", {})
     planned_today = next((item for item in planned_workouts() if item.get("date") == target_day), None)
     completed_today = next((item for item in completed_reviews() if item.get("date") == target_day), None)
+    checkin_state = daily_checkin_form_state(daily_checkin(target_day), planned_today)
+    checkin_decision = checkin_state.get("decision") if isinstance(checkin_state, dict) else None
 
     shin_pain = goal_metrics.get("latest_shin_pain")
     resting_hr_flag = daily_signals.get("resting_hr_flag")
@@ -1538,6 +1992,12 @@ def today_plan_data(day: str | None = None) -> dict[str, Any]:
         status = "planned_today"
     else:
         status = "no_plan_today"
+
+    if checkin_decision and not completed_today:
+        if checkin_decision.get("action") == "cancel":
+            status = "protective_today"
+        elif checkin_decision.get("action") in {"reduce", "move"} and planned_today:
+            status = "protective_today"
 
     status_labels = {
         "planned_today": "Listo para ejecutar",
@@ -1559,6 +2019,8 @@ def today_plan_data(day: str | None = None) -> dict[str, Any]:
     why_today_parts = []
     if decision.get("recommendation"):
         why_today_parts.append(str(decision["recommendation"]).strip())
+    if checkin_decision:
+        why_today_parts.append(str(checkin_decision.get("summary") or "").strip())
     if planned_today:
         objective_text = session_objective_map.get(planned_today.get("session_kind"), "El objetivo hoy es mantener continuidad con una carga adecuada.")
         why_today_parts.append(objective_text)
@@ -1572,6 +2034,8 @@ def today_plan_data(day: str | None = None) -> dict[str, Any]:
         watchouts.append("No subir carga ni intensidad hoy.")
     elif resting_hr_flag == "high":
         watchouts.append("Pulso en reposo algo alto; deja margen.")
+    if checkin_decision and checkin_decision.get("action") in {"reduce", "move", "cancel"}:
+        watchouts.append(str(checkin_decision.get("headline") or "Ajuste recomendado."))
     watchouts = watchouts[:2]
 
     return {
@@ -1589,6 +2053,7 @@ def today_plan_data(day: str | None = None) -> dict[str, Any]:
         "action_badge": (planned_today or {}).get("action_badge"),
         "cta_enabled": bool(planned_today and not completed_today),
         "feedback_present": bool((completed_today or {}).get("athlete_feedback")),
+        "daily_checkin": checkin_state,
         "links": {
             "detail_url": f"/planned-workouts/{planned_today['slug']}" if planned_today else None,
             "day_url": f"/calendar/day/{target_day}",
@@ -1633,6 +2098,14 @@ def parse_week_date_window(content: str) -> tuple[date | None, date | None]:
     return parse_iso_date(match.group("start")), parse_iso_date(match.group("end"))
 
 
+def active_week_title(content: str) -> str:
+    for line in content.splitlines():
+        stripped = line.strip()
+        if stripped.startswith("# "):
+            return stripped[2:].strip()
+    return "Bloque activo"
+
+
 def resolve_week_row_date(label: str, start_date: date | None, end_date: date | None) -> str | None:
     if not start_date or not end_date:
         return None
@@ -1648,12 +2121,210 @@ def resolve_week_row_date(label: str, start_date: date | None, end_date: date | 
     return None
 
 
+def week_range_labels(start_date: date, end_date: date) -> str:
+    return f"{start_date.isoformat()} -> {end_date.isoformat()}"
+
+
+def workout_distance_km(workout: dict[str, Any]) -> float:
+    payload = workout.get("payload", {}) if isinstance(workout.get("payload"), dict) else {}
+    distance_m = payload.get("distance_m")
+    if distance_m is None:
+        distance_m = sum(float(step.get("distance_m") or 0.0) for step in payload.get("steps") or [] if isinstance(step, dict))
+    return round(float(distance_m or 0.0) / 1000.0, 2)
+
+
+def iso_week_bounds(value: date) -> tuple[date, date]:
+    start = value.fromordinal(value.toordinal() - value.weekday())
+    end = start.fromordinal(start.toordinal() + 6)
+    return start, end
+
+
+def adherence_badge(value: float) -> dict[str, str]:
+    if value >= 85.0:
+        return {"label": "Alta", "tone": "ok"}
+    if value >= 60.0:
+        return {"label": "Media", "tone": "warn"}
+    return {"label": "Baja", "tone": "warn"}
+
+
+def plan_vs_reality_summary(start_date: date | None, end_date: date | None, title: str) -> dict[str, Any]:
+    if not start_date or not end_date:
+        return {"available": False, "weeks": [], "block": None}
+
+    workouts = [
+        item for item in planned_workouts()
+        if parse_iso_date(item.get("date")) and start_date <= parse_iso_date(item.get("date")) <= end_date
+    ]
+    reviews = [
+        item for item in completed_reviews()
+        if parse_iso_date(item.get("date")) and start_date <= parse_iso_date(item.get("date")) <= end_date
+    ]
+    today = date.today()
+
+    def summary_for_window(window_start: date, window_end: date, label: str) -> dict[str, Any]:
+        window_workouts = [
+            item for item in workouts
+            if parse_iso_date(item.get("date")) and window_start <= parse_iso_date(item.get("date")) <= window_end
+        ]
+        window_reviews = [
+            item for item in reviews
+            if parse_iso_date(item.get("date")) and window_start <= parse_iso_date(item.get("date")) <= window_end
+        ]
+        window_planned_slugs = {item.get("slug") for item in window_workouts if item.get("slug")}
+        matched_slugs = {item.get("slug") for item in window_reviews if item.get("slug") in window_planned_slugs}
+        planned_km = round(sum(workout_distance_km(item) for item in window_workouts), 2)
+        actual_km = round(sum(float(item.get("distance_km") or 0.0) for item in window_reviews), 2)
+        planned_quality = sum(1 for item in window_workouts if item.get("session_kind") == "quality")
+        completed_quality = sum(1 for item in window_reviews if item.get("session_kind") == "quality")
+        skipped = 0
+        for item in window_workouts:
+            action_state = item.get("action_state") if isinstance(item.get("action_state"), dict) else {}
+            planned_day = parse_iso_date(item.get("date"))
+            if str(action_state.get("action") or "") == "skipped":
+                skipped += 1
+            elif planned_day and planned_day <= today and item.get("slug") not in matched_slugs:
+                skipped += 1
+        reprogrammed = sum(1 for item in window_workouts if isinstance(item.get("replan_state"), dict) and item["replan_state"].get("status") == "applied")
+        adherence_pct = round((len(matched_slugs) / len(window_workouts)) * 100.0, 1) if window_workouts else 0.0
+        return {
+            "label": label,
+            "range": week_range_labels(window_start, window_end),
+            "planned_sessions": len(window_workouts),
+            "completed_sessions": len(matched_slugs),
+            "planned_km": planned_km,
+            "actual_km": actual_km,
+            "km_delta": round(actual_km - planned_km, 2),
+            "planned_quality": planned_quality,
+            "completed_quality": completed_quality,
+            "skipped_sessions": skipped,
+            "reprogrammed_sessions": reprogrammed,
+            "adherence_pct": adherence_pct,
+            "adherence_badge": adherence_badge(adherence_pct),
+        }
+
+    week_windows: list[tuple[date, date]] = []
+    cursor = start_date
+    while cursor <= end_date:
+        week_start, week_end = iso_week_bounds(cursor)
+        bounded_start = week_start if week_start >= start_date else start_date
+        bounded_end = week_end if week_end <= end_date else end_date
+        if not week_windows or week_windows[-1] != (bounded_start, bounded_end):
+            week_windows.append((bounded_start, bounded_end))
+        cursor = week_end.fromordinal(week_end.toordinal() + 1)
+
+    week_summaries = [
+        summary_for_window(window_start, window_end, f"Semana {index}")
+        for index, (window_start, window_end) in enumerate(week_windows, start=1)
+    ]
+
+    block_summary = summary_for_window(start_date, end_date, title)
+    return {"available": True, "weeks": week_summaries, "block": block_summary}
+
+
+def weekly_goal_sentence(dashboard: dict[str, Any], rows: list[dict[str, str]]) -> str:
+    decision = dashboard.get("decision", {}) if isinstance(dashboard.get("decision"), dict) else {}
+    protection_mode = dashboard.get("protection_mode", {}) if isinstance(dashboard.get("protection_mode"), dict) else {}
+    descriptions = " ".join(str(row.get("description") or "") for row in rows).lower()
+    if protection_mode.get("active"):
+        return "Proteger tejido y sostener continuidad sin buscar carga extra."
+    if "carrera" in descriptions or "edicion" in descriptions or any("carrera" in str(row.get("description") or "").lower() for row in rows):
+        return "Llegar con frescura suficiente y ejecutar lo importante sin añadir fatiga inútil."
+    status = str(decision.get("status") or "").lower()
+    if status == "red":
+        return "Bajar exigencia, quitar coste innecesario y conservar la continuidad de la semana."
+    if status == "yellow":
+        return "Mantener la estructura semanal sin progresar carga y con margen de adaptación."
+    return "Completar la semana con continuidad y una progresión pequeña si las sensaciones acompañan."
+
+
+def session_focus(row: dict[str, Any], linked_workout: dict[str, Any] | None, replan: dict[str, Any] | None) -> str:
+    if replan and replan.get("is_changed"):
+        status = str(replan.get("status") or "")
+        if status in {"adjusted", "adjustable", "protected"}:
+            return "Ejecutar con margen y aceptar la versión protectora si el día no sale limpio."
+    if linked_workout:
+        kind = str(linked_workout.get("session_kind") or "other")
+        mapping = {
+            "recovery": "Absorber carga y proteger tejido sin buscar estímulo extra.",
+            "easy": "Sumar continuidad con coste controlado y ritmo conversacional.",
+            "quality": "Estimular calidad sin salirte del margen que permite el estado actual.",
+            "long_run": "Construir durabilidad sin convertir la sesión en un desgaste grande.",
+            "strength": "Consolidar fuerza útil sin dejar fatiga residual alta.",
+            "race": "Ejecutar con control y priorizar el objetivo competitivo del día.",
+        }
+        return mapping.get(kind, "Mantener continuidad con una carga adecuada al contexto actual.")
+    description = str(row.get("description") or "").lower()
+    distance = str(row.get("distance") or "").lower()
+    if distance == "0 km" or "descanso" in description or "movilidad" in description:
+        return "Recuperar, descargar y preparar mejor la siguiente sesión útil."
+    if "rectas" in description or "ritmo" in str(row.get("target") or "").lower() or "bloques" in description:
+        return "Activar sin desbordar el coste de la semana."
+    if "carrera" in description or "edicion" in description:
+        return "Competir o ejecutar con control según el papel de la carrera dentro del bloque."
+    return "Sostener continuidad y no regalar fatiga innecesaria."
+
+
+def weekly_status_payload(block: dict[str, Any] | None, dashboard: dict[str, Any]) -> dict[str, Any]:
+    if not block:
+        return {"status": "unknown", "label": "Sin lectura", "tone": "", "summary": "No hay datos suficientes para valorar la semana."}
+    adherence = float(block.get("adherence_pct") or 0.0)
+    skipped = int(block.get("skipped_sessions") or 0)
+    reprogrammed = int(block.get("reprogrammed_sessions") or 0)
+    decision = dashboard.get("decision", {}) if isinstance(dashboard.get("decision"), dict) else {}
+    protection_mode = dashboard.get("protection_mode", {}) if isinstance(dashboard.get("protection_mode"), dict) else {}
+    status = "green"
+    label = "Cumplimiento alto"
+    summary = "La semana se está sosteniendo bien con el contexto actual."
+    if protection_mode.get("active") or str(decision.get("status") or "") == "red":
+        status = "yellow"
+        label = "Semana protegida"
+        summary = "La prioridad es respetar el contexto de protección más que perseguir cumplimiento bruto."
+    if adherence < 60.0 or skipped >= 2:
+        status = "red"
+        label = "Cumplimiento frágil"
+        summary = "Se están acumulando demasiadas pérdidas o desvíos para considerar la semana estable."
+    elif adherence < 85.0 or reprogrammed >= 1 or str(decision.get("status") or "") == "yellow":
+        status = "yellow"
+        label = "Cumplimiento vigilado"
+        summary = "La semana sigue viva, pero ya necesita ajustes o más margen de ejecución."
+    return {"status": status, "label": label, "tone": "ok" if status == "green" else "warn" if status in {"yellow", "red"} else "", "summary": summary}
+
+
+def executive_week_summary(rows: list[dict[str, Any]], dashboard: dict[str, Any], plan_vs_reality: dict[str, Any]) -> dict[str, Any]:
+    workouts = [row.get("linked_workout") for row in rows if isinstance(row.get("linked_workout"), dict)]
+    planned_total_km = round(sum(workout_distance_km(item) for item in workouts if isinstance(item, dict)), 2)
+    planned_total_duration_s = sum(int((item.get("payload", {}) if isinstance(item.get("payload"), dict) else {}).get("estimated_duration_s") or 0) for item in workouts if isinstance(item, dict))
+    planned_quality_sessions = sum(1 for item in workouts if isinstance(item, dict) and item.get("session_kind") == "quality")
+    planned_total_sessions = len(workouts)
+    block = (plan_vs_reality or {}).get("block") if isinstance(plan_vs_reality, dict) else None
+    completed_sessions = int((block or {}).get("completed_sessions") or 0)
+    remaining_sessions = max(0, planned_total_sessions - completed_sessions)
+    completed_km = float((block or {}).get("actual_km") or 0.0)
+    completion_pct = round((completed_sessions / planned_total_sessions) * 100.0, 1) if planned_total_sessions else 0.0
+    weekly_status = weekly_status_payload(block, dashboard)
+    return {
+        "goal_sentence": weekly_goal_sentence(dashboard, rows),
+        "planned_total_km": planned_total_km,
+        "planned_total_duration": format_duration(planned_total_duration_s),
+        "planned_quality_sessions": planned_quality_sessions,
+        "planned_total_sessions": planned_total_sessions,
+        "completed_sessions": completed_sessions,
+        "remaining_sessions": remaining_sessions,
+        "completed_km": round(completed_km, 2),
+        "completion_pct": completion_pct,
+        "adherence_pct": float((block or {}).get("adherence_pct") or 0.0),
+        "weekly_status": weekly_status,
+    }
+
+
 def week_page_data() -> dict[str, Any]:
     path = ACTIVE_WEEK_PATH
     content = read_text(path)
     rows = parse_week_table(content)
     start_date, end_date = parse_week_date_window(content)
+    title = active_week_title(content)
     dashboard = dashboard_payload()
+    plan_vs_reality = plan_vs_reality_summary(start_date, end_date, title)
     planned_by_date = {item.get("date"): item for item in planned_workouts(dashboard) if item.get("date")}
     reviews_by_date = {item.get("date"): item for item in completed_reviews() if item.get("date")}
     enriched_rows: list[dict[str, Any]] = []
@@ -1678,12 +2349,15 @@ def week_page_data() -> dict[str, Any]:
                 "linked_workout": linked_workout,
                 "linked_review": linked_review,
                 "replan": replan,
+                "focus": session_focus(row, linked_workout, replan),
             }
         )
     return {
         "exists": path.exists(),
         "content": content,
         "rows": enriched_rows,
+        "executive_summary": executive_week_summary(enriched_rows, dashboard, plan_vs_reality),
+        "plan_vs_reality": plan_vs_reality,
         "pdf_exists": (ROOT / "planning" / "weeks" / "generated" / "semana_actual.pdf").exists(),
     }
 
@@ -2050,6 +2724,197 @@ def progress_metrics() -> list[dict[str, Any]]:
     return metrics
 
 
+def parse_local_summary_date(value: Any) -> date | None:
+    if not value:
+        return None
+    return parse_iso_date(str(value).split(" ")[0])
+
+
+def running_activity_summaries() -> list[dict[str, Any]]:
+    items: list[dict[str, Any]] = []
+    for path in sorted(GARMIN_ACTIVITY_DIR.glob("*/summary.json")):
+        try:
+            payload = load_json(path)
+        except (OSError, json.JSONDecodeError):
+            continue
+        activity_type = str(((payload.get("activityType") or {}) if isinstance(payload.get("activityType"), dict) else {}).get("typeKey") or "")
+        if activity_type not in {"running", "trail_running"}:
+            continue
+        activity_date = parse_local_summary_date(payload.get("startTimeLocal") or payload.get("startTimeGMT"))
+        if not activity_date:
+            continue
+        distance_m = float(payload.get("distance") or 0.0)
+        duration_s = float(payload.get("duration") or payload.get("movingDuration") or 0.0)
+        if distance_m <= 0 or duration_s <= 0:
+            continue
+        items.append(
+            {
+                "date": activity_date,
+                "name": payload.get("activityName") or path.parent.name,
+                "distance_km": distance_m / 1000.0,
+                "duration_s": duration_s,
+                "pace_s_per_km": (duration_s * 1000.0 / distance_m) if distance_m else None,
+                "avg_hr": float(payload.get("averageHR") or 0.0) or None,
+                "activity_id": payload.get("activityId"),
+            }
+        )
+    items.sort(key=lambda item: item["date"])
+    return items
+
+
+def activity_window_stats(activities: list[dict[str, Any]], start: date, end: date, min_distance_km: float = 4.0, max_distance_km: float = 12.5) -> dict[str, Any]:
+    window = [
+        item for item in activities
+        if start <= item["date"] <= end and min_distance_km <= float(item.get("distance_km") or 0.0) <= max_distance_km
+    ]
+    total_distance = sum(float(item.get("distance_km") or 0.0) for item in window)
+    total_duration = sum(float(item.get("duration_s") or 0.0) for item in window)
+    weighted_hr_num = sum(float(item.get("avg_hr") or 0.0) * float(item.get("duration_s") or 0.0) for item in window if item.get("avg_hr") is not None)
+    avg_hr = weighted_hr_num / total_duration if total_duration else None
+    pace = total_duration / total_distance if total_distance else None
+    return {
+        "count": len(window),
+        "avg_pace_s_per_km": pace,
+        "avg_hr": avg_hr,
+        "avg_distance_km": (total_distance / len(window)) if window else None,
+        "items": window,
+    }
+
+
+def feedback_window_stats(feedback_map: dict[str, dict[str, Any]], start: date, end: date) -> dict[str, Any]:
+    values: list[int] = []
+    for payload in feedback_map.values():
+        if not isinstance(payload, dict):
+            continue
+        feedback_date = parse_iso_date(str(payload.get("date") or ""))
+        if not feedback_date or not (start <= feedback_date <= end):
+            continue
+        athlete_feedback = payload.get("athlete_feedback", {}) if isinstance(payload.get("athlete_feedback"), dict) else {}
+        rpe = athlete_feedback.get("rpe")
+        if rpe is None:
+            continue
+        values.append(int(rpe))
+    return {"count": len(values), "avg_rpe": (sum(values) / len(values)) if values else None}
+
+
+def progress_trend_insights(dashboard: dict[str, Any]) -> dict[str, Any]:
+    activities = running_activity_summaries()
+    feedback_map = completed_feedback_items()
+    as_of = parse_iso_date(str(dashboard.get("as_of") or date.today().isoformat())) or date.today()
+    recent_start = as_of - timedelta(days=27)
+    previous_start = as_of - timedelta(days=55)
+    previous_end = as_of - timedelta(days=28)
+    recent = activity_window_stats(activities, recent_start, as_of)
+    previous = activity_window_stats(activities, previous_start, previous_end)
+    recent_feedback = feedback_window_stats(feedback_map, recent_start, as_of)
+    previous_feedback = feedback_window_stats(feedback_map, previous_start, previous_end)
+
+    pace_delta = None
+    if recent.get("avg_pace_s_per_km") is not None and previous.get("avg_pace_s_per_km") is not None:
+        pace_delta = float(previous["avg_pace_s_per_km"]) - float(recent["avg_pace_s_per_km"])
+    hr_delta = None
+    if recent.get("avg_hr") is not None and previous.get("avg_hr") is not None:
+        hr_delta = float(previous["avg_hr"]) - float(recent["avg_hr"])
+    rpe_delta = None
+    if recent_feedback.get("avg_rpe") is not None and previous_feedback.get("avg_rpe") is not None:
+        rpe_delta = float(previous_feedback["avg_rpe"]) - float(recent_feedback["avg_rpe"])
+
+    comparison_state = "igual"
+    comparison_summary = "No hay suficiente cambio consolidado para afirmar una mejora o una caída clara respecto a hace 4 semanas."
+    if pace_delta is not None:
+        if pace_delta >= 8.0 and (hr_delta is None or hr_delta >= -3.0):
+            comparison_state = "mejor"
+            comparison_summary = "Vas mejor que hace 4 semanas: en los rodajes comparables recientes sale más ritmo para un coste similar."
+        elif pace_delta <= -8.0 or (hr_delta is not None and hr_delta <= -6.0):
+            comparison_state = "peor"
+            comparison_summary = "Vas peor que hace 4 semanas: el ritmo comparable ha caído o el coste cardiaco ha subido demasiado."
+
+    trend_rows = [
+        {
+            "label": "Ritmo comparable",
+            "current": format_pace(recent.get("avg_pace_s_per_km")),
+            "previous": format_pace(previous.get("avg_pace_s_per_km")),
+            "delta": f"{pace_delta:+.0f} s/km" if pace_delta is not None else "Sin base",
+            "tone": "ok" if pace_delta is not None and pace_delta > 0 else "warn" if pace_delta is not None and pace_delta < 0 else "",
+            "detail": f"Rodajes comparables 4-12.5 km · {recent.get('count', 0)} recientes vs {previous.get('count', 0)} previos.",
+        },
+        {
+            "label": "FC comparable",
+            "current": f"{round(float(recent['avg_hr']))} ppm" if recent.get("avg_hr") is not None else "Sin base",
+            "previous": f"{round(float(previous['avg_hr']))} ppm" if previous.get("avg_hr") is not None else "Sin base",
+            "delta": f"{hr_delta:+.0f} ppm" if hr_delta is not None else "Sin base",
+            "tone": "ok" if hr_delta is not None and hr_delta > 0 else "warn" if hr_delta is not None and hr_delta < 0 else "",
+            "detail": "Menor FC para esfuerzos comparables suele apuntar a mejor eficiencia.",
+        },
+        {
+            "label": "RPE subjetivo",
+            "current": f"{recent_feedback['avg_rpe']:.1f}/10" if recent_feedback.get("avg_rpe") is not None else "Sin feedback",
+            "previous": f"{previous_feedback['avg_rpe']:.1f}/10" if previous_feedback.get("avg_rpe") is not None else "Sin feedback",
+            "delta": f"{rpe_delta:+.1f}" if rpe_delta is not None else "Pendiente",
+            "tone": "ok" if rpe_delta is not None and rpe_delta > 0 else "warn" if rpe_delta is not None and rpe_delta < 0 else "",
+            "detail": "Esta métrica mejorará cuando haya más feedback subjetivo registrado.",
+        },
+    ]
+
+    comparable_sessions: list[dict[str, Any]] = []
+    buckets = [
+        ("5k-ish", 4.0, 6.5),
+        ("10k-ish", 8.0, 12.5),
+        ("tirada larga", 12.5, 40.0),
+    ]
+    recent_90 = [item for item in activities if item["date"] >= as_of - timedelta(days=89)]
+    for label, min_distance, max_distance in buckets:
+        candidates = [item for item in recent_90 if min_distance <= float(item.get("distance_km") or 0.0) <= max_distance]
+        if not candidates:
+            continue
+        best = min(candidates, key=lambda item: float(item.get("pace_s_per_km") or 10**9))
+        comparable_sessions.append(
+            {
+                "label": label,
+                "date": best["date"].isoformat(),
+                "name": best.get("name") or label,
+                "distance": f"{float(best.get('distance_km') or 0.0):.1f} km",
+                "pace": format_pace(best.get("pace_s_per_km")),
+                "avg_hr": f"{round(float(best['avg_hr']))} ppm" if best.get("avg_hr") is not None else "-",
+                "url": garmin_activity_url(best.get("activity_id")),
+            }
+        )
+
+    block_title = str(dashboard.get("active_context", {}).get("active_block") or "Bloque activo")
+    weekly_volume = dashboard.get("weekly_volume", []) if isinstance(dashboard.get("weekly_volume"), list) else []
+    recent_weekly = weekly_volume[-4:]
+    previous_weekly = weekly_volume[-8:-4]
+    recent_avg_km = (sum(float(item.get("km") or 0.0) for item in recent_weekly) / len(recent_weekly)) if recent_weekly else None
+    previous_avg_km = (sum(float(item.get("km") or 0.0) for item in previous_weekly) / len(previous_weekly)) if previous_weekly else None
+    form_blocks = [
+        {
+            "label": "Hace 8-4 semanas",
+            "status": "Base de comparación",
+            "metric": f"{previous_avg_km:.1f} km/sem" if previous_avg_km is not None else "Sin base",
+            "detail": "Promedio semanal del bloque inmediatamente anterior de 4 semanas.",
+        },
+        {
+            "label": "Últimas 4 semanas",
+            "status": "Forma reciente",
+            "metric": f"{recent_avg_km:.1f} km/sem" if recent_avg_km is not None else "Sin base",
+            "detail": "Volumen reciente medio combinado con la lectura actual del dashboard.",
+        },
+        {
+            "label": strip_markdown_ticks(block_title),
+            "status": dashboard.get("decision", {}).get("status_label") or "Sin decisión",
+            "metric": format_duration(dashboard.get("performance_estimate", {}).get("current_10k_estimate_s")) if dashboard.get("performance_estimate", {}).get("current_10k_estimate_s") else "Sin estimación",
+            "detail": "Estimación de forma operativa del bloque actual usando la decisión del coach y la predicción vigente.",
+        },
+    ]
+
+    return {
+        "trends": trend_rows,
+        "comparison_4w": {"state": comparison_state, "summary": comparison_summary},
+        "comparable_sessions": comparable_sessions[:3],
+        "form_blocks": form_blocks,
+    }
+
+
 def progress_page_data() -> dict[str, Any]:
     dashboard = dashboard_payload()
     master_plan = master_plan_page_data()
@@ -2058,6 +2923,7 @@ def progress_page_data() -> dict[str, Any]:
     protection_mode = dashboard.get("protection_mode", {}) if isinstance(dashboard.get("protection_mode"), dict) else {}
     response_patterns = dashboard.get("response_patterns", {}) if isinstance(dashboard.get("response_patterns"), dict) else {}
     goal_race = dashboard.get("active_context", {}).get("goal_race") if isinstance(dashboard.get("active_context"), dict) else None
+    insights = progress_trend_insights(dashboard)
 
     headline = goal_gates.get("status_label") or "Progreso no disponible"
     summary = goal_gates.get("summary") or "Todavia no hay una lectura suficiente del progreso contra el objetivo."
@@ -2102,12 +2968,138 @@ def progress_page_data() -> dict[str, Any]:
         "focus_items": focus_items,
         "protection_mode": protection_mode,
         "master_plan": master_plan,
+        "insights": insights,
+    }
+
+
+def fueling_page_data() -> dict[str, Any]:
+    payload = load_or_build_fueling_payload()
+    races = payload.get("races", []) if isinstance(payload.get("races"), list) else []
+    workouts = payload.get("workouts", []) if isinstance(payload.get("workouts"), list) else []
+    upcoming_races = sorted(
+        [item for item in races if parse_iso_date(item.get("date")) and parse_iso_date(item.get("date")) >= date.today()],
+        key=lambda item: item.get("date") or "",
+    )
+    hard_workouts = sorted(
+        [item for item in workouts if parse_iso_date(item.get("date")) and parse_iso_date(item.get("date")) >= date.today()],
+        key=lambda item: item.get("date") or "",
+    )
+    return {
+        "generated_at": payload.get("generated_at"),
+        "athlete": payload.get("athlete", {}),
+        "supplements": payload.get("supplements", []),
+        "upcoming_races": upcoming_races,
+        "hard_workouts": hard_workouts,
+        "all": payload,
+    }
+
+
+def decision_center_page_data() -> dict[str, Any]:
+    dashboard = dashboard_payload()
+    today_plan = today_plan_data()
+    decision = dashboard.get("decision", {}) if isinstance(dashboard.get("decision"), dict) else {}
+    guidance = decision.get("session_guidance", {}) if isinstance(decision.get("session_guidance"), dict) else {}
+    protection_mode = dashboard.get("protection_mode", {}) if isinstance(dashboard.get("protection_mode"), dict) else {}
+    triggers = dashboard.get("adaptation_triggers", {}).get("triggers", []) if isinstance(dashboard.get("adaptation_triggers"), dict) else []
+    active_trigger_items = [item for item in triggers if isinstance(item, dict) and item.get("active")]
+    upcoming = [
+        item for item in planned_workouts()
+        if parse_iso_date(item.get("date")) and parse_iso_date(item.get("date")) >= date.today()
+    ]
+    upcoming.sort(key=lambda item: (item.get("date") or "", item.get("name") or ""))
+    next_workout = next((item for item in upcoming if item.get("slug")), None)
+    status = str(decision.get("status") or "unknown").lower()
+
+    impact_reasons: list[dict[str, Any]] = []
+    for index, reason in enumerate(decision.get("reasons", []) if isinstance(decision.get("reasons"), list) else [], start=1):
+        impact_reasons.append({"rank": index, "label": str(reason), "tone": "warn" if index == 1 else ""})
+    for item in active_trigger_items[:3]:
+        impact_reasons.append({"rank": len(impact_reasons) + 1, "label": str(item.get("summary") or item.get("label") or ""), "tone": "warn"})
+
+    changes_this_week: list[str] = []
+    if status == "red":
+        changes_this_week.append("Quitar o sustituir la siguiente sesion de calidad por trabajo facil o recuperacion.")
+        changes_this_week.append("No aumentar volumen ni intensidad hasta que el contexto deje de estar en rojo.")
+    elif status == "yellow":
+        changes_this_week.append("Mantener la estructura, pero sin microprogresion ni carga extra.")
+        changes_this_week.append("Compactar cualquier sesion exigente si el dia no llega limpio.")
+    elif status == "green":
+        changes_this_week.append("Mantener la semana actual y progresar solo de forma pequena y controlada.")
+    if protection_mode.get("active") and protection_mode.get("guidance_note"):
+        changes_this_week.append(str(protection_mode.get("guidance_note")))
+    if today_plan.get("daily_checkin", {}).get("decision"):
+        changes_this_week.append(f"Check-in de hoy: {today_plan['daily_checkin']['decision'].get('headline')}")
+    changes_this_week = list(dict.fromkeys([item for item in changes_this_week if item]))[:5]
+
+    prioritize_kinds = {"easy", "recovery", "strength"}
+    avoid_kinds = set()
+    if status == "green":
+        prioritize_kinds = {"quality", "long_run", "easy"}
+    elif status == "yellow":
+        prioritize_kinds = {"easy", "recovery", "strength", "long_run"}
+        avoid_kinds = {"quality"}
+    else:
+        avoid_kinds = {"quality", "long_run"}
+
+    prioritized_sessions = [item for item in upcoming if item.get("session_kind") in prioritize_kinds][:4]
+    avoided_sessions = [item for item in upcoming if item.get("session_kind") in avoid_kinds][:4]
+    if not prioritized_sessions and next_workout:
+        prioritized_sessions = [next_workout]
+
+    direct_actions: list[dict[str, Any]] = [
+        {"type": "link", "label": "Abrir plan de hoy", "url": today_plan.get("links", {}).get("day_url") or "/", "tone": ""},
+        {"type": "link", "label": "Abrir semana operativa", "url": "/planned-workouts?view=week", "tone": ""},
+        {"type": "link", "label": "Ver dashboard completo", "url": "/dashboard", "tone": ""},
+    ]
+    if next_workout:
+        direct_actions.append(
+            {"type": "link", "label": f"Abrir {next_workout.get('name')}", "url": f"/planned-workouts/{next_workout.get('slug')}", "tone": ""}
+        )
+        if status in {"red", "yellow"}:
+            direct_actions.append(
+                {
+                    "type": "form",
+                    "label": "Suavizar proxima sesion",
+                    "url": f"/planned-workouts/{next_workout.get('slug')}/replan",
+                    "strategy": "reduce_keep_goal",
+                    "next_url": "/decision",
+                    "tone": "warn",
+                }
+            )
+        if status == "red":
+            direct_actions.append(
+                {
+                    "type": "form",
+                    "label": "Mover proxima sesion",
+                    "url": f"/planned-workouts/{next_workout.get('slug')}/replan",
+                    "strategy": "move_next_day",
+                    "next_url": "/decision",
+                    "tone": "warn",
+                }
+            )
+
+    return {
+        "dashboard": dashboard,
+        "today_plan": today_plan,
+        "current_decision": {
+            "status": status,
+            "status_label": decision.get("status_label") or "Sin decision",
+            "action_label": decision.get("action_label") or "Sin accion definida",
+            "recommendation": decision.get("recommendation") or "Sin recomendacion disponible.",
+        },
+        "impact_reasons": impact_reasons,
+        "changes_this_week": changes_this_week,
+        "prioritized_sessions": prioritized_sessions,
+        "avoided_sessions": avoided_sessions,
+        "direct_actions": direct_actions,
+        "guidance": guidance,
     }
 
 
 def planned_workouts(dashboard: dict[str, Any] | None = None) -> list[dict[str, Any]]:
     workouts: list[dict[str, Any]] = []
     actions = planned_workout_actions()
+    replans = planned_workout_replans()
     retry_states = garmin_retry_states()
     dashboard = dashboard or dashboard_payload()
     reviews_by_date = {item.get("date"): item for item in completed_reviews() if item.get("date")}
@@ -2115,16 +3107,19 @@ def planned_workouts(dashboard: dict[str, Any] | None = None) -> list[dict[str, 
         if path.name == "library_run_templates.yaml" or path.name == "workout_template.yaml":
             continue
         payload = load_yaml(path).get("workout", {})
-        schedule_date = str(payload.get("schedule_date") or "")
-        upload = planned_upload_data(path.stem, schedule_date) if schedule_date else {}
+        replan_state = replans.get(path.stem) if isinstance(replans.get(path.stem), dict) else None
+        effective_payload = apply_replan_to_payload(payload, replan_state)
+        source_schedule_date = str(payload.get("schedule_date") or "")
+        schedule_date = str(effective_payload.get("schedule_date") or payload.get("schedule_date") or "")
+        upload = planned_upload_data(path.stem, source_schedule_date) if source_schedule_date else {}
         uploaded_response = upload.get("uploaded_response", {})
         scheduled_response = upload.get("scheduled_response", {})
         workout_id = uploaded_response.get("workoutId") or scheduled_response.get("workout", {}).get("workoutId")
         scheduled_id = scheduled_response.get("workoutScheduleId")
-        kind, kind_label, color_class = classify_planned_workout(payload)
+        kind, kind_label, color_class = classify_planned_workout(effective_payload)
         action_state = actions.get(path.stem) if isinstance(actions.get(path.stem), dict) else None
         retry_state = retry_states.get(path.stem) if isinstance(retry_states.get(path.stem), dict) else None
-        workout_url = garmin_scheduled_workout_url(scheduled_id) or garmin_workout_url(workout_id, payload.get("sport"))
+        workout_url = garmin_scheduled_workout_url(scheduled_id) or garmin_workout_url(workout_id, effective_payload.get("sport"))
         linked_review = reviews_by_date.get(schedule_date)
         replan = planned_workout_replan_data(
             {
@@ -2132,6 +3127,7 @@ def planned_workouts(dashboard: dict[str, Any] | None = None) -> list[dict[str, 
                 "date": schedule_date,
                 "session_kind": kind,
                 "action_state": action_state,
+                "replan_state": replan_state,
             },
             dashboard,
             linked_review,
@@ -2139,12 +3135,12 @@ def planned_workouts(dashboard: dict[str, Any] | None = None) -> list[dict[str, 
         workouts.append(
             {
                 "slug": path.stem,
-                "name": payload.get("name") or path.stem,
+                "name": effective_payload.get("name") or path.stem,
                 "date": schedule_date,
-                "sport": payload.get("sport") or "-",
-                "description": payload.get("description") or "",
-                "estimated_duration": format_duration(payload.get("estimated_duration_s")),
-                "step_count": len(payload.get("steps") or []),
+                "sport": effective_payload.get("sport") or "-",
+                "description": effective_payload.get("description") or "",
+                "estimated_duration": format_duration(effective_payload.get("estimated_duration_s")),
+                "step_count": len(effective_payload.get("steps") or []),
                 "garmin_workout_id": workout_id,
                 "garmin_workout_url": workout_url,
                 "garmin_scheduled_id": scheduled_id,
@@ -2157,7 +3153,9 @@ def planned_workouts(dashboard: dict[str, Any] | None = None) -> list[dict[str, 
                 "action_state": action_state,
                 "action_badge": action_display_data((action_state or {}).get("action")),
                 "replan": replan,
-                "payload": payload,
+                "replan_state": replan_state,
+                "original_payload": payload,
+                "payload": effective_payload,
             }
         )
     workouts.sort(key=lambda item: (item["date"], item["name"]))
@@ -2167,6 +3165,8 @@ def planned_workouts(dashboard: dict[str, Any] | None = None) -> list[dict[str, 
 def planned_workout_detail(slug: str) -> dict[str, Any] | None:
     for item in planned_workouts():
         if item["slug"] == slug:
+            fueling = workout_fueling_lookup(load_or_build_fueling_payload(), slug)
+            item["fueling"] = fueling
             return item
     return None
 
@@ -2220,11 +3220,163 @@ def completed_review_detail(slug: str) -> dict[str, Any] | None:
     return None
 
 
+def risk_tone_from_score(score: float | int | None) -> str:
+    if score is None:
+        return ""
+    value = float(score)
+    if value >= 4.0:
+        return "warn"
+    if value >= 2.0:
+        return ""
+    return "ok"
+
+
+def pain_risk_page_data() -> dict[str, Any]:
+    dashboard = dashboard_payload()
+    shin_tracker = load_optional_yaml(ROOT / "athlete" / "shin_tracker.yaml").get("shin_tracker", {})
+    shin_entries = shin_tracker.get("entries", []) if isinstance(shin_tracker.get("entries"), list) else []
+    feedback_items = completed_feedback_items()
+    timeline: list[dict[str, Any]] = []
+
+    for entry in shin_entries:
+        if not isinstance(entry, dict):
+            continue
+        pain_values = [entry.get("pain_during"), entry.get("pain_after"), entry.get("pain_next_morning")]
+        numeric = [float(value) for value in pain_values if value is not None]
+        max_pain = max(numeric) if numeric else None
+        timeline.append(
+            {
+                "date": iso_date_string(entry.get("date")),
+                "source": "shin_tracker",
+                "label": "Tracker de periostio",
+                "summary": str(entry.get("notes") or "Sin nota adicional."),
+                "score": max_pain,
+                "tone": risk_tone_from_score(max_pain),
+                "meta": [
+                    f"Durante {entry.get('pain_during', '-')}",
+                    f"Despues {entry.get('pain_after', '-')}",
+                    f"Mañana {entry.get('pain_next_morning', '-')}",
+                    f"Superficie {entry.get('surface') or '-'}",
+                    f"Zapatillas {entry.get('shoes') or '-'}",
+                ],
+            }
+        )
+
+    for slug, payload in feedback_items.items():
+        if not isinstance(payload, dict):
+            continue
+        athlete_feedback = payload.get("athlete_feedback", {}) if isinstance(payload.get("athlete_feedback"), dict) else {}
+        pain_level = athlete_feedback.get("pain_level")
+        if pain_level is None:
+            continue
+        review = completed_review_detail(slug)
+        timeline.append(
+            {
+                "date": iso_date_string(payload.get("date")),
+                "source": "feedback",
+                "label": "Feedback post-sesion",
+                "summary": feedback_summary(payload) or "Feedback subjetivo registrado.",
+                "score": float(pain_level),
+                "tone": risk_tone_from_score(pain_level),
+                "meta": [
+                    f"Sesion {review.get('session_kind_label') if review else '-'}",
+                    f"Localizacion {athlete_feedback.get('pain_location') or '-'}",
+                    f"Cumplimiento {FEEDBACK_COMPLIANCE_LABELS.get(str(athlete_feedback.get('compliance') or ''), athlete_feedback.get('compliance') or '-')}",
+                ],
+            }
+        )
+
+    timeline.sort(key=lambda item: (item.get("date") or "", item.get("source") or ""), reverse=True)
+
+    recent_scores = [float(item["score"]) for item in timeline[:3] if item.get("score") is not None]
+    alerts: list[dict[str, Any]] = []
+    if recent_scores:
+        latest = recent_scores[0]
+        if latest >= 4.0:
+            alerts.append({"label": "Dolor actual alto", "summary": f"La ultima señal de dolor es {latest:.0f}/10 y activa protección clara.", "tone": "warn"})
+        elif latest >= 3.0:
+            alerts.append({"label": "Dolor a vigilar", "summary": f"La ultima señal de dolor es {latest:.0f}/10; no conviene progresar carga.", "tone": "warn"})
+        if len(recent_scores) >= 2 and recent_scores[0] >= recent_scores[1] and recent_scores[0] >= 3.0:
+            alerts.append({"label": "Tendencia no resuelta", "summary": "Las ultimas señales no muestran mejora clara del dolor.", "tone": "warn"})
+        if len(recent_scores) >= 3 and sum(recent_scores) / len(recent_scores) >= 3.0:
+            alerts.append({"label": "Promedio reciente elevado", "summary": "La media reciente de molestias sigue por encima de la zona segura.", "tone": "warn"})
+    if not alerts:
+        alerts.append({"label": "Sin alerta fuerte", "summary": "No hay una tendencia reciente que obligue a escalar la protección por sí sola.", "tone": "ok"})
+
+    feedback_with_review: list[tuple[dict[str, Any], dict[str, Any] | None]] = []
+    for slug, payload in feedback_items.items():
+        if isinstance(payload, dict):
+            feedback_with_review.append((payload, completed_review_detail(slug)))
+
+    session_corr: dict[str, list[float]] = {}
+    for payload, review in feedback_with_review:
+        athlete_feedback = payload.get("athlete_feedback", {}) if isinstance(payload.get("athlete_feedback"), dict) else {}
+        pain_level = athlete_feedback.get("pain_level")
+        if pain_level is None or not review:
+            continue
+        key = review.get("session_kind_label") or "Otra sesión"
+        session_corr.setdefault(str(key), []).append(float(pain_level))
+
+    surface_corr: dict[str, list[float]] = {}
+    shoes_corr: dict[str, list[float]] = {}
+    for entry in shin_entries:
+        if not isinstance(entry, dict):
+            continue
+        pain_values = [entry.get("pain_during"), entry.get("pain_after"), entry.get("pain_next_morning")]
+        numeric = [float(value) for value in pain_values if value is not None]
+        if not numeric:
+            continue
+        avg_pain = sum(numeric) / len(numeric)
+        if entry.get("surface"):
+            surface_corr.setdefault(str(entry.get("surface")), []).append(avg_pain)
+        if entry.get("shoes"):
+            shoes_corr.setdefault(str(entry.get("shoes")), []).append(avg_pain)
+
+    def correlation_rows(source: dict[str, list[float]], empty_label: str) -> list[dict[str, Any]]:
+        rows = [
+            {"label": label, "count": len(values), "avg_score": round(sum(values) / len(values), 1), "tone": risk_tone_from_score(sum(values) / len(values))}
+            for label, values in source.items() if values
+        ]
+        rows.sort(key=lambda item: (item["avg_score"], item["count"]), reverse=True)
+        if rows:
+            return rows
+        return [{"label": empty_label, "count": 0, "avg_score": None, "tone": ""}]
+
+    protection_mode = dashboard.get("protection_mode", {}) if isinstance(dashboard.get("protection_mode"), dict) else {}
+    rules = [
+        {
+            "label": protection_mode.get("label") or "Protección actual",
+            "summary": protection_mode.get("allowed_progression") or "Sin regla automática activa.",
+            "tone": protection_mode.get("tone") or "",
+        },
+        {
+            "label": "Regla de dolor 3/10",
+            "summary": "Con 3/10 o reacción suave al día siguiente no se debe aumentar carga.",
+            "tone": "warn",
+        },
+        {
+            "label": "Regla de dolor 4/10",
+            "summary": "Con 4/10 o más se debe reducir impacto, quitar calidad o descansar.",
+            "tone": "warn",
+        },
+    ]
+
+    return {
+        "dashboard": dashboard,
+        "timeline": timeline,
+        "alerts": alerts,
+        "session_correlations": correlation_rows(session_corr, "Aun no hay feedback enlazado por tipo de sesión."),
+        "surface_correlations": correlation_rows(surface_corr, "Aun no hay suficientes superficies registradas."),
+        "shoes_correlations": correlation_rows(shoes_corr, "Aun no hay suficientes zapatillas registradas en el tracker."),
+        "rules": rules,
+    }
+
+
 def athlete_page_data() -> dict[str, Any]:
     profile_capability = ensure_fresh("athlete_profile")
     profile = load_optional_yaml(ROOT / "athlete" / "profile.yaml").get("athlete", {})
     health = load_optional_yaml(ROOT / "athlete" / "health.yaml").get("health", {})
-    injury = load_optional_yaml(ROOT / "athlete" / "injury_tracker.yaml").get("injury_tracker", {})
+    injury = load_optional_yaml(ROOT / "athlete" / "shin_tracker.yaml").get("shin_tracker", {})
     shoes = load_optional_yaml(ROOT / "athlete" / "shoes.yaml").get("shoes", [])
     entries = list(reversed(injury.get("entries") or []))
     capability_messages = [message for message in [profile_capability.warning] if message]
@@ -2233,6 +3385,7 @@ def athlete_page_data() -> dict[str, Any]:
         "health": health,
         "injury": injury,
         "entries": entries,
+        "risk": pain_risk_page_data(),
         "shoes": shoes if isinstance(shoes, list) else [],
         "capability_messages": capability_messages,
     }
@@ -2252,13 +3405,19 @@ def races_page_data() -> list[dict[str, Any]]:
         linked_review = reviews_by_date.get(race_date)
         races.append(
             {
+                "id": payload.get("id") or path.stem,
                 "name": payload.get("name") or path.stem,
                 "date": race_date,
+                "priority_code": str(payload.get("priority") or "").upper(),
                 "priority": priority_label(payload.get("priority")),
                 "distance_km": payload.get("distance_km") or payload.get("distance") or "-",
                 "elevation_gain_m": payload.get("elevation_gain_m") or "-",
                 "location": payload.get("location") or "-",
                 "goal": goal_value or "-",
+                "goal_type": goal.get("type") if isinstance(goal, dict) else None,
+                "goal_target_pace": goal.get("target_pace") if isinstance(goal, dict) else None,
+                "notes": payload.get("notes") or "",
+                "coaching_note": payload.get("coaching_note") or "",
                 "completed_review_slug": linked_review.get("slug") if linked_review else None,
                 "completed_review_score": linked_review.get("score") if linked_review else None,
                 "completed_review_pace": linked_review.get("pace") if linked_review else None,
@@ -2275,6 +3434,117 @@ def races_by_day() -> dict[str, list[dict[str, Any]]]:
         if race.get("date"):
             items.setdefault(race["date"], []).append(race)
     return items
+
+
+def parse_race_distance_km(value: Any) -> float | None:
+    text = str(value or "").strip().lower().replace(",", ".")
+    if not text or text == "-":
+        return None
+    text = text.replace("km", "").replace("k", "")
+    try:
+        return float(text)
+    except ValueError:
+        return None
+
+
+def riegel_prediction(source_time_s: float | None, source_distance_km: float, target_distance_km: float | None) -> float | None:
+    if source_time_s is None or source_time_s <= 0 or not target_distance_km or target_distance_km <= 0:
+        return None
+    return float(source_time_s) * (float(target_distance_km) / float(source_distance_km)) ** 1.06
+
+
+def countdown_label(days_to_race: int) -> str:
+    if days_to_race < 0:
+        return "Carrera pasada"
+    if days_to_race == 0:
+        return "Hoy"
+    if days_to_race == 1:
+        return "Mañana"
+    return f"D-{days_to_race}"
+
+
+def taper_monitor_payload(days_to_race: int | None, dashboard: dict[str, Any]) -> dict[str, Any]:
+    decision = dashboard.get("decision", {}) if isinstance(dashboard.get("decision"), dict) else {}
+    protection_mode = dashboard.get("protection_mode", {}) if isinstance(dashboard.get("protection_mode"), dict) else {}
+    if days_to_race is None or days_to_race < 0:
+        return {"label": "Cerrada", "tone": "", "summary": "La carrera ya ha pasado o no tiene fecha operativa."}
+    if days_to_race > 21:
+        return {"label": "Fuera de taper", "tone": "", "summary": "Todavía no toca afinar; la prioridad sigue siendo construir o consolidar."}
+    if protection_mode.get("active"):
+        return {"label": "Taper en riesgo", "tone": "warn", "summary": protection_mode.get("summary") or "El contexto actual no permite afinar de forma limpia."}
+    if str(decision.get("status") or "") == "red":
+        return {"label": "Taper tensionado", "tone": "warn", "summary": "La decisión actual obliga a proteger frescura y bajar coste antes de la carrera."}
+    if str(decision.get("status") or "") == "yellow" or days_to_race <= 14:
+        return {"label": "Taper vigilado", "tone": "warn", "summary": "Ya conviene evitar añadir carga que no aporte ejecución el día de carrera."}
+    return {"label": "Taper alineado", "tone": "ok", "summary": "La preparación llega razonablemente ordenada para seguir afinando."}
+
+
+def race_strategy_payload(race: dict[str, Any], predicted_time_s: float | None) -> dict[str, Any]:
+    target_pace = str(race.get("goal_target_pace") or "").strip()
+    goal_value = str(race.get("goal") or "").strip()
+    distance_km = parse_race_distance_km(race.get("distance_km"))
+    predicted_pace = (predicted_time_s / distance_km) if predicted_time_s and distance_km else None
+    anchor = target_pace or (format_pace(predicted_pace) if predicted_pace else "por sensaciones controladas")
+    return {
+        "anchor": anchor,
+        "opening": f"Salida controlada durante el primer 15-20% para no regalar pulso ni piernas antes de tiempo.",
+        "middle": f"Bloque central estable alrededor de {anchor}.",
+        "closing": "Último tramo progresivo solo si el coste sigue bajo control y no se rompe la técnica.",
+        "note": goal_value if goal_value and goal_value != "-" else "Usar la forma actual como techo realista, no el objetivo aspiracional si aún no está desbloqueado.",
+    }
+
+
+def race_checklist_payload(race_date: date | None) -> list[dict[str, str]]:
+    if not race_date:
+        return []
+    return [
+        {"when": (race_date - timedelta(days=7)).isoformat(), "label": "Revisar semana de carrera", "detail": "Cerrar la carga útil y evitar meter fatiga nueva."},
+        {"when": (race_date - timedelta(days=2)).isoformat(), "label": "Confirmar material", "detail": "Zapatillas, dorsal, previsión del recorrido y logística."},
+        {"when": (race_date - timedelta(days=1)).isoformat(), "label": "Activación ligera", "detail": "Mover piernas sin fatigar y dejar claro el plan de ritmo."},
+        {"when": race_date.isoformat(), "label": "Ejecución", "detail": "Calentar con margen y correr según estrategia, no por impulsos."},
+    ]
+
+
+def races_operational_page_data() -> dict[str, Any]:
+    dashboard = dashboard_payload()
+    fueling_payload = load_or_build_fueling_payload()
+    today = date.today()
+    races = races_page_data()
+    estimate_10k_s = dashboard.get("performance_estimate", {}).get("current_10k_estimate_s") if isinstance(dashboard.get("performance_estimate"), dict) else None
+    comparison = progress_trend_insights(dashboard).get("comparison_4w", {})
+    enriched: list[dict[str, Any]] = []
+    for race in races:
+        race_date = parse_iso_date(race.get("date"))
+        days_to_race = (race_date - today).days if race_date else None
+        distance_km = parse_race_distance_km(race.get("distance_km"))
+        predicted_time_s = riegel_prediction(float(estimate_10k_s) if estimate_10k_s is not None else None, 10.0, distance_km)
+        enriched.append(
+            {
+                **race,
+                "days_to_race": days_to_race,
+                "countdown": countdown_label(days_to_race) if days_to_race is not None else "Sin fecha",
+                "is_upcoming": bool(days_to_race is not None and days_to_race >= 0),
+                "predicted_time": format_duration(predicted_time_s) if predicted_time_s else "Sin predicción",
+                "predicted_pace": format_pace((predicted_time_s / distance_km) if predicted_time_s and distance_km else None),
+                "strategy": race_strategy_payload(race, predicted_time_s),
+                "taper": taper_monitor_payload(days_to_race, dashboard),
+                "checklist": race_checklist_payload(race_date),
+                "fueling": race_fueling_lookup(fueling_payload, str(race.get("id") or "")),
+            }
+        )
+    upcoming = [item for item in enriched if item.get("is_upcoming")]
+    completed = [item for item in enriched if not item.get("is_upcoming")]
+    upcoming.sort(key=lambda item: item.get("date") or "")
+    completed.sort(key=lambda item: item.get("date") or "", reverse=True)
+    next_race = upcoming[0] if upcoming else None
+    return {
+        "dashboard": dashboard,
+        "comparison_4w": comparison,
+        "next_race": next_race,
+        "upcoming": upcoming,
+        "completed": completed,
+        "all": enriched,
+    }
 
 
 def comparison_badge(status: str) -> dict[str, str]:
@@ -2897,12 +4167,28 @@ async def dashboard(request: Request) -> HTMLResponse:
     return templates.TemplateResponse(request, "dashboard.html", template_context(request, dashboard=dashboard_payload(), workspace=workspace_status()))
 
 
+@app.get("/risk", response_class=HTMLResponse)
+async def risk(request: Request) -> HTMLResponse:
+    redirect = auth_guard(request)
+    if redirect:
+        return redirect
+    return templates.TemplateResponse(request, "risk.html", template_context(request, risk=pain_risk_page_data(), workspace=workspace_status()))
+
+
+@app.get("/fueling", response_class=HTMLResponse)
+async def fueling(request: Request) -> HTMLResponse:
+    redirect = auth_guard(request)
+    if redirect:
+        return redirect
+    return templates.TemplateResponse(request, "fueling.html", template_context(request, fueling=fueling_page_data(), workspace=workspace_status()))
+
+
 @app.get("/decision", response_class=HTMLResponse)
 async def decision(request: Request) -> HTMLResponse:
     redirect = auth_guard(request)
     if redirect:
         return redirect
-    return RedirectResponse(url="/dashboard", status_code=303)
+    return templates.TemplateResponse(request, "decision.html", template_context(request, decision_center=decision_center_page_data(), workspace=workspace_status()))
 
 
 @app.get("/planned-workouts", response_class=HTMLResponse)
@@ -2983,11 +4269,43 @@ async def planned_workout_action_submit(
 
     if action == "clear":
         clear_planned_workout_action(slug)
+        clear_planned_workout_replan(slug)
         request.session["flash"] = {"level": "ok", "message": "Estado operativo limpiado."}
+        return RedirectResponse(url=target, status_code=303)
+
+    if action == "alternative_requested":
+        replan_state = apply_planned_workout_replan(slug, workout, "auto_today", dashboard_payload(), request.session.get("username"))
+        request.session["flash"] = {"level": "ok", "message": str(replan_state.get("summary") or "Alternativa aplicada.")}
         return RedirectResponse(url=target, status_code=303)
 
     set_planned_workout_action(slug, workout, action, request.session.get("username"))
     request.session["flash"] = {"level": "ok", "message": ACTION_LABELS.get(action, "Accion guardada.")}
+    return RedirectResponse(url=target, status_code=303)
+
+
+@app.post("/planned-workouts/{slug}/replan")
+async def planned_workout_replan_submit(
+    request: Request,
+    slug: str,
+    strategy: str = Form(...),
+    next_url: str = Form(""),
+) -> RedirectResponse:
+    redirect = auth_guard(request)
+    if redirect:
+        return redirect
+    workout = planned_workout_detail(slug)
+    target = safe_next_url(next_url, f"/planned-workouts/{slug}")
+    if not workout:
+        request.session["flash"] = {"level": "error", "message": "No se encontro la sesion planificada."}
+        return RedirectResponse(url="/planned-workouts", status_code=303)
+
+    allowed_strategies = {"auto_today", "move_next_day", "reduce_keep_goal", "skip_recompose_week"}
+    if strategy not in allowed_strategies:
+        request.session["flash"] = {"level": "error", "message": "Estrategia de replanificacion no valida."}
+        return RedirectResponse(url=target, status_code=303)
+
+    replan_state = apply_planned_workout_replan(slug, workout, strategy, dashboard_payload(), request.session.get("username"))
+    request.session["flash"] = {"level": "ok", "message": str(replan_state.get("summary") or "Replanificacion aplicada.")}
     return RedirectResponse(url=target, status_code=303)
 
 
@@ -3008,6 +4326,49 @@ async def planned_workout_garmin_retry_submit(
 
     ok, message = retry_garmin_workout_sync(slug, request.session.get("username"))
     request.session["flash"] = {"level": "ok" if ok else "error", "message": message}
+    return RedirectResponse(url=target, status_code=303)
+
+
+@app.post("/daily-checkin")
+async def daily_checkin_submit(
+    request: Request,
+    day: str = Form(""),
+    energy: int = Form(...),
+    sleep: int = Form(...),
+    pain: int = Form(...),
+    motivation: int = Form(...),
+    available_minutes: int = Form(...),
+    note: str = Form(""),
+    next_url: str = Form(""),
+) -> RedirectResponse:
+    redirect = auth_guard(request)
+    if redirect:
+        return redirect
+
+    target_day = str(day or date.today().isoformat()).strip()
+    target = safe_next_url(next_url, "/")
+    if not parse_iso_date(target_day):
+        request.session["flash"] = {"level": "error", "message": "Fecha de check-in no valida."}
+        return RedirectResponse(url=target, status_code=303)
+    if not (1 <= int(energy) <= 5 and 1 <= int(sleep) <= 5 and 0 <= int(pain) <= 10 and 1 <= int(motivation) <= 5 and 0 <= int(available_minutes) <= 300):
+        request.session["flash"] = {"level": "error", "message": "Revisa los valores del check-in diario."}
+        return RedirectResponse(url=target, status_code=303)
+
+    payload = {
+        "date": target_day,
+        "energy": int(energy),
+        "sleep": int(sleep),
+        "pain": int(pain),
+        "motivation": int(motivation),
+        "available_minutes": int(available_minutes),
+        "note": str(note or "").strip()[:200],
+        "updated_at": datetime.now().isoformat(),
+        "updated_by": request.session.get("username") or "web",
+    }
+    set_daily_checkin(target_day, payload)
+    workout = next((item for item in planned_workouts() if item.get("date") == target_day), None)
+    decision = daily_checkin_decision(payload, workout)
+    request.session["flash"] = {"level": "ok", "message": f"Check-in guardado. Decision: {decision.get('headline')}."}
     return RedirectResponse(url=target, status_code=303)
 
 
@@ -3086,7 +4447,7 @@ async def races(request: Request) -> HTMLResponse:
     redirect = auth_guard(request)
     if redirect:
         return redirect
-    return templates.TemplateResponse(request, "races.html", template_context(request, races=races_page_data(), workspace=workspace_status()))
+    return templates.TemplateResponse(request, "races.html", template_context(request, races=races_operational_page_data(), workspace=workspace_status()))
 
 
 @app.get("/cycle", response_class=HTMLResponse)
@@ -3118,8 +4479,109 @@ async def chat_page(request: Request) -> HTMLResponse:
     redirect = auth_guard(request)
     if redirect:
         return redirect
-    config, config_error = load_web_chat_remote_config()
-    return templates.TemplateResponse(request, "chat.html", template_context(request, chat_state=web_chat_state(request, config, config_error)))
+    _, _, state = chat_state_response(request)
+    return templates.TemplateResponse(request, "chat.html", template_context(request, chat_state=state, workspace=workspace_status()))
+
+
+@app.get("/chat/state")
+async def chat_state_api(request: Request) -> JSONResponse:
+    unauthorized = json_auth_guard(request)
+    if unauthorized:
+        return unauthorized
+    _, _, state = chat_state_response(request)
+    return JSONResponse({"ok": True, "state": state}, status_code=200)
+
+
+@app.post("/chat")
+async def chat_message_submit(request: Request) -> JSONResponse:
+    unauthorized = json_auth_guard(request)
+    if unauthorized:
+        return unauthorized
+
+    try:
+        payload = await request.json()
+    except json.JSONDecodeError:
+        payload = {}
+    if not isinstance(payload, dict):
+        return JSONResponse({"ok": False, "error": "Payload no valido."}, status_code=400)
+
+    config, config_error, state = chat_state_response(request)
+    if not config:
+        return JSONResponse({"ok": False, "error": config_error or "Chat no disponible.", "state": state}, status_code=503)
+
+    message = str(payload.get("message") or "").strip()
+    if not message:
+        return chat_missing_message_response(request)
+
+    policy_error = web_chat_policy_block(message, config)
+    if policy_error:
+        return JSONResponse({"ok": False, "error": policy_error, "state": web_chat_state(request, config)}, status_code=403)
+
+    store, user_key = chat_store_for_request(config, request)
+    reason = confirmation_reason(message, config.require_confirmation_patterns)
+    if reason:
+        confirmation_id = store.set_confirmation(user_key, message, reason)
+        return JSONResponse(
+            {
+                "ok": True,
+                "needs_confirmation": True,
+                "confirmation_id": confirmation_id,
+                "message": "Accion sensible detectada. Confirmala antes de ejecutarla.",
+                "state": web_chat_state(request, config),
+            },
+            status_code=202,
+        )
+
+    return await chat_execute_message(request, config, message)
+
+
+@app.post("/chat/confirm")
+async def chat_confirm_submit(request: Request) -> JSONResponse:
+    unauthorized = json_auth_guard(request)
+    if unauthorized:
+        return unauthorized
+
+    try:
+        payload = await request.json()
+    except json.JSONDecodeError:
+        payload = {}
+    if not isinstance(payload, dict):
+        return JSONResponse({"ok": False, "error": "Payload no valido."}, status_code=400)
+
+    config, config_error, state = chat_state_response(request)
+    if not config:
+        return JSONResponse({"ok": False, "error": config_error or "Chat no disponible.", "state": state}, status_code=503)
+
+    store, user_key = chat_store_for_request(config, request)
+    confirmation_id = str(payload.get("confirmation_id") or "").strip()
+    pending = store.pop_confirmation(user_key, confirmation_id)
+    if not pending:
+        return JSONResponse(
+            {"ok": False, "error": "La confirmacion ya no existe o no coincide.", "state": web_chat_state(request, config)},
+            status_code=409,
+        )
+    message = str(pending.get("message") or "").strip()
+    if not message:
+        return chat_missing_message_response(request)
+    return await chat_execute_message(request, config, message)
+
+
+@app.post("/chat/cancel")
+async def chat_cancel_submit(request: Request) -> JSONResponse:
+    unauthorized = json_auth_guard(request)
+    if unauthorized:
+        return unauthorized
+    config, config_error, state = chat_state_response(request)
+    if not config:
+        return JSONResponse({"ok": False, "error": config_error or "Chat no disponible.", "state": state}, status_code=503)
+    store, user_key = chat_store_for_request(config, request)
+    clear_web_chat_confirmation(store, user_key)
+    return JSONResponse({"ok": True, "message": "Confirmacion cancelada.", "state": web_chat_state(request, config)}, status_code=200)
+
+
+@app.post("/chat/reset")
+async def chat_reset_submit(request: Request) -> JSONResponse:
+    return await chat_session_reset(request)
 
 
 @app.post("/chat/messages")
@@ -3136,38 +4598,27 @@ async def chat_messages(request: Request) -> JSONResponse:
     if not isinstance(payload, dict):
         return JSONResponse({"ok": False, "error": "Payload no valido."}, status_code=400)
 
-    config, config_error = load_web_chat_remote_config()
+    config, config_error, state = chat_state_response(request)
     if not config:
         return JSONResponse(
-            {"ok": False, "error": config_error or "Chat no disponible.", "state": web_chat_state(request, None, config_error)},
+            {"ok": False, "error": config_error or "Chat no disponible.", "state": state},
             status_code=503,
         )
 
-    store = SessionStore(config.session_store)
-    user_key = web_chat_identity(request)
+    store, user_key = chat_store_for_request(config, request)
 
     if payload.get("cancel_confirmation"):
-        clear_web_chat_confirmation(store, user_key)
-        return JSONResponse(
-            {"ok": True, "message": "Confirmacion cancelada.", "state": web_chat_state(request, config)},
-            status_code=200,
-        )
+        return await chat_cancel_submit(request)
 
     confirmed = bool(payload.get("confirm"))
     if confirmed:
         confirmation_id = str(payload.get("confirmation_id") or "").strip()
-        pending = store.pop_confirmation(user_key, confirmation_id)
-        if not pending:
-            return JSONResponse(
-                {"ok": False, "error": "La confirmacion ya no existe o no coincide.", "state": web_chat_state(request, config)},
-                status_code=409,
-            )
-        message = str(pending.get("message") or "").strip()
+        return await chat_confirm_submit(request)
     else:
         message = str(payload.get("message") or "").strip()
 
     if not message:
-        return JSONResponse({"ok": False, "error": "Escribe un mensaje antes de enviar."}, status_code=400)
+        return chat_missing_message_response(request)
 
     policy_error = web_chat_policy_block(message, config)
     if policy_error:
@@ -3192,27 +4643,7 @@ async def chat_messages(request: Request) -> JSONResponse:
                 status_code=202,
             )
 
-    lock = WEB_CHAT_LOCKS.setdefault(user_key, asyncio.Lock())
-    if lock.locked():
-        return JSONResponse(
-            {"ok": False, "error": "Ya hay una peticion en curso para este usuario.", "state": web_chat_state(request, config)},
-            status_code=409,
-        )
-
-    async with lock:
-        bridge = OpenCodeBridge(config)
-        result = await bridge.send(user_key, message, channel="web")
-
-    append_web_chat_message(user_key, "user", message)
-    append_web_chat_message(user_key, "assistant", result.text, model=result.model, error=result.returncode != 0)
-    return JSONResponse(
-        {
-            "ok": result.returncode == 0,
-            "message": None if result.returncode == 0 else "OpenCode devolvio una respuesta con incidencia operativa.",
-            "state": web_chat_state(request, config),
-        },
-        status_code=200,
-    )
+    return await chat_execute_message(request, config, message)
 
 
 @app.post("/chat/session/reset")
@@ -3221,12 +4652,12 @@ async def chat_session_reset(request: Request) -> JSONResponse:
     if unauthorized:
         return unauthorized
 
-    config, config_error = load_web_chat_remote_config()
+    config, config_error, state = chat_state_response(request)
     user_key = web_chat_identity(request)
     clear_web_chat_history(user_key)
     if not config:
         return JSONResponse(
-            {"ok": False, "error": config_error or "Chat no disponible.", "state": web_chat_state(request, None, config_error)},
+            {"ok": False, "error": config_error or "Chat no disponible.", "state": state},
             status_code=503,
         )
 
@@ -3250,10 +4681,10 @@ async def chat_model(request: Request) -> JSONResponse:
     if not isinstance(payload, dict):
         return JSONResponse({"ok": False, "error": "Payload no valido."}, status_code=400)
 
-    config, config_error = load_web_chat_remote_config()
+    config, config_error, state = chat_state_response(request)
     if not config:
         return JSONResponse(
-            {"ok": False, "error": config_error or "Chat no disponible.", "state": web_chat_state(request, None, config_error)},
+            {"ok": False, "error": config_error or "Chat no disponible.", "state": state},
             status_code=503,
         )
 

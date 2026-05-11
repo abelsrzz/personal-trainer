@@ -27,7 +27,10 @@
         </div>
         <div class="nav-group">
           <p class="nav-label">Análisis</p>
+          <a class="{{ 'active' if current_path == '/decision' else '' }}" href="/decision">Qué hago ahora</a>
           <a class="{{ 'active' if current_path == '/dashboard' else '' }}" href="/dashboard">Dashboard</a>
+          <a class="{{ 'active' if current_path == '/risk' else '' }}" href="/risk">Molestias y riesgo</a>
+          <a class="{{ 'active' if current_path == '/fueling' else '' }}" href="/fueling">Fueling</a>
           <a class="{{ 'active' if current_path == '/progress' else '' }}" href="/progress">Progreso</a>
           <a class="{{ 'active' if current_path == '/cycle' else '' }}" href="/cycle">Ciclo activo</a>
           <a class="{{ 'active' if current_path == '/chat' else '' }}" href="/chat">Chat</a>

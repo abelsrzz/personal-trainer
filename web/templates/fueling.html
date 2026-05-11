@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}Fueling | RunPilot{% endblock %}
+{% block content %}
+<section class="hero compact">
+  <div>
+    <p class="eyebrow">Nutrición operativa</p>
+    <h2>Hidratación, hidratos y suplementación</h2>
+    <p>Plan automático para carreras y entrenamientos duros usando tu catálogo actual de suplementos.</p>
+  </div>
+  <div class="hero-meta">
+    <span>{{ fueling.athlete.weight_kg or '-' }} kg</span>
+    <span>{{ fueling.upcoming_races|length }} carreras</span>
+    <span>{{ fueling.hard_workouts|length }} entrenos duros</span>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Catálogo</p>
+      <h3>Suplementación disponible</h3>
+    </div>
+    <span class="badge">{{ fueling.supplements|length }} productos</span>
+  </div>
+  <div class="cards three">
+    {% for item in fueling.supplements %}
+    <article class="card">
+      <h3>{{ item.name }}</h3>
+      <p class="metric">{{ item.category }}</p>
+      <p class="muted">{{ item.serving_size }} {{ item.serving_unit }} · CHO {{ item.carbs_per_serving_g }} g · Na {{ item.sodium_mg }} mg · Cafeína {{ item.caffeine_mg }} mg</p>
+      <p class="muted">{{ item.notes or '-' }}</p>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Carreras</p>
+      <h3>Planes automáticos de competición</h3>
+    </div>
+  </div>
+  <div class="list compact-list">
+    {% for race in fueling.upcoming_races %}
+    <div class="list-item static session-race">
+      <div>
+        <strong>{{ race.date }} · {{ race.name }}</strong>
+        <p class="muted">Predicción {{ race.plan.predicted_time }} · ritmo {{ race.plan.predicted_pace }}</p>
+        {% for entry in race.plan.entries %}
+        <p><strong>{{ entry.date }} {{ entry.time_label }}</strong> · {{ entry.phase }} · {{ entry.recommendation }}</p>
+        <p class="muted">{{ entry.quantity }} · {{ entry.products_label }} · {{ entry.reason }}</p>
+        {% endfor %}
+      </div>
+    </div>
+    {% else %}
+    <p class="muted">No hay carreras futuras con plan de fueling.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Entrenamientos exigentes</p>
+      <h3>Qué tomar antes, durante y después</h3>
+    </div>
+  </div>
+  <div class="list compact-list">
+    {% for workout in fueling.hard_workouts %}
+    <div class="list-item static">
+      <div>
+        <strong>{{ workout.date }} · {{ workout.name }}</strong>
+        {% for entry in workout.plan.entries %}
+        <p><strong>{{ entry.time_label }}</strong> · {{ entry.phase }} · {{ entry.recommendation }}</p>
+        <p class="muted">{{ entry.quantity }} · {{ entry.products_label }} · {{ entry.reason }}</p>
+        {% endfor %}
+      </div>
+    </div>
+    {% else %}
+    <p class="muted">No hay entrenamientos duros próximos con recomendaciones especiales.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

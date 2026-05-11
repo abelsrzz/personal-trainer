@@ -14,6 +14,7 @@
 - Web portal simplified: planned workouts unified under one planning area and decision merged into dashboard
 - Telegram remote OpenCode bridge added for self-hosted access
 - First Garmin workout upload and scheduling already proven
+- Fueling engine added for races and hard workouts, with automatic hydration/carb-load/supplement plans
 
 ## Athlete Highlights
 
@@ -39,6 +40,10 @@
 - `planning/goal_gates.yaml`
 - `planning/goal_gates.md`
 - `athlete/shin_tracker.yaml`
+- `athlete/supplements.yaml`
+- `planning/fueling_operational.md`
+- `planning/fueling_operational.json`
+- `scripts/system/fueling_engine.py`
 - `planning/coaching_playbook.md`
 - `planning/session_selection_matrix.yaml`
 - `planning/workout_evaluation_rules.md`
@@ -65,6 +70,7 @@
 - Read `athlete/response_profile.yaml` to bias decisions toward the athlete's current likely response pattern.
 - Treat `red` as reduce or replace quality, `yellow` as maintain without increasing load, and `green` as allow small progression if shin status is quiet.
 - `athlete/shin_tracker.yaml` now receives automatic promotions from subjective feedback when tibial/periosteum pain is detected; manual updates remain valid for corrections or added context.
+- Read `athlete/supplements.yaml` and `planning/fueling_operational.md` when race execution or hard-session fueling matters.
 
 ## Remote Telegram Operating Model
 

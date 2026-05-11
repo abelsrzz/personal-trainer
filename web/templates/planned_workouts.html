@@ -60,6 +60,103 @@
       <p class="muted planned-week-note">Lectura semanal integrada en el mismo lenguaje de entrenamientos planificados.</p>
     </div>
 
+    {% if week.executive_summary %}
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <p class="eyebrow">Semana operativa</p>
+          <h3>{{ week.executive_summary.goal_sentence }}</h3>
+        </div>
+        <span class="badge {{ week.executive_summary.weekly_status.tone }}">{{ week.executive_summary.weekly_status.label }}</span>
+      </div>
+      <p>{{ week.executive_summary.weekly_status.summary }}</p>
+      <div class="cards four">
+        <article class="card">
+          <h3>Carga prevista</h3>
+          <p class="metric">{{ week.executive_summary.planned_total_km }} km</p>
+          <p class="muted">{{ week.executive_summary.planned_total_sessions }} sesiones · {{ week.executive_summary.planned_total_duration }}</p>
+        </article>
+        <article class="card">
+          <h3>Calidad prevista</h3>
+          <p class="metric">{{ week.executive_summary.planned_quality_sessions }}</p>
+          <p class="muted">Sesiones de calidad dentro de la ventana activa</p>
+        </article>
+        <article class="card">
+          <h3>Progreso en vivo</h3>
+          <p class="metric">{{ week.executive_summary.completed_sessions }}/{{ week.executive_summary.planned_total_sessions }}</p>
+          <p class="muted">{{ week.executive_summary.completed_km }} km hechos · {{ week.executive_summary.remaining_sessions }} por resolver</p>
+        </article>
+        <article class="card">
+          <h3>Semáforo semanal</h3>
+          <p class="metric">{{ week.executive_summary.adherence_pct }}%</p>
+          <p class="muted">Cumplimiento actual · avance {{ week.executive_summary.completion_pct }}%</p>
+        </article>
+      </div>
+    </section>
+    {% endif %}
+
+    {% if week.plan_vs_reality and week.plan_vs_reality.available and week.plan_vs_reality.block %}
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <p class="eyebrow">Plan vs realidad</p>
+          <h3>{{ week.plan_vs_reality.block.label }}</h3>
+        </div>
+        <span class="badge {{ week.plan_vs_reality.block.adherence_badge.tone }}">Adherencia {{ week.plan_vs_reality.block.adherence_pct }}%</span>
+      </div>
+      <div class="cards four">
+        <article class="card">
+          <h3>Km</h3>
+          <p class="metric">{{ week.plan_vs_reality.block.planned_km }} / {{ week.plan_vs_reality.block.actual_km }}</p>
+          <p class="muted">Planificados vs hechos · delta {{ week.plan_vs_reality.block.km_delta }} km</p>
+        </article>
+        <article class="card">
+          <h3>Calidad</h3>
+          <p class="metric">{{ week.plan_vs_reality.block.planned_quality }} / {{ week.plan_vs_reality.block.completed_quality }}</p>
+          <p class="muted">Sesiones de calidad planificadas vs completadas</p>
+        </article>
+        <article class="card">
+          <h3>Saltadas</h3>
+          <p class="metric">{{ week.plan_vs_reality.block.skipped_sessions }}</p>
+          <p class="muted">Sesiones no ejecutadas dentro del bloque activo</p>
+        </article>
+        <article class="card">
+          <h3>Reprogramadas</h3>
+          <p class="metric">{{ week.plan_vs_reality.block.reprogrammed_sessions }}</p>
+          <p class="muted">Cambios aplicados desde la web sobre el plan</p>
+        </article>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Semana</th>
+              <th>Rango</th>
+              <th>Km plan/hecho</th>
+              <th>Calidad plan/hecha</th>
+              <th>Saltadas</th>
+              <th>Reprogramadas</th>
+              <th>Adherencia</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in week.plan_vs_reality.weeks %}
+            <tr>
+              <td>{{ row.label }}</td>
+              <td>{{ row.range }}</td>
+              <td>{{ row.planned_km }} / {{ row.actual_km }}</td>
+              <td>{{ row.planned_quality }} / {{ row.completed_quality }}</td>
+              <td>{{ row.skipped_sessions }}</td>
+              <td>{{ row.reprogrammed_sessions }}</td>
+              <td><span class="badge {{ row.adherence_badge.tone }}">{{ row.adherence_pct }}%</span></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+    {% endif %}
+
     <div class="list planned-week-list">
       {% for row in week.rows %}
       <article class="list-item static planned-week-item {{ 'session-race' if 'carrera' in row.description|lower or 'edicion' in row.description|lower else 'session-rest' if row.distance == '0 km' else 'session-quality' if 'ritmo' in row.target|lower or 'rectas' in row.description|lower or 'bloques' in row.description|lower else 'session-easy' }}">
@@ -75,6 +172,9 @@
           <p class="muted planned-week-target">{{ row.target }}</p>
           {% if row.date %}
           <p class="muted">{{ row.date }}</p>
+          {% endif %}
+          {% if row.focus %}
+          <p class="muted"><strong>Foco:</strong> {{ row.focus }}</p>
           {% endif %}
           {% if row.replan and row.replan.is_changed %}
           <p>{{ row.replan.summary }}</p>

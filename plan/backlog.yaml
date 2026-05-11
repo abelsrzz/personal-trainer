@@ -8,11 +8,11 @@ phases:
   - id: phase_01_daily_action
     title: Decision diaria y accion inmediata
     goal: Hacer que el usuario sepa que hacer hoy y pueda actuar desde la web.
-    status: pending
+    status: completed
     items:
       - id: RP-01
         title: Definir el bloque principal Plan de hoy
-        status: pending
+        status: completed
         priority: high
         impact: high
         effort: medium
@@ -25,9 +25,11 @@ phases:
           - web/templates/index.html
           - web/templates/dashboard.html
           - scripts/web/app.py
+        outputs:
+          - plan/spec_rp_01_plan_de_hoy.md
       - id: RP-02
         title: Implementar CTA operativos en la sesion del dia
-        status: pending
+        status: completed
         priority: high
         impact: high
         effort: medium
@@ -41,7 +43,7 @@ phases:
           - scripts/web/app.py
       - id: RP-03
         title: Implementar reenvio a Garmin y reintentos visibles
-        status: pending
+        status: completed
         priority: medium
         impact: medium
         effort: medium
@@ -56,11 +58,11 @@ phases:
   - id: phase_02_feedback_loop
     title: Feedback post-entreno y aprendizaje
     goal: Cerrar el ciclo entre ejecucion, sensaciones y decision futura.
-    status: pending
+    status: in_progress
     items:
       - id: RP-04
         title: Definir captura rapida de feedback post-entreno
-        status: pending
+        status: completed
         priority: high
         impact: high
         effort: low
@@ -72,9 +74,11 @@ phases:
           - athlete/
           - training/
           - scripts/web/app.py
+        outputs:
+          - plan/spec_rp_04_feedback_post_entreno.md
       - id: RP-05
         title: Implementar formulario y persistencia de feedback
-        status: pending
+        status: completed
         priority: high
         impact: high
         effort: medium

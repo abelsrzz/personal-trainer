@@ -5,6 +5,12 @@
   <p class="eyebrow">Detalle planificado</p>
   <h2>{{ workout.name }}</h2>
   <p>{{ workout.description }}</p>
+  {% if workout.action_badge %}
+  <p><span class="badge {{ workout.action_badge.tone }}">{{ workout.action_badge.label }}</span></p>
+  {% endif %}
+  {% if workout.garmin_status_badge %}
+  <p><span class="badge {{ workout.garmin_status_badge.tone }}">{{ workout.garmin_status_badge.label }}</span></p>
+  {% endif %}
   {% if workout.garmin_workout_url %}
   <p><a class="action-link" href="{{ workout.garmin_workout_url }}" target="_blank" rel="noreferrer">Abrir entrenamiento en Garmin</a></p>
   {% endif %}
@@ -12,6 +18,52 @@
     <article class="card"><h3>Fecha</h3><p class="metric">{{ workout.date }}</p></article>
     <article class="card"><h3>Duracion</h3><p class="metric">{{ workout.estimated_duration }}</p></article>
     <article class="card"><h3>Pasos</h3><p class="metric">{{ workout.step_count }}</p></article>
+  </div>
+  {% if workout.garmin_retry_state %}
+  <p class="muted">Ultimo reenvio: {{ workout.garmin_retry_state.updated_at|format_datetime }} · {{ workout.garmin_retry_state.message }}</p>
+  {% elif workout.garmin_upload.generated_at %}
+  <p class="muted">Sincronizado: {{ workout.garmin_upload.generated_at }}</p>
+  {% endif %}
+</section>
+
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Acciones</p>
+      <h3>Estado operativo de la sesion</h3>
+    </div>
+    {% if workout.action_state %}
+    <span class="badge">{{ workout.action_state.updated_at|format_datetime }}</span>
+    {% endif %}
+  </div>
+  <p class="muted">Usa estas acciones para reflejar rapidamente si la sesion ya se hizo, no se pudo hacer o necesitas una alternativa.</p>
+  <div class="action-grid">
+    <form method="post" action="/planned-workouts/{{ workout.slug }}/garmin-retry">
+      <input type="hidden" name="next_url" value="/planned-workouts/{{ workout.slug }}">
+      <button class="cta-button" type="submit">Reenviar a Garmin</button>
+    </form>
+    <form method="post" action="/planned-workouts/{{ workout.slug }}/action">
+      <input type="hidden" name="action" value="done">
+      <input type="hidden" name="next_url" value="/planned-workouts/{{ workout.slug }}">
+      <button class="cta-button cta-ok" type="submit">Marcar hecha</button>
+    </form>
+    <form method="post" action="/planned-workouts/{{ workout.slug }}/action">
+      <input type="hidden" name="action" value="skipped">
+      <input type="hidden" name="next_url" value="/planned-workouts/{{ workout.slug }}">
+      <button class="cta-button cta-warn" type="submit">No pude hacerla</button>
+    </form>
+    <form method="post" action="/planned-workouts/{{ workout.slug }}/action">
+      <input type="hidden" name="action" value="alternative_requested">
+      <input type="hidden" name="next_url" value="/planned-workouts/{{ workout.slug }}">
+      <button class="cta-button" type="submit">Necesito alternativa</button>
+    </form>
+    {% if workout.action_state %}
+    <form method="post" action="/planned-workouts/{{ workout.slug }}/action">
+      <input type="hidden" name="action" value="clear">
+      <input type="hidden" name="next_url" value="/planned-workouts/{{ workout.slug }}">
+      <button class="cta-button cta-subtle" type="submit">Limpiar estado</button>
+    </form>
+    {% endif %}
   </div>
 </section>
 

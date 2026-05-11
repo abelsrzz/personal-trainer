@@ -16,9 +16,15 @@
         <strong><a href="/calendar/day/{{ review.date }}">{{ review.date }}</a></strong>
         <p><a href="/completed-workouts/{{ review.slug }}">{{ review.name }}</a></p>
         <p class="muted">{{ review.traffic_light }} / {{ review.risk_level }}</p>
+        {% if review.feedback_summary %}
+        <p class="muted">{{ review.feedback_summary }}</p>
+        {% endif %}
       </div>
       <div class="item-meta">
         <span class="badge kind-badge">{{ review.session_kind_label }}</span>
+        {% if review.feedback_badge %}
+        <span class="badge {{ review.feedback_badge.tone }}">{{ review.feedback_badge.label }}</span>
+        {% endif %}
         {% if review.garmin_activity_url %}
         <a class="link-pill" href="{{ review.garmin_activity_url }}" target="_blank" rel="noreferrer">Garmin</a>
         {% endif %}

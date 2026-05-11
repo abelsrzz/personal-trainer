@@ -524,6 +524,8 @@ def schedule_workout_file(client: Garmin, workout_file: Path) -> None:
     target_dir = DEFAULT_WORKOUTS_ROOT / schedule_date
     ensure_dir(target_dir)
     save_json(target_dir / f"{workout_path.stem}.garmin_upload.json", {
+        "generated_at": datetime.utcnow().isoformat() + "Z",
+        "status": "scheduled",
         "upload_mode": upload_mode,
         "workout_file": str(workout_path.relative_to(ROOT)),
         "uploaded_response": response,

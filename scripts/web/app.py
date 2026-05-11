@@ -6,6 +6,8 @@ import json
 import calendar
 import logging
 import os
+import subprocess
+import sys
 from datetime import date, datetime
 from pathlib import Path
 from typing import Any
@@ -24,6 +26,7 @@ TEMPLATES_DIR = ROOT / "web" / "templates"
 STATIC_DIR = ROOT / "web" / "static"
 PLANNED_WORKOUTS_DIR = ROOT / "training" / "planned" / "workouts"
 COMPLETED_REVIEW_DIR = ROOT / "training" / "completed" / "reviews"
+COMPLETED_FEEDBACK_DIR = ROOT / "training" / "completed" / "feedback"
 GARMIN_ACTIVITY_DIR = ROOT / "training" / "completed" / "imports" / "garmin" / "activities"
 GARMIN_DAILY_DIR = ROOT / "training" / "completed" / "imports" / "garmin" / "daily"
 RACES_DIR = ROOT / "races"
@@ -33,6 +36,9 @@ WEB_CONFIG_PATH = ROOT / "web" / "web_config.yaml"
 WEB_LOG_PATH = ROOT / "web" / "web_debug.log"
 ACTIVE_WEEK_PATH = ROOT / "planning" / "weeks" / "semana_actual.md"
 COACH_DECISION_PATH = ROOT / "planning" / "coach_decision.json"
+PLANNED_ACTIONS_PATH = ROOT / "system" / "state" / "planned_workout_actions.json"
+GARMIN_RETRY_STATE_PATH = ROOT / "system" / "state" / "garmin_retry_state.json"
+GARMIN_SYNC_SCRIPT = ROOT / "scripts" / "garmin" / "sync_garmin.py"
 
 
 logger = logging.getLogger("running_coach_web")
@@ -72,6 +78,12 @@ templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
 
 def load_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def load_optional_json(path: Path, default: Any) -> Any:
+    if not path.exists():
+        return default
+    return load_json(path)
 
 
 def load_yaml(path: Path) -> dict[str, Any]:
@@ -131,6 +143,11 @@ def iso_date_string(value: Any) -> str:
     if isinstance(value, date):
         return value.isoformat()
     return str(value or "").strip()
+
+
+def write_json(path: Path, payload: Any) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, indent=2, ensure_ascii=True) + "\n", encoding="utf-8")
 
 
 def month_label(value: str) -> str:
@@ -508,6 +525,7 @@ def traffic_light_class(value: str | None) -> str:
 
 templates.env.filters["format_duration"] = format_duration
 templates.env.filters["format_pace"] = format_pace
+templates.env.filters["format_datetime"] = format_datetime
 
 
 def authenticated(request: Request) -> bool:
@@ -528,9 +546,290 @@ def template_context(request: Request, **values: Any) -> dict[str, Any]:
         "authenticated": authenticated(request),
         "today": date.today().isoformat(),
         "current_path": request.url.path,
+        "flash": request.session.pop("flash", None),
     }
     context.update(values)
     return context
+
+
+ACTION_LABELS = {
+    "done": "Marcada como hecha",
+    "skipped": "Marcada como no realizada",
+    "alternative_requested": "Alternativa solicitada",
+}
+
+
+ACTION_BADGES = {
+    "done": ("Hecha", "ok"),
+    "skipped": ("No realizada", "warn"),
+    "alternative_requested": ("Alternativa pedida", "warn"),
+}
+
+FEEDBACK_COMPLIANCE_LABELS = {
+    "full": "La hice como tocaba",
+    "partial": "La hice parcialmente",
+    "modified": "La adapte",
+    "aborted": "La corte",
+}
+
+FEEDBACK_TIME_FEELING_LABELS = {
+    "spare": "Iba sobrado de tiempo",
+    "ok": "Tiempo suficiente",
+    "tight": "Iba justo de tiempo",
+    "cut_short": "Tuve que recortar por tiempo",
+}
+
+
+def planned_workout_actions() -> dict[str, dict[str, Any]]:
+    payload = load_optional_json(PLANNED_ACTIONS_PATH, {"workouts": {}})
+    workouts = payload.get("workouts") if isinstance(payload, dict) else {}
+    return workouts if isinstance(workouts, dict) else {}
+
+
+def planned_workout_action(slug: str) -> dict[str, Any] | None:
+    action = planned_workout_actions().get(slug)
+    return action if isinstance(action, dict) else None
+
+
+def action_display_data(action_key: str | None) -> dict[str, str] | None:
+    if not action_key:
+        return None
+    label, tone = ACTION_BADGES.get(action_key, (action_key, ""))
+    return {"label": label, "tone": tone}
+
+
+def set_planned_workout_action(slug: str, workout: dict[str, Any], action_key: str, username: str | None) -> None:
+    payload = load_optional_json(PLANNED_ACTIONS_PATH, {"workouts": {}})
+    if not isinstance(payload, dict):
+        payload = {"workouts": {}}
+    workouts = payload.setdefault("workouts", {})
+    workouts[slug] = {
+        "action": action_key,
+        "label": ACTION_LABELS.get(action_key, action_key),
+        "updated_at": datetime.now().isoformat(),
+        "date": workout.get("date"),
+        "name": workout.get("name"),
+        "updated_by": username or "web",
+    }
+    write_json(PLANNED_ACTIONS_PATH, payload)
+
+
+def clear_planned_workout_action(slug: str) -> None:
+    payload = load_optional_json(PLANNED_ACTIONS_PATH, {"workouts": {}})
+    if not isinstance(payload, dict):
+        return
+    workouts = payload.get("workouts")
+    if not isinstance(workouts, dict):
+        return
+    workouts.pop(slug, None)
+    write_json(PLANNED_ACTIONS_PATH, payload)
+
+
+def garmin_retry_states() -> dict[str, dict[str, Any]]:
+    payload = load_optional_json(GARMIN_RETRY_STATE_PATH, {"workouts": {}})
+    workouts = payload.get("workouts") if isinstance(payload, dict) else {}
+    return workouts if isinstance(workouts, dict) else {}
+
+
+def set_garmin_retry_state(slug: str, state: dict[str, Any]) -> None:
+    payload = load_optional_json(GARMIN_RETRY_STATE_PATH, {"workouts": {}})
+    if not isinstance(payload, dict):
+        payload = {"workouts": {}}
+    workouts = payload.setdefault("workouts", {})
+    workouts[slug] = state
+    write_json(GARMIN_RETRY_STATE_PATH, payload)
+
+
+def garmin_status_badge(upload: dict[str, Any], retry_state: dict[str, Any] | None, workout_url: str | None) -> dict[str, str]:
+    if retry_state and retry_state.get("status") == "error":
+        return {"label": "Error Garmin", "tone": "warn"}
+    if retry_state and retry_state.get("status") == "success":
+        return {"label": "Reenvio OK", "tone": "ok"}
+    if workout_url or upload:
+        return {"label": "Sincronizado", "tone": "ok"}
+    return {"label": "Pendiente Garmin", "tone": ""}
+
+
+def completed_feedback_items() -> dict[str, dict[str, Any]]:
+    items: dict[str, dict[str, Any]] = {}
+    for path in sorted(COMPLETED_FEEDBACK_DIR.glob("*.feedback.json")):
+        payload = load_json(path)
+        if isinstance(payload, dict):
+            items[path.stem.replace(".feedback", "")] = payload
+    return items
+
+
+def completed_feedback_detail(slug: str) -> dict[str, Any] | None:
+    item = completed_feedback_items().get(slug)
+    return item if isinstance(item, dict) else None
+
+
+def feedback_badge(feedback: dict[str, Any] | None) -> dict[str, str] | None:
+    if not feedback:
+        return None
+    return {"label": "Con feedback", "tone": "ok"}
+
+
+def feedback_summary(feedback: dict[str, Any] | None) -> str | None:
+    if not feedback:
+        return None
+    athlete_feedback = feedback.get("athlete_feedback", {})
+    if not isinstance(athlete_feedback, dict):
+        return None
+    compliance = FEEDBACK_COMPLIANCE_LABELS.get(str(athlete_feedback.get("compliance") or ""))
+    rpe = athlete_feedback.get("rpe")
+    pain_level = athlete_feedback.get("pain_level")
+    parts = []
+    if rpe is not None:
+        parts.append(f"RPE {rpe}/10")
+    if pain_level is not None:
+        parts.append(f"Dolor {pain_level}/10")
+    if compliance:
+        parts.append(compliance)
+    return " · ".join(parts) if parts else None
+
+
+def feedback_form_state(feedback: dict[str, Any] | None = None) -> dict[str, Any]:
+    athlete_feedback = feedback.get("athlete_feedback", {}) if isinstance(feedback, dict) else {}
+    athlete_feedback = athlete_feedback if isinstance(athlete_feedback, dict) else {}
+    return {
+        "rpe": athlete_feedback.get("rpe") or "",
+        "pain_level": athlete_feedback.get("pain_level") if athlete_feedback.get("pain_level") is not None else "",
+        "compliance": athlete_feedback.get("compliance") or "",
+        "time_feeling": athlete_feedback.get("time_feeling") or "",
+        "pain_location": athlete_feedback.get("pain_location") or "",
+        "note": athlete_feedback.get("note") or "",
+        "compliance_options": FEEDBACK_COMPLIANCE_LABELS,
+        "time_feeling_options": FEEDBACK_TIME_FEELING_LABELS,
+    }
+
+
+def set_completed_feedback(
+    slug: str,
+    review: dict[str, Any],
+    rpe: int,
+    pain_level: int,
+    compliance: str,
+    time_feeling: str,
+    pain_location: str,
+    note: str,
+    username: str | None,
+) -> bool:
+    path = COMPLETED_FEEDBACK_DIR / f"{slug}.feedback.json"
+    existing = load_optional_json(path, {})
+    created_at = existing.get("created_at") if isinstance(existing, dict) else None
+    now = datetime.now().isoformat()
+    payload = {
+        "source": "web_manual_feedback",
+        "created_at": created_at or now,
+        "updated_at": now,
+        "updated_by": username or "web",
+        "date": review.get("date"),
+        "planned_workout_slug": slug,
+        "completed_review_slug": slug,
+        "garmin_activity_id": review.get("garmin_activity_id"),
+        "athlete_feedback": {
+            "rpe": rpe,
+            "pain_level": pain_level,
+            "pain_location": pain_location or None,
+            "compliance": compliance,
+            "time_feeling": time_feeling or None,
+            "note": note or None,
+        },
+    }
+    write_json(path, payload)
+    return bool(created_at)
+
+
+def today_plan_data(day: str | None = None) -> dict[str, Any]:
+    target_day = day or date.today().isoformat()
+    dashboard = dashboard_payload()
+    decision = dashboard.get("decision", {})
+    guidance = decision.get("session_guidance", {})
+    goal_metrics = dashboard.get("goal_gates", {}).get("metrics", {})
+    daily_signals = decision.get("daily_signals", {})
+    planned_today = next((item for item in planned_workouts() if item.get("date") == target_day), None)
+    completed_today = next((item for item in completed_reviews() if item.get("date") == target_day), None)
+
+    shin_pain = goal_metrics.get("latest_shin_pain")
+    resting_hr_flag = daily_signals.get("resting_hr_flag")
+    has_context = bool(decision) and decision.get("status") != "unknown"
+    protective_mode = decision.get("status") == "red" or (shin_pain is not None and float(shin_pain) > 2.0)
+
+    if not has_context:
+        status = "insufficient_data"
+    elif completed_today:
+        status = "completed_today"
+    elif planned_today and protective_mode:
+        status = "protective_today"
+    elif planned_today:
+        status = "planned_today"
+    else:
+        status = "no_plan_today"
+
+    status_labels = {
+        "planned_today": "Listo para ejecutar",
+        "completed_today": "Ya ejecutado",
+        "no_plan_today": "Sin sesion planificada",
+        "protective_today": "Protegido",
+        "insufficient_data": "Pendiente de datos",
+    }
+
+    session_objective_map = {
+        "recovery": "El objetivo hoy es absorber carga y proteger tejido.",
+        "easy": "El objetivo hoy es sumar sin aumentar demasiado el coste.",
+        "quality": "El objetivo hoy es estimular calidad dentro del margen permitido por el estado actual.",
+        "long_run": "El objetivo hoy es construir durabilidad aerobica sin salirte del margen previsto.",
+        "strength": "El objetivo hoy es consolidar fuerza util sin generar fatiga residual alta.",
+        "race": "El objetivo hoy es ejecutar con control y aprovechar el contexto competitivo.",
+    }
+
+    why_today_parts = []
+    if decision.get("recommendation"):
+        why_today_parts.append(str(decision["recommendation"]).strip())
+    if planned_today:
+        objective_text = session_objective_map.get(planned_today.get("session_kind"), "El objetivo hoy es mantener continuidad con una carga adecuada.")
+        why_today_parts.append(objective_text)
+    elif has_context:
+        why_today_parts.append("Hoy no hay sesion planificada; si entrenas, que sea opcional y conservador.")
+
+    watchouts: list[str] = []
+    if shin_pain is not None:
+        watchouts.append(f"Periostio {shin_pain}/10")
+    if decision.get("status") == "red":
+        watchouts.append("No subir carga ni intensidad hoy.")
+    elif resting_hr_flag == "high":
+        watchouts.append("Pulso en reposo algo alto; deja margen.")
+    watchouts = watchouts[:2]
+
+    return {
+        "date": target_day,
+        "date_label": day_label(target_day),
+        "status": status,
+        "status_label": status_labels[status],
+        "planned_workout": planned_today,
+        "completed_review": completed_today,
+        "decision": decision,
+        "why_today": " ".join(why_today_parts).strip(),
+        "watchouts": watchouts,
+        "priorities": list(guidance.get("primary_labels") or [])[:2],
+        "action_state": (planned_today or {}).get("action_state"),
+        "action_badge": (planned_today or {}).get("action_badge"),
+        "cta_enabled": bool(planned_today and not completed_today),
+        "feedback_present": bool((completed_today or {}).get("athlete_feedback")),
+        "links": {
+            "detail_url": f"/planned-workouts/{planned_today['slug']}" if planned_today else None,
+            "day_url": f"/calendar/day/{target_day}",
+            "feedback_url": f"/completed-workouts/{completed_today['slug']}" if completed_today else None,
+        },
+    }
+
+
+def safe_next_url(value: str | None, fallback: str) -> str:
+    candidate = str(value or "").strip()
+    if candidate.startswith("/") and not candidate.startswith("//"):
+        return candidate
+    return fallback
 
 
 def parse_week_table(content: str) -> list[dict[str, str]]:
@@ -569,6 +868,71 @@ def week_page_data() -> dict[str, Any]:
 def planned_upload_data(workout_stem: str, schedule_date: str) -> dict[str, Any]:
     upload_path = PLANNED_WORKOUTS_DIR / schedule_date / f"{workout_stem}.garmin_upload.json"
     return load_json(upload_path) if upload_path.exists() else {}
+
+
+def planned_workout_file(slug: str) -> Path:
+    return PLANNED_WORKOUTS_DIR / f"{slug}.yaml"
+
+
+def retry_garmin_workout_sync(slug: str, username: str | None) -> tuple[bool, str]:
+    workout_file = planned_workout_file(slug)
+    attempted_at = datetime.now().isoformat()
+    if not workout_file.exists():
+        set_garmin_retry_state(
+            slug,
+            {
+                "status": "error",
+                "label": "Archivo no encontrado",
+                "message": f"No existe {workout_file.relative_to(ROOT)}.",
+                "updated_at": attempted_at,
+                "updated_by": username or "web",
+            },
+        )
+        return False, "No se encontro el archivo de la sesion planificada."
+
+    command = [sys.executable, str(GARMIN_SYNC_SCRIPT), "schedule-workout-file", str(workout_file)]
+    try:
+        result = subprocess.run(command, cwd=ROOT, capture_output=True, text=True, timeout=300, check=False)
+    except subprocess.TimeoutExpired:
+        set_garmin_retry_state(
+            slug,
+            {
+                "status": "error",
+                "label": "Timeout Garmin",
+                "message": "La subida a Garmin excedio el tiempo maximo.",
+                "updated_at": attempted_at,
+                "updated_by": username or "web",
+            },
+        )
+        return False, "El reenvio a Garmin tardo demasiado y se corto."
+
+    stdout = (result.stdout or "").strip()
+    stderr = (result.stderr or "").strip()
+    if result.returncode == 0:
+        set_garmin_retry_state(
+            slug,
+            {
+                "status": "success",
+                "label": "Reenvio OK",
+                "message": stdout.splitlines()[-1] if stdout else "Sesion reenviada a Garmin.",
+                "updated_at": attempted_at,
+                "updated_by": username or "web",
+            },
+        )
+        return True, "Sesion reenviada a Garmin."
+
+    error_message = stderr.splitlines()[-1] if stderr else (stdout.splitlines()[-1] if stdout else f"Fallo de Garmin (exit {result.returncode}).")
+    set_garmin_retry_state(
+        slug,
+        {
+            "status": "error",
+            "label": "Error Garmin",
+            "message": error_message,
+            "updated_at": attempted_at,
+            "updated_by": username or "web",
+        },
+    )
+    return False, f"No se pudo reenviar a Garmin: {error_message}"
 
 
 def dashboard_payload() -> dict[str, Any]:
@@ -826,6 +1190,8 @@ def progress_metrics() -> list[dict[str, Any]]:
 
 def planned_workouts() -> list[dict[str, Any]]:
     workouts: list[dict[str, Any]] = []
+    actions = planned_workout_actions()
+    retry_states = garmin_retry_states()
     for path in sorted(PLANNED_WORKOUTS_DIR.glob("*.yaml")):
         if path.name == "library_run_templates.yaml" or path.name == "workout_template.yaml":
             continue
@@ -837,6 +1203,9 @@ def planned_workouts() -> list[dict[str, Any]]:
         workout_id = uploaded_response.get("workoutId") or scheduled_response.get("workout", {}).get("workoutId")
         scheduled_id = scheduled_response.get("workoutScheduleId")
         kind, kind_label, color_class = classify_planned_workout(payload)
+        action_state = actions.get(path.stem) if isinstance(actions.get(path.stem), dict) else None
+        retry_state = retry_states.get(path.stem) if isinstance(retry_states.get(path.stem), dict) else None
+        workout_url = garmin_scheduled_workout_url(scheduled_id) or garmin_workout_url(workout_id, payload.get("sport"))
         workouts.append(
             {
                 "slug": path.stem,
@@ -847,11 +1216,16 @@ def planned_workouts() -> list[dict[str, Any]]:
                 "estimated_duration": format_duration(payload.get("estimated_duration_s")),
                 "step_count": len(payload.get("steps") or []),
                 "garmin_workout_id": workout_id,
-                "garmin_workout_url": garmin_scheduled_workout_url(scheduled_id) or garmin_workout_url(workout_id, payload.get("sport")),
+                "garmin_workout_url": workout_url,
                 "garmin_scheduled_id": scheduled_id,
+                "garmin_upload": upload,
+                "garmin_retry_state": retry_state,
+                "garmin_status_badge": garmin_status_badge(upload, retry_state, workout_url),
                 "session_kind": kind,
                 "session_kind_label": kind_label,
                 "session_color_class": color_class,
+                "action_state": action_state,
+                "action_badge": action_display_data((action_state or {}).get("action")),
                 "payload": payload,
             }
         )
@@ -868,14 +1242,17 @@ def planned_workout_detail(slug: str) -> dict[str, Any] | None:
 
 def completed_reviews() -> list[dict[str, Any]]:
     reviews: list[dict[str, Any]] = []
+    feedback_items = completed_feedback_items()
     for path in sorted(COMPLETED_REVIEW_DIR.glob("*.analysis.json")):
         payload = load_json(path)
         planned = payload.get("planned", {})
         summary = payload.get("summary", {})
         kind, kind_label, color_class = classify_completed_review(payload)
+        slug = path.stem.replace(".analysis", "")
+        feedback = feedback_items.get(slug) if isinstance(feedback_items.get(slug), dict) else None
         reviews.append(
             {
-                "slug": path.stem.replace(".analysis", ""),
+                "slug": slug,
                 "date": planned.get("date") or "",
                 "name": planned.get("name") or path.stem,
                 "score": payload.get("score"),
@@ -894,6 +1271,10 @@ def completed_reviews() -> list[dict[str, Any]]:
                 "session_kind_label": kind_label,
                 "session_color_class": color_class,
                 "compliance_note": payload.get("progression", {}).get("summary") or payload.get("analysis") or "Sin comentario disponible.",
+                "athlete_feedback": feedback,
+                "feedback_badge": feedback_badge(feedback),
+                "feedback_summary": feedback_summary(feedback),
+                "feedback_form": feedback_form_state(feedback),
                 "payload": payload,
             }
         )
@@ -975,6 +1356,7 @@ def calendar_day_data(day: str) -> dict[str, Any]:
     return {
         "date": day,
         "date_label": day_label(day),
+        "today_plan": today_plan_data(day) if day == date.today().isoformat() else None,
         "planned_items": planned_items,
         "completed_items": completed_items,
         "reviews": reviews,
@@ -1314,6 +1696,7 @@ def home_page_data() -> dict[str, Any]:
     return {
         "workspace": status,
         "dashboard": dashboard,
+        "today_plan": today_plan_data(),
         "active_cycle": active_cycle,
         "week": week,
         "upcoming": upcoming[:5] if upcoming else workouts[:5],
@@ -1490,6 +1873,99 @@ async def planned_workout_page(request: Request, slug: str) -> HTMLResponse:
     if not item:
         return RedirectResponse(url="/planned-workouts", status_code=303)
     return templates.TemplateResponse(request, "planned_workout_detail.html", template_context(request, workout=item))
+
+
+@app.post("/planned-workouts/{slug}/action")
+async def planned_workout_action_submit(
+    request: Request,
+    slug: str,
+    action: str = Form(...),
+    next_url: str = Form(""),
+) -> RedirectResponse:
+    redirect = auth_guard(request)
+    if redirect:
+        return redirect
+    workout = planned_workout_detail(slug)
+    target = safe_next_url(next_url, f"/planned-workouts/{slug}")
+    if not workout:
+        request.session["flash"] = {"level": "error", "message": "No se encontro la sesion planificada."}
+        return RedirectResponse(url="/planned-workouts", status_code=303)
+
+    allowed_actions = {"done", "skipped", "alternative_requested", "clear"}
+    if action not in allowed_actions:
+        request.session["flash"] = {"level": "error", "message": "Accion no valida."}
+        return RedirectResponse(url=target, status_code=303)
+
+    if action == "clear":
+        clear_planned_workout_action(slug)
+        request.session["flash"] = {"level": "ok", "message": "Estado operativo limpiado."}
+        return RedirectResponse(url=target, status_code=303)
+
+    set_planned_workout_action(slug, workout, action, request.session.get("username"))
+    request.session["flash"] = {"level": "ok", "message": ACTION_LABELS.get(action, "Accion guardada.")}
+    return RedirectResponse(url=target, status_code=303)
+
+
+@app.post("/planned-workouts/{slug}/garmin-retry")
+async def planned_workout_garmin_retry_submit(
+    request: Request,
+    slug: str,
+    next_url: str = Form(""),
+) -> RedirectResponse:
+    redirect = auth_guard(request)
+    if redirect:
+        return redirect
+    workout = planned_workout_detail(slug)
+    target = safe_next_url(next_url, f"/planned-workouts/{slug}")
+    if not workout:
+        request.session["flash"] = {"level": "error", "message": "No se encontro la sesion planificada."}
+        return RedirectResponse(url="/planned-workouts", status_code=303)
+
+    ok, message = retry_garmin_workout_sync(slug, request.session.get("username"))
+    request.session["flash"] = {"level": "ok" if ok else "error", "message": message}
+    return RedirectResponse(url=target, status_code=303)
+
+
+@app.post("/completed-workouts/{slug}/feedback")
+async def completed_workout_feedback_submit(
+    request: Request,
+    slug: str,
+    rpe: int = Form(...),
+    pain_level: int = Form(...),
+    compliance: str = Form(...),
+    time_feeling: str = Form(""),
+    pain_location: str = Form(""),
+    note: str = Form(""),
+    next_url: str = Form(""),
+) -> RedirectResponse:
+    redirect = auth_guard(request)
+    if redirect:
+        return redirect
+    review = completed_review_detail(slug)
+    target = safe_next_url(next_url, f"/completed-workouts/{slug}")
+    if not review:
+        request.session["flash"] = {"level": "error", "message": "No se encontro la revision completada."}
+        return RedirectResponse(url="/completed-workouts", status_code=303)
+
+    note = str(note or "").strip()[:200]
+    pain_location = str(pain_location or "").strip()[:80]
+    if not (1 <= int(rpe) <= 10 and 0 <= int(pain_level) <= 10 and compliance in FEEDBACK_COMPLIANCE_LABELS and (not time_feeling or time_feeling in FEEDBACK_TIME_FEELING_LABELS)):
+        request.session["flash"] = {"level": "error", "message": "Revisa los campos de esfuerzo y dolor."}
+        return RedirectResponse(url=target, status_code=303)
+
+    updated = set_completed_feedback(
+        slug,
+        review,
+        int(rpe),
+        int(pain_level),
+        compliance,
+        time_feeling,
+        pain_location,
+        note,
+        request.session.get("username"),
+    )
+    request.session["flash"] = {"level": "ok", "message": "Feedback actualizado." if updated else "Feedback guardado."}
+    return RedirectResponse(url=target, status_code=303)
 
 
 @app.get("/completed-workouts", response_class=HTMLResponse)

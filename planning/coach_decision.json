@@ -1,23 +1,25 @@
 {
-  "generated_at": "2026-05-09T20:05:00.099681+00:00",
-  "as_of": "2026-05-09",
+  "generated_at": "2026-05-10T15:43:16.578959+00:00",
+  "as_of": "2026-05-10",
   "lookback_days": 28,
   "activity_count_total": 61,
   "review_count_total": 3,
   "decision": {
-    "as_of": "2026-05-09",
-    "status": "green",
-    "action": "maintain_or_progress_carefully",
-    "recommendation": "Mantener plan y permitir progresion pequena si el periostio sigue en 0-2/10.",
+    "as_of": "2026-05-10",
+    "status": "red",
+    "action": "reduce_or_replace_quality",
+    "recommendation": "Reducir carga inmediata: cambiar la proxima calidad por rodaje muy facil o descanso, y mantener FC capada.",
     "reasons": [
+      "Subida de volumen 7d de 79%.",
+      "Resting HR reciente relativamente alta; vigilar estres o recuperacion.",
       "El bloque activo prioriza reconstruccion, consistencia y tolerancia tisular antes de ritmos agresivos.",
       "El limitador principal declarado sigue siendo la durabilidad aerobica; la construccion debe respetarlo.",
       "La automatizacion prioriza como backbone de calidad: cruise_intervals, tempo_broken, tempo_continuous."
     ],
     "windows": {
       "last_7_days": {
-        "start": "2026-05-03",
-        "end": "2026-05-09",
+        "start": "2026-05-04",
+        "end": "2026-05-10",
         "runs": 4,
         "km": 26.18118994140625,
         "duration_s": 9541.346801757812,
@@ -27,29 +29,29 @@
         "long_run_km": 10.8192099609375
       },
       "previous_7_days": {
-        "start": "2026-04-26",
-        "end": "2026-05-02",
-        "runs": 3,
-        "km": 21.66805029296875,
-        "duration_s": 8212.531005859375,
-        "avg_pace_s_per_km": 379.0156887592387,
-        "avg_hr": 158.50987913353043,
-        "quality_runs": 2,
+        "start": "2026-04-27",
+        "end": "2026-05-03",
+        "runs": 2,
+        "km": 14.65116015625,
+        "duration_s": 5676.594970703125,
+        "avg_pace_s_per_km": 387.4502025890121,
+        "avg_hr": 157.39745394382334,
+        "quality_runs": 1,
         "long_run_km": 8.045740234375
       },
       "last_28_days": {
-        "start": "2026-04-12",
-        "end": "2026-05-09",
-        "runs": 14,
-        "km": 102.004580078125,
-        "duration_s": 40006.74206542969,
-        "avg_pace_s_per_km": 392.20535033611867,
-        "avg_hr": 155.32995946963052,
+        "start": "2026-04-13",
+        "end": "2026-05-10",
+        "runs": 13,
+        "km": 91.65120996093749,
+        "duration_s": 35803.31188964844,
+        "avg_pace_s_per_km": 390.64745468071953,
+        "avg_hr": 155.9557147779492,
         "quality_runs": 5,
         "long_run_km": 10.8192099609375
       }
     },
-    "volume_spike_pct": 20.828545196343782,
+    "volume_spike_pct": 78.69704284297025,
     "latest_shin_entry": {
       "date": "2026-05-08",
       "pain_during": 1,
@@ -65,7 +67,7 @@
       "snapshot": {
         "hrv": 137864769.0,
         "training_readiness": null,
-        "resting_heart_rate": 53.0,
+        "resting_heart_rate": 60.0,
         "training_status": {
           "userId": 137864769,
           "mostRecentVO2Max": null,
@@ -77,36 +79,34 @@
       "baseline_hrv": 137864769.0,
       "hrv_flag": "stable",
       "readiness_flag": null,
-      "resting_hr_flag": "normal",
+      "resting_hr_flag": "high",
       "training_status_flag": "neutral"
     },
     "session_guidance": {
-      "coach_state": "green",
+      "coach_state": "red",
       "shin_band": "green",
       "block": "block_1",
       "target_distance": "10k",
       "primary": [
-        "tempo_broken",
-        "aerobic_steady",
-        "easy_plus_strides",
         "easy_recovery",
-        "easy_z2",
-        "long_run"
+        "recovery_plus_mobility"
       ],
       "optional": [
-        "short_hills_power",
-        "technique_drills_strides"
+        "easy_z2"
       ],
       "avoid": [
+        "cruise_intervals",
+        "tempo_continuous",
         "short_intervals_vo2",
         "medium_intervals_vo2",
+        "ten_k_specific_reps",
         "ten_k_specific_continuous",
         "long_run_quality",
         "hills_strength",
         "five_k_specific_reps",
         "marathon_specific_blocks"
       ],
-      "quality_volume_cap": "low_to_medium",
+      "quality_volume_cap": "none",
       "selection_order": [
         "coach_state",
         "shin_band",
@@ -121,7 +121,7 @@
       "active_block": "Block 1: Reset, consistency and tissue tolerance",
       "goal_race_name": "XXIV Padron 10k",
       "goal_race_priority": "S",
-      "days_to_goal_race": 273,
+      "days_to_goal_race": 272,
       "preferred_plan_columns": [
         "day",
         "description",
@@ -144,7 +144,7 @@
     "passed_count": 0,
     "total_gates": 4,
     "metrics": {
-      "avg_weekly_km_28d": 25.50114501953125,
+      "avg_weekly_km_28d": 22.912802490234373,
       "long_run_km_28d": 10.8192099609375,
       "best_5k_s_90d": 1335.8609619140625,
       "best_10k_s_180d": 2663.23095703125,
@@ -155,7 +155,7 @@
       {
         "name": "Base estable",
         "passed": false,
-        "evidence": "Media 4 semanas 25.5 km/sem, tirada larga 10.8 km, revisiones rojas 0, periostio 1."
+        "evidence": "Media 4 semanas 22.9 km/sem, tirada larga 10.8 km, revisiones rojas 0, periostio 1."
       },
       {
         "name": "Umbral competitivo",
@@ -165,7 +165,7 @@
       {
         "name": "Precondicion 35:00",
         "passed": false,
-        "evidence": "Media 25.5 km/sem, tirada 10.8 km, 5k 22:16, riesgo 0."
+        "evidence": "Media 22.9 km/sem, tirada 10.8 km, 5k 22:16, riesgo 0."
       },
       {
         "name": "Seleccion 35:00",
@@ -183,13 +183,6 @@
     "method": "Mejores splits recientes de Garmin y conversion Riegel; usar como tendencia, no como garantia de carrera."
   },
   "weekly_volume": [
-    {
-      "week": "2026-W15",
-      "km": 10.3533701171875,
-      "runs": 1,
-      "quality_runs": 0,
-      "long_run_km": 10.3533701171875
-    },
     {
       "week": "2026-W16",
       "km": 38.2404296875,
@@ -220,12 +213,12 @@
     }
   ],
   "daily_metrics": {
-    "available_days": 16,
-    "latest_date": "2026-05-09",
+    "available_days": 17,
+    "latest_date": "2026-05-10",
     "source": "garmin_daily",
     "latest_hrv": 137864769.0,
     "latest_training_readiness": null,
-    "latest_resting_heart_rate": 53.0,
+    "latest_resting_heart_rate": 60.0,
     "latest_training_status": {
       "userId": 137864769,
       "mostRecentVO2Max": null,
@@ -248,12 +241,12 @@
       "training_readiness",
       "running_tolerance"
     ],
-    "latest_daily_date": "2026-05-09",
+    "latest_daily_date": "2026-05-10",
     "latest_activity_date": "2026-05-09",
     "daily_snapshot": {
       "hrv": 137864769.0,
       "training_readiness": null,
-      "resting_heart_rate": 53.0,
+      "resting_heart_rate": 60.0,
       "training_status": {
         "userId": 137864769,
         "mostRecentVO2Max": null,
@@ -285,7 +278,7 @@
       },
       "coaching_note": "35:00 is aspirational and must be unlocked by checkpoint evidence before being used as training pace."
     },
-    "days_to_goal_race": 273,
+    "days_to_goal_race": 272,
     "available_race_count": 4
   }
 }

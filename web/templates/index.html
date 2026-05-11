@@ -55,6 +55,95 @@
   </div>
 </section>
 
+<section class="panel today-plan-panel status-{{ today_plan.decision.status if today_plan.decision else 'unknown' }}">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Plan de hoy</p>
+      <h3>{{ today_plan.date_label }}</h3>
+    </div>
+    <span class="badge {{ 'warn' if today_plan.status in ['protective_today', 'no_plan_today', 'insufficient_data'] else 'ok' if today_plan.status in ['planned_today', 'completed_today'] else '' }}">{{ today_plan.status_label }}</span>
+  </div>
+  <div class="today-plan-layout">
+    <div class="today-plan-main">
+      {% if today_plan.planned_workout %}
+      <div class="today-plan-title-row">
+        <h4><a href="{{ today_plan.links.detail_url }}">{{ today_plan.planned_workout.name }}</a></h4>
+        {% if today_plan.action_badge %}
+        <span class="badge {{ today_plan.action_badge.tone }}">{{ today_plan.action_badge.label }}</span>
+        {% endif %}
+        {% if today_plan.planned_workout.garmin_status_badge %}
+        <span class="badge {{ today_plan.planned_workout.garmin_status_badge.tone }}">{{ today_plan.planned_workout.garmin_status_badge.label }}</span>
+        {% endif %}
+      </div>
+      <p class="muted">{{ today_plan.planned_workout.session_kind_label }} · {{ today_plan.planned_workout.estimated_duration }}</p>
+      <p>{{ today_plan.planned_workout.description or today_plan.why_today }}</p>
+      {% elif today_plan.completed_review %}
+      <h4>{{ today_plan.completed_review.activity_name }}</h4>
+      <p class="muted">{{ today_plan.completed_review.distance_km }} km · {{ today_plan.completed_review.duration }} · {{ today_plan.completed_review.pace }}</p>
+      <p>{{ today_plan.completed_review.compliance_note }}</p>
+      <p><a class="action-link" href="{{ today_plan.links.feedback_url }}">{{ 'Editar feedback' if today_plan.feedback_present else 'Añadir feedback' }}</a></p>
+      {% else %}
+      <h4>Sin sesion operativa cargada</h4>
+      <p>{{ today_plan.why_today }}</p>
+      {% endif %}
+
+      {% if today_plan.why_today and today_plan.planned_workout %}
+      <p class="today-plan-why">{{ today_plan.why_today }}</p>
+      {% endif %}
+
+      <div class="today-plan-tags">
+        {% for item in today_plan.watchouts %}
+        <span class="mini-badge mini-badge-warn">{{ item }}</span>
+        {% endfor %}
+        {% for item in today_plan.priorities %}
+        <span class="mini-badge">{{ item }}</span>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="today-plan-side">
+      {% if today_plan.planned_workout and today_plan.planned_workout.garmin_workout_url %}
+      <a class="link-pill" href="{{ today_plan.planned_workout.garmin_workout_url }}" target="_blank" rel="noreferrer">Abrir en Garmin</a>
+      {% endif %}
+      <a class="ghost-link" href="{{ today_plan.links.day_url }}">Abrir dia</a>
+      {% if today_plan.links.detail_url %}
+      <a class="ghost-link" href="{{ today_plan.links.detail_url }}">Ver detalle</a>
+      {% endif %}
+    </div>
+  </div>
+
+  {% if today_plan.cta_enabled %}
+  <div class="action-grid today-plan-actions">
+    <form method="post" action="/planned-workouts/{{ today_plan.planned_workout.slug }}/garmin-retry">
+      <input type="hidden" name="next_url" value="/">
+      <button class="cta-button" type="submit">Reenviar a Garmin</button>
+    </form>
+    <form method="post" action="/planned-workouts/{{ today_plan.planned_workout.slug }}/action">
+      <input type="hidden" name="action" value="done">
+      <input type="hidden" name="next_url" value="/">
+      <button class="cta-button cta-ok" type="submit">Marcar hecha</button>
+    </form>
+    <form method="post" action="/planned-workouts/{{ today_plan.planned_workout.slug }}/action">
+      <input type="hidden" name="action" value="skipped">
+      <input type="hidden" name="next_url" value="/">
+      <button class="cta-button cta-warn" type="submit">No pude hacerla</button>
+    </form>
+    <form method="post" action="/planned-workouts/{{ today_plan.planned_workout.slug }}/action">
+      <input type="hidden" name="action" value="alternative_requested">
+      <input type="hidden" name="next_url" value="/">
+      <button class="cta-button" type="submit">Necesito alternativa</button>
+    </form>
+    {% if today_plan.action_state %}
+    <form method="post" action="/planned-workouts/{{ today_plan.planned_workout.slug }}/action">
+      <input type="hidden" name="action" value="clear">
+      <input type="hidden" name="next_url" value="/">
+      <button class="cta-button cta-subtle" type="submit">Limpiar estado</button>
+    </form>
+    {% endif %}
+  </div>
+  {% endif %}
+</section>
+
 <section class="cards three">
   <article class="card status-{{ dashboard.decision.status if dashboard.decision else 'unknown' }}">
     <h3>Recomendacion actual</h3>

@@ -41,6 +41,11 @@
       {% endif %}
     </aside>
     <main class="content">
+      {% if flash %}
+      <section class="flash flash-{{ flash.level or 'ok' }}">
+        <strong>{{ flash.message }}</strong>
+      </section>
+      {% endif %}
       {% block content %}{% endblock %}
     </main>
   </div>

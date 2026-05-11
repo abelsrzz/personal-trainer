@@ -168,10 +168,19 @@
       </div>
       <div class="item-meta">
         <span class="badge kind-badge">{{ workout.session_kind_label }}</span>
+        {% if workout.garmin_status_badge %}
+        <span class="badge {{ workout.garmin_status_badge.tone }}">{{ workout.garmin_status_badge.label }}</span>
+        {% endif %}
         {% if workout.garmin_workout_url %}
         <a class="link-pill" href="{{ workout.garmin_workout_url }}" target="_blank" rel="noreferrer">Garmin</a>
         {% endif %}
         <span>{{ workout.estimated_duration }}</span>
+      </div>
+      <div class="inline-actions">
+        <form method="post" action="/planned-workouts/{{ workout.slug }}/garmin-retry">
+          <input type="hidden" name="next_url" value="/planned-workouts?view={{ current_view }}&kind={{ selected_kind }}&status={{ selected_status }}">
+          <button class="mini-action" type="submit">Reenviar Garmin</button>
+        </form>
       </div>
     </div>
     {% else %}

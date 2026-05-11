@@ -38,5 +38,5 @@ zones:
       note: High-cost interval ability, not current 10k pace.
   data_sources:
     garmin:
-      last_sync: '2026-05-09T20:04:59.737719Z'
+      last_sync: '2026-05-10T16:19:02.271947Z'
       profile_snapshot: training/completed/imports/garmin/profile/athlete_profile_snapshot.json

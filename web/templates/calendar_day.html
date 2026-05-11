@@ -13,6 +13,66 @@
   </div>
 </section>
 
+{% if calendar_day.today_plan %}
+<section class="panel today-plan-panel status-{{ calendar_day.today_plan.decision.status if calendar_day.today_plan.decision else 'unknown' }}">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Plan de hoy</p>
+      <h3>{{ calendar_day.today_plan.status_label }}</h3>
+    </div>
+    {% if calendar_day.today_plan.action_badge %}
+    <span class="badge {{ calendar_day.today_plan.action_badge.tone }}">{{ calendar_day.today_plan.action_badge.label }}</span>
+    {% endif %}
+  </div>
+  {% if calendar_day.today_plan.planned_workout %}
+  <p><strong><a href="{{ calendar_day.today_plan.links.detail_url }}">{{ calendar_day.today_plan.planned_workout.name }}</a></strong></p>
+  <p class="muted">{{ calendar_day.today_plan.planned_workout.session_kind_label }} · {{ calendar_day.today_plan.planned_workout.estimated_duration }}</p>
+  {% if calendar_day.today_plan.planned_workout.garmin_status_badge %}
+  <p><span class="badge {{ calendar_day.today_plan.planned_workout.garmin_status_badge.tone }}">{{ calendar_day.today_plan.planned_workout.garmin_status_badge.label }}</span></p>
+  {% endif %}
+  {% endif %}
+  <p>{{ calendar_day.today_plan.why_today }}</p>
+  <div class="today-plan-tags">
+    {% for item in calendar_day.today_plan.watchouts %}
+    <span class="mini-badge mini-badge-warn">{{ item }}</span>
+    {% endfor %}
+    {% for item in calendar_day.today_plan.priorities %}
+    <span class="mini-badge">{{ item }}</span>
+    {% endfor %}
+  </div>
+  {% if calendar_day.today_plan.cta_enabled %}
+  <div class="action-grid today-plan-actions">
+    <form method="post" action="/planned-workouts/{{ calendar_day.today_plan.planned_workout.slug }}/garmin-retry">
+      <input type="hidden" name="next_url" value="/calendar/day/{{ calendar_day.date }}">
+      <button class="cta-button" type="submit">Reenviar a Garmin</button>
+    </form>
+    <form method="post" action="/planned-workouts/{{ calendar_day.today_plan.planned_workout.slug }}/action">
+      <input type="hidden" name="action" value="done">
+      <input type="hidden" name="next_url" value="/calendar/day/{{ calendar_day.date }}">
+      <button class="cta-button cta-ok" type="submit">Marcar hecha</button>
+    </form>
+    <form method="post" action="/planned-workouts/{{ calendar_day.today_plan.planned_workout.slug }}/action">
+      <input type="hidden" name="action" value="skipped">
+      <input type="hidden" name="next_url" value="/calendar/day/{{ calendar_day.date }}">
+      <button class="cta-button cta-warn" type="submit">No pude hacerla</button>
+    </form>
+    <form method="post" action="/planned-workouts/{{ calendar_day.today_plan.planned_workout.slug }}/action">
+      <input type="hidden" name="action" value="alternative_requested">
+      <input type="hidden" name="next_url" value="/calendar/day/{{ calendar_day.date }}">
+      <button class="cta-button" type="submit">Necesito alternativa</button>
+    </form>
+    {% if calendar_day.today_plan.action_state %}
+    <form method="post" action="/planned-workouts/{{ calendar_day.today_plan.planned_workout.slug }}/action">
+      <input type="hidden" name="action" value="clear">
+      <input type="hidden" name="next_url" value="/calendar/day/{{ calendar_day.date }}">
+      <button class="cta-button cta-subtle" type="submit">Limpiar estado</button>
+    </form>
+    {% endif %}
+  </div>
+  {% endif %}
+</section>
+{% endif %}
+
 <section class="split">
   <article class="panel">
     <h3>Plan del día</h3>
@@ -22,9 +82,32 @@
         <div>
           <strong><a href="/planned-workouts/{{ workout.slug }}">{{ workout.name }}</a></strong>
           <p class="muted">{{ workout.description }}</p>
+          <div class="inline-actions">
+            <form method="post" action="/planned-workouts/{{ workout.slug }}/action">
+              <input type="hidden" name="action" value="done">
+              <input type="hidden" name="next_url" value="/calendar/day/{{ calendar_day.date }}">
+              <button class="mini-action mini-action-ok" type="submit">Hecha</button>
+            </form>
+            <form method="post" action="/planned-workouts/{{ workout.slug }}/action">
+              <input type="hidden" name="action" value="skipped">
+              <input type="hidden" name="next_url" value="/calendar/day/{{ calendar_day.date }}">
+              <button class="mini-action mini-action-warn" type="submit">No hecha</button>
+            </form>
+            <form method="post" action="/planned-workouts/{{ workout.slug }}/action">
+              <input type="hidden" name="action" value="alternative_requested">
+              <input type="hidden" name="next_url" value="/calendar/day/{{ calendar_day.date }}">
+              <button class="mini-action" type="submit">Alternativa</button>
+            </form>
+          </div>
         </div>
         <div class="item-meta">
           <span class="badge kind-badge">{{ workout.session_kind_label }}</span>
+          {% if workout.action_badge %}
+          <span class="badge {{ workout.action_badge.tone }}">{{ workout.action_badge.label }}</span>
+          {% endif %}
+          {% if workout.garmin_status_badge %}
+          <span class="badge {{ workout.garmin_status_badge.tone }}">{{ workout.garmin_status_badge.label }}</span>
+          {% endif %}
           <span>{{ workout.estimated_duration }}</span>
           {% if workout.garmin_workout_url %}
           <a class="link-pill" href="{{ workout.garmin_workout_url }}" target="_blank" rel="noreferrer">Garmin</a>
@@ -45,9 +128,16 @@
         <div>
           <strong><a href="/completed-workouts/{{ review.slug }}">{{ review.activity_name }}</a></strong>
           <p class="muted">{{ review.distance_km }} km · {{ review.duration }} · {{ review.pace }}</p>
+          {% if review.feedback_summary %}
+          <p class="muted">{{ review.feedback_summary }}</p>
+          {% endif %}
+          <p><a class="action-link" href="/completed-workouts/{{ review.slug }}">{{ 'Editar feedback' if review.athlete_feedback else 'Añadir feedback' }}</a></p>
         </div>
         <div class="item-meta">
           <span class="badge kind-badge">{{ review.session_kind_label }}</span>
+          {% if review.feedback_badge %}
+          <span class="badge {{ review.feedback_badge.tone }}">{{ review.feedback_badge.label }}</span>
+          {% endif %}
           <span>FC {{ review.avg_hr }}</span>
           {% if review.garmin_activity_url %}
           <a class="link-pill" href="{{ review.garmin_activity_url }}" target="_blank" rel="noreferrer">Garmin</a>

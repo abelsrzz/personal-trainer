@@ -1,16 +1,16 @@
 # Athlete Status Dashboard
 
-- Fecha de analisis: `2026-05-09`
-- Estado: `green`
-- Accion recomendada: `maintain_or_progress_carefully`
-- Recomendacion: Mantener plan y permitir progresion pequena si el periostio sigue en 0-2/10.
+- Fecha de analisis: `2026-05-10`
+- Estado: `red`
+- Accion recomendada: `reduce_or_replace_quality`
+- Recomendacion: Reducir carga inmediata: cambiar la proxima calidad por rodaje muy facil o descanso, y mantener FC capada.
 
 ## Carga Reciente
 
 - Ultimos 7 dias: `26.2 km`, `4` carreras, `2` exigentes, tirada larga `10.8 km`.
-- Ultimos 28 dias: `102.0 km`, `14` carreras, media `25.5 km/sem`.
+- Ultimos 28 dias: `91.7 km`, `13` carreras, media `22.9 km/sem`.
 - Ritmo medio 7d: `6:04/km`, FC media `161.2`.
-- Cambio vs 7 dias previos: `21%`.
+- Cambio vs 7 dias previos: `79%`.
 
 ## Predictor De Marca
 
@@ -21,6 +21,8 @@
 
 ## Riesgos Detectados
 
+- Subida de volumen 7d de 79%.
+- Resting HR reciente relativamente alta; vigilar estres o recuperacion.
 - El bloque activo prioriza reconstruccion, consistencia y tolerancia tisular antes de ritmos agresivos.
 - El limitador principal declarado sigue siendo la durabilidad aerobica; la construccion debe respetarlo.
 - La automatizacion prioriza como backbone de calidad: cruise_intervals, tempo_broken, tempo_continuous.
@@ -31,14 +33,13 @@
 - Resumen: Con la evidencia actual, 35:00 sigue siendo aspiracional y no prescribe ritmos.
 - Gates cumplidos: `0/4`
 
-- `NO` Base estable: Media 4 semanas 25.5 km/sem, tirada larga 10.8 km, revisiones rojas 0, periostio 1.
+- `NO` Base estable: Media 4 semanas 22.9 km/sem, tirada larga 10.8 km, revisiones rojas 0, periostio 1.
 - `NO` Umbral competitivo: Mejor 5k reciente: 22:16.
-- `NO` Precondicion 35:00: Media 25.5 km/sem, tirada 10.8 km, 5k 22:16, riesgo 0.
+- `NO` Precondicion 35:00: Media 22.9 km/sem, tirada 10.8 km, 5k 22:16, riesgo 0.
 - `NO` Seleccion 35:00: 5k 22:16, 10k 44:23.
 
 ## Volumen Semanal
 
-- `2026-W15`: `10.4 km`, `1` carreras, `0` exigentes, tirada `10.4 km`.
 - `2026-W16`: `38.2 km`, `5` carreras, `1` exigentes, tirada `10.0 km`.
 - `2026-W17`: `12.6 km`, `2` carreras, `1` exigentes, tirada `7.0 km`.
 - `2026-W18`: `14.7 km`, `2` carreras, `1` exigentes, tirada `8.0 km`.
@@ -46,5 +47,5 @@
 
 ## Datos Garmin Daily
 
-- Dias disponibles en ventana: `16`.
-- Ultimo dia diario importado: `2026-05-09`.
+- Dias disponibles en ventana: `17`.
+- Ultimo dia diario importado: `2026-05-10`.

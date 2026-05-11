@@ -4,6 +4,9 @@
 <section class="panel">
   <p class="eyebrow">Revision completada</p>
   <h2>{{ review.name }}</h2>
+  {% if review.feedback_badge %}
+  <p><span class="badge {{ review.feedback_badge.tone }}">{{ review.feedback_badge.label }}</span></p>
+  {% endif %}
   {% if review.garmin_activity_url %}
   <p><a class="action-link" href="{{ review.garmin_activity_url }}" target="_blank" rel="noreferrer">Abrir actividad en Garmin</a></p>
   {% endif %}
@@ -13,6 +16,63 @@
     <article class="card"><h3>Riesgo</h3><p class="metric">{{ review.risk_level }}</p></article>
     <article class="card"><h3>Pace</h3><p class="metric">{{ review.pace }}</p></article>
   </div>
+</section>
+
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Tu feedback</p>
+      <h3>{{ 'Editar feedback' if review.athlete_feedback else 'Añadir feedback' }}</h3>
+    </div>
+    {% if review.athlete_feedback %}
+    <span class="badge ok">Guardado</span>
+    {% endif %}
+  </div>
+  <p class="muted">Completa estas 4 señales para que el sistema entienda mejor como toleraste la sesion.</p>
+  {% if review.feedback_summary %}
+  <p>{{ review.feedback_summary }}</p>
+  {% endif %}
+  {% if review.athlete_feedback and review.athlete_feedback.athlete_feedback.note %}
+  <p class="muted">{{ review.athlete_feedback.athlete_feedback.note }}</p>
+  {% endif %}
+  <form class="form" method="post" action="/completed-workouts/{{ review.slug }}/feedback">
+    <input type="hidden" name="next_url" value="/completed-workouts/{{ review.slug }}">
+    <label>
+      <span>Esfuerzo percibido</span>
+      <input type="number" name="rpe" min="1" max="10" required value="{{ review.feedback_form.rpe }}">
+    </label>
+    <label>
+      <span>Dolor o molestia</span>
+      <input type="number" name="pain_level" min="0" max="10" required value="{{ review.feedback_form.pain_level }}">
+    </label>
+    <label>
+      <span>Cumplimiento</span>
+      <select name="compliance" required>
+        <option value="">Selecciona una opcion</option>
+        {% for key, label in review.feedback_form.compliance_options.items() %}
+        <option value="{{ key }}" {{ 'selected' if review.feedback_form.compliance == key else '' }}>{{ label }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>
+      <span>Tiempo disponible</span>
+      <select name="time_feeling">
+        <option value="">Sin dato</option>
+        {% for key, label in review.feedback_form.time_feeling_options.items() %}
+        <option value="{{ key }}" {{ 'selected' if review.feedback_form.time_feeling == key else '' }}>{{ label }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>
+      <span>Donde notaste la molestia</span>
+      <input type="text" name="pain_location" maxlength="80" value="{{ review.feedback_form.pain_location }}">
+    </label>
+    <label>
+      <span>Nota corta</span>
+      <textarea name="note" rows="3" maxlength="200">{{ review.feedback_form.note }}</textarea>
+    </label>
+    <button type="submit">{{ 'Actualizar feedback' if review.athlete_feedback else 'Guardar feedback' }}</button>
+  </form>
 </section>
 
 <section class="split">

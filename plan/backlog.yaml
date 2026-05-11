@@ -257,7 +257,7 @@ phases:
           - plan/spec_ap_01_post_workout_refresh.md
       - id: AP-02
         title: Automatizar deteccion de actividades nuevas
-        status: pending
+        status: completed
         priority: high
         impact: high
         effort: high
@@ -271,7 +271,7 @@ phases:
           - system/state/
       - id: AP-03
         title: Encadenar import, review, decision y progreso por evento
-        status: pending
+        status: completed
         priority: high
         impact: high
         effort: high
@@ -283,9 +283,10 @@ phases:
           - scripts/garmin/coach_sync.py
           - scripts/garmin/review_planned_session.py
           - scripts/garmin/coach_engine.py
+          - scripts/garmin/post_workout_refresh.py
       - id: AP-04
         title: Integrar feedback subjetivo en el motor automatico
-        status: pending
+        status: completed
         priority: high
         impact: high
         effort: medium
@@ -295,9 +296,10 @@ phases:
         suggested_files:
           - scripts/garmin/coach_engine.py
           - training/completed/feedback/
+          - scripts/garmin/post_workout_refresh.py
       - id: AP-05
         title: Actualizar lesion y retorno automaticamente
-        status: pending
+        status: completed
         priority: high
         impact: high
         effort: medium
@@ -308,10 +310,10 @@ phases:
         suggested_files:
           - athlete/shin_tracker.yaml
           - scripts/garmin/coach_engine.py
-          - scripts/web/app.py
+          - scripts/garmin/post_workout_refresh.py
       - id: AP-06
         title: Añadir observabilidad y salud del pipeline automatico
-        status: pending
+        status: completed
         priority: medium
         impact: high
         effort: medium
@@ -323,3 +325,4 @@ phases:
           - system/state/
           - web/templates/
           - scripts/garmin/
+          - scripts/web/app.py

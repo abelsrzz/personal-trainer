@@ -10,9 +10,9 @@
 
 ## Ready Next
 
-1. `AP-02` Automatizar deteccion de actividades nuevas.
-2. `AP-03` Encadenar import, review, decision y progreso por evento.
-3. `AP-04` Integrar feedback subjetivo en el motor automatico.
+1. Revisar cierre funcional del pipeline post-entreno.
+2. Evaluar automatizaciones adicionales fuera del flujo post-entreno.
+3. Diseñar siguiente fase de automatizacion continua.
 
 ## Blocked
 
@@ -59,3 +59,8 @@
 - Se abre `phase_06_automation_mastery` para eliminar dependencia de pasos manuales tras entrenos completados.
 - Se fija como nueva prioridad convertir el sistema en un pipeline automatico post-entreno, Garmin-first, idempotente y observable.
 - Se completa `AP-01` definiendo la capability `post_workout_refresh` con contrato claro de trigger, entradas, salidas, estado persistente e idempotencia.
+- Se completa `AP-02` creando un trigger local automatico con estado persistente, capability registrada y ejemplos `systemd` para polling periodico de nuevas actividades.
+- Se completa `AP-03` desacoplando el refresco post-entreno de `coach_sync.py` por fecha y encadenando review local, decision y progreso por actividad detectada.
+- Se completa `AP-04` integrando feedback subjetivo en `coach_engine.py` y permitiendo reproceso automatico de derivados cuando cambia `training/completed/feedback/`.
+- Se completa `AP-05` promocionando automaticamente dolor tibial/periostio desde feedback a `athlete/shin_tracker.yaml`, con merge conservador sobre entradas existentes.
+- Se completa `AP-06` mostrando en la web la salud del pipeline automatico, ultimo exito, ultimo error y trazabilidad reciente de actividades y feedback procesados.

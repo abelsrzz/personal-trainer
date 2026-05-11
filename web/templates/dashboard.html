@@ -70,6 +70,57 @@
   </article>
 </section>
 
+<section class="panel {{ 'status-green' if dashboard.automation_pipeline.healthy else 'status-yellow' }}">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Automatizacion</p>
+      <h3>Salud del pipeline post-entreno</h3>
+    </div>
+    <span class="badge {{ 'ok' if dashboard.automation_pipeline.healthy else 'warn' }}">{{ dashboard.automation_pipeline.status_label }}</span>
+  </div>
+  <p>{{ dashboard.automation_pipeline.summary }}</p>
+  <p class="muted">Ultimo run correcto: {{ dashboard.automation_pipeline.last_successful_run or '-' }}. Ultimo procesado: {{ dashboard.automation_pipeline.last_processed_at or '-' }}.</p>
+  <div class="today-plan-tags">
+    <span class="mini-badge">Seen {{ dashboard.automation_pipeline.last_seen_activity_id or '-' }}</span>
+    <span class="mini-badge">Processed {{ dashboard.automation_pipeline.last_processed_activity_id or '-' }}</span>
+    <span class="mini-badge">Detections {{ dashboard.automation_pipeline.last_run.detected_count }}</span>
+  </div>
+  <div class="split">
+    <article class="panel">
+      <h3>Ultimas actividades</h3>
+      <div class="list compact-list">
+        {% for item in dashboard.automation_pipeline.recent_activities %}
+        <div class="list-item static">
+          <div>
+            <strong>{{ item.activity_date }}</strong>
+            <p>{{ item.activity_name or item.activity_id }}</p>
+          </div>
+          <span class="badge {{ 'ok' if item.result == 'success' else 'warn' }}">{{ item.result }}</span>
+        </div>
+        {% else %}
+        <p class="muted">Todavia no hay actividades procesadas por el pipeline.</p>
+        {% endfor %}
+      </div>
+    </article>
+    <article class="panel">
+      <h3>Ultimos feedback updates</h3>
+      <div class="list compact-list">
+        {% for item in dashboard.automation_pipeline.recent_feedback_updates %}
+        <div class="list-item static">
+          <div>
+            <strong>{{ item.date }}</strong>
+            <p>{{ item.slug }}</p>
+          </div>
+          <span class="badge {{ 'ok' if item.result == 'success' else 'warn' }}">{{ item.result }}</span>
+        </div>
+        {% else %}
+        <p class="muted">Todavia no hay feedback updates procesados automaticamente.</p>
+        {% endfor %}
+      </div>
+    </article>
+  </div>
+</section>
+
 <section class="panel status-{{ dashboard.readiness_card.state }}">
   <div class="panel-head">
     <div>

@@ -39,6 +39,7 @@ ACTIVE_WEEK_PATH = ROOT / "planning" / "weeks" / "semana_actual.md"
 COACH_DECISION_PATH = ROOT / "planning" / "coach_decision.json"
 PLANNED_ACTIONS_PATH = ROOT / "system" / "state" / "planned_workout_actions.json"
 GARMIN_RETRY_STATE_PATH = ROOT / "system" / "state" / "garmin_retry_state.json"
+POST_WORKOUT_REFRESH_STATE_PATH = ROOT / "system" / "state" / "post_workout_refresh_state.json"
 GARMIN_SYNC_SCRIPT = ROOT / "scripts" / "garmin" / "sync_garmin.py"
 
 
@@ -226,6 +227,55 @@ def workspace_status() -> dict[str, Any]:
             "El proyecto aun no esta completamente preparado para consulta operativa." if missing_required else "La base minima del proyecto ya esta lista.",
             "Cuando exista `planning/coach_decision.json`, el dashboard mostrara tambien analisis automatizado." if not missing_required else "Faltan algunos archivos base para activar toda la capa operativa.",
         ],
+    }
+
+
+def automation_pipeline_status() -> dict[str, Any]:
+    state = load_optional_json(
+        POST_WORKOUT_REFRESH_STATE_PATH,
+        {
+            "last_seen_activity_id": None,
+            "last_processed_activity_id": None,
+            "last_processed_at": None,
+            "last_successful_run": None,
+            "last_error": None,
+            "processed_activities": [],
+            "processed_feedback_updates": [],
+            "runs": [],
+        },
+    )
+    state = state if isinstance(state, dict) else {}
+    last_error = str(state.get("last_error") or "").strip() or None
+    last_successful_run = format_datetime(state.get("last_successful_run"))
+    last_processed_at = format_datetime(state.get("last_processed_at"))
+    processed_activities = state.get("processed_activities") if isinstance(state.get("processed_activities"), list) else []
+    processed_feedback_updates = state.get("processed_feedback_updates") if isinstance(state.get("processed_feedback_updates"), list) else []
+    recent_activity_items = list(reversed(processed_activities[-5:]))
+    recent_feedback_items = list(reversed(processed_feedback_updates[-5:]))
+    recent_runs = state.get("runs") if isinstance(state.get("runs"), list) else []
+    last_run = recent_runs[-1] if recent_runs else None
+    healthy = bool(last_successful_run and not last_error)
+    status_label = "Operativo" if healthy else ("Con errores" if last_error else "Pendiente")
+    summary = "El pipeline automatico esta procesando actividades y feedback sin errores recientes." if healthy else (
+        f"Ultimo error: {last_error}" if last_error else "El pipeline automatico aun no ha procesado eventos suficientes."
+    )
+    return {
+        "healthy": healthy,
+        "status_label": status_label,
+        "summary": summary,
+        "last_successful_run": last_successful_run,
+        "last_processed_at": last_processed_at,
+        "last_seen_activity_id": state.get("last_seen_activity_id"),
+        "last_processed_activity_id": state.get("last_processed_activity_id"),
+        "last_error": last_error,
+        "last_run": {
+            "run_at": format_datetime((last_run or {}).get("run_at")),
+            "detected_count": (last_run or {}).get("detected_count") or 0,
+            "triggered_pipeline": bool((last_run or {}).get("triggered_pipeline")),
+            "error": (last_run or {}).get("error") or None,
+        },
+        "recent_activities": recent_activity_items,
+        "recent_feedback_updates": recent_feedback_items,
     }
 
 
@@ -1552,12 +1602,14 @@ def retry_garmin_workout_sync(slug: str, username: str | None) -> tuple[bool, st
 def dashboard_payload() -> dict[str, Any]:
     status = workspace_status()
     response_patterns = athlete_response_patterns()
+    pipeline_status = automation_pipeline_status()
     if not COACH_DECISION_PATH.exists():
         payload = empty_dashboard_payload(status)
         payload["response_patterns"] = response_patterns
         payload["adaptation_triggers"] = adaptation_triggers(payload)
         payload["protection_mode"] = protection_mode_payload(payload)
         payload["readiness_card"] = readiness_card_payload(payload)
+        payload["automation_pipeline"] = pipeline_status
         return payload
     decision_capability = ensure_fresh("coach_decision")
     path = COACH_DECISION_PATH
@@ -1567,6 +1619,7 @@ def dashboard_payload() -> dict[str, Any]:
     payload["adaptation_triggers"] = adaptation_triggers(payload)
     payload["protection_mode"] = protection_mode_payload(payload)
     payload["readiness_card"] = readiness_card_payload(payload)
+    payload["automation_pipeline"] = pipeline_status
 
     session_family_labels = {
         "easy_recovery": "Rodaje de recuperacion",

@@ -168,6 +168,18 @@
   </article>
 </section>
 
+<section class="panel {{ 'status-green' if dashboard.automation_pipeline.healthy else 'status-yellow' }}">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Pipeline automatico</p>
+      <h3>{{ dashboard.automation_pipeline.status_label }}</h3>
+    </div>
+    <span class="badge {{ 'ok' if dashboard.automation_pipeline.healthy else 'warn' }}">{{ dashboard.automation_pipeline.last_successful_run or '-' }}</span>
+  </div>
+  <p>{{ dashboard.automation_pipeline.summary }}</p>
+  <p class="muted">Ultimo procesado: {{ dashboard.automation_pipeline.last_processed_at or '-' }}. Actividad vista: {{ dashboard.automation_pipeline.last_seen_activity_id or '-' }}.</p>
+</section>
+
 <section class="panel">
   <div class="panel-head">
     <div>

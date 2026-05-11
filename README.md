@@ -205,6 +205,24 @@ Ejemplos de servicios `systemd`:
 
 - `deploy/systemd/opencode-server.service.example`
 - `deploy/systemd/opencode-telegram-bot.service.example`
+- `deploy/systemd/post-workout-refresh.service.example`
+- `deploy/systemd/post-workout-refresh.timer.example`
+
+Polling automatico post-entreno:
+
+```bash
+source .venv/bin/activate
+python scripts/garmin/post_workout_refresh.py
+```
+
+Este comando:
+
+- importa actividades Garmin recientes
+- detecta actividades nuevas no vistas antes
+- persiste estado en `system/state/post_workout_refresh_state.json`
+- dispara el pipeline post-entreno para cada fecha nueva detectada
+
+En despliegue local, la via recomendada es usar el timer `systemd` de ejemplo para ejecutarlo cada `5 min`.
 
 ## Portal Web
 

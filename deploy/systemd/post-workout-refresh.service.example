@@ -1,0 +1,12 @@
+[Unit]
+Description=RunPilot automatic post-workout refresh
+After=network.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/abel/Documentos/Proyectos/personal-trainer
+ExecStart=/home/abel/Documentos/Proyectos/personal-trainer/.venv/bin/python scripts/garmin/post_workout_refresh.py
+Environment=PATH=/home/abel/Documentos/Proyectos/personal-trainer/.venv/bin:/usr/local/bin:/usr/bin:/bin
+
+[Install]
+WantedBy=multi-user.target

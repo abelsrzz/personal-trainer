@@ -88,3 +88,29 @@ capabilities:
       - telegram:/status
       - telegram:/dashboard
     stale_behavior: show_cached_with_warning
+  post_workout_refresh:
+    description: Detect newly completed workouts and trigger the automatic post-workout pipeline.
+    source_of_truth: garmin_plus_local_feedback
+    local_cache:
+      - training/completed/imports/garmin/activities/
+      - training/completed/activities/
+      - training/completed/reviews/
+      - training/completed/feedback/
+      - planning/coach_decision.json
+      - athlete/status_dashboard.md
+      - system/state/post_workout_refresh_state.json
+    freshness:
+      strategy: scheduled_refresh
+      max_age_minutes: 5
+    sync:
+      command:
+        - python
+        - scripts/garmin/post_workout_refresh.py
+    consumers:
+      - automation:post_workout_pipeline
+      - web:/dashboard
+      - web:/calendar
+      - web:/completed-workouts
+      - web:/progress
+      - telegram:/status
+    stale_behavior: show_cached_with_warning

@@ -2,22 +2,21 @@
 
 ## Active Item
 
-- `AP-02` Automatizar deteccion de actividades nuevas
+- Revisar cierre funcional del pipeline post-entreno
 
 ## Why This Next
 
-- `AP-01` ya deja definido el contrato de `post_workout_refresh`.
-- El siguiente cuello de botella es disparar ese pipeline sin tener que ejecutar comandos manuales.
-- Hace falta detectar actividades nuevas de forma local, fiable e idempotente.
+- `AP-01` a `AP-06` ya cubren capability, trigger, pipeline por actividad, feedback, lesion y observabilidad.
+- El siguiente paso ya no es un item tecnico aislado, sino validar que el circuito post-entreno realmente cubre toda la causalidad esperada.
+- A partir de ahi se podra decidir si faltan automatizaciones adicionales fuera del flujo post-entreno.
 
 ## Expected Output
 
-1. Trigger automatico local para nuevas actividades.
-2. Estado persistente de ultima actividad vista y procesada.
-3. Arranque automatico del pipeline sin comando manual.
-4. Base segura para encadenar el resto del flujo post-entreno.
+1. Checklist final de efectos que debe propagar un entreno completado.
+2. Validacion de huecos restantes en automatizacion end-to-end.
+3. Priorizacion de nueva fase si queda trabajo pendiente.
 
 ## Completion Check
 
-- Existe trigger automatico local sin comando manual.
-- El sistema detecta actividad nueva y arranca el pipeline.
+- Existe lectura clara de si el pipeline post-entreno ya esta cerrado funcionalmente.
+- El backlog queda listo para la siguiente ola de automatizacion.

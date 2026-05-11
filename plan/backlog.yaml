@@ -1,208 +1,94 @@
-meta:
-  product: RunPilot
-  owner: local
-  last_reviewed: 2026-05-10
-  rule: only_one_task_in_progress
-
 phases:
-  - id: phase_01_daily_action
-    title: Decision diaria y accion inmediata
-    goal: Hacer que el usuario sepa que hacer hoy y pueda actuar desde la web.
-    status: completed
+  - id: phase_1_daily_loop
+    title: Close the daily loop
+    goal: Let the athlete report status, talk to the system, and execute the day from the web.
     items:
-      - id: RP-01
-        title: Definir el bloque principal Plan de hoy
-        status: completed
-        priority: high
+      - id: web_chat
+        title: Add /chat web interface backed by OpenCodeBridge
+        priority: P0
+        status: pending
         impact: high
         effort: medium
         depends_on: []
-        definition_of_done:
-          - Existe especificacion UX y de datos del bloque Plan de hoy.
-          - Define version ideal, corta y protectora.
-          - Define fuentes del dato y estados vacios.
-        suggested_files:
-          - web/templates/index.html
-          - web/templates/dashboard.html
-          - scripts/web/app.py
-        outputs:
-          - plan/spec_rp_01_plan_de_hoy.md
-      - id: RP-02
-        title: Implementar CTA operativos en la sesion del dia
-        status: completed
-        priority: high
-        impact: high
-        effort: medium
-        depends_on: [RP-01]
-        definition_of_done:
-          - El usuario puede marcar hecha, no hecha o pedir alternativa.
-          - Queda registrada una accion local coherente.
-        suggested_files:
-          - web/templates/planned_workout_detail.html
-          - web/templates/calendar_day.html
-          - scripts/web/app.py
-      - id: RP-03
-        title: Implementar reenvio a Garmin y reintentos visibles
-        status: completed
-        priority: medium
-        impact: medium
-        effort: medium
-        depends_on: [RP-02]
-        definition_of_done:
-          - Existe accion visible para reintentar subida.
-          - El resultado queda reflejado en UI.
-        suggested_files:
-          - scripts/garmin/sync_garmin.py
-          - scripts/web/app.py
-
-  - id: phase_02_feedback_loop
-    title: Feedback post-entreno y aprendizaje
-    goal: Cerrar el ciclo entre ejecucion, sensaciones y decision futura.
-    status: in_progress
-    items:
-      - id: RP-04
-        title: Definir captura rapida de feedback post-entreno
-        status: completed
-        priority: high
-        impact: high
-        effort: low
-        depends_on: []
-        definition_of_done:
-          - Se define un formulario minimo con RPE, dolor, cumplimiento y nota.
-          - Existe formato de almacenamiento local.
-        suggested_files:
-          - athlete/
-          - training/
-          - scripts/web/app.py
-        outputs:
-          - plan/spec_rp_04_feedback_post_entreno.md
-      - id: RP-05
-        title: Implementar formulario y persistencia de feedback
-        status: completed
-        priority: high
-        impact: high
-        effort: medium
-        depends_on: [RP-04]
-        definition_of_done:
-          - El feedback se puede introducir desde la web.
-          - El dato queda disponible para decision y dashboard.
-        suggested_files:
-          - web/templates/completed_workout_detail.html
-          - web/templates/calendar_day.html
-          - scripts/web/app.py
-      - id: RP-06
-        title: Exponer patrones basicos de respuesta del atleta
+      - id: daily_checkin
+        title: Add fast daily check-in
+        priority: P0
         status: pending
-        priority: medium
-        impact: high
-        effort: medium
-        depends_on: [RP-05]
-        definition_of_done:
-          - Dashboard muestra patrones simples accionables.
-          - Las reglas derivadas son legibles.
-        suggested_files:
-          - web/templates/dashboard.html
-          - scripts/web/app.py
-
-  - id: phase_03_adaptive_engine
-    title: Adaptacion visible y proteccion
-    goal: Hacer evidente cuando el sistema adapta el plan por contexto.
-    status: pending
-    items:
-      - id: RP-07
-        title: Definir triggers de adaptacion visibles
-        status: pending
-        priority: high
         impact: high
         effort: medium
         depends_on: []
-        definition_of_done:
-          - Estan definidos triggers de fatiga, dolor, tiempo y ejecucion.
-          - Existe mapa trigger -> cambio de plan.
-      - id: RP-08
-        title: Mostrar replanificacion en semana y calendario
+      - id: replanning_from_web
+        title: Add real replanning from the web
+        priority: P0
         status: pending
-        priority: high
-        impact: high
-        effort: medium
-        depends_on: [RP-07]
-        definition_of_done:
-          - La UI distingue sesiones originales y ajustadas.
-          - Se ve causa y momento del ajuste.
-        suggested_files:
-          - web/templates/planned_workouts.html
-          - web/templates/calendar_day.html
-          - scripts/web/app.py
-      - id: RP-09
-        title: Implementar modo lesion o retorno
-        status: pending
-        priority: high
         impact: high
         effort: high
-        depends_on: [RP-07]
-        definition_of_done:
-          - Existe estado de proteccion activable.
-          - Cambia guidance y progreso permitido.
-        suggested_files:
-          - athlete/
-          - planning/
-          - web/templates/dashboard.html
-
-  - id: phase_04_readiness_calendar
-    title: Readiness y calendario premium
-    goal: Mejorar legibilidad operativa diaria y semanal.
-    status: pending
-    items:
-      - id: RP-10
-        title: Consolidar tarjeta de readiness diaria
+        depends_on:
+          - daily_checkin
+      - id: actionable_week
+        title: Make the weekly view actionable
+        priority: P1
         status: pending
-        priority: high
+        impact: high
+        effort: medium
+        depends_on:
+          - replanning_from_web
+
+  - id: phase_2_operational_control
+    title: Make control visible
+    goal: Explain plan execution, current decision, and injury risk in one place.
+    items:
+      - id: plan_vs_reality
+        title: Add plan vs reality analytics
+        priority: P1
+        status: pending
+        impact: high
+        effort: medium
+        depends_on:
+          - actionable_week
+      - id: coach_decision_center
+        title: Build coach decision center
+        priority: P1
+        status: pending
+        impact: high
+        effort: medium
+        depends_on:
+          - plan_vs_reality
+      - id: risk_tracking
+        title: Build injury and risk tracking view
+        priority: P1
+        status: pending
+        impact: high
+        effort: medium
+        depends_on:
+          - daily_checkin
+
+  - id: phase_3_sport_intelligence
+    title: Raise sports intelligence
+    goal: Improve progress visibility and race preparation.
+    items:
+      - id: progress_insights
+        title: Add real progress insights
+        priority: P2
+        status: pending
+        impact: medium
+        effort: high
+        depends_on:
+          - plan_vs_reality
+      - id: race_preparation
+        title: Add race preparation flow
+        priority: P2
+        status: pending
         impact: medium
         effort: medium
-        depends_on: []
-        definition_of_done:
-          - Existe tarjeta clara con estado fresco, neutro o protegido.
-          - Traduce metricas Garmin a accion.
-      - id: RP-11
-        title: Soportar multiples eventos por dia en calendario
+        depends_on:
+          - progress_insights
+          - fueling_hydration
+      - id: fueling_hydration
+        title: Add competition and hard-session fueling-hydration engine
+        priority: P1
         status: pending
-        priority: medium
         impact: high
         effort: high
-        depends_on: []
-        definition_of_done:
-          - El mes muestra mas de un evento por dia cuando aplica.
-          - No se pierde el acceso al detalle.
-      - id: RP-12
-        title: Comparar plan vs ejecucion por dia
-        status: pending
-        priority: medium
-        impact: high
-        effort: medium
-        depends_on: [RP-11]
-        definition_of_done:
-          - El usuario ve diferencia entre lo prescrito y lo hecho.
-
-  - id: phase_05_onboarding_and_progress
-    title: Onboarding y progreso comprensible
-    goal: Empaquetar mejor la experiencia y hacerla reusable.
-    status: pending
-    items:
-      - id: RP-13
-        title: Definir onboarding guiado
-        status: pending
-        priority: medium
-        impact: medium
-        effort: medium
-        depends_on: []
-        definition_of_done:
-          - Existe flujo definido de setup del atleta y objetivo.
-      - id: RP-14
-        title: Implementar vista de progreso contra objetivo
-        status: pending
-        priority: medium
-        impact: medium
-        effort: medium
-        depends_on: []
-        definition_of_done:
-          - Hay resumen de progreso claro y no tecnico.
+        depends_on:
+          - actionable_week

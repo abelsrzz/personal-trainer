@@ -55,8 +55,8 @@ Coach automation files:
 
 ## Default Automation Rule
 
-- After Garmin-linked training, prefer `python scripts/garmin/coach_sync.py --date YYYY-MM-DD` over running separate import/review/dashboard commands manually.
-- If Garmin should not be contacted, use `python scripts/garmin/coach_sync.py --date YYYY-MM-DD --skip-garmin` to refresh decisions from local data.
+- After Garmin-linked training, prefer the automatic pipeline driven by `python scripts/garmin/post_workout_refresh.py` or its `systemd` timer instead of manual post-workout commands.
+- Use `python scripts/garmin/coach_sync.py --date YYYY-MM-DD --skip-garmin` only for manual local rebuilds or troubleshooting when the automatic pipeline is not the right tool.
 - Use `planning/coach_decision.md` as the first load-management signal before changing the active week.
 - Use the playbook, selection matrix, evaluation rules and response profile as mandatory default context for planning and replanning.
 - Use `planning/context_automation_policy.md` to decide which athlete, race, block, zone, shoe and goal files are mandatory for the current task.

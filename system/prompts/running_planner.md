@@ -43,5 +43,6 @@ Refresh local status when needed:
 
 ```bash
 source .venv/bin/activate
+python scripts/garmin/post_workout_refresh.py
 python scripts/garmin/coach_sync.py --date YYYY-MM-DD --skip-garmin
 ```

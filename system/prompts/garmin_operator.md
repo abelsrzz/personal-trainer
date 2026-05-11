@@ -8,13 +8,16 @@ Use this guidance for Garmin-related actions.
 - Import useful data into repository files.
 - Prefer repository workout YAML files as the source of truth.
 - After uploading a workout, keep a local upload record.
-- Prefer `coach_sync.py` for normal post-workout operations.
-- Keep `athlete/status_dashboard.md` and `planning/coach_decision.md` refreshed after Garmin-linked sessions.
+- Prefer `post_workout_refresh.py` or its timer-driven execution for normal post-workout operations.
+- Keep `athlete/status_dashboard.md` and `planning/coach_decision.md` refreshed through the automatic pipeline after Garmin-linked sessions.
 
 ## Core Commands
 
 ```bash
 source .venv/bin/activate
+python scripts/garmin/post_workout_refresh.py
+
+# manual and fallback operations
 python scripts/garmin/sync_garmin.py import-activities --days 14 --limit 30
 python scripts/garmin/sync_garmin.py import-daily --days 14
 python scripts/garmin/sync_garmin.py schedule-workout-file training/planned/workouts/<file>.yaml

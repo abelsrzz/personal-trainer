@@ -20,14 +20,14 @@
 - Automatic Garmin data quality report generated in `planning/data_quality_report.md`
 - Initial active-cycle manifest added in `planning/cycles/active.yaml` for migration toward multi-cycle support
 - Lifecycle scripts added: `scripts/system/start_cycle.py` and `scripts/system/close_cycle.py`
+- Automatic post-workout pipeline added with `scripts/garmin/post_workout_refresh.py`, persisted state and web observability
 
 ## Next Natural Actions
 
-1. Run `python scripts/garmin/coach_sync.py --date YYYY-MM-DD` after Garmin-linked workouts.
-2. Use `python scripts/garmin/coach_sync.py --date YYYY-MM-DD --skip-garmin` when working from local data only.
-3. Read `athlete/status_dashboard.md` and `planning/coach_decision.md` before changing the active week.
-4. Use the synced local athlete files as planning input when Garmin profile refresh succeeded.
-5. Update `athlete/shin_tracker.yaml` when periosteum symptoms are reported.
-6. Use `planning/goal_gates.yaml` before allowing `35:00` to influence training paces.
-7. For remote access, run `opencode serve --hostname 127.0.0.1 --port 4096` and `python scripts/telegram/opencode_bot.py`.
-8. Register every new dynamic feature in `system/capabilities/registry.yaml` and enforce freshness through `scripts/system/capability_engine.py`.
+1. Keep the automatic trigger active with `deploy/systemd/post-workout-refresh.timer.example` or run `python scripts/garmin/post_workout_refresh.py` manually only for validation/troubleshooting.
+2. Read `athlete/status_dashboard.md` and `planning/coach_decision.md` before changing the active week.
+3. Use the synced local athlete files as planning input when Garmin profile refresh succeeded.
+4. Validate `athlete/shin_tracker.yaml` when tibial/periosteum symptoms need extra manual context beyond the automatic promotion.
+5. Use `planning/goal_gates.yaml` before allowing `35:00` to influence training paces.
+6. For remote access, run `opencode serve --hostname 127.0.0.1 --port 4096` and `python scripts/telegram/opencode_bot.py`.
+7. Register every new dynamic feature in `system/capabilities/registry.yaml` and enforce freshness through `scripts/system/capability_engine.py`.

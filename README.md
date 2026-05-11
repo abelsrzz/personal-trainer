@@ -82,7 +82,14 @@ Importar metricas diarias para enriquecer recuperacion y estado:
 python scripts/garmin/sync_garmin.py import-daily --days 14
 ```
 
-Comando unico de entrenador:
+Trigger automatico post-entreno recomendado:
+
+```bash
+source .venv/bin/activate
+python scripts/garmin/post_workout_refresh.py
+```
+
+Rebuild manual del flujo heredado por fecha:
 
 ```bash
 source .venv/bin/activate
@@ -114,7 +121,7 @@ python scripts/garmin/sync_garmin.py import-athlete-profile
 python scripts/garmin/athlete_sync.py
 ```
 
-`coach_sync.py` intenta hacerlo automaticamente salvo que se use `--skip-athlete-profile`.
+`coach_sync.py` sigue siendo util como rebuild manual, pero el camino por defecto tras un entreno completado es `post_workout_refresh.py` o su timer `systemd`.
 
 Plantillas reutilizables para convertir en sesiones fechadas:
 

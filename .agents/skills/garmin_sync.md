@@ -37,7 +37,7 @@ Use Garmin as a data source and delivery channel for planned workouts.
 
 ```bash
 source .venv/bin/activate
-python scripts/garmin/coach_sync.py --date YYYY-MM-DD
+python scripts/garmin/post_workout_refresh.py
 ```
 
 Use `--skip-garmin` to refresh analysis outputs from local files without contacting Garmin.

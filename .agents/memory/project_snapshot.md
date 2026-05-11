@@ -52,8 +52,8 @@
 
 ## Coach Automation Operating Model
 
-- Run `python scripts/garmin/coach_sync.py --date YYYY-MM-DD` after Garmin-linked sessions when credentials/network use is acceptable.
-- Run `python scripts/garmin/coach_sync.py --date YYYY-MM-DD --skip-garmin` when using already imported local data.
+- The default post-workout path is the automatic pipeline `python scripts/garmin/post_workout_refresh.py`, ideally launched by the `systemd` timer.
+- Use `python scripts/garmin/coach_sync.py --date YYYY-MM-DD --skip-garmin` only as a manual recovery path when working from already imported local data.
 - When Garmin is contacted, athlete profile state should also be refreshed so planning can use updated resting HR, max HR, VO2max and gear.
 - Read `athlete/status_dashboard.md` for load, risk, 35:00 gates and rough performance estimate.
 - Read `planning/coach_decision.md` for the operative green/yellow/red decision.
@@ -64,7 +64,7 @@
 - Read `planning/context_automation_policy.md` to know which other files are mandatory for the current coaching task.
 - Read `athlete/response_profile.yaml` to bias decisions toward the athlete's current likely response pattern.
 - Treat `red` as reduce or replace quality, `yellow` as maintain without increasing load, and `green` as allow small progression if shin status is quiet.
-- Update `athlete/shin_tracker.yaml` whenever Abel reports periosteum pain during, after or the next morning.
+- `athlete/shin_tracker.yaml` now receives automatic promotions from subjective feedback when tibial/periosteum pain is detected; manual updates remain valid for corrections or added context.
 
 ## Remote Telegram Operating Model
 

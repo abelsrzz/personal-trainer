@@ -20,13 +20,13 @@ python scripts/garmin/sync_garmin.py import-activities --days 14 --limit 30
 python scripts/garmin/sync_garmin.py import-daily --days 14
 python scripts/garmin/sync_garmin.py schedule-workout-file training/planned/workouts/<file>.yaml
 python scripts/garmin/review_planned_session.py --date YYYY-MM-DD
-python scripts/garmin/coach_sync.py --date YYYY-MM-DD
+python scripts/garmin/post_workout_refresh.py
 python scripts/garmin/coach_sync.py --date YYYY-MM-DD --skip-garmin
 ```
 
 ## Preferred Flow
 
-- For normal post-workout work, use `coach_sync.py` first.
+- For normal post-workout work, use `post_workout_refresh.py` first.
 - Use individual `sync_garmin.py` or `review_planned_session.py` commands only for low-level troubleshooting or targeted operations.
 
 ## Rules

@@ -34,7 +34,7 @@ Generate or revise `planning/weeks/semana_actual.md` from the active block and t
 
 ## Pre-Planning Checklist
 
-1. refresh coach status with `python scripts/garmin/coach_sync.py --date YYYY-MM-DD --skip-garmin` if stale
+1. refresh coach status with `python scripts/garmin/coach_sync.py --date YYYY-MM-DD --skip-garmin` only if the automatic post-workout pipeline is stale or unavailable
 2. read `planning/coach_decision.md`
 3. read `athlete/status_dashboard.md`
 4. read `athlete/shin_tracker.yaml`

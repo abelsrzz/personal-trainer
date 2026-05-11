@@ -8,7 +8,7 @@ Use the local coach automation layer to turn Garmin data, reviews, shin status a
 
 ```bash
 source .venv/bin/activate
-python scripts/garmin/coach_sync.py --date YYYY-MM-DD
+python scripts/garmin/post_workout_refresh.py
 python scripts/garmin/coach_sync.py --date YYYY-MM-DD --skip-garmin
 python scripts/garmin/coach_engine.py --as-of YYYY-MM-DD --days 28
 ```

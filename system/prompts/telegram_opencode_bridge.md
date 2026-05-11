@@ -31,7 +31,7 @@ Use this guidance when a request arrives through the Telegram remote bridge.
 ## Useful Commands
 
 ```bash
-python scripts/garmin/coach_sync.py --date YYYY-MM-DD
+python scripts/garmin/post_workout_refresh.py
 python scripts/garmin/coach_sync.py --date YYYY-MM-DD --skip-garmin
 python scripts/notifications/semana_pdf_telegram.py send-now --force
 ```

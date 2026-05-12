@@ -695,3 +695,7 @@ TypeError: Object of type date is not JSON serializable
 2026-05-12 12:53:02,835 INFO calendar race candidate date=2026-05-24 items=1
 2026-05-12 12:53:02,835 INFO calendar race candidate date=2026-06-28 items=1
 2026-05-12 12:53:02,836 INFO calendar race candidate date=2027-02-06 items=1
+2026-05-12 13:50:04,482 INFO calendar race candidate date=2026-05-09 items=1
+2026-05-12 13:50:04,482 INFO calendar race candidate date=2026-05-24 items=1
+2026-05-12 13:50:04,482 INFO calendar race candidate date=2026-06-28 items=1
+2026-05-12 13:50:04,482 INFO calendar race candidate date=2027-02-06 items=1

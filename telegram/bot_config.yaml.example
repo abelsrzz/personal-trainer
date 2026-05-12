@@ -8,7 +8,7 @@ telegram:
 opencode_remote:
   enabled: true
   server_url: http://127.0.0.1:4096
-  project_dir: /home/abel/Documentos/Proyectos/personal-trainer
+  project_dir: /absolute/path/to/personal-trainer
   session_store: telegram/opencode_sessions.json
   timeout_s: 1800
   allow_commit: true

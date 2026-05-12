@@ -11,6 +11,7 @@ import os
 import re
 import subprocess
 import sys
+import tempfile
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any
@@ -120,6 +121,12 @@ def load_optional_json(path: Path, default: Any) -> Any:
 def load_yaml(path: Path) -> dict[str, Any]:
     with path.open("r", encoding="utf-8") as handle:
         return yaml.safe_load(handle) or {}
+
+
+def write_yaml(path: Path, payload: Any) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8") as handle:
+        yaml.safe_dump(payload, handle, allow_unicode=False, sort_keys=False)
 
 
 def read_text(path: Path) -> str:
@@ -1477,6 +1484,13 @@ def apply_planned_workout_replan(slug: str, workout: dict[str, Any], strategy: s
     }
     write_json(PLANNED_REPLANS_PATH, payload)
     set_planned_workout_action(slug, workout, "replanned", username)
+    garmin_ok, garmin_message = retry_garmin_workout_sync(slug, username)
+    workouts[slug]["garmin_sync"] = {
+        "ok": garmin_ok,
+        "message": garmin_message,
+        "updated_at": datetime.now().isoformat(),
+    }
+    write_json(PLANNED_REPLANS_PATH, payload)
     return workouts[slug]
 
 
@@ -2809,6 +2823,26 @@ def planned_workout_file(slug: str) -> Path:
     return PLANNED_WORKOUTS_DIR / f"{slug}.yaml"
 
 
+def clear_planned_upload_data(slug: str) -> None:
+    for upload_path in PLANNED_WORKOUTS_DIR.glob(f"*/{slug}.garmin_upload.json"):
+        upload_path.unlink(missing_ok=True)
+
+
+def garmin_sync_workout_file(slug: str) -> Path:
+    workout_file = planned_workout_file(slug)
+    replan_state = planned_workout_replan(slug)
+    if not replan_state:
+        return workout_file
+
+    spec = load_yaml(workout_file)
+    workout_payload = spec.get("workout", {}) if isinstance(spec, dict) else {}
+    effective_payload = apply_replan_to_payload(workout_payload, replan_state)
+    temp_dir = Path(tempfile.gettempdir()) / "personal-trainer" / "garmin-replans"
+    temp_file = temp_dir / f"{slug}.yaml"
+    write_yaml(temp_file, {"workout": effective_payload})
+    return temp_file
+
+
 def retry_garmin_workout_sync(slug: str, username: str | None) -> tuple[bool, str]:
     workout_file = planned_workout_file(slug)
     attempted_at = datetime.now().isoformat()
@@ -2825,7 +2859,9 @@ def retry_garmin_workout_sync(slug: str, username: str | None) -> tuple[bool, st
         )
         return False, "No se encontro el archivo de la sesion planificada."
 
-    command = [sys.executable, str(GARMIN_SYNC_SCRIPT), "schedule-workout-file", str(workout_file)]
+    sync_workout_file = garmin_sync_workout_file(slug)
+    clear_planned_upload_data(slug)
+    command = [sys.executable, str(GARMIN_SYNC_SCRIPT), "schedule-workout-file", str(sync_workout_file)]
     try:
         result = subprocess.run(command, cwd=ROOT, capture_output=True, text=True, timeout=300, check=False)
     except subprocess.TimeoutExpired:

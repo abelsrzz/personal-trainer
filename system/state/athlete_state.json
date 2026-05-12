@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-12T10:03:45.048814+00:00",
+  "generated_at": "2026-05-12T16:15:19.353837+00:00",
   "source_of_truth": "system/state/athlete_state.json",
   "identity": {
     "id": "main",
@@ -36,11 +36,11 @@
         ],
         "garmin_training_days": [
           "SATURDAY",
+          "THURSDAY",
+          "FRIDAY",
           "MONDAY",
           "WEDNESDAY",
           "TUESDAY",
-          "THURSDAY",
-          "FRIDAY",
           "SUNDAY"
         ],
         "garmin_preferred_long_training_days": [
@@ -52,7 +52,7 @@
       },
       "data_sources": {
         "garmin": {
-          "last_sync": "2026-05-12T10:03:44.931340Z",
+          "last_sync": "2026-05-12T16:15:19.048007Z",
           "profile_snapshot": "training/completed/imports/garmin/profile/athlete_profile_snapshot.json"
         }
       }
@@ -69,7 +69,7 @@
       "stress_notes": null,
       "recovery_notes": "General sensations recently poor",
       "garmin_metrics": {
-        "last_sync": "2026-05-12T10:03:44.931340Z",
+        "last_sync": "2026-05-12T16:15:19.048007Z",
         "resting_hr": 55,
         "max_hr": 196,
         "vo2max": 46.0
@@ -122,7 +122,7 @@
       },
       "data_sources": {
         "garmin": {
-          "last_sync": "2026-05-12T10:03:44.931340Z",
+          "last_sync": "2026-05-12T16:15:19.048007Z",
           "profile_snapshot": "training/completed/imports/garmin/profile/athlete_profile_snapshot.json"
         }
       }
@@ -186,11 +186,29 @@
     }
   },
   "garmin": {
-    "profile_synced_at": "2026-05-12T10:03:44.931340Z",
-    "latest_activity_import_at": "2026-05-12T09:58:53.149132Z",
-    "latest_daily_import_at": "2026-05-12T09:58:02.812077Z",
-    "latest_activity_ids": [],
+    "profile_synced_at": "2026-05-12T16:15:19.048007Z",
+    "latest_activity_import_at": "2026-05-12T16:14:38.927186Z",
+    "latest_daily_import_at": "2026-05-12T16:15:03.380615Z",
+    "latest_activity_ids": [
+      22823255797,
+      22822541135,
+      22798592588,
+      22776053069,
+      22693329165
+    ],
     "latest_daily_days": [
+      "2026-04-28",
+      "2026-04-29",
+      "2026-04-30",
+      "2026-05-01",
+      "2026-05-02",
+      "2026-05-03",
+      "2026-05-04",
+      "2026-05-05",
+      "2026-05-06",
+      "2026-05-07",
+      "2026-05-08",
+      "2026-05-09",
       "2026-05-10",
       "2026-05-11",
       "2026-05-12"

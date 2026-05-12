@@ -66,6 +66,7 @@ WEB_CHAT_UI_STATE_PATH = ROOT / "system" / "state" / "web_chat_ui.json"
 WEEKLY_PLANNING_STATE_PATH = ROOT / "system" / "state" / "weekly_planning_state.json"
 WEEKLY_PLANNING_SCRIPT = ROOT / "scripts" / "system" / "weekly_planning_pipeline.py"
 AUTOMATION_SAFETY_PATH = ROOT / "system" / "automation_safety.yaml"
+CHAT_WEB_ENABLED = False
 
 
 WEB_CHAT_LOCKS: dict[str, asyncio.Lock] = {}
@@ -753,6 +754,18 @@ def auth_guard(request: Request) -> RedirectResponse | None:
     if authenticated(request):
         return None
     return RedirectResponse(url="/login", status_code=303)
+
+
+def chat_page_guard() -> RedirectResponse | None:
+    if CHAT_WEB_ENABLED:
+        return None
+    return RedirectResponse(url="/dashboard", status_code=303)
+
+
+def chat_api_guard() -> JSONResponse | None:
+    if CHAT_WEB_ENABLED:
+        return None
+    return JSONResponse({"ok": False, "error": "El chat web esta desactivado en esta instancia."}, status_code=403)
 
 
 def template_context(request: Request, **values: Any) -> dict[str, Any]:
@@ -4986,12 +4999,18 @@ async def chat_page(request: Request) -> HTMLResponse:
     redirect = auth_guard(request)
     if redirect:
         return redirect
+    disabled = chat_page_guard()
+    if disabled:
+        return disabled
     _, _, state = chat_state_response(request)
     return templates.TemplateResponse(request, "chat.html", template_context(request, chat_state=state, workspace=workspace_status()))
 
 
 @app.get("/chat/state")
 async def chat_state_api(request: Request) -> JSONResponse:
+    disabled = chat_api_guard()
+    if disabled:
+        return disabled
     unauthorized = json_auth_guard(request)
     if unauthorized:
         return unauthorized
@@ -5001,6 +5020,9 @@ async def chat_state_api(request: Request) -> JSONResponse:
 
 @app.post("/chat")
 async def chat_message_submit(request: Request) -> JSONResponse:
+    disabled = chat_api_guard()
+    if disabled:
+        return disabled
     unauthorized = json_auth_guard(request)
     if unauthorized:
         return unauthorized
@@ -5044,6 +5066,9 @@ async def chat_message_submit(request: Request) -> JSONResponse:
 
 @app.post("/chat/confirm")
 async def chat_confirm_submit(request: Request) -> JSONResponse:
+    disabled = chat_api_guard()
+    if disabled:
+        return disabled
     unauthorized = json_auth_guard(request)
     if unauthorized:
         return unauthorized
@@ -5075,6 +5100,9 @@ async def chat_confirm_submit(request: Request) -> JSONResponse:
 
 @app.post("/chat/cancel")
 async def chat_cancel_submit(request: Request) -> JSONResponse:
+    disabled = chat_api_guard()
+    if disabled:
+        return disabled
     unauthorized = json_auth_guard(request)
     if unauthorized:
         return unauthorized
@@ -5088,11 +5116,17 @@ async def chat_cancel_submit(request: Request) -> JSONResponse:
 
 @app.post("/chat/reset")
 async def chat_reset_submit(request: Request) -> JSONResponse:
+    disabled = chat_api_guard()
+    if disabled:
+        return disabled
     return await chat_session_reset(request)
 
 
 @app.post("/chat/messages")
 async def chat_messages(request: Request) -> JSONResponse:
+    disabled = chat_api_guard()
+    if disabled:
+        return disabled
     unauthorized = json_auth_guard(request)
     if unauthorized:
         return unauthorized
@@ -5155,6 +5189,9 @@ async def chat_messages(request: Request) -> JSONResponse:
 
 @app.post("/chat/session/reset")
 async def chat_session_reset(request: Request) -> JSONResponse:
+    disabled = chat_api_guard()
+    if disabled:
+        return disabled
     unauthorized = json_auth_guard(request)
     if unauthorized:
         return unauthorized
@@ -5176,6 +5213,9 @@ async def chat_session_reset(request: Request) -> JSONResponse:
 
 @app.post("/chat/model")
 async def chat_model(request: Request) -> JSONResponse:
+    disabled = chat_api_guard()
+    if disabled:
+        return disabled
     unauthorized = json_auth_guard(request)
     if unauthorized:
         return unauthorized

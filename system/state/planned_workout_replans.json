@@ -2,35 +2,35 @@
   "workouts": {
     "2026-05-12_rodaje_6km_recuperacion": {
       "status": "applied",
-      "strategy": "skip_recompose_week",
-      "label": "Semana recompuesta",
-      "summary": "Hoy queda liberado y la sesion se recompone para el 2026-05-14.",
-      "cause": "Se prioriza no entrenar hoy sin romper por completo la logica semanal. Objetivo original protegido: recuperacion.",
-      "variant": "2026-05-14",
+      "strategy": "auto_today",
+      "label": "Alternativa para hoy",
+      "summary": "Se ha aplicado una alternativa automatica para hoy.",
+      "cause": "Reducir carga inmediata: cambiar la proxima calidad por rodaje muy facil o descanso, y mantener FC capada. Objetivo original protegido: recuperacion.",
+      "variant": "rodaje muy facil",
       "original_date": "2026-05-12",
-      "effective_date": "2026-05-14",
-      "effective_name": "Alternativa: Rodaje 6 km recuperacion \u00b7 recolocada",
-      "effective_description": "Hoy no se entrena. La sesion se recoloca automaticamente en otro hueco de la semana con una version asumible.",
-      "effective_duration_s": 1361,
+      "effective_date": "2026-05-12",
+      "effective_name": "Alternativa: Alternativa: Alternativa: Eliptica 42 min recuperacion",
+      "effective_description": "Cambio automatico para hoy: sustituir la sesion exigente por una version muy facil y de bajo coste. Referencia protectora: rodaje suave .",
+      "effective_duration_s": 1500,
       "effective_steps": [
         {
           "order": 1,
-          "step_type": "note",
-          "description": "Hoy se convierte en descanso o movilidad suave."
+          "step_type": "warmup",
+          "description": "Rodaje muy facil y conversacional"
         },
         {
           "order": 2,
-          "step_type": "note",
-          "description": "La carga se recoloca en otro dia de la misma semana con margen."
+          "step_type": "cooldown",
+          "description": "Cortar antes si no acompana el dia"
         }
       ],
       "effective_session_kind": "recovery",
       "knowledge_label": "40' regenerativo muy suave",
       "knowledge_goal": "Recuperacion",
-      "updated_at": "2026-05-12T18:16:57.963501",
+      "updated_at": "2026-05-12T18:34:08.232170",
       "updated_by": "change-me",
       "slug": "2026-05-12_rodaje_6km_recuperacion",
-      "name": "Alternativa: Rodaje 6 km recuperacion"
+      "name": "Alternativa: Alternativa: Eliptica 42 min recuperacion"
     }
   }
 }

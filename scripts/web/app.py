@@ -1498,6 +1498,8 @@ def apply_replan_to_payload(payload: dict[str, Any], replan_state: dict[str, Any
     effective_payload = copy.deepcopy(payload) if isinstance(payload, dict) else {}
     if not replan_state:
         return effective_payload
+    if replan_state.get("effective_sport"):
+        effective_payload["sport"] = replan_state.get("effective_sport")
     if replan_state.get("effective_name"):
         effective_payload["name"] = replan_state.get("effective_name")
     if replan_state.get("effective_description"):

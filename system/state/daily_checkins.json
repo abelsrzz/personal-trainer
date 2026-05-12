@@ -1,0 +1,15 @@
+{
+  "days": {
+    "2026-05-12": {
+      "date": "2026-05-12",
+      "energy": 3,
+      "sleep": 1,
+      "pain": 5,
+      "motivation": 2,
+      "available_minutes": 45,
+      "note": "",
+      "updated_at": "2026-05-12T18:34:06.447448",
+      "updated_by": "change-me"
+    }
+  }
+}

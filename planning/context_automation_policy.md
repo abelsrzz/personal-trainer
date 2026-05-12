@@ -35,6 +35,7 @@ Files that should be removed or ignored because they no longer match the operati
 - `planning/master_plan.md`
 - `planning/coaching_playbook.md`
 - `planning/workout_knowledge.yaml`
+- `planning/workout_template_knowledge_map.yaml`
 - `planning/session_selection_matrix.yaml`
 - `planning/workout_evaluation_rules.md`
 - `athlete/response_profile.yaml`
@@ -60,6 +61,7 @@ Files that should be removed or ignored because they no longer match the operati
 - `planning/goal_gates.yaml`
 - `planning/goal_gates.md`
 - `planning/workout_knowledge.yaml`
+- `planning/workout_template_knowledge_map.yaml`
 - `training/planned/workouts/library_run_templates.yaml`
 - all relevant files in `races/<year>/`
 - `athlete/supplements.yaml`
@@ -77,6 +79,7 @@ Files that should be removed or ignored because they no longer match the operati
 - `training/completed/imports/garmin/profile/athlete_profile_snapshot.json` when it exists
 - `planning/goal_gates.yaml`
 - `planning/workout_knowledge.yaml`
+- `planning/workout_template_knowledge_map.yaml`
 - `training/planned/workouts/library_run_templates.yaml`
 - `athlete/supplements.yaml`
 - `planning/fueling_operational.md` when it exists
@@ -91,6 +94,7 @@ Files that should be removed or ignored because they no longer match the operati
 - `planning/coaching_playbook.md`
 - `planning/session_selection_matrix.yaml`
 - `planning/workout_knowledge.yaml`
+- `planning/workout_template_knowledge_map.yaml`
 - `athlete/response_profile.yaml`
 - `athlete/zones.yaml`
 - `athlete/health.yaml`

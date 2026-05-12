@@ -11,7 +11,21 @@ from typing import Any
 
 import yaml
 
-from sync_garmin import DEFAULT_WORKOUTS_ROOT, ROOT, load_credentials, login, save_json
+try:
+    from scripts.garmin.sync_garmin import DEFAULT_WORKOUTS_ROOT, ROOT, load_credentials, login, save_json
+except ModuleNotFoundError:  # pragma: no cover - direct script execution path fix
+    import sys
+
+    sys.path.append(str(Path(__file__).resolve().parents[2]))
+    from scripts.garmin.sync_garmin import DEFAULT_WORKOUTS_ROOT, ROOT, load_credentials, login, save_json
+
+try:
+    from scripts.system.workout_knowledge import match_workout_knowledge
+except ModuleNotFoundError:  # pragma: no cover - direct script execution path fix
+    import sys
+
+    sys.path.append(str(Path(__file__).resolve().parents[2]))
+    from scripts.system.workout_knowledge import match_workout_knowledge
 
 
 DEFAULT_IMPORT_ROOT = ROOT / "training" / "completed" / "imports" / "garmin"
@@ -186,6 +200,73 @@ def planned_goal_category(workout: dict[str, Any]) -> str:
     return "general_run"
 
 
+def planned_session_kind(workout: dict[str, Any]) -> str:
+    goal_category = planned_goal_category(workout)
+    if goal_category in {"reintroduction_easy", "recovery_easy"}:
+        return "recovery"
+    if goal_category in {"long_run"}:
+        return "long_run"
+    if goal_category in {"activation", "easy_plus_strides", "controlled_quality", "quality"}:
+        return "quality"
+    if "strength" in json.dumps(workout, ensure_ascii=False).lower():
+        return "strength"
+    return "easy"
+
+
+def planned_knowledge_summary(workout: dict[str, Any]) -> dict[str, Any] | None:
+    workout_data = workout.get("workout", {}) if isinstance(workout.get("workout"), dict) else {}
+    session_kind = planned_session_kind(workout)
+    return match_workout_knowledge(workout_data, session_kind, template_id=str(workout_data.get("template_id") or "").strip() or None)
+
+
+def actual_stimulus_summary(summary: dict[str, Any]) -> list[str]:
+    goals: list[str] = []
+    te_label = str(summary.get("trainingEffectLabel") or "").lower()
+    aerobic_te = float(summary.get("aerobicTrainingEffect") or 0.0)
+    anaerobic_te = float(summary.get("anaerobicTrainingEffect") or 0.0)
+    pace_s = float(summary.get("duration") or 0.0) / (float(summary.get("distance") or 1.0) / 1000.0) if float(summary.get("distance") or 0.0) > 0 else None
+    distance_km = float(summary.get("distance") or 0.0) / 1000.0
+    if distance_km >= 14:
+        goals.append("fondo_largo")
+    if aerobic_te >= 3.8:
+        goals.append("vo2max")
+    elif aerobic_te >= 2.8:
+        goals.append("umbral_lactico")
+    elif aerobic_te >= 1.5:
+        goals.append("base_aerobica")
+    if anaerobic_te >= 1.0:
+        goals.append("capacidad_anaerobica")
+    if any(keyword in te_label for keyword in ["tempo", "threshold"]):
+        goals.append("umbral_lactico")
+    if any(keyword in te_label for keyword in ["anaerobic", "sprint"]):
+        goals.append("tolerancia_al_lactato")
+    if pace_s is not None and pace_s <= 255:
+        goals.append("ritmo_5k")
+    elif pace_s is not None and pace_s <= 285:
+        goals.append("ritmo_10k")
+    return list(dict.fromkeys(goals))
+
+
+def planned_vs_actual_stimulus(workout: dict[str, Any], summary: dict[str, Any]) -> dict[str, Any]:
+    planned_knowledge = planned_knowledge_summary(workout)
+    planned_goals = planned_knowledge.get("goals") if isinstance(planned_knowledge, dict) else []
+    actual_goals = actual_stimulus_summary(summary)
+    overlap = [goal for goal in actual_goals if goal in planned_goals]
+    alignment = "aligned" if overlap else ("unknown" if not planned_goals or not actual_goals else "drifted")
+    summary_text = "No hay suficientes datos para comparar el estimulo real con el objetivo previsto."
+    if alignment == "aligned":
+        summary_text = f"El estimulo real parece alineado con el objetivo previsto: {', '.join(overlap[:3])}."
+    elif alignment == "drifted":
+        summary_text = f"El estimulo real se desvia del objetivo previsto. Previsto: {', '.join(planned_goals[:3])}. Real observado: {', '.join(actual_goals[:3])}."
+    return {
+        "planned_knowledge": planned_knowledge,
+        "actual_goals": actual_goals,
+        "overlap": overlap,
+        "alignment": alignment,
+        "summary": summary_text,
+    }
+
+
 def parse_duration_text(value: str | None) -> float | None:
     if not value:
         return None
@@ -306,17 +387,23 @@ def load_historical_reviews(current_activity_id: int) -> list[dict[str, Any]]:
 def comparable_session(candidate: dict[str, Any], planned: dict[str, Any], summary: dict[str, Any]) -> bool:
     if candidate.get("planned", {}).get("sport") != planned.get("sport"):
         return False
-    candidate_goal = candidate.get("planned", {}).get("goal_category")
-    planned_goal = planned.get("goal_category")
-    goal_groups = {
-        "easy_family": {"reintroduction_easy", "recovery_easy", "easy_aerobic", "steady_easy", "general_run"},
-        "strides_family": {"easy_plus_strides", "activation"},
-        "quality_family": {"controlled_quality", "quality"},
-    }
-    same_goal = candidate_goal == planned_goal
-    same_family = any(candidate_goal in family and planned_goal in family for family in goal_groups.values())
-    if not same_goal and not same_family:
-        return False
+    candidate_knowledge_id = str(candidate.get("planned", {}).get("knowledge_id") or "").strip()
+    planned_knowledge_id = str(planned.get("knowledge_id") or "").strip()
+    if candidate_knowledge_id and planned_knowledge_id:
+        if candidate_knowledge_id != planned_knowledge_id:
+            return False
+    else:
+        candidate_goal = candidate.get("planned", {}).get("goal_category")
+        planned_goal = planned.get("goal_category")
+        goal_groups = {
+            "easy_family": {"reintroduction_easy", "recovery_easy", "easy_aerobic", "steady_easy", "general_run"},
+            "strides_family": {"easy_plus_strides", "activation"},
+            "quality_family": {"controlled_quality", "quality"},
+        }
+        same_goal = candidate_goal == planned_goal
+        same_family = any(candidate_goal in family and planned_goal in family for family in goal_groups.values())
+        if not same_goal and not same_family:
+            return False
     candidate_distance = candidate.get("planned", {}).get("distance_m")
     planned_distance = planned.get("distance_m")
     if candidate_distance is None or planned_distance is None:
@@ -621,6 +708,10 @@ def analyze_workout(planned: dict[str, Any], summary: dict[str, Any], details: d
             "date": planned["workout"]["schedule_date"],
             "sport": planned["workout"].get("sport"),
             "goal_category": planned_goal_category(planned),
+            "template_id": planned["workout"].get("template_id"),
+            "knowledge_id": (planned_knowledge_summary(planned) or {}).get("id") or planned["workout"].get("knowledge_id"),
+            "knowledge_label": planned["workout"].get("knowledge_label"),
+            "primary_goal": planned["workout"].get("primary_goal"),
             "description": planned["workout"].get("description"),
             "estimated_duration_s": planned["workout"].get("estimated_duration_s"),
             "distance_m": planned_distance,
@@ -682,6 +773,7 @@ def analyze_workout(planned: dict[str, Any], summary: dict[str, Any], details: d
         "traffic_light": traffic_light(score),
         "risk_level": risk_level(score, float(compliance["pct_above_hr_zone"] or 0.0), decoupling),
     }
+    review["stimulus_alignment"] = planned_vs_actual_stimulus(planned, summary)
     review["progression"] = progression_analysis(review)
     return review
 
@@ -769,6 +861,7 @@ def review_markdown(review: dict[str, Any], planned_reference: str, completed_re
             f"- {split['label']} km: {format_pace(split['pace_s_per_km'])}, {split['avg_hr']:.1f} bpm, {split['avg_power_w']:.0f} W, {split['avg_cadence_spm']:.1f} spm"
         )
     progression_lines = [f"- Trend: {progression.get('trend', 'unknown')}", f"- Summary: {progression.get('summary', 'No progression summary available.')}" ]
+    stimulus_alignment = review.get("stimulus_alignment", {})
     baseline = progression.get("baseline") or {}
     delta = progression.get("delta_vs_baseline") or {}
     if baseline.get("pace_s_per_km") is not None and baseline.get("avg_hr") is not None:
@@ -803,6 +896,10 @@ def review_markdown(review: dict[str, Any], planned_reference: str, completed_re
             "## Execution Analysis",
             "",
             f"- Goal of the session: {goal}",
+            f"- Template id: {review['planned'].get('template_id') or '-'}",
+            f"- Knowledge id: {review['planned'].get('knowledge_id') or '-'}",
+            f"- Planned physiological goal: {review['planned'].get('primary_goal') or '-'}",
+            f"- Stimulus alignment: {stimulus_alignment.get('summary') or '-'}",
             f"- What went well: {good}",
             f"- What missed the target: {missed}",
             f"- Relevant signals: ritmo {format_pace(summary['pace_s_per_km'])}, FC media/max {summary['avg_hr']}/{summary['max_hr']}, cadencia {summary['avg_cadence_spm']:.1f}, potencia {summary['avg_power_w']}, terreno +{summary['elevation_gain_m']} m, temperatura {summary['min_temp_c']}-{summary['max_temp_c']} C.",

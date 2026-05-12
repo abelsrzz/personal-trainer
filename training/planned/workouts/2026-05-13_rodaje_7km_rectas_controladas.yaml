@@ -2,34 +2,40 @@ workout:
   name: Rodaje 7 km + 5 rectas controladas
   schedule_date: 2026-05-13
   sport: running
-  description: Rodaje facil con 5 rectas para recuperar chispa sin hacer una sesion exigente.
+  description: Rodaje facil con 5 rectas para recuperar chispa sin hacer una sesion
+    exigente.
   estimated_duration_s: 2940
   steps:
-    - order: 1
+  - order: 1
+    step_type: interval
+    description: 6 km faciles
+    distance_m: 6000
+    target:
+      type: heart_rate_range
+      min_bpm: 135
+      max_bpm: 150
+  - order: 2
+    type: repeat_group
+    iterations: 5
+    steps:
+    - order: 3
       step_type: interval
-      description: 6 km faciles
-      distance_m: 6000
-      target:
-        type: heart_rate_range
-        min_bpm: 135
-        max_bpm: 150
-    - order: 2
-      type: repeat_group
-      iterations: 5
-      steps:
-        - order: 3
-          step_type: interval
-          description: Recta 20 s
-          duration_s: 20
-        - order: 4
-          step_type: recovery
-          description: Recuperacion 40 s
-          duration_s: 40
-    - order: 5
-      step_type: cooldown
-      description: 1 km facil
-      distance_m: 1000
-      target:
-        type: heart_rate_range
-        min_bpm: 135
-        max_bpm: 150
+      description: Recta 20 s
+      duration_s: 20
+    - order: 4
+      step_type: recovery
+      description: Recuperacion 40 s
+      duration_s: 40
+  - order: 5
+    step_type: cooldown
+    description: 1 km facil
+    distance_m: 1000
+    target:
+      type: heart_rate_range
+      min_bpm: 135
+      max_bpm: 150
+  template_id: recovery_plus_mobility
+  template_id_source: inferred
+  knowledge_id: 40_regenerativo_muy_suave
+  knowledge_label: 40' regenerativo muy suave
+  primary_goal: Recuperacion

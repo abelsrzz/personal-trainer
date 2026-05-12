@@ -2,30 +2,34 @@ workout:
   name: Rodaje 6 km progresivo suave
   schedule_date: 2026-05-30
   sport: running
-  description: Sesion aerobica controlada con pequena progresion final, siempre por debajo de un coste de umbral.
+  description: Sesion aerobica controlada con pequena progresion final, siempre por
+    debajo de un coste de umbral.
   estimated_duration_s: 2460
   steps:
-    - order: 1
-      step_type: warmup
-      description: 3 km faciles
-      distance_m: 3000
-      target:
-        type: heart_rate_range
-        min_bpm: 135
-        max_bpm: 145
-    - order: 2
-      step_type: interval
-      description: 2 km aerobicos sostenidos
-      distance_m: 2000
-      target:
-        type: heart_rate_range
-        min_bpm: 146
-        max_bpm: 158
-    - order: 3
-      step_type: cooldown
-      description: 1 km muy facil
-      distance_m: 1000
-      target:
-        type: heart_rate_range
-        min_bpm: 135
-        max_bpm: 145
+  - order: 1
+    step_type: warmup
+    description: 3 km faciles
+    distance_m: 3000
+    target:
+      type: heart_rate_range
+      min_bpm: 135
+      max_bpm: 145
+  - order: 2
+    step_type: interval
+    description: 2 km aerobicos sostenidos
+    distance_m: 2000
+    target:
+      type: heart_rate_range
+      min_bpm: 146
+      max_bpm: 158
+  - order: 3
+    step_type: cooldown
+    description: 1 km muy facil
+    distance_m: 1000
+    target:
+      type: heart_rate_range
+      min_bpm: 135
+      max_bpm: 145
+  knowledge_label: 1000-2000-3000-2000-1000 @ ritmo 21k-10k rec 2'-3'
+  primary_goal: Umbral lactico
+  knowledge_id: 1000_2000_3000_2000_1000_ritmo_21k_10k_rec_2_3

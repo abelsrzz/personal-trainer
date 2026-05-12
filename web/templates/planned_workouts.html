@@ -297,6 +297,9 @@
           {% if row.focus %}
           <p class="muted"><strong>Foco:</strong> {{ row.focus }}</p>
           {% endif %}
+          {% if row.linked_workout and row.linked_workout.knowledge and row.linked_workout.knowledge.primary_goal %}
+          <p class="muted"><strong>Objetivo:</strong> {{ row.linked_workout.knowledge.primary_goal }}</p>
+          {% endif %}
           {% if row.replan and row.replan.is_changed %}
           <p>{{ row.replan.summary }}</p>
           <p class="muted"><strong>Causa:</strong> {{ row.replan.cause }}</p>
@@ -414,6 +417,9 @@
         <div class="today-plan-tags">
           <span class="mini-badge">{{ workout.session_kind_label }}</span>
           <span class="mini-badge">{{ workout.estimated_duration }}</span>
+          {% if workout.knowledge and workout.knowledge.primary_goal %}
+          <span class="mini-badge">{{ workout.knowledge.primary_goal }}</span>
+          {% endif %}
           {% if workout.replan %}
           <span class="mini-badge">{{ workout.replan.label }}</span>
           {% endif %}

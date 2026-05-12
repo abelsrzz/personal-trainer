@@ -24,6 +24,7 @@ STATE_PATH = ROOT / "system" / "state" / "weekly_planning_state.json"
 TELEGRAM_CONFIG_PATH = ROOT / "telegram" / "bot_config.yaml"
 PDF_SCRIPT = ROOT / "scripts" / "notifications" / "semana_pdf_telegram.py"
 GARMIN_SYNC_SCRIPT = ROOT / "scripts" / "garmin" / "sync_garmin.py"
+ENRICH_WORKOUTS_SCRIPT = ROOT / "scripts" / "system" / "enrich_planned_workouts.py"
 DEFAULT_MODEL = "openai/gpt-5.4"
 
 
@@ -146,11 +147,11 @@ def build_planning_prompt(target_start: date, target_end: date, output_path: Pat
         f"Semana objetivo: del {target_start.isoformat()} al {target_end.isoformat()} (lunes a domingo).\n"
         f"Archivo de salida obligatorio: {display_path(output_path)}\n\n"
         "Instrucciones obligatorias:\n"
-        "1. Lee AGENT.md, .agents/memory/project_snapshot.md, .agents/workflows/weekly_coaching_cycle.md, planning/context_automation_policy.md, planning/coaching_playbook.md, planning/workout_knowledge.yaml, planning/session_selection_matrix.yaml, planning/workout_evaluation_rules.md, athlete/response_profile.yaml, planning/master_plan.md, la semana activa actual y el bloque relevante.\n"
+        "1. Lee AGENT.md, .agents/memory/project_snapshot.md, .agents/workflows/weekly_coaching_cycle.md, planning/context_automation_policy.md, planning/coaching_playbook.md, planning/workout_knowledge.yaml, planning/workout_template_knowledge_map.yaml, planning/session_selection_matrix.yaml, planning/workout_evaluation_rules.md, athlete/response_profile.yaml, planning/master_plan.md, la semana activa actual y el bloque relevante.\n"
         "2. Usa tambien athlete/profile.yaml, athlete/preferences.yaml, athlete/zones.yaml, athlete/shoes.yaml, athlete/health.yaml, athlete/shin_tracker.yaml, planning/goal_gates.yaml y carreras relevantes.\n"
         "3. Genera la semana objetivo en el archivo indicado con el mismo formato operativo habitual del proyecto: titulo, fechas, contexto si hace falta, tabla diaria con dia, descripcion, distancia, ritmo o FC y zapatillas.\n"
         "4. No modifiques planning/weeks/semana_actual.md. Solo prepara la siguiente semana en el archivo de salida.\n"
-        "5. Crea o actualiza los YAML necesarios en training/planned/workouts/ para las sesiones fechadas de esa semana.\n"
+        "5. Crea o actualiza los YAML necesarios en training/planned/workouts/ para las sesiones fechadas de esa semana. Siempre que puedas, incluye `template_id`, `knowledge_id`, `knowledge_label` y `primary_goal` alineados con training/planned/workouts/library_run_templates.yaml, planning/workout_template_knowledge_map.yaml y planning/workout_knowledge.yaml.\n"
         "6. Mantente conservador con la tibia, la decision del coach y las reglas del ciclo.\n"
         "7. Al terminar, deja los archivos escritos en el repositorio.\n"
     )
@@ -232,6 +233,18 @@ def sync_workouts_to_garmin(target_start: date, target_end: date) -> dict[str, A
     return {"items": results, "synced": synced, "failed": failed, "skipped": skipped}
 
 
+def enrich_workouts_with_knowledge(target_start: date, target_end: date) -> tuple[bool, dict[str, Any]]:
+    command = [sys.executable, str(ENRICH_WORKOUTS_SCRIPT), "--start-date", target_start.isoformat(), "--end-date", target_end.isoformat()]
+    result = run_command(command, timeout=300)
+    if result.returncode != 0:
+        return False, {"command": " ".join(command), "returncode": result.returncode, "stderr": (result.stderr or result.stdout or "").strip()[-1000:]}
+    try:
+        payload = json.loads((result.stdout or "{}").strip() or "{}")
+    except json.JSONDecodeError:
+        payload = {"raw_output": (result.stdout or "").strip()[-1000:]}
+    return True, payload if isinstance(payload, dict) else {}
+
+
 def send_active_week_pdf() -> tuple[bool, str]:
     command = [sys.executable, str(PDF_SCRIPT), "send-now", "--force"]
     result = run_command(command, timeout=300)
@@ -277,13 +290,15 @@ def plan_next_week(force: bool, source: str) -> dict[str, Any]:
         state["last_plan"] = {"status": "error", "target_start": target_start.isoformat(), "target_end": target_end.isoformat(), "updated_at": datetime.now().isoformat(), "source": source, "detail": detail}
         save_state(state)
         return {"ok": False, "message": message, "code": "planning_failed", "detail": detail}
+    enrich_ok, enrich_detail = enrich_workouts_with_knowledge(target_start, target_end)
     garmin_sync = sync_workouts_to_garmin(target_start, target_end)
     entry = ensure_prepared_entry(state, target_start, target_end, output_path, source)
     entry["status"] = "prepared"
     entry["generated_at"] = datetime.now().isoformat()
+    entry["knowledge_enrichment"] = {"ok": enrich_ok, **enrich_detail}
     entry["garmin_sync"] = garmin_sync
     entry["planner_detail"] = {k: v for k, v in detail.items() if k != "stdout"}
-    state["last_plan"] = {"status": "prepared", "target_start": target_start.isoformat(), "target_end": target_end.isoformat(), "updated_at": datetime.now().isoformat(), "source": source, "garmin_sync": garmin_sync}
+    state["last_plan"] = {"status": "prepared", "target_start": target_start.isoformat(), "target_end": target_end.isoformat(), "updated_at": datetime.now().isoformat(), "source": source, "knowledge_enrichment": {"ok": enrich_ok, **enrich_detail}, "garmin_sync": garmin_sync}
     save_state(state)
     return {"ok": True, "message": message, "code": "prepared", "prepared_week": entry, "garmin_sync": garmin_sync}
 

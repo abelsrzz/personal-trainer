@@ -21,6 +21,8 @@ from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from scripts.system.capability_engine import ensure_fresh
+from scripts.system.workout_knowledge import goal_label as shared_goal_label
+from scripts.system.workout_knowledge import load_workout_knowledge, match_workout_knowledge
 from scripts.system.fueling_engine import (
     load_or_build_fueling_payload,
     race_fueling_lookup,
@@ -64,7 +66,6 @@ WEB_CHAT_UI_STATE_PATH = ROOT / "system" / "state" / "web_chat_ui.json"
 WEEKLY_PLANNING_STATE_PATH = ROOT / "system" / "state" / "weekly_planning_state.json"
 WEEKLY_PLANNING_SCRIPT = ROOT / "scripts" / "system" / "weekly_planning_pipeline.py"
 AUTOMATION_SAFETY_PATH = ROOT / "system" / "automation_safety.yaml"
-WORKOUT_KNOWLEDGE_PATH = ROOT / "planning" / "workout_knowledge.yaml"
 
 
 WEB_CHAT_LOCKS: dict[str, asyncio.Lock] = {}
@@ -628,63 +629,12 @@ def classify_planned_workout(payload: dict[str, Any]) -> tuple[str, str, str]:
     return kind, session_kind_label(kind), session_color_class(kind)
 
 
-def workout_knowledge_payload() -> dict[str, Any]:
-    payload = load_optional_yaml(WORKOUT_KNOWLEDGE_PATH).get("workout_knowledge", {})
-    return payload if isinstance(payload, dict) else {}
-
-
 def workout_goal_label(goal: str) -> str:
-    return str(goal or "").replace("_", " ").strip().capitalize()
+    return shared_goal_label(goal)
 
 
 def workout_knowledge_match(payload: dict[str, Any], session_kind: str) -> dict[str, Any] | None:
-    knowledge = workout_knowledge_payload()
-    categories = knowledge.get("categories") if isinstance(knowledge.get("categories"), dict) else {}
-    name_text = str(payload.get("name") or "")
-    description_text = str(payload.get("description") or "")
-    steps = payload.get("steps") or []
-    step_text = json.dumps(steps, ensure_ascii=False)
-    haystack = normalize_text(name_text, description_text, step_text)
-    best_match: dict[str, Any] | None = None
-    best_score = 0
-    for category_key, entries in categories.items():
-        if isinstance(entries, dict):
-            entries = entries.get("sessions") or []
-        if not isinstance(entries, list):
-            continue
-        for entry in entries:
-            if not isinstance(entry, dict):
-                continue
-            label = str(entry.get("label") or "").strip()
-            if not label:
-                continue
-            score = 0
-            normalized_label = normalize_text(label)
-            if normalized_label and normalized_label in haystack:
-                score += len(normalized_label)
-            for token in [piece.strip() for piece in normalized_label.replace("+", " ").replace("/", " ").split() if len(piece.strip()) >= 3]:
-                if token in haystack:
-                    score += 1
-            goals = entry.get("goals") if isinstance(entry.get("goals"), list) else []
-            if session_kind == "quality" and any(goal in goals for goal in {"vo2max", "umbral_lactico", "ritmo_10k", "ritmo_5k"}):
-                score += 2
-            if session_kind == "long_run" and any(goal in goals for goal in {"fondo_largo", "resistencia_especifica_maraton", "resistencia_especifica_21k"}):
-                score += 2
-            if session_kind in {"easy", "recovery"} and any(goal in goals for goal in {"recuperacion", "base_aerobica", "resistencia_aerobica"}):
-                score += 2
-            if score > best_score:
-                best_score = score
-                best_match = {
-                    "category": category_key,
-                    "label": label,
-                    "goals": goals,
-                    "source_note": entry.get("source_note"),
-                }
-    if not best_match:
-        return None
-    best_match["goal_labels"] = [workout_goal_label(goal) for goal in best_match.get("goals") or []]
-    best_match["primary_goal"] = best_match["goal_labels"][0] if best_match.get("goal_labels") else None
-    return best_match
+    return match_workout_knowledge(payload, session_kind)
 
 
 def workout_knowledge_summary(payload: dict[str, Any], session_kind: str) -> dict[str, Any] | None:
@@ -1382,6 +1332,28 @@ def make_replan_steps(kind: str, strategy: str, original_name: str, duration_s: 
     ]
 
 
+def protective_alternative_from_knowledge(workout: dict[str, Any], strategy: str) -> tuple[str | None, str | None]:
+    knowledge = workout.get("knowledge") if isinstance(workout.get("knowledge"), dict) else None
+    if not knowledge:
+        return None, None
+    goals = set(knowledge.get("goals") or [])
+    if strategy == "auto_today":
+        if goals & {"vo2max", "ritmo_5k", "ritmo_10k", "capacidad_anaerobica", "tolerancia_al_lactato", "cuestas_cortas", "cuestas_largas"}:
+            return "recovery", "30' suave o 30' regenerativo muy suave"
+        if goals & {"fondo_largo", "resistencia_especifica_maraton", "resistencia_especifica_21k"}:
+            return "easy", "40' suave o 50' en Z2 estable"
+    if strategy == "reduce_keep_goal":
+        if goals & {"umbral_lactico", "umbral_fraccionado", "umbral_aerobico"}:
+            return workout.get("session_kind") or "quality", "4x5' @ ritmo 21k rec 1'"
+        if goals & {"ritmo_10k", "resistencia_especifica_10k"}:
+            return workout.get("session_kind") or "quality", "5x1000 @ ritmo 10k rec 2'"
+        if goals & {"ritmo_5k", "vo2max"}:
+            return workout.get("session_kind") or "quality", "8x2' @ ritmo 5k / 2' suave"
+        if goals & {"ritmo_maraton", "resistencia_especifica_maraton"}:
+            return "easy", "45' progresivo de suave a ritmo M"
+    return None, None
+
+
 def generate_replan_proposal(workout: dict[str, Any], strategy: str, dashboard: dict[str, Any]) -> dict[str, Any]:
     payload = workout.get("payload", {}) if isinstance(workout.get("payload"), dict) else {}
     original_date = str(workout.get("date") or str(payload.get("schedule_date") or "")).strip()
@@ -1402,17 +1374,19 @@ def generate_replan_proposal(workout: dict[str, Any], strategy: str, dashboard: 
     summary = "La sesion se ha adaptado en la web segun el contexto actual."
     cause = recommendation or "Cambio manual aplicado desde la web."
     variant = None
+    knowledge = workout.get("knowledge") if isinstance(workout.get("knowledge"), dict) else None
+    target_kind, target_label = protective_alternative_from_knowledge(workout, strategy)
 
     if strategy == "auto_today":
         label = "Alternativa para hoy"
-        variant = "rodaje muy facil" if kind in {"quality", "long_run"} or decision_status == "red" else "version corta"
+        variant = target_label or ("rodaje muy facil" if kind in {"quality", "long_run"} or decision_status == "red" else "version corta")
         if kind in {"quality", "long_run"} or decision_status == "red":
-            effective_kind = "recovery"
+            effective_kind = target_kind or "recovery"
             effective_name = f"Alternativa: {original_name}"
-            effective_description = "Cambio automatico para hoy: sustituir la sesion exigente por una version muy facil y de bajo coste."
+            effective_description = f"Cambio automatico para hoy: sustituir la sesion exigente por una version muy facil y de bajo coste. Referencia protectora: {target_label or 'rodaje suave'} ."
             effective_duration_s = max(1500, int(round(original_duration_s * 0.6))) if original_duration_s else 1800
         else:
-            effective_kind = "easy"
+            effective_kind = target_kind or "easy"
             effective_name = f"Version corta: {original_name}"
             effective_description = "Cambio automatico para hoy: mantener continuidad con una version mas corta y facil de encajar."
             effective_duration_s = max(1200, int(round(original_duration_s * 0.75))) if original_duration_s else 1500
@@ -1428,9 +1402,9 @@ def generate_replan_proposal(workout: dict[str, Any], strategy: str, dashboard: 
         effective_name = f"{original_name} · version compacta"
         if kind == "quality":
             effective_kind = "quality"
-            effective_description = "Version compacta: menos volumen de calidad y mas margen, manteniendo el objetivo semanal."
+            effective_description = f"Version compacta: menos volumen de calidad y mas margen, manteniendo el objetivo semanal. Referencia: {target_label or 'bloque de calidad corto'}."
             effective_duration_s = max(1500, int(round(original_duration_s * 0.72))) if original_duration_s else 1800
-            variant = "menos repeticiones"
+            variant = target_label or "menos repeticiones"
         elif kind == "long_run":
             effective_kind = "easy"
             effective_description = "Version compacta: tirada mas corta y controlada para preservar continuidad sin vaciarte."
@@ -1453,6 +1427,9 @@ def generate_replan_proposal(workout: dict[str, Any], strategy: str, dashboard: 
         cause = "Se prioriza no entrenar hoy sin romper por completo la logica semanal."
         variant = effective_date
 
+    if knowledge and knowledge.get("primary_goal"):
+        cause = f"{cause} Objetivo original protegido: {str(knowledge.get('primary_goal')).lower()}."
+
     return {
         "status": "applied",
         "strategy": strategy,
@@ -1467,6 +1444,8 @@ def generate_replan_proposal(workout: dict[str, Any], strategy: str, dashboard: 
         "effective_duration_s": effective_duration_s,
         "effective_steps": original_steps if strategy == "move_next_day" else make_replan_steps(effective_kind, strategy, original_name, effective_duration_s),
         "effective_session_kind": effective_kind,
+        "knowledge_label": knowledge.get("label") if knowledge else None,
+        "knowledge_goal": knowledge.get("primary_goal") if knowledge else None,
     }
 
 
@@ -2309,6 +2288,9 @@ def today_plan_data(day: str | None = None) -> dict[str, Any]:
     if checkin_decision:
         why_today_parts.append(str(checkin_decision.get("summary") or "").strip())
     if planned_today:
+        knowledge = planned_today.get("knowledge") if isinstance(planned_today.get("knowledge"), dict) else None
+        if knowledge and knowledge.get("summary"):
+            why_today_parts.append(str(knowledge.get("summary") or "").strip())
         objective_text = session_objective_map.get(planned_today.get("session_kind"), "El objetivo hoy es mantener continuidad con una carga adecuada.")
         why_today_parts.append(objective_text)
     elif has_context:
@@ -2342,6 +2324,7 @@ def today_plan_data(day: str | None = None) -> dict[str, Any]:
         "feedback_present": bool((completed_today or {}).get("athlete_feedback")),
         "daily_checkin": checkin_state,
         "recommended_replan": checkin_replan,
+        "knowledge": (planned_today or {}).get("knowledge"),
         "links": {
             "detail_url": f"/planned-workouts/{planned_today['slug']}" if planned_today else None,
             "day_url": f"/calendar/day/{target_day}",
@@ -3582,6 +3565,7 @@ def planned_workouts(dashboard: dict[str, Any] | None = None) -> list[dict[str, 
         retry_state = retry_states.get(path.stem) if isinstance(retry_states.get(path.stem), dict) else None
         workout_url = garmin_scheduled_workout_url(scheduled_id) or garmin_workout_url(workout_id, effective_payload.get("sport"))
         linked_review = reviews_by_date.get(schedule_date)
+        knowledge = workout_knowledge_summary(effective_payload, kind)
         replan = planned_workout_replan_data(
             {
                 "slug": path.stem,
@@ -3589,6 +3573,7 @@ def planned_workouts(dashboard: dict[str, Any] | None = None) -> list[dict[str, 
                 "session_kind": kind,
                 "action_state": action_state,
                 "replan_state": replan_state,
+                "knowledge": knowledge,
             },
             dashboard,
             linked_review,
@@ -3611,6 +3596,7 @@ def planned_workouts(dashboard: dict[str, Any] | None = None) -> list[dict[str, 
                 "session_kind": kind,
                 "session_kind_label": kind_label,
                 "session_color_class": color_class,
+                "knowledge": knowledge,
                 "action_state": action_state,
                 "action_badge": action_display_data((action_state or {}).get("action")),
                 "replan": replan,
@@ -3629,6 +3615,8 @@ def planned_workout_detail(slug: str) -> dict[str, Any] | None:
             fueling = workout_fueling_lookup(load_or_build_fueling_payload(), slug)
             item["fueling"] = fueling
             item["targets"] = workout_targets_summary(item.get("payload") or {})
+            knowledge = item.get("knowledge") if isinstance(item.get("knowledge"), dict) else None
+            item["purpose_summary"] = (knowledge or {}).get("summary") if knowledge else None
             return item
     return None
 

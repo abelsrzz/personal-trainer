@@ -53,6 +53,23 @@
       </article>
     </div>
     {% endif %}
+    {% if workout.knowledge %}
+    <div class="panel inset-panel">
+      <p class="eyebrow">Conocimiento de la sesión</p>
+      <h3>{{ workout.knowledge.label }}</h3>
+      <p>{{ workout.knowledge.summary }}</p>
+      {% if workout.knowledge.goal_labels %}
+      <div class="today-plan-tags">
+        {% for item in workout.knowledge.goal_labels[:3] %}
+        <span class="mini-badge">{{ item }}</span>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% if workout.knowledge.source_note %}
+      <p class="muted">Referencia: {{ workout.knowledge.source_note }}</p>
+      {% endif %}
+    </div>
+    {% endif %}
     {% if workout.garmin_retry_state %}
     <p class="muted">Ultimo reenvio: {{ workout.garmin_retry_state.updated_at|format_datetime }} · {{ workout.garmin_retry_state.message }}</p>
     {% elif workout.garmin_upload.generated_at %}
@@ -164,6 +181,9 @@
   {% if workout.replan and workout.replan.is_changed %}
   <p><strong>{{ workout.replan.summary }}</strong></p>
   <p class="muted"><strong>Causa:</strong> {{ workout.replan.cause }}</p>
+  {% if workout.replan_state and workout.replan_state.knowledge_goal %}
+  <p class="muted"><strong>Objetivo protegido:</strong> {{ workout.replan_state.knowledge_goal }}</p>
+  {% endif %}
   {% if workout.replan.changed_at %}
   <p class="muted"><strong>Aplicada:</strong> {{ workout.replan.changed_at }}</p>
   {% endif %}

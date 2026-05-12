@@ -133,6 +133,7 @@ Contexto de coaching que el sistema debe usar por defecto:
 - `planning/context_automation_policy.md`
 - `planning/coaching_playbook.md`
 - `planning/workout_knowledge.yaml`
+- `planning/workout_template_knowledge_map.yaml`
 - `planning/session_selection_matrix.yaml`
 - `planning/workout_evaluation_rules.md`
 - `athlete/response_profile.yaml`

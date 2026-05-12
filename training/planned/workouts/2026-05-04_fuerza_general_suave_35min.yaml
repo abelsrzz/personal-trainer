@@ -2,18 +2,19 @@ workout:
   name: Fuerza general suave 35 min
   schedule_date: 2026-05-04
   sport: strength
-  description: Sesion suave de fuerza y movilidad tras la caminata acumulada. Priorizar tobillo, pie, gemelo, soleo, gluteo medio y core. Nada de agujetas.
+  description: Sesion suave de fuerza y movilidad tras la caminata acumulada. Priorizar
+    tobillo, pie, gemelo, soleo, gluteo medio y core. Nada de agujetas.
   estimated_duration_s: 2100
   steps:
-    - order: 1
-      step_type: warmup
-      description: Activacion y movilidad
-      duration_s: 300
-    - order: 2
-      step_type: interval
-      description: Fuerza general suave
-      duration_s: 1500
-    - order: 3
-      step_type: cooldown
-      description: Movilidad final
-      duration_s: 300
+  - order: 1
+    step_type: warmup
+    description: Activacion y movilidad
+    duration_s: 300
+  - order: 2
+    step_type: interval
+    description: Fuerza general suave
+    duration_s: 1500
+  - order: 3
+    step_type: cooldown
+    description: Movilidad final
+    duration_s: 300

@@ -12,6 +12,7 @@
 - Coach sync added as the preferred one-command Garmin workflow
 - Garmin athlete profile sync added to update local athlete profile, zones, health and shoes from Garmin data
 - Web portal simplified: planned workouts unified under one planning area and decision merged into dashboard
+- Weekly planning pipeline added with safe prepare/activate flow and weekly state persistence
 - Telegram remote OpenCode bridge added for self-hosted access
 - First Garmin workout upload and scheduling already proven
 - Fueling engine added for races and hard workouts, with automatic hydration/carb-load/supplement plans
@@ -63,6 +64,7 @@
 - Read `athlete/status_dashboard.md` for load, risk, 35:00 gates and rough performance estimate.
 - Read `planning/coach_decision.md` for the operative green/yellow/red decision.
 - For web interpretation, treat the dashboard page as the single analysis surface; the old separate decision page is now only a redirect.
+- The old progress page is also only a redirect; analysis now lives in the dashboard/Estado surface.
 - Read `planning/coaching_playbook.md` as the default prescription policy.
 - Read `planning/session_selection_matrix.yaml` before selecting workout families.
 - Read `planning/workout_evaluation_rules.md` after completed-session reviews and before replanning.
@@ -71,6 +73,7 @@
 - Treat `red` as reduce or replace quality, `yellow` as maintain without increasing load, and `green` as allow small progression if shin status is quiet.
 - `athlete/shin_tracker.yaml` now receives automatic promotions from subjective feedback when tibial/periosteum pain is detected; manual updates remain valid for corrections or added context.
 - Read `athlete/supplements.yaml` and `planning/fueling_operational.md` when race execution or hard-session fueling matters.
+- In the planning web view, prefer preparing the next week first; activating it archives the outgoing active week, updates `semana_actual.md`, sends the PDF by Telegram and attempts Garmin scheduling for changed workouts.
 
 ## Remote Telegram Operating Model
 

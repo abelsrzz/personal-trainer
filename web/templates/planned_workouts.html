@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Planificados | RunPilot{% endblock %}
+{% block title %}Plan | RunPilot{% endblock %}
 {% block content %}
 {% if current_view == 'week' and week and not week.exists %}
 <section class="panel">
@@ -17,8 +17,8 @@
 <section class="panel">
   <div class="panel-head">
     <div>
-      <p class="eyebrow">Planificacion</p>
-      <h2>{% if current_view == 'calendar' %}Calendario combinado{% elif current_view == 'week' %}Entrenamientos planificados{% else %}Entrenamientos planificados{% endif %}</h2>
+      <p class="eyebrow">Plan</p>
+      <h2>{% if current_view == 'calendar' %}Calendario combinado{% elif current_view == 'week' %}Semana operativa{% else %}Backlog planificado{% endif %}</h2>
     </div>
     <div class="toolbar">
       <span class="badge">{{ workouts|length }} sesiones</span>
@@ -51,17 +51,130 @@
   {% if current_view == 'week' %}
   <div class="planned-week-shell">
     <div class="planned-week-toolbar">
+      <div>
+        <p class="muted planned-week-note">La semana es la vista principal para organizar carga, detectar conflictos y aterrizar cada día.</p>
+      </div>
       <div class="planned-week-summary">
-        <span class="badge">{{ week.rows|length }} bloques</span>
+        <span class="badge">{{ week.rows|length }} dias</span>
         {% if week.pdf_exists %}
         <span class="badge ok">PDF listo</span>
         {% endif %}
       </div>
-      <p class="muted planned-week-note">Lectura semanal integrada en el mismo lenguaje de entrenamientos planificados.</p>
     </div>
 
+    {% if week.planning_status %}
+    <section class="panel compact-panel weekly-ops-panel">
+      <div class="panel-head">
+        <div>
+          <p class="eyebrow">Automatizacion semanal</p>
+          <h3>Preparar sin pisar la semana activa</h3>
+        </div>
+        {% if week.planning_status.prepared_exists %}
+        <span class="badge ok">Siguiente semana preparada</span>
+        {% else %}
+        <span class="badge">Sin preparar</span>
+        {% endif %}
+      </div>
+      <div class="split detail-layout">
+        <article class="panel inset-panel">
+          <h3>Semana activa</h3>
+          <p class="muted">{{ week.planning_status.active_week.title }}</p>
+          <p>{{ week.planning_status.active_week.start_date or '-' }} -> {{ week.planning_status.active_week.end_date or '-' }}</p>
+        </article>
+        <article class="panel inset-panel">
+          <h3>Siguiente rango</h3>
+          <p>{{ week.planning_status.next_target.start_date or '-' }} -> {{ week.planning_status.next_target.end_date or '-' }}</p>
+          {% if week.planning_status.prepared_week %}
+          <p class="muted">Archivo: <code>{{ week.planning_status.prepared_week.path }}</code></p>
+          {% else %}
+          <p class="muted">Todavia no hay semana preparada para ese rango.</p>
+          {% endif %}
+        </article>
+      </div>
+      <div class="inline-actions weekly-ops-actions">
+        <form method="post" action="/planned-workouts/plan-next-week">
+          <input type="hidden" name="next_url" value="/planned-workouts?view=week&kind={{ selected_kind }}&status={{ selected_status }}">
+          <button class="cta-button" type="submit">Planificar siguiente semana</button>
+        </form>
+        {% if week.planning_status.prepared_exists and week.planning_status.prepared_week %}
+        <a class="cta-button cta-subtle preview-back-link" href="/planned-workouts/prepared/{{ week.planning_status.prepared_week.start_date }}">Previsualizar semana preparada</a>
+        <form method="post" action="/planned-workouts/activate-next-week">
+          <input type="hidden" name="next_url" value="/planned-workouts?view=week&kind={{ selected_kind }}&status={{ selected_status }}">
+          <input type="hidden" name="week_start" value="{{ week.planning_status.prepared_week.start_date }}">
+          <button class="cta-button cta-subtle" type="submit">Activar semana preparada</button>
+        </form>
+        <form method="post" action="/planned-workouts/plan-next-week">
+          <input type="hidden" name="next_url" value="/planned-workouts?view=week&kind={{ selected_kind }}&status={{ selected_status }}">
+          <input type="hidden" name="force" value="1">
+          <button class="cta-button cta-subtle" type="submit">Regenerar siguiente semana</button>
+        </form>
+        {% endif %}
+      </div>
+      {% if week.planning_status.last_plan %}
+      <p class="muted">Ultima preparacion: {{ week.planning_status.last_plan.updated_at or '-' }} · {{ week.planning_status.last_plan.status or '-' }}</p>
+      {% endif %}
+      {% if week.planning_status.prepared_week and week.planning_status.prepared_week.garmin_sync_summary %}
+      <div class="split detail-layout weekly-ops-detail-grid">
+        <article class="panel inset-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Garmin preparado</p>
+              <h3>Sync por workout</h3>
+            </div>
+            <span class="badge">{{ week.planning_status.prepared_week.garmin_sync_summary.synced }} OK · {{ week.planning_status.prepared_week.garmin_sync_summary.failed }} fallo</span>
+          </div>
+          <div class="list compact-list">
+            {% for item in week.planning_status.prepared_week.garmin_sync_summary['items'] %}
+            <div class="list-item static weekly-sync-item">
+              <div>
+                <strong>{{ item.workout_name }}</strong>
+                <p class="muted">{{ item.schedule_date or '-' }}{% if item.sport %} · {{ item.sport }}{% endif %}</p>
+                <p class="muted"><code>{{ item.file }}</code></p>
+              </div>
+              <div class="item-meta">
+                <span class="badge {{ item.badge.tone }}">{{ item.badge.label }}</span>
+                {% if item.workout_id %}
+                <span>{{ item.workout_id }}</span>
+                {% endif %}
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </article>
+        <article class="panel inset-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Ultima activacion</p>
+              <h3>PDF, Telegram y archivo</h3>
+            </div>
+          </div>
+          {% if week.planning_status.last_activation %}
+          {% if week.planning_status.last_activation.pdf_summary %}
+          <p><span class="badge {{ week.planning_status.last_activation.pdf_summary.badge.tone }}">{{ week.planning_status.last_activation.pdf_summary.badge.label }}</span></p>
+          <p>{{ week.planning_status.last_activation.pdf_summary.message }}</p>
+          {% endif %}
+          {% if week.planning_status.last_activation.archived_path %}
+          <p class="muted"><strong>Semana archivada:</strong> <code>{{ week.planning_status.last_activation.archived_path }}</code></p>
+          {% else %}
+          <p class="muted">Todavia no se ha archivado ninguna semana desde esta vista.</p>
+          {% endif %}
+          {% if week.planning_status.last_activation.garmin_sync_summary %}
+          <p class="muted">Garmin tras activar: {{ week.planning_status.last_activation.garmin_sync_summary.synced }} OK · {{ week.planning_status.last_activation.garmin_sync_summary.failed }} fallo · {{ week.planning_status.last_activation.garmin_sync_summary.skipped }} sin cambios</p>
+          {% endif %}
+          {% else %}
+          <p class="muted">Todavia no hay ninguna activacion registrada.</p>
+          {% endif %}
+        </article>
+      </div>
+      {% endif %}
+      {% if week.planning_status.last_activation %}
+      <p class="muted">Ultima activacion: {{ week.planning_status.last_activation.updated_at or '-' }} · {{ week.planning_status.last_activation.status or '-' }}</p>
+      {% endif %}
+    </section>
+    {% endif %}
+
     {% if week.executive_summary %}
-    <section class="panel">
+    <section class="panel compact-panel">
       <div class="panel-head">
         <div>
           <p class="eyebrow">Semana operativa</p>
@@ -96,7 +209,7 @@
     {% endif %}
 
     {% if week.plan_vs_reality and week.plan_vs_reality.available and week.plan_vs_reality.block %}
-    <section class="panel">
+    <section class="panel compact-panel">
       <div class="panel-head">
         <div>
           <p class="eyebrow">Plan vs realidad</p>
@@ -157,6 +270,14 @@
     </section>
     {% endif %}
 
+    <section class="panel compact-panel">
+      <div class="panel-head">
+        <div>
+          <p class="eyebrow">Agenda semanal</p>
+          <h3>Qué toca y dónde intervenir</h3>
+        </div>
+        <span class="badge">Vista de trabajo</span>
+      </div>
     <div class="list planned-week-list">
       {% for row in week.rows %}
       <article class="list-item static planned-week-item {{ 'session-race' if 'carrera' in row.description|lower or 'edicion' in row.description|lower else 'session-rest' if row.distance == '0 km' else 'session-quality' if 'ritmo' in row.target|lower or 'rectas' in row.description|lower or 'bloques' in row.description|lower else 'session-easy' }}">
@@ -198,6 +319,7 @@
       <p class="muted">No se pudo extraer la tabla del plan actual.</p>
       {% endfor %}
     </div>
+    </section>
 
     <details class="panel week-detail-toggle">
       <summary>
@@ -282,13 +404,20 @@
     {% endfor %}
   </div>
   {% else %}
-  <div class="list">
+  <div class="list plan-list-view">
     {% for workout in workouts %}
     <div class="list-item static {{ workout.session_color_class }}">
       <div>
         <strong><a href="/calendar/day/{{ workout.date }}">{{ workout.date }}</a></strong>
         <p><a href="/planned-workouts/{{ workout.slug }}">{{ workout.name }}</a></p>
         <p class="muted">{{ workout.description }}</p>
+        <div class="today-plan-tags">
+          <span class="mini-badge">{{ workout.session_kind_label }}</span>
+          <span class="mini-badge">{{ workout.estimated_duration }}</span>
+          {% if workout.replan %}
+          <span class="mini-badge">{{ workout.replan.label }}</span>
+          {% endif %}
+        </div>
         {% if workout.replan and workout.replan.is_changed %}
         <p>{{ workout.replan.summary }}</p>
         <p class="muted"><strong>Causa:</strong> {{ workout.replan.cause }}</p>
@@ -298,10 +427,6 @@
         {% endif %}
       </div>
       <div class="item-meta">
-        <span class="badge kind-badge">{{ workout.session_kind_label }}</span>
-        {% if workout.replan %}
-        <span class="badge {{ workout.replan.tone }}">{{ workout.replan.label }}</span>
-        {% endif %}
         {% if workout.garmin_status_badge %}
         <span class="badge {{ workout.garmin_status_badge.tone }}">{{ workout.garmin_status_badge.label }}</span>
         {% endif %}

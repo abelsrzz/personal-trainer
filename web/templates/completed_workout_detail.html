@@ -1,93 +1,109 @@
 {% extends "base.html" %}
 {% block title %}{{ review.name }} | RunPilot{% endblock %}
 {% block content %}
-<section class="panel">
-  <p class="eyebrow">Revision completada</p>
-  <h2>{{ review.name }}</h2>
-  {% if review.feedback_badge %}
-  <p><span class="badge {{ review.feedback_badge.tone }}">{{ review.feedback_badge.label }}</span></p>
-  {% endif %}
-  {% if review.garmin_activity_url %}
-  <p><a class="action-link" href="{{ review.garmin_activity_url }}" target="_blank" rel="noreferrer">Abrir actividad en Garmin</a></p>
-  {% endif %}
-  <div class="cards four">
-    <article class="card"><h3>Fecha</h3><p class="metric">{{ review.date }}</p></article>
-    <article class="card"><h3>Score</h3><p class="metric">{{ review.score }}/10</p></article>
-    <article class="card"><h3>Riesgo</h3><p class="metric">{{ review.risk_level }}</p></article>
-    <article class="card"><h3>Pace</h3><p class="metric">{{ review.pace }}</p></article>
-  </div>
-</section>
-
-<section class="panel">
-  <div class="panel-head">
-    <div>
-      <p class="eyebrow">Tu feedback</p>
-      <h3>{{ 'Editar feedback' if review.athlete_feedback else 'Añadir feedback' }}</h3>
+<section class="hero session-hero">
+  <div>
+    <p class="eyebrow">Completado</p>
+    <h2>{{ review.name }}</h2>
+    <p>{{ review.feedback_summary or review.compliance_note }}</p>
+    <div class="today-plan-tags">
+      {% if review.feedback_badge %}
+      <span class="badge {{ review.feedback_badge.tone }}">{{ review.feedback_badge.label }}</span>
+      {% endif %}
+      <span class="badge">{{ review.traffic_light }}</span>
     </div>
-    {% if review.athlete_feedback %}
-    <span class="badge ok">Guardado</span>
-    {% endif %}
   </div>
-  <p class="muted">Completa estas 4 señales para que el sistema entienda mejor como toleraste la sesion.</p>
-  {% if review.feedback_summary %}
-  <p>{{ review.feedback_summary }}</p>
-  {% endif %}
-  {% if review.athlete_feedback and review.athlete_feedback.athlete_feedback.note %}
-  <p class="muted">{{ review.athlete_feedback.athlete_feedback.note }}</p>
-  {% endif %}
-  <form class="form" method="post" action="/completed-workouts/{{ review.slug }}/feedback">
-    <input type="hidden" name="next_url" value="/completed-workouts/{{ review.slug }}">
-    <label>
-      <span>Esfuerzo percibido</span>
-      <input type="number" name="rpe" min="1" max="10" required value="{{ review.feedback_form.rpe }}">
-    </label>
-    <label>
-      <span>Dolor o molestia</span>
-      <input type="number" name="pain_level" min="0" max="10" required value="{{ review.feedback_form.pain_level }}">
-    </label>
-    <label>
-      <span>Cumplimiento</span>
-      <select name="compliance" required>
-        <option value="">Selecciona una opcion</option>
-        {% for key, label in review.feedback_form.compliance_options.items() %}
-        <option value="{{ key }}" {{ 'selected' if review.feedback_form.compliance == key else '' }}>{{ label }}</option>
-        {% endfor %}
-      </select>
-    </label>
-    <label>
-      <span>Tiempo disponible</span>
-      <select name="time_feeling">
-        <option value="">Sin dato</option>
-        {% for key, label in review.feedback_form.time_feeling_options.items() %}
-        <option value="{{ key }}" {{ 'selected' if review.feedback_form.time_feeling == key else '' }}>{{ label }}</option>
-        {% endfor %}
-      </select>
-    </label>
-    <label>
-      <span>Donde notaste la molestia</span>
-      <input type="text" name="pain_location" maxlength="80" value="{{ review.feedback_form.pain_location }}">
-    </label>
-    <label>
-      <span>Nota corta</span>
-      <textarea name="note" rows="3" maxlength="200">{{ review.feedback_form.note }}</textarea>
-    </label>
-    <button type="submit">{{ 'Actualizar feedback' if review.athlete_feedback else 'Guardar feedback' }}</button>
-  </form>
+  <div class="hero-meta">
+    <span>{{ review.date }}</span>
+    <span>{{ review.distance_km }} km</span>
+    <span>{{ review.duration }}</span>
+    <span>{{ review.pace }}</span>
+  </div>
 </section>
 
-<section class="split">
+<section class="cards four dashboard-strip">
+  <article class="card"><h3>Score</h3><p class="metric">{{ review.score }}/10</p></article>
+  <article class="card"><h3>Riesgo</h3><p class="metric">{{ review.risk_level }}</p></article>
+  <article class="card"><h3>FC media</h3><p class="metric">{{ review.avg_hr }}</p></article>
+  <article class="card">
+    <h3>Garmin</h3>
+    {% if review.garmin_activity_url %}
+    <p class="muted"><a class="action-link" href="{{ review.garmin_activity_url }}" target="_blank" rel="noreferrer">Abrir actividad</a></p>
+    {% else %}
+    <p class="muted">Sin enlace</p>
+    {% endif %}
+  </article>
+</section>
+
+<section class="split detail-layout">
+  <article class="panel action-panel">
+    <div class="panel-head">
+      <div>
+        <p class="eyebrow">Tu feedback</p>
+        <h3>{{ 'Editar feedback' if review.athlete_feedback else 'Añadir feedback' }}</h3>
+      </div>
+      {% if review.athlete_feedback %}
+      <span class="badge ok">Guardado</span>
+      {% endif %}
+    </div>
+    <p class="muted">Completa estas 4 señales para que el sistema entienda mejor como toleraste la sesion.</p>
+    {% if review.feedback_summary %}
+    <p>{{ review.feedback_summary }}</p>
+    {% endif %}
+    {% if review.athlete_feedback and review.athlete_feedback.athlete_feedback.note %}
+    <p class="muted">{{ review.athlete_feedback.athlete_feedback.note }}</p>
+    {% endif %}
+    <form class="form" method="post" action="/completed-workouts/{{ review.slug }}/feedback">
+      <input type="hidden" name="next_url" value="/completed-workouts/{{ review.slug }}">
+      <label>
+        <span>Esfuerzo percibido</span>
+        <input type="number" name="rpe" min="1" max="10" required value="{{ review.feedback_form.rpe }}">
+      </label>
+      <label>
+        <span>Dolor o molestia</span>
+        <input type="number" name="pain_level" min="0" max="10" required value="{{ review.feedback_form.pain_level }}">
+      </label>
+      <label>
+        <span>Cumplimiento</span>
+        <select name="compliance" required>
+          <option value="">Selecciona una opcion</option>
+          {% for key, label in review.feedback_form.compliance_options.items() %}
+          <option value="{{ key }}" {{ 'selected' if review.feedback_form.compliance == key else '' }}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>
+        <span>Tiempo disponible</span>
+        <select name="time_feeling">
+          <option value="">Sin dato</option>
+          {% for key, label in review.feedback_form.time_feeling_options.items() %}
+          <option value="{{ key }}" {{ 'selected' if review.feedback_form.time_feeling == key else '' }}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>
+        <span>Donde notaste la molestia</span>
+        <input type="text" name="pain_location" maxlength="80" value="{{ review.feedback_form.pain_location }}">
+      </label>
+      <label>
+        <span>Nota corta</span>
+        <textarea name="note" rows="3" maxlength="200">{{ review.feedback_form.note }}</textarea>
+      </label>
+      <button type="submit">{{ 'Actualizar feedback' if review.athlete_feedback else 'Guardar feedback' }}</button>
+    </form>
+  </article>
   <article class="panel">
-    <h3>Resumen</h3>
+    <div class="panel-head">
+      <div>
+        <p class="eyebrow">Lectura rapida</p>
+        <h3>Resumen y cumplimiento</h3>
+      </div>
+    </div>
     <ul class="plain-list">
       <li>Distancia: {{ review.distance_km }} km</li>
       <li>Duracion: {{ review.duration }}</li>
       <li>FC media: {{ review.avg_hr }}</li>
       <li>Semaforo: {{ review.traffic_light }}</li>
-    </ul>
-  </article>
-  <article class="panel">
-    <h3>Cumplimiento</h3>
-    <ul class="plain-list">
       <li>Dentro de zona: {{ "%.1f"|format(review.payload.compliance.pct_in_hr_zone) }}%</li>
       <li>Por encima de zona: {{ "%.1f"|format(review.payload.compliance.pct_above_hr_zone) }}%</li>
       <li>Diff distancia: {{ review.payload.compliance.distance_diff_m }} m</li>
@@ -96,8 +112,13 @@
   </article>
 </section>
 
-<section class="panel">
-  <h3>Progresion</h3>
+<section class="panel compact-panel">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Analisis</p>
+      <h3>Progresion detectada</h3>
+    </div>
+  </div>
   <p>{{ review.payload.progression.summary }}</p>
   <ul class="plain-list">
     <li>Tendencia: {{ review.payload.progression.trend }}</li>

@@ -1,0 +1,315 @@
+{
+  "generated_at": "2026-05-12T10:03:45.048814+00:00",
+  "source_of_truth": "system/state/athlete_state.json",
+  "identity": {
+    "id": "main",
+    "name": "Abel",
+    "birth_date": "2004-06-17",
+    "sex": "MALE",
+    "height_cm": 175.25999450683594,
+    "weight_kg": 64.199
+  },
+  "athlete": {
+    "profile": {
+      "id": "main",
+      "name": "Abel",
+      "birth_date": "2004-06-17",
+      "age": 21,
+      "sex": "MALE",
+      "height_cm": 175.25999450683594,
+      "weight_kg": 64.199,
+      "city": "Ordes",
+      "years_running": 0.5,
+      "availability": {
+        "days_per_week": 7,
+        "hours_per_week": {
+          "min": 7,
+          "max": 10
+        },
+        "preferred_quality_days": [
+          "Tuesday",
+          "Thursday"
+        ],
+        "preferred_long_run_day": "Sunday",
+        "constraints": [
+          "Work schedule 07:30-15:00"
+        ],
+        "garmin_training_days": [
+          "SATURDAY",
+          "MONDAY",
+          "WEDNESDAY",
+          "TUESDAY",
+          "THURSDAY",
+          "FRIDAY",
+          "SUNDAY"
+        ],
+        "garmin_preferred_long_training_days": [
+          "SUNDAY"
+        ]
+      },
+      "current_context": {
+        "strength_sessions_per_week": 1
+      },
+      "data_sources": {
+        "garmin": {
+          "last_sync": "2026-05-12T10:03:44.931340Z",
+          "profile_snapshot": "training/completed/imports/garmin/profile/athlete_profile_snapshot.json"
+        }
+      }
+    },
+    "health": {
+      "current_issues": [
+        "Left shin periosteum discomfort"
+      ],
+      "past_injuries": [
+        "Tibial periostitis"
+      ],
+      "medical_constraints": [],
+      "sleep_notes": null,
+      "stress_notes": null,
+      "recovery_notes": "General sensations recently poor",
+      "garmin_metrics": {
+        "last_sync": "2026-05-12T10:03:44.931340Z",
+        "resting_hr": 55,
+        "max_hr": 196,
+        "vo2max": 46.0
+      }
+    },
+    "zones": {
+      "heart_rate": {
+        "resting_hr": 55,
+        "max_hr": 196,
+        "threshold_hr": null,
+        "z0": "<130",
+        "z1": "131-140",
+        "z2": "141-155",
+        "z3": "156-170",
+        "z4": "171-185",
+        "z5": ">185"
+      },
+      "pace": {
+        "easy": "6:00-7:30/km",
+        "marathon": null,
+        "half_marathon": null,
+        "ten_k": "4:22/km",
+        "five_k": "4:15/km",
+        "threshold": null
+      },
+      "guidance_priority": {
+        "primary": "both",
+        "secondary": null
+      },
+      "reference_marks": {
+        "recent_key_session": "4x1000@4:05/km",
+        "current_10k_pb": {
+          "date": "2026-02-07",
+          "pace": "4:22/km",
+          "note": "Project reference; Garmin race activity shows 10.08 km around 4:26/km."
+        },
+        "current_10k_garmin_reference": {
+          "date": "2026-02-07",
+          "distance": "10.08km",
+          "pace": "4:26/km",
+          "fastest_10k_split": 2663,
+          "average_hr": 186
+        },
+        "current_5k_pace": "4:15/km",
+        "current_interval_capability": {
+          "date": "2026-04-16",
+          "session": "4x1000@3:56-4:01/km",
+          "note": "High-cost interval ability, not current 10k pace."
+        }
+      },
+      "data_sources": {
+        "garmin": {
+          "last_sync": "2026-05-12T10:03:44.931340Z",
+          "profile_snapshot": "training/completed/imports/garmin/profile/athlete_profile_snapshot.json"
+        }
+      }
+    },
+    "shoes_count": 8,
+    "latest_shin_entry": {
+      "date": "2026-05-08",
+      "pain_during": 1,
+      "pain_after": 1,
+      "pain_next_morning": 1,
+      "location": "left_shin",
+      "surface": null,
+      "shoes": null,
+      "notes": "Reevaluacion manual. Dolor tibial actual 1/10 y cansancio subjetivo 0/10; sin empeoramiento relevante reportado."
+    }
+  },
+  "coach": {
+    "as_of": "2026-05-12",
+    "status": "red",
+    "action": "reduce_or_replace_quality",
+    "recommendation": "Reducir carga inmediata: cambiar la proxima calidad por rodaje muy facil o descanso, y mantener FC capada.",
+    "session_guidance": {
+      "coach_state": "red",
+      "shin_band": "green",
+      "block": "block_1",
+      "target_distance": "10k",
+      "primary": [
+        "easy_recovery",
+        "recovery_plus_mobility"
+      ],
+      "optional": [
+        "easy_z2"
+      ],
+      "avoid": [
+        "cruise_intervals",
+        "tempo_continuous",
+        "short_intervals_vo2",
+        "medium_intervals_vo2",
+        "ten_k_specific_reps",
+        "ten_k_specific_continuous",
+        "long_run_quality",
+        "hills_strength",
+        "five_k_specific_reps",
+        "marathon_specific_blocks"
+      ],
+      "quality_volume_cap": "none",
+      "selection_order": [
+        "coach_state",
+        "shin_band",
+        "active_block",
+        "target_distance",
+        "recent_completed_stimulus",
+        "desired_fatigue_cost"
+      ]
+    },
+    "goal_gates": {
+      "status": "unsupported_now",
+      "summary": "Con la evidencia actual, 35:00 sigue siendo aspiracional y no prescribe ritmos.",
+      "passed_count": 0,
+      "total_gates": 4
+    }
+  },
+  "garmin": {
+    "profile_synced_at": "2026-05-12T10:03:44.931340Z",
+    "latest_activity_import_at": "2026-05-12T09:58:53.149132Z",
+    "latest_daily_import_at": "2026-05-12T09:58:02.812077Z",
+    "latest_activity_ids": [],
+    "latest_daily_days": [
+      "2026-05-10",
+      "2026-05-11",
+      "2026-05-12"
+    ],
+    "daily_metrics": {
+      "latest_date": "2026-05-12",
+      "latest_hrv": 137864769.0,
+      "latest_training_readiness": null,
+      "latest_resting_heart_rate": 55.0,
+      "latest_training_status": {
+        "userId": 137864769,
+        "mostRecentVO2Max": null,
+        "mostRecentTrainingLoadBalance": null,
+        "mostRecentTrainingStatus": null,
+        "heatAltitudeAcclimationDTO": null
+      }
+    },
+    "data_quality": {
+      "activities": true,
+      "daily_metrics": true,
+      "hrv": true,
+      "training_readiness": false,
+      "resting_heart_rate": true,
+      "training_status": true,
+      "sleep": false,
+      "running_tolerance": false
+    }
+  },
+  "automation": {
+    "post_workout_refresh": {
+      "last_seen_activity_id": 22823255797,
+      "last_seen_activity_date": "2026-05-09",
+      "last_processed_activity_id": 22823255797,
+      "last_processed_activity_date": "2026-05-09",
+      "last_processed_at": "2026-05-12T09:58:32.598718+00:00",
+      "last_successful_run": "2026-05-12T09:58:53.213947+00:00",
+      "last_error": null,
+      "next_action": "wait_for_new_activity_or_feedback",
+      "timer_interval_minutes": 5
+    },
+    "weekly_planning": {
+      "last_plan": {
+        "status": "prepared",
+        "target_start": "2026-05-25",
+        "target_end": "2026-05-31",
+        "updated_at": "2026-05-12T09:45:07.367256",
+        "source": "manual",
+        "garmin_sync": {
+          "items": [
+            {
+              "file": "training/planned/workouts/2026-05-26_rodaje_6km_recuperacion_post_ordes.yaml",
+              "status": "ok",
+              "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1565770425,\n  \"schedule_date\": \"2026-05-26\",\n  \"workout_name\": \"Rodaje 6 km recuperacion post-Ordes\",\n  \"sport\": \"running\"\n}"
+            },
+            {
+              "file": "training/planned/workouts/2026-05-27_fuerza_movilidad_tolerancia_35min.yaml",
+              "status": "ok",
+              "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1565770442,\n  \"schedule_date\": \"2026-05-27\",\n  \"workout_name\": \"Fuerza movilidad tolerancia 35 min\",\n  \"sport\": \"strength\"\n}"
+            },
+            {
+              "file": "training/planned/workouts/2026-05-28_rodaje_7km_controlado.yaml",
+              "status": "ok",
+              "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1565770459,\n  \"schedule_date\": \"2026-05-28\",\n  \"workout_name\": \"Rodaje 7 km controlado\",\n  \"sport\": \"running\"\n}"
+            },
+            {
+              "file": "training/planned/workouts/2026-05-30_rodaje_6km_progresivo_suave.yaml",
+              "status": "ok",
+              "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1565770478,\n  \"schedule_date\": \"2026-05-30\",\n  \"workout_name\": \"Rodaje 6 km progresivo suave\",\n  \"sport\": \"running\"\n}"
+            },
+            {
+              "file": "training/planned/workouts/2026-05-31_rodaje_10km_z2_continuidad.yaml",
+              "status": "ok",
+              "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1565770507,\n  \"schedule_date\": \"2026-05-31\",\n  \"workout_name\": \"Rodaje 10 km Z2 continuidad\",\n  \"sport\": \"running\"\n}"
+            }
+          ],
+          "synced": 5,
+          "failed": 0,
+          "skipped": 0
+        }
+      },
+      "last_activation": null
+    },
+    "safety_policy": {
+      "allow_auto": [
+        "persist_observability_state",
+        "import_garmin_activities",
+        "import_garmin_daily_metrics",
+        "refresh_athlete_profile_cache",
+        "apply_today_protective_variant",
+        "reduce_non_race_workout",
+        "move_non_race_workout_to_rest_slot",
+        "recompose_skipped_non_race_session"
+      ],
+      "require_confirmation": [
+        "activate_prepared_week",
+        "regenerate_prepared_week",
+        "replace_race_workout",
+        "move_workout_outside_current_week",
+        "resend_modified_workout_to_garmin"
+      ],
+      "never_auto": [
+        "delete_completed_activity_data",
+        "cancel_race_day_session",
+        "overwrite_active_week",
+        "delete_goal_race",
+        "lower_goal_without_user_request"
+      ]
+    }
+  },
+  "active_cycle": {
+    "id": "2026-05-25_padron_10k",
+    "status": "active",
+    "start_date": "2026-05-25",
+    "end_date": "2027-02-06",
+    "goal_race_slug": "XXIV_padron_10k",
+    "master_plan_path": "planning/master_plan.md",
+    "blocks_path": "planning/blocks",
+    "weeks_path": "planning/weeks",
+    "goal_gates_path": "planning/goal_gates.yaml",
+    "notes": "Current compatibility layer while the project migrates from single-cycle mode to versioned cycles."
+  }
+}

@@ -1,12 +1,24 @@
 {% extends "base.html" %}
 {% block title %}Atleta | RunPilot{% endblock %}
 {% block content %}
-<section class="panel">
-  <p class="eyebrow">Perfil</p>
-  <h2>{{ athlete.profile.name }}</h2>
-  {% for message in athlete.capability_messages %}
-  <p class="alert">{{ message }}</p>
-  {% endfor %}
+<section class="hero compact">
+  <div>
+    <p class="eyebrow">Atleta</p>
+    <h2>{{ athlete.profile.name }}</h2>
+    <p>Ficha compacta del atleta para consultar contexto, salud y material sin mezclarla con la operativa diaria.</p>
+    {% for message in athlete.capability_messages %}
+    <p class="alert">{{ message }}</p>
+    {% endfor %}
+  </div>
+  <div class="hero-meta">
+    <span>{{ athlete.profile.age }} años</span>
+    <span>{{ athlete.profile.weight_kg }} kg</span>
+    <span>{{ athlete.profile.city }}</span>
+    <span>{{ athlete.profile.availability.days_per_week }} d/sem</span>
+  </div>
+</section>
+
+<section class="panel compact-panel">
   <div class="cards four">
     <article class="card"><h3>Edad</h3><p class="metric">{{ athlete.profile.age }}</p></article>
     <article class="card"><h3>Peso</h3><p class="metric">{{ athlete.profile.weight_kg }} kg</p></article>
@@ -25,7 +37,7 @@
       {% for injury in athlete.health.past_injuries %}
       <li>Historial: {{ injury }}</li>
       {% endfor %}
-      <li>Recovery notes: {{ athlete.health.recovery_notes or '-' }}</li>
+      <li>Notas de recuperacion: {{ athlete.health.recovery_notes or '-' }}</li>
     </ul>
   </article>
   <article class="panel">

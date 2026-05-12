@@ -62,6 +62,7 @@ The system must act as an intelligent coach, planner and reviewer.
 
 - The operational week always runs from Monday to Sunday.
 - `planning/weeks/semana_actual.md` is the active weekly plan.
+- `planning/weeks/prepared/<year>/` stores prepared next weeks before activation so the active week is not overwritten prematurely.
 - Every time `planning/weeks/semana_actual.md` is generated or updated, it must be converted to PDF and sent by Telegram.
 - After each workout, Abel may provide the completed session manually or Garmin data may be imported.
 - Each completed workout must be:
@@ -72,6 +73,7 @@ The system must act as an intelligent coach, planner and reviewer.
   - summarized with a written coaching review
 - If execution, fatigue or pain justify it, replanify the rest of the current week.
 - Every Sunday, generate only the next week.
+- The safe default is to prepare the next week first and activate it explicitly when appropriate.
 
 ## Main Files
 
@@ -109,6 +111,8 @@ The system must act as an intelligent coach, planner and reviewer.
 - Context automation policy: `planning/context_automation_policy.md`
 - Athlete response profile: `athlete/response_profile.yaml`
 - Workout library: `training/planned/workouts/library_run_templates.yaml`
+- Weekly planning pipeline: `scripts/system/weekly_planning_pipeline.py`
+- Weekly planning state: `system/state/weekly_planning_state.json`
 
 ## Garmin Integration
 
@@ -146,6 +150,7 @@ python scripts/garmin/coach_engine.py --as-of YYYY-MM-DD --days 28
 ## Coach Automation Rules
 
 - The default post-workout operating model is the automatic pipeline driven by `scripts/garmin/post_workout_refresh.py` and its persisted state.
+- Weekly planning now has a separate pipeline in `scripts/system/weekly_planning_pipeline.py` with a safe prepare/activate flow.
 - Treat `athlete/status_dashboard.md` as the main human-readable analysis output; the web dashboard integrates the decision layer there.
 - Use `post_workout_refresh.py` as the default trigger for newly completed activities; use `coach_sync.py` only for manual recovery, troubleshooting or forced rebuilds.
 - Use `coach_sync.py --skip-garmin` only when working manually from already imported local data.
@@ -157,6 +162,10 @@ python scripts/garmin/coach_engine.py --as-of YYYY-MM-DD --days 28
 - Treat `red` as reduce or replace quality, `yellow` as maintain without increasing load, and `green` as allow only small progression if the shin is quiet.
 - Keep `planning/goal_gates.yaml` as the source of truth for whether `35:00` can influence training paces.
 - `athlete/shin_tracker.yaml` can now be auto-promoted from subjective feedback; update it manually only when the automatic promotion is missing context or needs correction.
+- When a next week is prepared, do not overwrite it silently; report that it already exists unless the user explicitly forces regeneration.
+- After weekly planning changes create or update dated workouts, attempt Garmin scheduling automatically for changed files and record the result.
+- Automatic reality today is: post-workout refresh, weekly prepare/activate pipeline, PDF generation + Telegram send on activation, Garmin scheduling retries and web-triggered weekly planning.
+- Desired-but-not-implicit behavior should not be assumed; if a timer or bot is not configured, the user-facing buttons and scripts remain the explicit trigger.
 
 ## Planning Principles
 
@@ -176,8 +185,12 @@ python scripts/garmin/coach_engine.py --as-of YYYY-MM-DD --days 28
 
 - `planned-workouts` is the single future-planning area, with `week`, `list` and `calendar` views.
 - `/week` is kept only as a redirect to `planned-workouts?view=week`.
-- `dashboard` is the main analysis page and already includes the operative decision context.
+- `dashboard` is the main analysis page and already includes the operative decision context plus progress.
 - `/decision` is kept only as a redirect to `/dashboard`.
+- `/progress` is kept only as a redirect to `/dashboard`.
+- The web portal is operational, not read-only anymore: it includes daily check-in, planned-session actions, replanning actions, post-workout feedback, weekly planning triggers and web chat.
+- In the planning view, the weekly automation can prepare the next week without overwriting the active one and can later activate the prepared week.
+- `chat` is a first-level operative surface; `risk`, `fueling` and `master-plan` are secondary/supporting views.
 
 ## Communication Rules For Future Sessions
 

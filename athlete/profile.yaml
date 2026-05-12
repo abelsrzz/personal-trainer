@@ -1,11 +1,11 @@
 athlete:
   id: main
   name: Abel
-  birth_date: 2004-06-17
+  birth_date: '2004-06-17'
   age: 21
-  sex: male
-  height_cm: 174
-  weight_kg: 64.2
+  sex: MALE
+  height_cm: 175.25999450683594
+  weight_kg: 64.199
   city: Ordes
   years_running: 0.5
   availability:
@@ -19,9 +19,19 @@ athlete:
     preferred_long_run_day: Sunday
     constraints:
     - Work schedule 07:30-15:00
+    garmin_training_days:
+    - SATURDAY
+    - MONDAY
+    - WEDNESDAY
+    - TUESDAY
+    - THURSDAY
+    - FRIDAY
+    - SUNDAY
+    garmin_preferred_long_training_days:
+    - SUNDAY
   current_context:
     strength_sessions_per_week: 1
   data_sources:
     garmin:
-      last_sync: '2026-05-11T19:44:30.800316Z'
+      last_sync: '2026-05-12T10:03:44.931340Z'
       profile_snapshot: training/completed/imports/garmin/profile/athlete_profile_snapshot.json

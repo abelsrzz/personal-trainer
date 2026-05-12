@@ -1,0 +1,19 @@
+workout:
+  name: Fuerza movilidad tolerancia 35 min
+  schedule_date: 2026-05-27
+  sport: strength
+  description: Sesion corta de fuerza general y movilidad para mejorar tolerancia tisular sin dejar fatiga residual.
+  estimated_duration_s: 2100
+  steps:
+    - order: 1
+      step_type: warmup
+      description: Activacion y movilidad articular
+      duration_s: 300
+    - order: 2
+      step_type: interval
+      description: Fuerza general suave enfocada en pie, soleo, gemelo, gluteo medio y core
+      duration_s: 1500
+    - order: 3
+      step_type: cooldown
+      description: Movilidad final y descarga suave
+      duration_s: 300

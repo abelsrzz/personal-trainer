@@ -1,0 +1,268 @@
+{
+  "generated_at": "2026-05-12T07:45:00.604288Z",
+  "status": "scheduled",
+  "upload_mode": "structured_targets",
+  "workout_file": "training/planned/workouts/2026-05-26_rodaje_6km_recuperacion_post_ordes.yaml",
+  "uploaded_response": {
+    "workoutId": 1565770425,
+    "ownerId": 137864769,
+    "workoutName": "Rodaje 6 km recuperacion post-Ordes",
+    "description": "Rodaje muy controlado para absorber la carrera de Ordes y recuperar sensaciones sin cargar la tibia.",
+    "updatedDate": "2026-05-12T07:45:00.0",
+    "createdDate": "2026-05-12T07:45:00.0",
+    "sportType": {
+      "sportTypeId": 1,
+      "sportTypeKey": "running",
+      "displayOrder": 1
+    },
+    "subSportType": null,
+    "trainingPlanId": null,
+    "author": {
+      "userProfilePk": 137864769,
+      "displayName": "4001188d-ed09-4b5d-86d2-ef751217099e",
+      "fullName": "Abel",
+      "profileImgNameLarge": null,
+      "profileImgNameMedium": "3f638055-fd65-4de8-a95a-ba40fab94e10-prfr.png",
+      "profileImgNameSmall": "3f638055-fd65-4de8-a95a-ba40fab94e10-prth.png",
+      "userPro": false,
+      "vivokidUser": false
+    },
+    "sharedWithUsers": null,
+    "estimatedDurationInSecs": 2700,
+    "estimatedDistanceInMeters": 6000.0,
+    "workoutSegments": [
+      {
+        "segmentOrder": 1,
+        "sportType": {
+          "sportTypeId": 1,
+          "sportTypeKey": "running",
+          "displayOrder": 1
+        },
+        "poolLengthUnit": null,
+        "poolLength": null,
+        "avgTrainingSpeed": null,
+        "estimatedDurationInSecs": null,
+        "estimatedDistanceInMeters": null,
+        "estimatedDistanceUnit": null,
+        "estimateType": null,
+        "description": null,
+        "workoutSteps": [
+          {
+            "type": "ExecutableStepDTO",
+            "stepId": 13338387747,
+            "stepOrder": 1,
+            "stepType": {
+              "stepTypeId": 3,
+              "stepTypeKey": "interval",
+              "displayOrder": 3
+            },
+            "childStepId": null,
+            "description": "6 km faciles",
+            "endCondition": {
+              "conditionTypeId": 3,
+              "conditionTypeKey": "distance",
+              "displayOrder": 3,
+              "displayable": true
+            },
+            "endConditionValue": 6000.0,
+            "preferredEndConditionUnit": {
+              "unitId": 1,
+              "unitKey": "meter",
+              "factor": 100.0
+            },
+            "endConditionCompare": null,
+            "targetType": {
+              "workoutTargetTypeId": 4,
+              "workoutTargetTypeKey": "heart.rate.zone",
+              "displayOrder": 4
+            },
+            "targetValueOne": 131.0,
+            "targetValueTwo": 145.0,
+            "targetValueUnit": null,
+            "zoneNumber": null,
+            "secondaryTargetType": null,
+            "secondaryTargetValueOne": null,
+            "secondaryTargetValueTwo": null,
+            "secondaryTargetValueUnit": null,
+            "secondaryZoneNumber": null,
+            "endConditionZone": null,
+            "strokeType": {
+              "strokeTypeId": 0,
+              "strokeTypeKey": null,
+              "displayOrder": 0
+            },
+            "equipmentType": {
+              "equipmentTypeId": 0,
+              "equipmentTypeKey": null,
+              "displayOrder": 0
+            },
+            "category": null,
+            "exerciseName": null,
+            "workoutProvider": null,
+            "providerExerciseSourceId": null,
+            "weightValue": null,
+            "weightUnit": null
+          }
+        ]
+      }
+    ],
+    "poolLength": null,
+    "poolLengthUnit": null,
+    "locale": null,
+    "workoutProvider": null,
+    "workoutSourceId": null,
+    "uploadTimestamp": null,
+    "atpPlanId": null,
+    "consumer": null,
+    "consumerName": null,
+    "consumerImageURL": null,
+    "consumerWebsiteURL": null,
+    "workoutNameI18nKey": null,
+    "descriptionI18nKey": null,
+    "avgTrainingSpeed": 0.0,
+    "estimateType": null,
+    "estimatedDistanceUnit": {
+      "unitId": null,
+      "unitKey": null,
+      "factor": null
+    },
+    "workoutThumbnailUrl": null,
+    "isSessionTransitionEnabled": null,
+    "shared": false
+  },
+  "scheduled_response": {
+    "workoutScheduleId": 1647370242,
+    "workout": {
+      "workoutId": 1565770425,
+      "ownerId": 137864769,
+      "workoutName": "Rodaje 6 km recuperacion post-Ordes",
+      "description": "Rodaje muy controlado para absorber la carrera de Ordes y recuperar sensaciones sin cargar la tibia.",
+      "updatedDate": "2026-05-12T07:45:00.0",
+      "createdDate": "2026-05-12T07:45:00.0",
+      "sportType": {
+        "sportTypeId": 1,
+        "sportTypeKey": "running",
+        "displayOrder": 1
+      },
+      "subSportType": null,
+      "trainingPlanId": null,
+      "author": null,
+      "sharedWithUsers": null,
+      "estimatedDurationInSecs": 2700,
+      "estimatedDistanceInMeters": 6000.0,
+      "workoutSegments": [
+        {
+          "segmentOrder": 1,
+          "sportType": {
+            "sportTypeId": 1,
+            "sportTypeKey": "running",
+            "displayOrder": 1
+          },
+          "poolLengthUnit": null,
+          "poolLength": null,
+          "avgTrainingSpeed": null,
+          "estimatedDurationInSecs": null,
+          "estimatedDistanceInMeters": null,
+          "estimatedDistanceUnit": null,
+          "estimateType": null,
+          "description": null,
+          "workoutSteps": [
+            {
+              "type": "ExecutableStepDTO",
+              "stepId": 13338387747,
+              "stepOrder": 1,
+              "stepType": {
+                "stepTypeId": 3,
+                "stepTypeKey": "interval",
+                "displayOrder": 3
+              },
+              "childStepId": null,
+              "description": "6 km faciles",
+              "endCondition": {
+                "conditionTypeId": 3,
+                "conditionTypeKey": "distance",
+                "displayOrder": 3,
+                "displayable": true
+              },
+              "endConditionValue": 6000.0,
+              "preferredEndConditionUnit": {
+                "unitId": 1,
+                "unitKey": "meter",
+                "factor": 100.0
+              },
+              "endConditionCompare": null,
+              "targetType": {
+                "workoutTargetTypeId": 4,
+                "workoutTargetTypeKey": "heart.rate.zone",
+                "displayOrder": 4
+              },
+              "targetValueOne": 131.0,
+              "targetValueTwo": 145.0,
+              "targetValueUnit": null,
+              "zoneNumber": null,
+              "secondaryTargetType": null,
+              "secondaryTargetValueOne": null,
+              "secondaryTargetValueTwo": null,
+              "secondaryTargetValueUnit": null,
+              "secondaryZoneNumber": null,
+              "endConditionZone": null,
+              "strokeType": {
+                "strokeTypeId": 0,
+                "strokeTypeKey": null,
+                "displayOrder": 0
+              },
+              "equipmentType": {
+                "equipmentTypeId": 0,
+                "equipmentTypeKey": null,
+                "displayOrder": 0
+              },
+              "category": null,
+              "exerciseName": null,
+              "workoutProvider": null,
+              "providerExerciseSourceId": null,
+              "weightValue": null,
+              "weightUnit": null
+            }
+          ]
+        }
+      ],
+      "poolLength": null,
+      "poolLengthUnit": null,
+      "locale": null,
+      "workoutProvider": null,
+      "workoutSourceId": null,
+      "uploadTimestamp": null,
+      "atpPlanId": null,
+      "consumer": null,
+      "consumerName": null,
+      "consumerImageURL": null,
+      "consumerWebsiteURL": null,
+      "workoutNameI18nKey": null,
+      "descriptionI18nKey": null,
+      "avgTrainingSpeed": 0.0,
+      "estimateType": null,
+      "estimatedDistanceUnit": {
+        "unitId": null,
+        "unitKey": null,
+        "factor": null
+      },
+      "workoutThumbnailUrl": null,
+      "isSessionTransitionEnabled": null,
+      "shared": false
+    },
+    "calendarDate": "2026-05-26",
+    "createdDate": "2026-05-12",
+    "ownerId": 137864769,
+    "newName": null,
+    "consumer": null,
+    "atpPlanTypeId": null,
+    "associatedActivityId": null,
+    "priority": null,
+    "associatedActivityDateTime": null,
+    "tpType": null,
+    "nameChanged": false,
+    "itp": false,
+    "race": false,
+    "protected": false
+  }
+}

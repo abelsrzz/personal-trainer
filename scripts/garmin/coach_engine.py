@@ -11,6 +11,14 @@ from typing import Any
 
 import yaml
 
+try:
+    from scripts.system.athlete_state import write_athlete_state
+except ModuleNotFoundError:  # pragma: no cover - direct script execution path fix
+    import sys
+
+    sys.path.append(str(Path(__file__).resolve().parents[2]))
+    from scripts.system.athlete_state import write_athlete_state
+
 
 ROOT = Path(__file__).resolve().parents[2]
 GARMIN_ACTIVITY_ROOT = ROOT / "training" / "completed" / "imports" / "garmin" / "activities"
@@ -441,6 +449,7 @@ def daily_metric_snapshot(metrics: list[dict[str, Any]], as_of: date) -> dict[st
     if not candidates:
         return {}
     latest = candidates[-1]["payload"]
+    sleep_payload = latest.get("sleep") if isinstance(latest.get("sleep"), dict) else {}
     return {
         "hrv": first_numeric(latest.get("hrv")),
         "training_readiness": first_numeric(latest.get("training_readiness")),
@@ -448,17 +457,21 @@ def daily_metric_snapshot(metrics: list[dict[str, Any]], as_of: date) -> dict[st
         "training_status": nested_get(latest, "training_status", "mostRecentTrainingStatus", "trainingStatus")
         or nested_get(latest, "training_status", "trainingStatus")
         or latest.get("training_status"),
+        "sleep_score": first_numeric(sleep_payload.get("sleepScores")),
+        "sleep_duration_s": first_numeric(sleep_payload.get("sleepTimeSeconds")),
     }
 
 
 def classify_daily_signals(metrics: list[dict[str, Any]], activities: list[dict[str, Any]], as_of: date) -> dict[str, Any]:
     snapshot = daily_metric_snapshot(metrics, as_of)
     last_28 = aggregate_window(activities, as_of - timedelta(days=27), as_of)
+    running_tolerance = load_running_tolerance()
     daily_window = [item for item in metrics if as_of - timedelta(days=6) <= item["date"] <= as_of]
     hrv_values = [first_numeric(item["payload"].get("hrv")) for item in daily_window]
     hrv_values = [value for value in hrv_values if value is not None]
     readiness = snapshot.get("training_readiness")
     resting_hr = snapshot.get("resting_heart_rate")
+    sleep_score = snapshot.get("sleep_score")
     avg_run_hr = last_28.get("avg_hr")
     baseline_hrv = sum(hrv_values) / len(hrv_values) if hrv_values else None
 
@@ -500,6 +513,33 @@ def classify_daily_signals(metrics: list[dict[str, Any]], activities: list[dict[
         else:
             training_status_flag = "neutral"
 
+    sleep_flag = None
+    if sleep_score is not None:
+        if sleep_score < 60:
+            sleep_flag = "poor"
+        elif sleep_score < 75:
+            sleep_flag = "fair"
+        else:
+            sleep_flag = "good"
+
+    acute_load = None
+    chronic_load = None
+    load_ratio = None
+    running_tolerance_flag = None
+    entries = running_tolerance.get("weekSummaries") or running_tolerance.get("weeks") or running_tolerance.get("summaries") or []
+    if isinstance(entries, list) and entries:
+        latest_entry = entries[-1] if isinstance(entries[-1], dict) else {}
+        acute_load = first_numeric(latest_entry.get("acuteLoad") or latest_entry.get("recentTrainingLoad") or latest_entry.get("currentLoad"))
+        chronic_load = first_numeric(latest_entry.get("chronicLoad") or latest_entry.get("chronicTrainingLoad") or latest_entry.get("baselineLoad"))
+        if acute_load is not None and chronic_load is not None and chronic_load > 0:
+            load_ratio = acute_load / chronic_load
+            if load_ratio >= 1.3:
+                running_tolerance_flag = "high"
+            elif load_ratio <= 0.75:
+                running_tolerance_flag = "low"
+            else:
+                running_tolerance_flag = "balanced"
+
     return {
         "snapshot": snapshot,
         "baseline_hrv": baseline_hrv,
@@ -507,6 +547,11 @@ def classify_daily_signals(metrics: list[dict[str, Any]], activities: list[dict[
         "readiness_flag": readiness_flag,
         "resting_hr_flag": resting_hr_flag,
         "training_status_flag": training_status_flag,
+        "sleep_flag": sleep_flag,
+        "acute_load": acute_load,
+        "chronic_load": chronic_load,
+        "load_ratio": load_ratio,
+        "running_tolerance_flag": running_tolerance_flag,
     }
 
 
@@ -523,6 +568,7 @@ def garmin_data_quality_report(daily: list[dict[str, Any]], activities: list[dic
         "training_readiness": daily_snapshot.get("training_readiness") is not None,
         "resting_heart_rate": daily_snapshot.get("resting_heart_rate") is not None,
         "training_status": daily_snapshot.get("training_status") is not None,
+        "sleep": daily_snapshot.get("sleep_score") is not None,
         "running_tolerance": bool(running_tolerance),
     }
     missing = [name for name, present in available.items() if not present and name not in {"activities", "daily_metrics"}]
@@ -535,6 +581,8 @@ def garmin_data_quality_report(daily: list[dict[str, Any]], activities: list[dic
         improvements.append("Comparar resting HR reciente con baseline para detectar fatiga o deriva.")
     if available["training_status"]:
         improvements.append("Traducir training status a una señal visible de forma y tolerancia de carga.")
+    if available["sleep"]:
+        improvements.append("Usar sueño reciente para frenar sesiones exigentes cuando Garmin marque mala noche.")
     if available["running_tolerance"]:
         improvements.append("Usar running tolerance para limitar aumentos de carga cuando Garmin marque baja tolerancia.")
     if not daily_available:
@@ -831,9 +879,15 @@ def build_decision(activities: list[dict[str, Any]], reviews: list[dict[str, Any
     if daily_signals["resting_hr_flag"] == "high":
         reasons.append("Resting HR reciente relativamente alta; vigilar estres o recuperacion.")
         status = "yellow" if status == "green" else status
+    if daily_signals["sleep_flag"] == "poor":
+        reasons.append("Garmin marca sueño reciente pobre; no conviene apretar ni buscar deuda extra de recuperación.")
+        status = "yellow" if status == "green" else status
     if daily_signals["training_status_flag"] == "caution":
         reasons.append("Training status de Garmin sugiere prudencia en la carga actual.")
         status = "yellow" if status == "green" else status
+    if daily_signals["running_tolerance_flag"] == "high":
+        reasons.append("La relación carga aguda/crónica sale alta; conviene evitar un nuevo salto de carga.")
+        status = "red" if status == "red" else "yellow"
 
     latest_athlete_feedback = latest_feedback_item.get("athlete_feedback", {}) if latest_feedback_item else {}
     latest_pain_level = int(latest_athlete_feedback.get("pain_level") or 0) if latest_athlete_feedback else 0
@@ -943,6 +997,8 @@ def summarize_daily(metrics: list[dict[str, Any]], as_of: date, days: int) -> di
         "latest_training_readiness": snapshot.get("training_readiness"),
         "latest_resting_heart_rate": snapshot.get("resting_heart_rate"),
         "latest_training_status": snapshot.get("training_status"),
+        "latest_sleep_score": snapshot.get("sleep_score"),
+        "latest_sleep_duration_s": snapshot.get("sleep_duration_s"),
     }
 
 
@@ -969,6 +1025,7 @@ def render_data_quality_report(payload: dict[str, Any]) -> str:
         f"- Training readiness: `{fmt_float(daily.get('latest_training_readiness'))}`",
         f"- Resting HR: `{fmt_float(daily.get('latest_resting_heart_rate'))}`",
         f"- Training status: `{daily.get('latest_training_status') or '-'}`",
+        f"- Sleep score: `{fmt_float(daily.get('latest_sleep_score'))}`",
         "",
         "## Mejoras Sugeridas",
         "",
@@ -1123,6 +1180,7 @@ def main() -> None:
         save_text(STATUS_DASHBOARD_PATH, render_dashboard(payload))
         save_text(COACH_DECISION_MD_PATH, render_decision(payload))
         save_text(GARMIN_COVERAGE_REPORT_PATH, render_data_quality_report(payload))
+        write_athlete_state()
     print(json.dumps({"status": payload["decision"]["status"], "action": payload["decision"]["action"], "as_of": payload["as_of"]}, indent=2, ensure_ascii=True))
 
 

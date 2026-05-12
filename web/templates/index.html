@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Inicio | RunPilot{% endblock %}
+{% block title %}Hoy | RunPilot{% endblock %}
 {% block content %}
 {% if workspace and not workspace.ready %}
 <section class="panel">
@@ -40,19 +40,42 @@
 
 <section class="hero">
   <div>
-    <p class="eyebrow">Resumen operativo</p>
-    <h2>{{ dashboard.decision.status_label if dashboard.decision else "Sin datos todavía" }}</h2>
+    <p class="eyebrow">Hoy</p>
+    <h2>{{ dashboard.decision.action_label if dashboard.decision else "Sin decisión todavía" }}</h2>
     <p>{{ dashboard.decision.recommendation if dashboard.decision else "Aún no hay suficiente información para mostrar una recomendación." }}</p>
     {% for message in dashboard.capability_messages or [] %}
     <p class="alert">{{ message }}</p>
     {% endfor %}
   </div>
   <div class="hero-meta">
-    <span>Analisis: {{ dashboard.as_of or "-" }}</span>
-    <span>Ciclo: {{ active_cycle.id or '-' }}</span>
-    <span>Revisiones: {{ review_count }}</span>
-    <span>Planificados: {{ planned_count }}</span>
+    <span>Analisis {{ dashboard.as_of or "-" }}</span>
+    <span>Ciclo {{ active_cycle.id or '-' }}</span>
+    <span>{{ dashboard.readiness_card.label }}</span>
+    <span>{{ today_plan.status_label }}</span>
   </div>
+</section>
+
+<section class="cards four dashboard-strip">
+  <article class="card status-{{ dashboard.decision.status if dashboard.decision else 'unknown' }}">
+    <p class="eyebrow">Decisión</p>
+    <p class="metric">{{ dashboard.decision.status_label if dashboard.decision else '-' }}</p>
+    <p class="muted"><a class="action-link" href="/dashboard">Abrir Estado</a></p>
+  </article>
+  <article class="card">
+    <p class="eyebrow">Readiness</p>
+    <p class="metric">{{ dashboard.readiness_card.label }}</p>
+    <p class="muted">{{ dashboard.readiness_card.action }}</p>
+  </article>
+  <article class="card">
+    <p class="eyebrow">Semana</p>
+    <p class="metric">{{ planned_count }}</p>
+    <p class="muted">Sesiones futuras · <a class="action-link" href="/planned-workouts?view=week">Abrir plan</a></p>
+  </article>
+  <article class="card">
+    <p class="eyebrow">Revisiones</p>
+    <p class="metric">{{ review_count }}</p>
+    <p class="muted">Entrenos cerrados · <a class="action-link" href="/completed-workouts">Abrir historial</a></p>
+  </article>
 </section>
 
 <section class="panel today-plan-panel status-{{ today_plan.decision.status if today_plan.decision else 'unknown' }}">
@@ -99,7 +122,7 @@
         <span class="mini-badge">{{ item }}</span>
         {% endfor %}
       </div>
-      <section class="panel">
+      <section class="panel inset-panel">
         <div class="panel-head">
           <div>
             <p class="eyebrow">Check-in diario</p>
@@ -163,6 +186,23 @@
             <button class="cta-button" type="submit">Guardar check-in</button>
           </div>
         </form>
+        {% if today_plan.recommended_replan and today_plan.planned_workout %}
+        <div class="panel inset-panel auto-replan-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Propuesta automatica</p>
+              <h4>{{ today_plan.recommended_replan.label }}</h4>
+            </div>
+            <span class="badge {{ today_plan.recommended_replan.tone }}">Check-in</span>
+          </div>
+          <p>{{ today_plan.recommended_replan.summary }}</p>
+          <form method="post" action="/planned-workouts/{{ today_plan.planned_workout.slug }}/replan">
+            <input type="hidden" name="strategy" value="{{ today_plan.recommended_replan.strategy }}">
+            <input type="hidden" name="next_url" value="/">
+            <button class="cta-button cta-warn" type="submit">Aplicar esta propuesta</button>
+          </form>
+        </div>
+        {% endif %}
       </section>
     </div>
 
@@ -219,73 +259,11 @@
   {% endif %}
 </section>
 
-<section class="cards four">
-  <article class="card status-{{ dashboard.decision.status if dashboard.decision else 'unknown' }}">
-    <h3>Recomendacion actual</h3>
-    <p class="metric">{{ dashboard.decision.action_label if dashboard.decision else "-" }}</p>
-    <p class="muted">{{ dashboard.decision.reasons[0] if dashboard.decision and dashboard.decision.reasons else "Sin motivo disponible." }}</p>
-  </article>
-  <article class="card">
-    <h3>Readiness diaria</h3>
-    <p class="metric">{{ dashboard.readiness_card.label }}</p>
-    <p class="muted">{{ dashboard.readiness_card.action }}</p>
-  </article>
-  <article class="card">
-    <h3>Ciclo activo</h3>
-    <p class="metric">{{ active_cycle.id or '-' }}</p>
-    <p class="muted"><a class="action-link" href="/cycle">Abrir vista de ciclo</a></p>
-  </article>
-  <article class="card">
-    <h3>Objetivo principal</h3>
-    <p class="metric">{{ dashboard.goal_gates.status_label if dashboard.goal_gates else "-" }}</p>
-    <p class="muted">{{ dashboard.goal_gates.summary if dashboard.goal_gates else "Sin evaluación disponible." }}</p>
-    <p class="muted"><a class="action-link" href="/progress">Abrir vista de progreso</a></p>
-  </article>
-</section>
-
-<section class="panel {{ 'status-green' if dashboard.automation_pipeline.healthy else 'status-yellow' }}">
-  <div class="panel-head">
-    <div>
-      <p class="eyebrow">Pipeline automatico</p>
-      <h3>{{ dashboard.automation_pipeline.status_label }}</h3>
-    </div>
-    <span class="badge {{ 'ok' if dashboard.automation_pipeline.healthy else 'warn' }}">{{ dashboard.automation_pipeline.last_successful_run or '-' }}</span>
-  </div>
-  <p>{{ dashboard.automation_pipeline.summary }}</p>
-  <p class="muted">Ultimo procesado: {{ dashboard.automation_pipeline.last_processed_at or '-' }}. Actividad vista: {{ dashboard.automation_pipeline.last_seen_activity_id or '-' }}.</p>
-</section>
-
-<section class="panel">
-  <div class="panel-head">
-    <div>
-      <p class="eyebrow">Seguimiento del objetivo</p>
-      <h3>Metricas de progreso</h3>
-    </div>
-    <span class="badge">Actualizacion automatica</span>
-  </div>
-  <div class="progress-metrics">
-    {% for metric in progress_metrics %}
-    <article class="progress-card">
-      <div class="progress-card-head">
-        <strong>{{ metric.label }}</strong>
-        <span>{{ metric.value_label }}</span>
-      </div>
-      <div class="progress-bar-track">
-        <div class="progress-bar-fill tone-{{ metric.tone }}" style="width: {{ metric.value }}%"></div>
-      </div>
-      <p class="muted progress-card-detail">{{ metric.detail }}</p>
-    </article>
-    {% else %}
-    <p class="muted">Todavia no hay suficientes datos para mostrar metricas de progreso.</p>
-    {% endfor %}
-  </div>
-</section>
-
 <section class="split">
   <article class="panel">
     <div class="panel-head">
       <h3>Próximos entrenos</h3>
-      <a href="/planned-workouts">Ver todos</a>
+      <a href="/planned-workouts?view=week">Abrir semana</a>
     </div>
     <div class="list">
       {% for workout in upcoming %}
@@ -309,7 +287,7 @@
   <article class="panel">
     <div class="panel-head">
       <h3>Últimas revisiones</h3>
-      <a href="/completed-workouts">Ver todas</a>
+      <a href="/completed-workouts">Abrir historial</a>
     </div>
     <div class="list">
       {% for review in recent_reviews %}
@@ -330,5 +308,31 @@
       {% endfor %}
     </div>
   </article>
+</section>
+
+<section class="panel compact-panel">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Progreso rapido</p>
+      <h3>Solo las señales que ayudan a decidir</h3>
+    </div>
+    <a href="/dashboard">Ver Estado completo</a>
+  </div>
+  <div class="progress-metrics">
+    {% for metric in progress_metrics[:4] %}
+    <article class="progress-card">
+      <div class="progress-card-head">
+        <strong>{{ metric.label }}</strong>
+        <span>{{ metric.value_label }}</span>
+      </div>
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill tone-{{ metric.tone }}" style="width: {{ metric.value }}%"></div>
+      </div>
+      <p class="muted progress-card-detail">{{ metric.detail }}</p>
+    </article>
+    {% else %}
+    <p class="muted">Todavia no hay suficientes datos para mostrar metricas de progreso.</p>
+    {% endfor %}
+  </div>
 </section>
 {% endblock %}

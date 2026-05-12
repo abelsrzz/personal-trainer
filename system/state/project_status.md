@@ -21,6 +21,7 @@
 - Initial active-cycle manifest added in `planning/cycles/active.yaml` for migration toward multi-cycle support
 - Lifecycle scripts added: `scripts/system/start_cycle.py` and `scripts/system/close_cycle.py`
 - Automatic post-workout pipeline added with `scripts/garmin/post_workout_refresh.py`, persisted state and web observability
+- Weekly planning pipeline added with `scripts/system/weekly_planning_pipeline.py`, prepared-week state and web-triggered actions
 
 ## Next Natural Actions
 
@@ -31,3 +32,4 @@
 5. Use `planning/goal_gates.yaml` before allowing `35:00` to influence training paces.
 6. For remote access, run `opencode serve --hostname 127.0.0.1 --port 4096` and `python scripts/telegram/opencode_bot.py`.
 7. Register every new dynamic feature in `system/capabilities/registry.yaml` and enforce freshness through `scripts/system/capability_engine.py`.
+8. Use the weekly planning pipeline to prepare the next week without overwriting the active one, and activate it when ready.

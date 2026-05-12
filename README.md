@@ -41,8 +41,9 @@ Rellena `INPUT_DATOS_REALES.md` en la raiz del proyecto.
 3. Para entrenamientos planificados hechos con Garmin, ejecuta `python scripts/garmin/review_planned_session.py --date YYYY-MM-DD` para importar, comparar y generar la revision automaticamente.
 4. El entrenamiento se revisa con nota numerica, semaforo y comentario tecnico.
 5. Si la ejecucion o la fatiga lo justifican, se replanifica la semana actual.
-6. Cada domingo se genera solo la semana siguiente.
-7. Cada vez que se modifique `planning/weeks/semana_actual.md`, se puede generar un PDF y enviarlo por Telegram para tenerlo a mano en el movil.
+6. La siguiente semana se prepara sin pisar la activa, y se activa cuando toque.
+7. Al activar una semana preparada, la semana saliente se archiva automaticamente.
+8. Cada vez que se active o actualice `planning/weeks/semana_actual.md`, se genera el PDF y se envia por Telegram.
 
 ## Garmin V1
 
@@ -131,6 +132,7 @@ Contexto de coaching que el sistema debe usar por defecto:
 
 - `planning/context_automation_policy.md`
 - `planning/coaching_playbook.md`
+- `planning/workout_knowledge.yaml`
 - `planning/session_selection_matrix.yaml`
 - `planning/workout_evaluation_rules.md`
 - `athlete/response_profile.yaml`
@@ -165,6 +167,28 @@ Vigilar cambios en `semana_actual.md` y enviar al detectar modificaciones:
 source .venv/bin/activate
 python scripts/notifications/semana_pdf_telegram.py watch --interval 30
 ```
+
+## Planificacion Semanal Automatizada
+
+Pipeline seguro para preparar y activar la siguiente semana:
+
+```bash
+source .venv/bin/activate
+python scripts/system/weekly_planning_pipeline.py status
+python scripts/system/weekly_planning_pipeline.py plan-next --source manual
+python scripts/system/weekly_planning_pipeline.py activate-next --source manual
+```
+
+Reglas del pipeline:
+
+- `plan-next` prepara la siguiente semana en `planning/weeks/prepared/<year>/` sin tocar `planning/weeks/semana_actual.md`
+- si la siguiente semana ya estaba preparada, no la pisa salvo que se fuerce una regeneracion
+- `activate-next` archiva la semana activa, mueve la preparada a `semana_actual.md`, envia el PDF por Telegram e intenta sincronizar en Garmin los workouts fechados de esa semana que hayan cambiado
+
+Ejemplos `systemd`:
+
+- `deploy/systemd/weekly-planning-pipeline.service.example`
+- `deploy/systemd/weekly-planning-pipeline.timer.example`
 
 ## OpenCode Remoto Por Telegram
 
@@ -233,24 +257,27 @@ En despliegue local, la via recomendada es usar el timer `systemd` de ejemplo pa
 
 ## Portal Web
 
-El proyecto incluye una interfaz web de solo lectura para consultar la capa operativa del entorno agentico.
+El proyecto incluye una interfaz web operativa para consultar y accionar la capa diaria del entorno agentico.
 
 Qué muestra la web actual:
 
 - resumen ejecutivo del estado actual
+- check-in diario, acciones sobre sesiones planificadas y replanificacion
 - entrenamientos planificados en vistas `week`, `list` y `calendar`
-- dashboard del atleta con la decisión operativa integrada
+- dashboard del atleta con la decision operativa y el progreso integrados
 - entrenamientos completados y sus revisiones
 - perfil del atleta, periostio y carreras
-- estado basico del sistema
+- planificacion semanal segura desde la web, con preparacion y activacion
+- estado basico del sistema y chat web
 
 Notas de estructura:
 
 - `/planned-workouts` concentra la planificación futura.
 - `/planned-workouts?view=week` es la vista semanal integrada.
 - `/week` redirige a la vista semanal dentro de planificados.
-- `/dashboard` integra también la antigua lectura de `decision`.
+- `/dashboard` integra tambien la antigua lectura de `decision` y `progress`.
 - `/decision` redirige a `/dashboard`.
+- `/progress` redirige a `/dashboard`.
 
 Dependencias:
 

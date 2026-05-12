@@ -1,17 +1,17 @@
 # Athlete Status Dashboard
 
-- Fecha de analisis: `2026-05-11`
+- Fecha de analisis: `2026-05-12`
 - Estado: `red`
 - Accion recomendada: `reduce_or_replace_quality`
 - Recomendacion: Reducir carga inmediata: cambiar la proxima calidad por rodaje muy facil o descanso, y mantener FC capada.
 
 ## Carga Reciente
 
-- Ultimos 7 dias: `26.2 km`, `4` carreras, `2` exigentes, tirada larga `10.8 km`.
+- Ultimos 7 dias: `21.1 km`, `3` carreras, `2` exigentes, tirada larga `10.8 km`.
 - Ultima semana completa: `26.2 km` vs semana previa `14.7 km` (`79%`).
 - Ultimos 28 dias: `83.5 km`, `12` carreras, media `20.9 km/sem`.
-- Ritmo medio 7d: `6:04/km`, FC media `161.2`.
-- Ventana movil 7d vs 7d previos: `225%`.
+- Ritmo medio 7d: `5:46/km`, FC media `166.5`.
+- Ventana movil 7d vs 7d previos: `320%`.
 
 ## Predictor De Marca
 
@@ -22,6 +22,7 @@
 
 ## Riesgos Detectados
 
+- Revision reciente de alto riesgo: 2026-05-07 Rodaje 6 km + 4 rectas controladas.
 - Subida de volumen semanal de 79% (14.7 -> 26.2 km entre semanas completas).
 - El bloque activo prioriza reconstruccion, consistencia y tolerancia tisular antes de ritmos agresivos.
 - El limitador principal declarado sigue siendo la durabilidad aerobica; la construccion debe respetarlo.
@@ -33,9 +34,9 @@
 - Resumen: Con la evidencia actual, 35:00 sigue siendo aspiracional y no prescribe ritmos.
 - Gates cumplidos: `0/4`
 
-- `NO` Base estable: Media 4 semanas 20.9 km/sem, tirada larga 10.8 km, alertas 0, periostio 1.
+- `NO` Base estable: Media 4 semanas 20.9 km/sem, tirada larga 10.8 km, alertas 1, periostio 1.
 - `NO` Umbral competitivo: Mejor 5k reciente: 22:16.
-- `NO` Precondicion 35:00: Media 20.9 km/sem, tirada 10.8 km, 5k 22:16, alertas 0.
+- `NO` Precondicion 35:00: Media 20.9 km/sem, tirada 10.8 km, 5k 22:16, alertas 1.
 - `NO` Seleccion 35:00: 5k 22:16, 10k 44:23.
 
 ## Volumen Semanal
@@ -47,5 +48,5 @@
 
 ## Datos Garmin Daily
 
-- Dias disponibles en ventana: `18`.
-- Ultimo dia diario importado: `2026-05-11`.
+- Dias disponibles en ventana: `19`.
+- Ultimo dia diario importado: `2026-05-12`.

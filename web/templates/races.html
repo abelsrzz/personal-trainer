@@ -91,26 +91,32 @@
     </article>
   </div>
   {% if races.next_race.fueling and races.next_race.fueling.entries %}
-  <section class="panel">
+  <section class="panel compact-panel">
     <div class="panel-head">
       <div>
         <p class="eyebrow">Fueling</p>
         <h3>Plan de hidratación e hidratos</h3>
       </div>
-      <a href="/fueling">Abrir vista completa</a>
+      <a href="/fueling">Abrir biblioteca completa</a>
     </div>
-    <div class="list compact-list">
+    <div class="cards three fueling-grid">
       {% for entry in races.next_race.fueling.entries %}
-      <div class="list-item static">
-        <div>
-          <strong>{{ entry.date }} {{ entry.time_label }} · {{ entry.phase }}</strong>
+      <article class="card fueling-card">
+        <div class="fueling-card-head">
+          <span class="mini-badge">{{ entry.time_label }}</span>
+          <span class="mini-badge mini-badge-warn">{{ entry.phase }}</span>
+        </div>
+        <div class="fueling-card-body">
+          <strong>{{ entry.date }}</strong>
           <p>{{ entry.recommendation }}</p>
-          <p class="muted">{{ entry.quantity }} · {{ entry.products_label }}</p>
+          <p class="muted"><strong>Cantidad:</strong> {{ entry.quantity }}</p>
+          <p class="muted"><strong>Producto:</strong> {{ entry.products_label }}</p>
           <p class="muted">{{ entry.reason }}</p>
         </div>
-      </div>
+      </article>
       {% endfor %}
     </div>
+    <p class="muted">El detalle completo de suplementos y planes automáticos queda en la vista secundaria de fueling.</p>
   </section>
   {% endif %}
 </section>

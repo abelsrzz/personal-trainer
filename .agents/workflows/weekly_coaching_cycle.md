@@ -24,12 +24,19 @@ The operational week always runs from Monday to Sunday.
 7. consider recent execution, fatigue, shin status, shoes, zones, preferences, health and races through those policy files, not only ad hoc judgment
 8. generate the next `planning/weeks/semana_actual.md`
 9. generate `planning/weeks/generated/semana_actual.pdf` and send it by Telegram
+10. when using the automated weekly pipeline, prepare the next week first in `planning/weeks/prepared/` and activate it only when ready to replace the active week
 
 ## Cycle Lifecycle
 
 - Use `python scripts/system/close_cycle.py` to snapshot and close the active cycle before replacing the master plan for a new objective.
 - Use `python scripts/system/start_cycle.py` to define the next active cycle manifest.
 - Treat `planning/cycles/active.yaml` as the current cycle pointer while legacy active files remain in place.
+
+## Weekly Planning Automation
+
+- `python scripts/system/weekly_planning_pipeline.py plan-next --source manual` prepares the next Monday-Sunday week without overwriting `planning/weeks/semana_actual.md`.
+- `python scripts/system/weekly_planning_pipeline.py activate-next --source manual` archives the outgoing active week, activates the prepared one, sends the weekly PDF by Telegram and attempts Garmin scheduling for changed dated workouts.
+- If the target next week was already prepared, the pipeline reports it and does not overwrite it unless explicitly forced.
 
 ## Replanning Triggers
 

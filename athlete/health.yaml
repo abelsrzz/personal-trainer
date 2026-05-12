@@ -8,4 +8,7 @@ health:
   stress_notes: null
   recovery_notes: General sensations recently poor
   garmin_metrics:
-    last_sync: '2026-05-11T19:44:30.800316Z'
+    last_sync: '2026-05-12T10:03:44.931340Z'
+    resting_hr: 55
+    max_hr: 196
+    vo2max: 46.0

@@ -1,0 +1,15 @@
+workout:
+  name: Rodaje 6 km recuperacion post-Ordes
+  schedule_date: 2026-05-26
+  sport: running
+  description: Rodaje muy controlado para absorber la carrera de Ordes y recuperar sensaciones sin cargar la tibia.
+  estimated_duration_s: 2700
+  steps:
+    - order: 1
+      step_type: interval
+      description: 6 km faciles
+      distance_m: 6000
+      target:
+        type: heart_rate_range
+        min_bpm: 131
+        max_bpm: 145

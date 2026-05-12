@@ -1,0 +1,89 @@
+{
+  "prepared_weeks": {
+    "2026-05-25": {
+      "start_date": "2026-05-25",
+      "end_date": "2026-05-31",
+      "path": "planning/weeks/prepared/2026/2026-05-25_2026-05-31.md",
+      "status": "prepared",
+      "updated_at": "2026-05-12T09:45:07.367243",
+      "source": "manual",
+      "generated_at": "2026-05-12T09:45:07.367251",
+      "garmin_sync": {
+        "items": [
+          {
+            "file": "training/planned/workouts/2026-05-26_rodaje_6km_recuperacion_post_ordes.yaml",
+            "status": "ok",
+            "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1565770425,\n  \"schedule_date\": \"2026-05-26\",\n  \"workout_name\": \"Rodaje 6 km recuperacion post-Ordes\",\n  \"sport\": \"running\"\n}"
+          },
+          {
+            "file": "training/planned/workouts/2026-05-27_fuerza_movilidad_tolerancia_35min.yaml",
+            "status": "ok",
+            "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1565770442,\n  \"schedule_date\": \"2026-05-27\",\n  \"workout_name\": \"Fuerza movilidad tolerancia 35 min\",\n  \"sport\": \"strength\"\n}"
+          },
+          {
+            "file": "training/planned/workouts/2026-05-28_rodaje_7km_controlado.yaml",
+            "status": "ok",
+            "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1565770459,\n  \"schedule_date\": \"2026-05-28\",\n  \"workout_name\": \"Rodaje 7 km controlado\",\n  \"sport\": \"running\"\n}"
+          },
+          {
+            "file": "training/planned/workouts/2026-05-30_rodaje_6km_progresivo_suave.yaml",
+            "status": "ok",
+            "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1565770478,\n  \"schedule_date\": \"2026-05-30\",\n  \"workout_name\": \"Rodaje 6 km progresivo suave\",\n  \"sport\": \"running\"\n}"
+          },
+          {
+            "file": "training/planned/workouts/2026-05-31_rodaje_10km_z2_continuidad.yaml",
+            "status": "ok",
+            "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1565770507,\n  \"schedule_date\": \"2026-05-31\",\n  \"workout_name\": \"Rodaje 10 km Z2 continuidad\",\n  \"sport\": \"running\"\n}"
+          }
+        ],
+        "synced": 5,
+        "failed": 0,
+        "skipped": 0
+      },
+      "planner_detail": {
+        "command": "opencode run --dir /home/abelsuarez/Documentos/proxectos/outros/personal-trainer --model openai/gpt-5.4 --print-logs",
+        "returncode": 0,
+        "stderr": "service=bus type=message.part.delta publishing\nINFO  2026-05-12T07:44:58 +1ms service=bus type=message.part.delta publishing\nINFO  2026-05-12T07:44:58 +0ms service=bus type=message.part.delta publishing\nINFO  2026-05-12T07:44:58 +1ms service=bus type=message.part.delta publishing\nINFO  2026-05-12T07:44:58 +1ms service=bus type=message.part.delta publishing\nINFO  2026-05-12T07:44:58 +2ms service=bus type=message.part.delta publishing\nINFO  2026-05-12T07:44:58 +1ms service=bus type=message.part.delta publishing\nINFO  2026-05-12T07:44:58 +1ms service=bus type=message.part.delta publishing\nINFO  2026-05-12T07:44:58 +2ms service=bus type=message.part.delta publishing\nINFO  2026-05-12T07:44:58 +0ms service=bus type=message.part.delta publishing\nINFO  2026-05-12T07:44:58 +1ms service=bus type=message.part.delta publishing\nINFO  2026-05-12T07:44:58 +5ms service=bus type=message.part.delta publishing\nINFO  2026-05-12T07:44:58 +0ms service=bus type=message.part.delta publishing\nINFO  2026-05-12T07:44:58 +1ms service=bus type=message.part.delta publishing\nINFO  2026-05-12T07:44:58 +0ms service=bus type=message.part.delta publishing\nINFO  2026-05-12T07:44:58 +0ms service=bus type=message.part.delta publishing\nINFO  2026-05-12T07:44:58 +0ms service=bus type=message.part.delta publishing\nINFO  2026-05-12T07:44:58 +2ms service=bus type=message.part.delta publishing\nINFO  2026-05-12T07:44:58 +1ms service=bus type=message.part.delta publishing\nINFO  2026-05-12T07:44:58 +2ms service=bus type=message.part.delta publishing\nINFO  2026-05-12T07:44:58 +9ms service=bus type=message.part.delta publishing\nINFO  2026-05-12T07:44:58 +40ms service=bus type=message.part.delta publishing\nINFO  2026-05-12T07:44:58 +44ms service=bus type=message.part.delta publishing\nINFO  2026-05-12T07:44:58 +33ms service=bus type=message.part.delta publishing\nINFO  2026-05-12T07:44:58 +38ms service=bus type=message.part.delta publishing\nINFO  2026-05-12T07:44:58 +40ms service=bus type=message.part.delta publishing\nINFO  2026-05-12T07:44:58 +234ms service=bus type=message.part.updated publishing\nINFO  2026-05-12T07:44:58 +28ms service=snapshot hash=9ab16e91cdd3b676ef9735d88be5a13645c9127f cwd=/home/abelsuarez/Documentos/proxectos/outros/personal-trainer git=/home/abelsuarez/.local/share/opencode/snapshot/478516ea94f2287de6a79ffafaa4de18c4c95c89/e034ffb9c36359737e6a0b9335a92f90dbd16b06 tracking\nINFO  2026-05-12T07:44:58 +2ms service=bus type=message.part.updated publishing\nINFO  2026-05-12T07:44:58 +0ms service=bus type=message.updated publishing\nINFO  2026-05-12T07:44:58 +21ms service=bus type=message.updated publishing\nINFO  2026-05-12T07:44:58 +1ms service=bus type=session.status publishing\nINFO  2026-05-12T07:44:58 +0ms service=session.prompt session.id=ses_1e4dedee2ffe2kDu444S4RotEU step=10 logSpan.http.span.4=282406ms loop\nINFO  2026-05-12T07:44:58 +2ms service=session.prompt session.id=ses_1e4dedee2ffe2kDu444S4RotEU logSpan.http.span.4=282408ms exiting loop\nINFO  2026-05-12T07:44:58 +9ms service=bus type=session.status publishing\nINFO  2026-05-12T07:44:58 +0ms service=bus type=session.idle publishing\nINFO  2026-05-12T07:44:58 +1ms service=default http.method=POST http.url=/session/ses_1e4dedee2ffe2kDu444S4RotEU/message http.status=200 logSpan.http.span.4=282418ms Sent HTTP response\nINFO  2026-05-12T07:44:58 +2ms service=default disposing instance [object Object]\nINFO  2026-05-12T07:44:58 +2ms service=bus type=* unsubscribing\nINFO  2026-05-12T07:44:58 +0ms service=bus type=session.updated unsubscribing\nINFO  2026-05-12T07:44:58 +1ms service=bus type=message.updated unsubscribing\nINFO  2026-05-12T07:44:58 +0ms service=bus type=message.part.updated unsubscribing\nINFO  2026-05-12T07:44:58 +0ms service=bus type=session.diff unsubscribing\nINFO  2026-05-12T07:44:58 +0ms service=bus type=session.deleted unsubscribing\nINFO  2026-05-12T07:44:58 +0ms service=bus type=command.executed unsubscribing\nINFO  2026-05-12T07:44:58 +0ms service=bus type=file.watcher.updated unsubscribing\n"
+      }
+    }
+  },
+  "last_plan": {
+    "status": "prepared",
+    "target_start": "2026-05-25",
+    "target_end": "2026-05-31",
+    "updated_at": "2026-05-12T09:45:07.367256",
+    "source": "manual",
+    "garmin_sync": {
+      "items": [
+        {
+          "file": "training/planned/workouts/2026-05-26_rodaje_6km_recuperacion_post_ordes.yaml",
+          "status": "ok",
+          "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1565770425,\n  \"schedule_date\": \"2026-05-26\",\n  \"workout_name\": \"Rodaje 6 km recuperacion post-Ordes\",\n  \"sport\": \"running\"\n}"
+        },
+        {
+          "file": "training/planned/workouts/2026-05-27_fuerza_movilidad_tolerancia_35min.yaml",
+          "status": "ok",
+          "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1565770442,\n  \"schedule_date\": \"2026-05-27\",\n  \"workout_name\": \"Fuerza movilidad tolerancia 35 min\",\n  \"sport\": \"strength\"\n}"
+        },
+        {
+          "file": "training/planned/workouts/2026-05-28_rodaje_7km_controlado.yaml",
+          "status": "ok",
+          "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1565770459,\n  \"schedule_date\": \"2026-05-28\",\n  \"workout_name\": \"Rodaje 7 km controlado\",\n  \"sport\": \"running\"\n}"
+        },
+        {
+          "file": "training/planned/workouts/2026-05-30_rodaje_6km_progresivo_suave.yaml",
+          "status": "ok",
+          "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1565770478,\n  \"schedule_date\": \"2026-05-30\",\n  \"workout_name\": \"Rodaje 6 km progresivo suave\",\n  \"sport\": \"running\"\n}"
+        },
+        {
+          "file": "training/planned/workouts/2026-05-31_rodaje_10km_z2_continuidad.yaml",
+          "status": "ok",
+          "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1565770507,\n  \"schedule_date\": \"2026-05-31\",\n  \"workout_name\": \"Rodaje 10 km Z2 continuidad\",\n  \"sport\": \"running\"\n}"
+        }
+      ],
+      "synced": 5,
+      "failed": 0,
+      "skipped": 0
+    }
+  }
+}

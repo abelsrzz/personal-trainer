@@ -61,6 +61,10 @@ GARMIN_RETRY_STATE_PATH = ROOT / "system" / "state" / "garmin_retry_state.json"
 POST_WORKOUT_REFRESH_STATE_PATH = ROOT / "system" / "state" / "post_workout_refresh_state.json"
 GARMIN_SYNC_SCRIPT = ROOT / "scripts" / "garmin" / "sync_garmin.py"
 WEB_CHAT_UI_STATE_PATH = ROOT / "system" / "state" / "web_chat_ui.json"
+WEEKLY_PLANNING_STATE_PATH = ROOT / "system" / "state" / "weekly_planning_state.json"
+WEEKLY_PLANNING_SCRIPT = ROOT / "scripts" / "system" / "weekly_planning_pipeline.py"
+AUTOMATION_SAFETY_PATH = ROOT / "system" / "automation_safety.yaml"
+WORKOUT_KNOWLEDGE_PATH = ROOT / "planning" / "workout_knowledge.yaml"
 
 
 WEB_CHAT_LOCKS: dict[str, asyncio.Lock] = {}
@@ -258,10 +262,17 @@ def automation_pipeline_status() -> dict[str, Any]:
         POST_WORKOUT_REFRESH_STATE_PATH,
         {
             "last_seen_activity_id": None,
+            "last_seen_activity_date": None,
             "last_processed_activity_id": None,
+            "last_processed_activity_date": None,
             "last_processed_at": None,
             "last_successful_run": None,
             "last_error": None,
+            "last_activity_import_at": None,
+            "last_daily_import_at": None,
+            "last_profile_sync_at": None,
+            "next_action": "import_recent_activities",
+            "timer_interval_minutes": 5,
             "processed_activities": [],
             "processed_feedback_updates": [],
             "runs": [],
@@ -289,7 +300,14 @@ def automation_pipeline_status() -> dict[str, Any]:
         "last_successful_run": last_successful_run,
         "last_processed_at": last_processed_at,
         "last_seen_activity_id": state.get("last_seen_activity_id"),
+        "last_seen_activity_date": state.get("last_seen_activity_date"),
         "last_processed_activity_id": state.get("last_processed_activity_id"),
+        "last_processed_activity_date": state.get("last_processed_activity_date"),
+        "last_activity_import_at": format_datetime(state.get("last_activity_import_at")),
+        "last_daily_import_at": format_datetime(state.get("last_daily_import_at")),
+        "last_profile_sync_at": format_datetime(state.get("last_profile_sync_at")),
+        "next_action": str(state.get("next_action") or "").strip() or None,
+        "timer_interval_minutes": int(state.get("timer_interval_minutes") or 5),
         "last_error": last_error,
         "last_run": {
             "run_at": format_datetime((last_run or {}).get("run_at")),
@@ -464,6 +482,76 @@ def flatten_workout_steps(steps: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return flat_steps
 
 
+def workout_target_value(target: dict[str, Any] | None) -> str | None:
+    if not isinstance(target, dict):
+        return None
+    target_type = str(target.get("type") or "").strip().lower()
+    if target_type == "pace_range":
+        min_pace = str(target.get("min_pace") or "").strip()
+        max_pace = str(target.get("max_pace") or "").strip()
+        if min_pace and max_pace:
+            return f"{min_pace} - {max_pace}"
+        return min_pace or max_pace or None
+    if target_type in {"heart_rate_range", "heart_rate_max"}:
+        min_bpm = target.get("min_bpm")
+        max_bpm = target.get("max_bpm")
+        if min_bpm is not None and max_bpm is not None:
+            return f"{int(min_bpm)}-{int(max_bpm)} ppm"
+        if max_bpm is not None:
+            return f"<= {int(max_bpm)} ppm"
+        if min_bpm is not None:
+            return f">= {int(min_bpm)} ppm"
+        return None
+    if target_type == "heart_rate_zone":
+        zone = str(target.get("zone") or "").strip()
+        min_bpm = target.get("min_bpm")
+        max_bpm = target.get("max_bpm")
+        bpm_text = None
+        if min_bpm is not None and max_bpm is not None:
+            bpm_text = f"{int(min_bpm)}-{int(max_bpm)} ppm"
+        elif max_bpm is not None:
+            bpm_text = f"<= {int(max_bpm)} ppm"
+        elif min_bpm is not None:
+            bpm_text = f">= {int(min_bpm)} ppm"
+        if zone and bpm_text:
+            return f"{zone} · {bpm_text}"
+        return zone or bpm_text
+    return None
+
+
+def workout_targets_summary(payload: dict[str, Any]) -> dict[str, Any]:
+    flat_steps = flatten_workout_steps(payload.get("steps") or [])
+    pace_targets: list[str] = []
+    hr_targets: list[str] = []
+    step_targets: list[dict[str, str]] = []
+    seen_step_targets: set[tuple[str, str, str]] = set()
+    for step in flat_steps:
+        if not isinstance(step, dict):
+            continue
+        target = step.get("target") if isinstance(step.get("target"), dict) else {}
+        target_type = str(target.get("type") or "").strip().lower()
+        target_value = workout_target_value(target)
+        if not target_value:
+            continue
+        step_label = str(step.get("description") or step.get("step_type") or step.get("type") or "Bloque").strip()
+        tone = "pace" if target_type == "pace_range" else "hr" if target_type in {"heart_rate_range", "heart_rate_zone", "heart_rate_max"} else "other"
+        key = (step_label, target_type, target_value)
+        if key not in seen_step_targets:
+            seen_step_targets.add(key)
+            step_targets.append({"label": step_label, "target_type": target_type, "target_value": target_value, "tone": tone})
+        if target_type == "pace_range" and target_value not in pace_targets:
+            pace_targets.append(target_value)
+        if target_type in {"heart_rate_range", "heart_rate_zone", "heart_rate_max"} and target_value not in hr_targets:
+            hr_targets.append(target_value)
+    return {
+        "primary_pace": pace_targets[0] if pace_targets else None,
+        "primary_hr": hr_targets[0] if hr_targets else None,
+        "pace_targets": pace_targets,
+        "hr_targets": hr_targets,
+        "step_targets": step_targets,
+    }
+
+
 def classify_session_kind(name_text: str, description_text: str, step_text: str, distance_km: float | None = None, steps: list[dict[str, Any]] | None = None) -> str:
     race_markers = {"competición", "competicion", "race day", "tune-up", "pre-carrera", "shakeout pre-carrera"}
     easy_markers = {"rodaje", "fácil", "facil", "suave", "easy", "continuidad", "z2", "cómodo", "comodo"}
@@ -538,6 +626,81 @@ def classify_planned_workout(payload: dict[str, Any]) -> tuple[str, str, str]:
     step_text = json.dumps(steps, ensure_ascii=False)
     kind = classify_session_kind(name_text, description_text, step_text, float(distance_m) / 1000.0 if distance_m else None, steps)
     return kind, session_kind_label(kind), session_color_class(kind)
+
+
+def workout_knowledge_payload() -> dict[str, Any]:
+    payload = load_optional_yaml(WORKOUT_KNOWLEDGE_PATH).get("workout_knowledge", {})
+    return payload if isinstance(payload, dict) else {}
+
+
+def workout_goal_label(goal: str) -> str:
+    return str(goal or "").replace("_", " ").strip().capitalize()
+
+
+def workout_knowledge_match(payload: dict[str, Any], session_kind: str) -> dict[str, Any] | None:
+    knowledge = workout_knowledge_payload()
+    categories = knowledge.get("categories") if isinstance(knowledge.get("categories"), dict) else {}
+    name_text = str(payload.get("name") or "")
+    description_text = str(payload.get("description") or "")
+    steps = payload.get("steps") or []
+    step_text = json.dumps(steps, ensure_ascii=False)
+    haystack = normalize_text(name_text, description_text, step_text)
+    best_match: dict[str, Any] | None = None
+    best_score = 0
+    for category_key, entries in categories.items():
+        if isinstance(entries, dict):
+            entries = entries.get("sessions") or []
+        if not isinstance(entries, list):
+            continue
+        for entry in entries:
+            if not isinstance(entry, dict):
+                continue
+            label = str(entry.get("label") or "").strip()
+            if not label:
+                continue
+            score = 0
+            normalized_label = normalize_text(label)
+            if normalized_label and normalized_label in haystack:
+                score += len(normalized_label)
+            for token in [piece.strip() for piece in normalized_label.replace("+", " ").replace("/", " ").split() if len(piece.strip()) >= 3]:
+                if token in haystack:
+                    score += 1
+            goals = entry.get("goals") if isinstance(entry.get("goals"), list) else []
+            if session_kind == "quality" and any(goal in goals for goal in {"vo2max", "umbral_lactico", "ritmo_10k", "ritmo_5k"}):
+                score += 2
+            if session_kind == "long_run" and any(goal in goals for goal in {"fondo_largo", "resistencia_especifica_maraton", "resistencia_especifica_21k"}):
+                score += 2
+            if session_kind in {"easy", "recovery"} and any(goal in goals for goal in {"recuperacion", "base_aerobica", "resistencia_aerobica"}):
+                score += 2
+            if score > best_score:
+                best_score = score
+                best_match = {
+                    "category": category_key,
+                    "label": label,
+                    "goals": goals,
+                    "source_note": entry.get("source_note"),
+                }
+    if not best_match:
+        return None
+    best_match["goal_labels"] = [workout_goal_label(goal) for goal in best_match.get("goals") or []]
+    best_match["primary_goal"] = best_match["goal_labels"][0] if best_match.get("goal_labels") else None
+    return best_match
+
+
+def workout_knowledge_summary(payload: dict[str, Any], session_kind: str) -> dict[str, Any] | None:
+    match = workout_knowledge_match(payload, session_kind)
+    if not match:
+        return None
+    primary_goal = str(match.get("primary_goal") or "").strip()
+    goal_labels = match.get("goal_labels") or []
+    secondary = [item for item in goal_labels[1:3] if item]
+    summary = f"Esta sesion se usa sobre todo para {primary_goal.lower()}." if primary_goal else "Esta sesion tiene un objetivo operativo reconocido."
+    if secondary:
+        summary += f" Tambien aporta {', '.join(item.lower() for item in secondary)}."
+    return {
+        **match,
+        "summary": summary,
+    }
 
 
 def classify_completed_review(payload: dict[str, Any]) -> tuple[str, str, str]:
@@ -1075,6 +1238,43 @@ def daily_checkin_form_state(checkin: dict[str, Any] | None, planned_workout: di
     }
 
 
+def daily_checkin_replan_suggestion(checkin_decision: dict[str, Any] | None, planned_workout: dict[str, Any] | None) -> dict[str, Any] | None:
+    if not checkin_decision or not planned_workout:
+        return None
+    action = str(checkin_decision.get("action") or "").strip().lower()
+    session_kind = str(planned_workout.get("session_kind") or "other").strip().lower()
+    if action == "cancel":
+        return {
+            "strategy": "skip_recompose_week",
+            "label": "Aplicar proteccion semanal",
+            "summary": "El check-in recomienda cancelar hoy y recomponer la semana automaticamente.",
+            "tone": "warn",
+        }
+    if action == "move":
+        return {
+            "strategy": "move_next_day",
+            "label": "Mover sesion automaticamente",
+            "summary": "El check-in detecta que hoy no encaja bien y propone recolocar la sesion al siguiente hueco util.",
+            "tone": "warn",
+        }
+    if action == "reduce":
+        return {
+            "strategy": "reduce_keep_goal" if session_kind in {"quality", "long_run", "race"} else "auto_today",
+            "label": "Aplicar version protectora",
+            "summary": "El check-in recomienda una version mas corta o mas suave para mantener continuidad sin forzar el dia.",
+            "tone": "warn",
+        }
+    return None
+
+
+def preferred_replan_suggestion(planned_workout: dict[str, Any] | None, dashboard: dict[str, Any], checkin_decision: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    checkin_suggestion = daily_checkin_replan_suggestion(checkin_decision, planned_workout)
+    if checkin_suggestion:
+        checkin_suggestion["auto_allowed"] = auto_replan_allowed(str(checkin_suggestion.get("strategy") or ""), planned_workout or {})
+        return checkin_suggestion
+    return automatic_replan_suggestion(planned_workout, dashboard)
+
+
 def clone_steps(steps: Any) -> list[dict[str, Any]]:
     if not isinstance(steps, list):
         return []
@@ -1305,6 +1505,70 @@ def apply_replan_to_payload(payload: dict[str, Any], replan_state: dict[str, Any
     return effective_payload
 
 
+def automation_safety_policy() -> dict[str, Any]:
+    payload = load_optional_yaml(AUTOMATION_SAFETY_PATH).get("automation_safety", {})
+    return payload if isinstance(payload, dict) else {}
+
+
+def auto_replan_allowed(strategy: str, workout: dict[str, Any]) -> bool:
+    policy = automation_safety_policy()
+    workout_kind = str(workout.get("session_kind") or "other").strip().lower()
+    never_auto_session_kinds = set(policy.get("replan", {}).get("never_auto_session_kinds") or [])
+    if workout_kind in never_auto_session_kinds:
+        return False
+    strategy_map = {
+        "auto_today": "apply_today_protective_variant",
+        "reduce_keep_goal": "reduce_non_race_workout",
+        "move_next_day": "move_non_race_workout_to_rest_slot",
+        "skip_recompose_week": "recompose_skipped_non_race_session",
+    }
+    capability = strategy_map.get(strategy)
+    allowed = set(policy.get("allow_auto") or [])
+    return bool(capability and capability in allowed)
+
+
+def automatic_replan_suggestion(workout: dict[str, Any] | None, dashboard: dict[str, Any]) -> dict[str, Any] | None:
+    if not workout:
+        return None
+    decision = dashboard.get("decision", {}) if isinstance(dashboard, dict) else {}
+    triggers = dashboard.get("adaptation_triggers", {}).get("triggers", []) if isinstance(dashboard, dict) else []
+    protection_mode = dashboard.get("protection_mode", {}) if isinstance(dashboard, dict) else {}
+    active_context = decision.get("active_context", {}) if isinstance(decision, dict) else {}
+    workout_kind = str(workout.get("session_kind") or "other").strip().lower()
+    if workout_kind == "race":
+        return None
+    active_trigger_keys = {str(item.get("key") or "") for item in triggers if isinstance(item, dict) and item.get("active")}
+    days_to_goal_race = active_context.get("days_to_goal_race")
+    race_horizon_days = int(automation_safety_policy().get("replan", {}).get("race_horizon_days") or 4)
+
+    strategy = None
+    summary = ""
+    label = ""
+    tone = "warn"
+    if protection_mode.get("key") == "injury_protection" or "pain" in active_trigger_keys:
+        strategy = "skip_recompose_week" if workout_kind in {"quality", "long_run"} else "auto_today"
+        label = "Proteger por dolor"
+        summary = "El contexto actual recomienda proteger tejido y rebajar impacto antes que sostener la sesion original."
+    elif "fatigue" in active_trigger_keys:
+        strategy = "reduce_keep_goal" if workout_kind in {"quality", "long_run"} else "auto_today"
+        label = "Proteger por fatiga"
+        summary = "La carga reciente y las señales Garmin sugieren mantener continuidad con una version mas barata."
+    elif isinstance(days_to_goal_race, int) and 0 <= days_to_goal_race <= race_horizon_days:
+        strategy = "reduce_keep_goal" if workout_kind in {"quality", "long_run"} else "move_next_day"
+        label = "Proteger cercania de carrera"
+        summary = "Hay carrera cercana y esta sesion no deberia competir contra la frescura necesaria para llegar bien."
+
+    if not strategy:
+        return None
+    return {
+        "strategy": strategy,
+        "label": label,
+        "summary": summary,
+        "tone": tone,
+        "auto_allowed": auto_replan_allowed(strategy, workout),
+    }
+
+
 def garmin_retry_states() -> dict[str, dict[str, Any]]:
     payload = load_optional_json(GARMIN_RETRY_STATE_PATH, {"workouts": {}})
     workouts = payload.get("workouts") if isinstance(payload, dict) else {}
@@ -1515,6 +1779,8 @@ def adaptation_triggers(dashboard: dict[str, Any]) -> dict[str, Any]:
     hrv_flag = str(daily_signals.get("hrv_flag") or "").strip()
     readiness_flag = str(daily_signals.get("readiness_flag") or "").strip()
     resting_hr_flag = str(daily_signals.get("resting_hr_flag") or "").strip()
+    sleep_flag = str(daily_signals.get("sleep_flag") or "").strip()
+    running_tolerance_flag = str(daily_signals.get("running_tolerance_flag") or "").strip()
     fatigue_active = False
     fatigue_reasons: list[str] = []
     if weekly_spike is not None and float(weekly_spike) >= 25.0:
@@ -1528,9 +1794,15 @@ def adaptation_triggers(dashboard: dict[str, Any]) -> dict[str, Any]:
     if readiness_flag in {"low", "poor"}:
         fatigue_active = True
         fatigue_reasons.append("Readiness diaria baja")
+    if sleep_flag == "poor":
+        fatigue_active = True
+        fatigue_reasons.append("Sueño reciente pobre")
     if resting_hr_flag == "high":
         fatigue_active = True
         fatigue_reasons.append("Pulso en reposo por encima de lo normal")
+    if running_tolerance_flag == "high":
+        fatigue_active = True
+        fatigue_reasons.append("Carga aguda alta frente a la tolerancia reciente")
     if decision.get("status") == "red" and reasons:
         fatigue_reasons.append(str(reasons[0]))
     triggers.append(
@@ -1609,6 +1881,20 @@ def adaptation_triggers(dashboard: dict[str, Any]) -> dict[str, Any]:
             "badge": response_pattern_badge("watch" if execution_active else "positive"),
             "summary": "; ".join([item for item in execution_signals if item][:2]) if execution_signals else "La ejecucion reciente no obliga por si sola a cambiar el siguiente paso.",
             "plan_change": "Repetir familia mas controlable o bajar densidad antes de volver a progresar." if execution_active else "La siguiente progresion no necesita frenarse por ejecucion.",
+        }
+    )
+
+    days_to_goal_race = decision.get("active_context", {}).get("days_to_goal_race") if isinstance(decision.get("active_context"), dict) else None
+    race_active = isinstance(days_to_goal_race, int) and 0 <= days_to_goal_race <= 7
+    race_summary = f"La carrera objetivo está a {days_to_goal_race} días; conviene priorizar frescura y especificidad." if race_active else "No hay una carrera objetivo inmediata que obligue a tocar el plan por sí sola."
+    triggers.append(
+        {
+            "key": "race_near",
+            "label": "Carrera cercana",
+            "active": race_active,
+            "badge": response_pattern_badge("watch" if race_active else "positive"),
+            "summary": race_summary,
+            "plan_change": "Recortar o mover sesiones que resten frescura si no son estrictamente útiles para llegar bien." if race_active else "Se puede planificar sin protección específica por carrera cercana.",
         }
     )
 
@@ -1976,6 +2262,7 @@ def today_plan_data(day: str | None = None) -> dict[str, Any]:
     completed_today = next((item for item in completed_reviews() if item.get("date") == target_day), None)
     checkin_state = daily_checkin_form_state(daily_checkin(target_day), planned_today)
     checkin_decision = checkin_state.get("decision") if isinstance(checkin_state, dict) else None
+    checkin_replan = preferred_replan_suggestion(planned_today, dashboard, checkin_decision)
 
     shin_pain = goal_metrics.get("latest_shin_pain")
     resting_hr_flag = daily_signals.get("resting_hr_flag")
@@ -2054,6 +2341,7 @@ def today_plan_data(day: str | None = None) -> dict[str, Any]:
         "cta_enabled": bool(planned_today and not completed_today),
         "feedback_present": bool((completed_today or {}).get("athlete_feedback")),
         "daily_checkin": checkin_state,
+        "recommended_replan": checkin_replan,
         "links": {
             "detail_url": f"/planned-workouts/{planned_today['slug']}" if planned_today else None,
             "day_url": f"/calendar/day/{target_day}",
@@ -2137,6 +2425,123 @@ def iso_week_bounds(value: date) -> tuple[date, date]:
     start = value.fromordinal(value.toordinal() - value.weekday())
     end = start.fromordinal(start.toordinal() + 6)
     return start, end
+
+
+def next_monday_after(value: date) -> date:
+    delta = 7 - value.weekday()
+    if delta <= 0:
+        delta += 7
+    return value.fromordinal(value.toordinal() + delta)
+
+
+def weekly_planning_state() -> dict[str, Any]:
+    payload = load_optional_json(WEEKLY_PLANNING_STATE_PATH, {"prepared_weeks": {}})
+    return payload if isinstance(payload, dict) else {"prepared_weeks": {}}
+
+
+def weekly_sync_badge(status: str) -> dict[str, str]:
+    mapping = {
+        "ok": {"label": "Sincronizado", "tone": "ok"},
+        "skipped": {"label": "Sin cambios", "tone": ""},
+        "error": {"label": "Error", "tone": "warn"},
+    }
+    return mapping.get(str(status or "").strip().lower(), {"label": "Desconocido", "tone": ""})
+
+
+def summarize_weekly_garmin_sync(sync_payload: dict[str, Any] | None) -> dict[str, Any] | None:
+    if not isinstance(sync_payload, dict):
+        return None
+    items = sync_payload.get("items") if isinstance(sync_payload.get("items"), list) else []
+    summarized_items: list[dict[str, Any]] = []
+    for item in items:
+        if not isinstance(item, dict):
+            continue
+        raw_message = str(item.get("message") or "").strip()
+        parsed_message = None
+        if raw_message.startswith("{"):
+            try:
+                parsed = json.loads(raw_message)
+                if isinstance(parsed, dict):
+                    parsed_message = parsed
+            except json.JSONDecodeError:
+                parsed_message = None
+        summarized_items.append(
+            {
+                "file": str(item.get("file") or "").strip(),
+                "status": str(item.get("status") or "").strip(),
+                "badge": weekly_sync_badge(item.get("status") or ""),
+                "workout_name": str((parsed_message or {}).get("workout_name") or Path(str(item.get("file") or "")).stem).strip(),
+                "schedule_date": str((parsed_message or {}).get("schedule_date") or "").strip() or None,
+                "sport": str((parsed_message or {}).get("sport") or "").strip() or None,
+                "workout_id": (parsed_message or {}).get("workout_id"),
+                "summary": raw_message.splitlines()[-1] if raw_message else "Sin detalle adicional.",
+            }
+        )
+    return {
+        "synced": int(sync_payload.get("synced") or 0),
+        "failed": int(sync_payload.get("failed") or 0),
+        "skipped": int(sync_payload.get("skipped") or 0),
+        "items": summarized_items,
+    }
+
+
+def summarize_weekly_pdf_status(pdf_payload: dict[str, Any] | None) -> dict[str, Any] | None:
+    if not isinstance(pdf_payload, dict):
+        return None
+    ok = bool(pdf_payload.get("ok"))
+    return {
+        "ok": ok,
+        "badge": {"label": "Enviado" if ok else "Fallo", "tone": "ok" if ok else "warn"},
+        "message": str(pdf_payload.get("message") or "").strip() or ("PDF enviado por Telegram." if ok else "No se pudo enviar el PDF por Telegram."),
+    }
+
+
+def weekly_planning_status() -> dict[str, Any]:
+    state = weekly_planning_state()
+    active_content = read_text(ACTIVE_WEEK_PATH)
+    active_start, active_end = parse_week_date_window(active_content)
+    target_start = next_monday_after(active_end) if active_end else None
+    target_end = target_start.fromordinal(target_start.toordinal() + 6) if target_start else None
+    prepared_entry = None
+    prepared_path = None
+    if target_start and target_end:
+        prepared_entry = (state.get("prepared_weeks", {}) or {}).get(target_start.isoformat()) if isinstance(state.get("prepared_weeks"), dict) else None
+        prepared_path = ROOT / str((prepared_entry or {}).get("path") or f"planning/weeks/prepared/{target_start.year}/{target_start.isoformat()}_{target_end.isoformat()}.md")
+    prepared_exists = bool(prepared_path and prepared_path.exists())
+    if not isinstance(prepared_entry, dict) and prepared_exists and target_start and target_end:
+        prepared_entry = {
+            "start_date": target_start.isoformat(),
+            "end_date": target_end.isoformat(),
+            "path": str(prepared_path.relative_to(ROOT)),
+            "status": "prepared",
+        }
+    if isinstance(prepared_entry, dict):
+        prepared_entry = {
+            **prepared_entry,
+            "garmin_sync_summary": summarize_weekly_garmin_sync(prepared_entry.get("garmin_sync") if isinstance(prepared_entry.get("garmin_sync"), dict) else None),
+        }
+    last_activation = state.get("last_activation") if isinstance(state.get("last_activation"), dict) else None
+    if isinstance(last_activation, dict):
+        last_activation = {
+            **last_activation,
+            "pdf_summary": summarize_weekly_pdf_status(last_activation.get("pdf") if isinstance(last_activation.get("pdf"), dict) else None),
+            "garmin_sync_summary": summarize_weekly_garmin_sync(last_activation.get("garmin_sync") if isinstance(last_activation.get("garmin_sync"), dict) else None),
+        }
+    return {
+        "active_week": {
+            "title": active_week_title(active_content),
+            "start_date": active_start.isoformat() if active_start else None,
+            "end_date": active_end.isoformat() if active_end else None,
+        },
+        "next_target": {
+            "start_date": target_start.isoformat() if target_start else None,
+            "end_date": target_end.isoformat() if target_end else None,
+        },
+        "prepared_exists": prepared_exists,
+        "prepared_week": prepared_entry,
+        "last_plan": state.get("last_plan"),
+        "last_activation": last_activation,
+    }
 
 
 def adherence_badge(value: float) -> dict[str, str]:
@@ -2317,8 +2722,7 @@ def executive_week_summary(rows: list[dict[str, Any]], dashboard: dict[str, Any]
     }
 
 
-def week_page_data() -> dict[str, Any]:
-    path = ACTIVE_WEEK_PATH
+def week_document_data(path: Path, *, include_planning_status: bool = False) -> dict[str, Any]:
     content = read_text(path)
     rows = parse_week_table(content)
     start_date, end_date = parse_week_date_window(content)
@@ -2354,12 +2758,50 @@ def week_page_data() -> dict[str, Any]:
         )
     return {
         "exists": path.exists(),
+        "path": str(path.relative_to(ROOT)) if path.exists() else str(path.relative_to(ROOT)),
+        "title": title,
+        "start_date": start_date.isoformat() if start_date else None,
+        "end_date": end_date.isoformat() if end_date else None,
         "content": content,
         "rows": enriched_rows,
         "executive_summary": executive_week_summary(enriched_rows, dashboard, plan_vs_reality),
         "plan_vs_reality": plan_vs_reality,
-        "pdf_exists": (ROOT / "planning" / "weeks" / "generated" / "semana_actual.pdf").exists(),
+        "pdf_exists": path == ACTIVE_WEEK_PATH and (ROOT / "planning" / "weeks" / "generated" / "semana_actual.pdf").exists(),
+        "planning_status": weekly_planning_status() if include_planning_status else None,
     }
+
+
+def week_page_data() -> dict[str, Any]:
+    return week_document_data(ACTIVE_WEEK_PATH, include_planning_status=True)
+
+
+def prepared_week_path_for_start(start_date: str) -> Path | None:
+    parsed = parse_iso_date(start_date)
+    if not parsed:
+        return None
+    state = weekly_planning_state()
+    entry = (state.get("prepared_weeks", {}) or {}).get(parsed.isoformat()) if isinstance(state.get("prepared_weeks"), dict) else None
+    if isinstance(entry, dict) and entry.get("path"):
+        candidate = ROOT / str(entry.get("path"))
+        return candidate if candidate.exists() else None
+    year_dir = ROOT / "planning" / "weeks" / "prepared" / str(parsed.year)
+    if not year_dir.exists():
+        return None
+    matches = sorted(year_dir.glob(f"{parsed.isoformat()}_*.md"))
+    return matches[0] if matches else None
+
+
+def prepared_week_page_data(start_date: str) -> dict[str, Any] | None:
+    path = prepared_week_path_for_start(start_date)
+    if not path:
+        return None
+    payload = week_document_data(path, include_planning_status=False)
+    payload["week_start"] = start_date
+    state = weekly_planning_state()
+    entry = (state.get("prepared_weeks", {}) or {}).get(start_date) if isinstance(state.get("prepared_weeks"), dict) else None
+    payload["prepared_state"] = entry if isinstance(entry, dict) else None
+    payload["garmin_sync_summary"] = summarize_weekly_garmin_sync((entry or {}).get("garmin_sync") if isinstance(entry, dict) and isinstance(entry.get("garmin_sync"), dict) else None)
+    return payload
 
 
 def planned_upload_data(workout_stem: str, schedule_date: str) -> dict[str, Any]:
@@ -2430,6 +2872,25 @@ def retry_garmin_workout_sync(slug: str, username: str | None) -> tuple[bool, st
         },
     )
     return False, f"No se pudo reenviar a Garmin: {error_message}"
+
+
+def run_weekly_planning_pipeline(*args: str) -> tuple[bool, dict[str, Any], str]:
+    command = [sys.executable, str(WEEKLY_PLANNING_SCRIPT), *args]
+    try:
+        result = subprocess.run(command, cwd=ROOT, capture_output=True, text=True, timeout=3600, check=False)
+    except subprocess.TimeoutExpired:
+        return False, {}, "La planificacion semanal excedio el tiempo maximo."
+    payload: dict[str, Any] = {}
+    if (result.stdout or "").strip():
+        try:
+            parsed = json.loads(result.stdout)
+            if isinstance(parsed, dict):
+                payload = parsed
+        except json.JSONDecodeError:
+            payload = {}
+    ok = result.returncode == 0 and bool(payload.get("ok"))
+    message = str(payload.get("message") or result.stderr or result.stdout or "Operacion semanal sin salida.").strip()
+    return ok, payload, message
 
 
 def dashboard_payload() -> dict[str, Any]:
@@ -3167,6 +3628,7 @@ def planned_workout_detail(slug: str) -> dict[str, Any] | None:
         if item["slug"] == slug:
             fueling = workout_fueling_lookup(load_or_build_fueling_payload(), slug)
             item["fueling"] = fueling
+            item["targets"] = workout_targets_summary(item.get("payload") or {})
             return item
     return None
 
@@ -4164,7 +4626,11 @@ async def dashboard(request: Request) -> HTMLResponse:
     redirect = auth_guard(request)
     if redirect:
         return redirect
-    return templates.TemplateResponse(request, "dashboard.html", template_context(request, dashboard=dashboard_payload(), workspace=workspace_status()))
+    return templates.TemplateResponse(
+        request,
+        "dashboard.html",
+        template_context(request, dashboard=dashboard_payload(), progress=progress_page_data(), workspace=workspace_status()),
+    )
 
 
 @app.get("/risk", response_class=HTMLResponse)
@@ -4188,7 +4654,7 @@ async def decision(request: Request) -> HTMLResponse:
     redirect = auth_guard(request)
     if redirect:
         return redirect
-    return templates.TemplateResponse(request, "decision.html", template_context(request, decision_center=decision_center_page_data(), workspace=workspace_status()))
+    return RedirectResponse(url="/dashboard", status_code=303)
 
 
 @app.get("/planned-workouts", response_class=HTMLResponse)
@@ -4210,6 +4676,43 @@ async def planned_workouts_page(request: Request, view: str = "list", month: str
         "planned_workouts.html",
         template_context(request, workouts=items, current_view=current_view, calendar=calendar_data, selected_kind=kind, selected_status=status, week=week_page_data(), workspace=workspace_status()),
     )
+
+
+@app.post("/planned-workouts/plan-next-week")
+async def planned_workouts_plan_next_week(request: Request, next_url: str = Form("/planned-workouts?view=week"), force: str = Form("0")) -> RedirectResponse:
+    redirect = auth_guard(request)
+    if redirect:
+        return redirect
+    target = safe_next_url(next_url, "/planned-workouts?view=week")
+    ok, payload, message = run_weekly_planning_pipeline("plan-next", "--source", "web", *( ["--force"] if str(force) == "1" else [] ))
+    request.session["flash"] = {"level": "ok" if ok else "error", "message": message}
+    return RedirectResponse(url=target, status_code=303)
+
+
+@app.post("/planned-workouts/activate-next-week")
+async def planned_workouts_activate_next_week(request: Request, next_url: str = Form("/planned-workouts?view=week"), week_start: str = Form("")) -> RedirectResponse:
+    redirect = auth_guard(request)
+    if redirect:
+        return redirect
+    target = safe_next_url(next_url, "/planned-workouts?view=week")
+    args = ["activate-next", "--source", "web"]
+    if str(week_start or "").strip():
+        args.extend(["--week-start", str(week_start).strip()])
+    ok, payload, message = run_weekly_planning_pipeline(*args)
+    request.session["flash"] = {"level": "ok" if ok else "error", "message": message}
+    return RedirectResponse(url=target, status_code=303)
+
+
+@app.get("/planned-workouts/prepared/{week_start}", response_class=HTMLResponse)
+async def prepared_week_preview_page(request: Request, week_start: str) -> HTMLResponse:
+    redirect = auth_guard(request)
+    if redirect:
+        return redirect
+    prepared_week = prepared_week_page_data(week_start)
+    if not prepared_week:
+        request.session["flash"] = {"level": "error", "message": "No se encontro la semana preparada solicitada."}
+        return RedirectResponse(url="/planned-workouts?view=week", status_code=303)
+    return templates.TemplateResponse(request, "prepared_week_preview.html", template_context(request, prepared_week=prepared_week, workspace=workspace_status()))
 
 
 @app.get("/calendar", response_class=HTMLResponse)
@@ -4274,11 +4777,21 @@ async def planned_workout_action_submit(
         return RedirectResponse(url=target, status_code=303)
 
     if action == "alternative_requested":
-        replan_state = apply_planned_workout_replan(slug, workout, "auto_today", dashboard_payload(), request.session.get("username"))
+        dashboard = dashboard_payload()
+        suggestion = preferred_replan_suggestion(workout, dashboard)
+        strategy = str((suggestion or {}).get("strategy") or "auto_today")
+        replan_state = apply_planned_workout_replan(slug, workout, strategy, dashboard, request.session.get("username"))
         request.session["flash"] = {"level": "ok", "message": str(replan_state.get("summary") or "Alternativa aplicada.")}
         return RedirectResponse(url=target, status_code=303)
 
     set_planned_workout_action(slug, workout, action, request.session.get("username"))
+    if action == "skipped":
+        dashboard = dashboard_payload()
+        suggestion = preferred_replan_suggestion(workout, dashboard)
+        if suggestion and suggestion.get("auto_allowed"):
+            replan_state = apply_planned_workout_replan(slug, workout, str(suggestion.get("strategy") or "skip_recompose_week"), dashboard, request.session.get("username"))
+            request.session["flash"] = {"level": "ok", "message": str(replan_state.get("summary") or "Sesion recolocada automaticamente.")}
+            return RedirectResponse(url=target, status_code=303)
     request.session["flash"] = {"level": "ok", "message": ACTION_LABELS.get(action, "Accion guardada.")}
     return RedirectResponse(url=target, status_code=303)
 
@@ -4368,6 +4881,12 @@ async def daily_checkin_submit(
     set_daily_checkin(target_day, payload)
     workout = next((item for item in planned_workouts() if item.get("date") == target_day), None)
     decision = daily_checkin_decision(payload, workout)
+    dashboard = dashboard_payload()
+    suggestion = preferred_replan_suggestion(workout, dashboard, decision)
+    if workout and suggestion and suggestion.get("auto_allowed"):
+        replan_state = apply_planned_workout_replan(str(workout.get("slug") or ""), workout, str(suggestion.get("strategy") or "auto_today"), dashboard, request.session.get("username"))
+        request.session["flash"] = {"level": "ok", "message": f"Check-in guardado. {replan_state.get('summary') or decision.get('headline')}"}
+        return RedirectResponse(url=target, status_code=303)
     request.session["flash"] = {"level": "ok", "message": f"Check-in guardado. Decision: {decision.get('headline')}."}
     return RedirectResponse(url=target, status_code=303)
 
@@ -4463,7 +4982,7 @@ async def progress(request: Request) -> HTMLResponse:
     redirect = auth_guard(request)
     if redirect:
         return redirect
-    return templates.TemplateResponse(request, "progress.html", template_context(request, progress=progress_page_data(), workspace=workspace_status()))
+    return RedirectResponse(url="/dashboard", status_code=303)
 
 
 @app.get("/master-plan", response_class=HTMLResponse)

@@ -34,11 +34,13 @@ Files that should be removed or ignored because they no longer match the operati
 - `.agents/workflows/weekly_coaching_cycle.md`
 - `planning/master_plan.md`
 - `planning/coaching_playbook.md`
+- `planning/workout_knowledge.yaml`
 - `planning/session_selection_matrix.yaml`
 - `planning/workout_evaluation_rules.md`
 - `athlete/response_profile.yaml`
 - `athlete/status_dashboard.md` when it exists
 - `planning/coach_decision.md` when it exists
+- `system/state/athlete_state.json` when it exists
 - `athlete/shin_tracker.yaml`
 - `athlete/supplements.yaml`
 - `planning/fueling_operational.md` when it exists
@@ -54,8 +56,10 @@ Files that should be removed or ignored because they no longer match the operati
 - `athlete/shoes.yaml`
 - `athlete/health.yaml`
 - `training/completed/imports/garmin/profile/athlete_profile_snapshot.json` when it exists
+- `system/state/athlete_state.json` when it exists
 - `planning/goal_gates.yaml`
 - `planning/goal_gates.md`
+- `planning/workout_knowledge.yaml`
 - `training/planned/workouts/library_run_templates.yaml`
 - all relevant files in `races/<year>/`
 - `athlete/supplements.yaml`
@@ -72,6 +76,7 @@ Files that should be removed or ignored because they no longer match the operati
 - `athlete/health.yaml`
 - `training/completed/imports/garmin/profile/athlete_profile_snapshot.json` when it exists
 - `planning/goal_gates.yaml`
+- `planning/workout_knowledge.yaml`
 - `training/planned/workouts/library_run_templates.yaml`
 - `athlete/supplements.yaml`
 - `planning/fueling_operational.md` when it exists
@@ -85,6 +90,7 @@ Files that should be removed or ignored because they no longer match the operati
 - `planning/workout_evaluation_rules.md`
 - `planning/coaching_playbook.md`
 - `planning/session_selection_matrix.yaml`
+- `planning/workout_knowledge.yaml`
 - `athlete/response_profile.yaml`
 - `athlete/zones.yaml`
 - `athlete/health.yaml`
@@ -92,6 +98,7 @@ Files that should be removed or ignored because they no longer match the operati
 - `athlete/shin_tracker.yaml`
 - `planning/coach_decision.md`
 - `athlete/status_dashboard.md`
+- `system/state/athlete_state.json` when it exists
 - planned workout file for the reviewed date when it exists
 - recent completed review files for comparison
 

@@ -9,9 +9,9 @@
 
 ## Rating
 
-- Numeric score: 6/10
-- Traffic light: amarillo
-- Written review: Ritmo medio 7:13/km, FC 151.0/169.0 bpm, cadencia 167.0 spm, potencia 215.0 W, temperatura 22.0-28.0 C, desnivel +18.0 m. Sesion util, algo por encima del techo de FC previsto, pero sin senales que justifiquen tratarla como alto riesgo por si sola. La lectura correcta es mantener cautela y confirmar sensaciones, no reducir carga de forma automatica.
+- Numeric score: 4/10
+- Traffic light: rojo
+- Written review: Ritmo medio 7:13/km, FC 151.0/169.0 bpm, cadencia 167.0 spm, potencia 215.0 W, temperatura 22.0-28.0 C, desnivel +18.0 m. Sesion util, pero mas exigente de lo previsto para el objetivo del dia. La lectura correcta es ajustar el juicio del entreno, no dramatizarlo: solo conviene vigilar fatiga y sensaciones antes de la siguiente sesion importante.
 
 ## Execution Analysis
 
@@ -69,6 +69,6 @@
 
 ## Coaching Decision
 
-- Keep the week as planned: yes
-- If not, what changes: none
-- Risk level: medio
+- Keep the week as planned: no
+- If not, what changes: Reduce upcoming load and review shin response.
+- Risk level: alto

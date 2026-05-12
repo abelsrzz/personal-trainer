@@ -88,6 +88,29 @@ capabilities:
       - telegram:/status
       - telegram:/dashboard
     stale_behavior: show_cached_with_warning
+  athlete_state:
+    description: Consolidated athlete state for AI and automation using the latest athlete, Garmin and planning artifacts.
+    source_of_truth: derived
+    local_cache:
+      - system/state/athlete_state.json
+      - athlete/profile.yaml
+      - athlete/health.yaml
+      - athlete/zones.yaml
+      - planning/coach_decision.json
+      - system/state/post_workout_refresh_state.json
+    freshness:
+      strategy: refresh_after_write
+      max_age_minutes: 120
+    sync:
+      command:
+        - python
+        - scripts/system/athlete_state.py
+    consumers:
+      - planning:weekly_planner
+      - planning:coach_engine
+      - agents:global_context
+      - web:/athlete
+    stale_behavior: show_cached_with_warning
   post_workout_refresh:
     description: Detect newly completed workouts and trigger the automatic post-workout pipeline.
     source_of_truth: garmin_plus_local_feedback

@@ -1,11 +1,11 @@
 {% extends "base.html" %}
-{% block title %}Dashboard | RunPilot{% endblock %}
+{% block title %}Estado | RunPilot{% endblock %}
 {% block content %}
 {% if dashboard.decision.status == 'unknown' %}
 <section class="panel">
   <div class="panel-head">
     <div>
-      <p class="eyebrow">Dashboard no disponible todavia</p>
+      <p class="eyebrow">Estado no disponible</p>
       <h2>Faltan datos operativos para generar analisis</h2>
     </div>
     <span class="badge warn">Pendiente</span>
@@ -17,402 +17,278 @@
 </section>
 {% endif %}
 
-<section class="hero compact">
+<section class="hero compact state-hero">
   <div>
-    <p class="eyebrow">Lectura operativa</p>
-    <h2>{{ dashboard.decision.status_label }}</h2>
+    <p class="eyebrow">Estado</p>
+    <h2>{{ dashboard.decision.action_label }}</h2>
     <p>{{ dashboard.decision.recommendation }}</p>
     {% if dashboard.protection_mode.active %}
     <p class="alert"><strong>{{ dashboard.protection_mode.label }}:</strong> {{ dashboard.protection_mode.summary }}</p>
     {% endif %}
-    {% for message in dashboard.capability_messages or [] %}
-    <p class="alert">{{ message }}</p>
-    {% endfor %}
   </div>
   <div class="hero-meta">
-    <span>As of: {{ dashboard.as_of or '-' }}</span>
-    <span>Ventana: {{ dashboard.lookback_days or '-' }} días</span>
-    <span>Bloque: {{ dashboard.active_context.active_block or '-' }}</span>
-    <span>{{ dashboard.goal_gates.status_label }}</span>
+    <span>{{ dashboard.decision.status_label }}</span>
+    <span>{{ dashboard.readiness_card.label }}</span>
+    <span>{{ progress.goal_race.name if progress.goal_race else 'Sin carrera objetivo' }}</span>
+    <span>{{ dashboard.as_of or '-' }}</span>
   </div>
 </section>
 
-<section class="cards four">
+<section class="cards four dashboard-strip">
   <article class="card status-{{ dashboard.decision.status }}">
-    <h3>Acción ahora</h3>
-    <p class="metric">{{ dashboard.decision.action_label }}</p>
-    <p class="muted">La decisión manda sobre la próxima microprogresión.</p>
+    <p class="eyebrow">Accion ahora</p>
+    <p class="metric">{{ dashboard.decision.status_label }}</p>
+    <p class="muted">{{ dashboard.decision.reasons[0] if dashboard.decision.reasons else 'Sin motivo principal.' }}</p>
   </article>
   <article class="card">
-    <h3>Carga reciente</h3>
+    <p class="eyebrow">Readiness</p>
+    <p class="metric">{{ dashboard.readiness_card.label }}</p>
+    <p class="muted">{{ dashboard.readiness_card.action }}</p>
+  </article>
+  <article class="card">
+    <p class="eyebrow">Carga 7 dias</p>
     <p class="metric">{{ "%.1f"|format(dashboard.decision.windows.last_7_days.km) }} km</p>
-    <p class="muted">{{ dashboard.decision.windows.last_7_days.runs }} carreras, {{ dashboard.decision.windows.last_7_days.quality_runs }} exigentes.</p>
+    <p class="muted">{{ dashboard.decision.windows.last_7_days.runs }} sesiones · {{ dashboard.decision.windows.last_7_days.quality_runs }} exigentes</p>
   </article>
   <article class="card">
-    <h3>Carrera objetivo</h3>
-    <p class="metric">{{ dashboard.active_context.days_to_goal_race if dashboard.active_context.days_to_goal_race is not none else '-' }}</p>
-    <p class="muted">Dias para {{ dashboard.active_context.goal_race.name if dashboard.active_context.goal_race else 'la carrera principal' }}.</p>
-  </article>
-  <article class="card">
-    <h3>Estimacion 10k</h3>
-    <p class="metric">{{ dashboard.performance_estimate.current_10k_estimate_s|format_duration }}</p>
-    <p class="muted">{{ dashboard.performance_estimate.method }}</p>
-  </article>
-  <article class="card">
-    <h3>Modo actual</h3>
-    <p class="metric">{{ dashboard.protection_mode.label }}</p>
-    <p class="muted">{{ dashboard.protection_mode.allowed_progression }}</p>
-  </article>
-  <article class="card">
-    <h3>Checkpoints del objetivo</h3>
+    <p class="eyebrow">Objetivo</p>
     <p class="metric">{{ dashboard.goal_gates.passed_count }}/{{ dashboard.goal_gates.total_gates }}</p>
     <p class="muted">{{ dashboard.goal_gates.status_label }}</p>
   </article>
 </section>
 
-<section class="panel {{ 'status-green' if dashboard.automation_pipeline.healthy else 'status-yellow' }}">
-  <div class="panel-head">
-    <div>
-      <p class="eyebrow">Automatizacion</p>
-      <h3>Salud del pipeline post-entreno</h3>
-    </div>
-    <span class="badge {{ 'ok' if dashboard.automation_pipeline.healthy else 'warn' }}">{{ dashboard.automation_pipeline.status_label }}</span>
-  </div>
-  <p>{{ dashboard.automation_pipeline.summary }}</p>
-  <p class="muted">Ultimo run correcto: {{ dashboard.automation_pipeline.last_successful_run or '-' }}. Ultimo procesado: {{ dashboard.automation_pipeline.last_processed_at or '-' }}.</p>
-  <div class="today-plan-tags">
-    <span class="mini-badge">Seen {{ dashboard.automation_pipeline.last_seen_activity_id or '-' }}</span>
-    <span class="mini-badge">Processed {{ dashboard.automation_pipeline.last_processed_activity_id or '-' }}</span>
-    <span class="mini-badge">Detections {{ dashboard.automation_pipeline.last_run.detected_count }}</span>
-  </div>
-  <div class="split">
-    <article class="panel">
-      <h3>Ultimas actividades</h3>
-      <div class="list compact-list">
-        {% for item in dashboard.automation_pipeline.recent_activities %}
-        <div class="list-item static">
-          <div>
-            <strong>{{ item.activity_date }}</strong>
-            <p>{{ item.activity_name or item.activity_id }}</p>
-          </div>
-          <span class="badge {{ 'ok' if item.result == 'success' else 'warn' }}">{{ item.result }}</span>
-        </div>
-        {% else %}
-        <p class="muted">Todavia no hay actividades procesadas por el pipeline.</p>
-        {% endfor %}
-      </div>
-    </article>
-    <article class="panel">
-      <h3>Ultimos feedback updates</h3>
-      <div class="list compact-list">
-        {% for item in dashboard.automation_pipeline.recent_feedback_updates %}
-        <div class="list-item static">
-          <div>
-            <strong>{{ item.date }}</strong>
-            <p>{{ item.slug }}</p>
-          </div>
-          <span class="badge {{ 'ok' if item.result == 'success' else 'warn' }}">{{ item.result }}</span>
-        </div>
-        {% else %}
-        <p class="muted">Todavia no hay feedback updates procesados automaticamente.</p>
-        {% endfor %}
-      </div>
-    </article>
-  </div>
-</section>
-
-<section class="panel status-{{ dashboard.readiness_card.state }}">
-  <div class="panel-head">
-    <div>
-      <p class="eyebrow">Readiness diaria</p>
-      <h3>{{ dashboard.readiness_card.label }}</h3>
-    </div>
-    <span class="badge {{ dashboard.readiness_card.tone }}">{{ dashboard.readiness_card.source_label }}</span>
-  </div>
-  <p>{{ dashboard.readiness_card.summary }}</p>
-  <p><strong>Accion para hoy:</strong> {{ dashboard.readiness_card.action }}</p>
-  <p class="muted">{{ dashboard.readiness_card.detail }}</p>
-  {% if dashboard.readiness_card.signals %}
-  <div class="today-plan-tags">
-    {% for item in dashboard.readiness_card.signals %}
-    <span class="mini-badge">{{ item }}</span>
-    {% endfor %}
-  </div>
-  {% endif %}
-</section>
-
-{% if dashboard.protection_mode.active %}
-<section class="panel">
-  <div class="panel-head">
-    <div>
-      <p class="eyebrow">Proteccion</p>
-      <h3>{{ dashboard.protection_mode.label }}</h3>
-    </div>
-    <span class="badge {{ dashboard.protection_mode.tone }}">Activo</span>
-  </div>
-  <p>{{ dashboard.protection_mode.summary }}</p>
-  <p><strong>Progreso permitido:</strong> {{ dashboard.protection_mode.allowed_progression }}</p>
-  {% if dashboard.protection_mode.guidance_note %}
-  <p class="muted">{{ dashboard.protection_mode.guidance_note }}</p>
-  {% endif %}
-  <div class="list compact-list">
-    {% for item in dashboard.protection_mode.triggers %}
-    <div class="list-item static status-yellow">
-      <div>
-        <strong>Trigger</strong>
-        <p>{{ item }}</p>
-      </div>
-    </div>
-    {% endfor %}
-  </div>
-</section>
-{% endif %}
-
-<section class="split">
-  <article class="panel">
+<section class="split state-grid">
+  <article class="panel compact-panel">
     <div class="panel-head">
       <div>
         <p class="eyebrow">Decisión</p>
-        <h3>Cómo debería afectar al plan</h3>
+        <h3>Qué cambia hoy y esta semana</h3>
       </div>
     </div>
     <div class="list compact-list">
-      {% if dashboard.decision.status == 'green' %}
-      <div class="list-item static status-green">
+      {% for reason in dashboard.decision.reasons[:5] %}
+      <div class="list-item static">
         <div>
-          <strong>Mantener o progresar poco</strong>
-          <p>La estructura semanal se puede respetar. La progresión, si existe, debe ser pequeña y depender del periostio.</p>
-        </div>
-      </div>
-      {% elif dashboard.decision.status == 'yellow' %}
-      <div class="list-item static status-yellow">
-        <div>
-          <strong>No subir carga</strong>
-          <p>Mantén la forma de la semana pero sin meter más volumen ni más intensidad.</p>
+          <p>{{ reason }}</p>
         </div>
       </div>
       {% else %}
-      <div class="list-item static status-red">
-        <div>
-          <strong>Reducir y proteger</strong>
-          <p>La prioridad deja de ser construir y pasa a ser bajar coste, quitar calidad o incluso descansar.</p>
-        </div>
-      </div>
-      {% endif %}
-
-      <div class="list-item static">
-        <div>
-          <strong>Motivos principales</strong>
-          <ul class="plain-list inline-plain-list">
-            {% for reason in dashboard.decision.reasons[:4] %}
-            <li>{{ reason }}</li>
-            {% endfor %}
-          </ul>
-        </div>
-      </div>
+      <p class="muted">No hay razones estructuradas disponibles.</p>
+      {% endfor %}
     </div>
   </article>
-  <article class="panel">
+  <article class="panel compact-panel status-{{ dashboard.readiness_card.state }}">
     <div class="panel-head">
       <div>
-        <p class="eyebrow">Vigilancia</p>
-        <h3>Semaforos del momento</h3>
+        <p class="eyebrow">Readiness diaria</p>
+        <h3>{{ dashboard.readiness_card.label }}</h3>
       </div>
+      <span class="badge {{ dashboard.readiness_card.tone }}">{{ dashboard.readiness_card.source_label }}</span>
+    </div>
+    <p>{{ dashboard.readiness_card.summary }}</p>
+    <p><strong>Accion para hoy:</strong> {{ dashboard.readiness_card.action }}</p>
+    {% if dashboard.readiness_card.signals %}
+    <div class="today-plan-tags">
+      {% for item in dashboard.readiness_card.signals %}
+      <span class="mini-badge">{{ item }}</span>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </article>
+</section>
+
+<section class="split state-grid">
+  <article class="panel compact-panel">
+    <div class="panel-head">
+      <div>
+        <p class="eyebrow">Proteccion y riesgo</p>
+        <h3>Qué no deberías forzar</h3>
+      </div>
+      <a href="/risk">Abrir riesgo</a>
     </div>
     <div class="list compact-list">
       <div class="list-item static">
         <div>
-          <strong>Periostio</strong>
-          <p>{{ dashboard.goal_gates.metrics.latest_shin_pain if dashboard.goal_gates.metrics.latest_shin_pain is not none else '-' }}/10 en el último dato disponible.</p>
+          <strong>{{ dashboard.protection_mode.label }}</strong>
+          <p>{{ dashboard.protection_mode.allowed_progression }}</p>
+          <p class="muted">{{ dashboard.protection_mode.summary }}</p>
         </div>
-        <span class="badge">Shin</span>
       </div>
-      <div class="list-item static">
+      {% for item in dashboard.protection_mode.triggers %}
+      <div class="list-item static status-yellow">
         <div>
-          <strong>Tirada más larga reciente</strong>
-          <p>{{ "%.1f"|format(dashboard.decision.windows.last_28_days.long_run_km) }} km en 28 días.</p>
-        </div>
-        <span class="badge">LR</span>
-      </div>
-      <div class="list-item static">
-        <div>
-          <strong>Frecuencia</strong>
-          <p>{{ dashboard.decision.windows.last_7_days.runs }} sesiones en 7 dias y {{ dashboard.decision.windows.last_28_days.runs }} en 28 dias.</p>
-        </div>
-        <span class="badge">Carga</span>
-      </div>
-      <div class="list-item static">
-        <div>
-          <strong>Recuperacion Garmin</strong>
-          <p>{{ dashboard.readiness_card.label }}. HRV {{ dashboard.daily_metrics.latest_hrv if dashboard.daily_metrics.latest_hrv is not none else '-' }}, readiness {{ dashboard.daily_metrics.latest_training_readiness if dashboard.daily_metrics.latest_training_readiness is not none else '-' }}, resting HR {{ dashboard.daily_metrics.latest_resting_heart_rate if dashboard.daily_metrics.latest_resting_heart_rate is not none else '-' }}.</p>
-        </div>
-        <span class="badge">Daily</span>
-      </div>
-      {% if dashboard.decision.latest_shin_entry %}
-      <div class="list-item static">
-        <div>
-          <strong>Último registro de periostio</strong>
-          <p>{{ dashboard.decision.latest_shin_entry.date }}. {{ dashboard.decision.latest_shin_entry.notes }}</p>
-        </div>
-        <div class="item-meta">
-          <span class="badge">Durante {{ dashboard.decision.latest_shin_entry.pain_during }}</span>
-          <span class="badge">Después {{ dashboard.decision.latest_shin_entry.pain_after }}</span>
-          <span class="badge">Mañana {{ dashboard.decision.latest_shin_entry.pain_next_morning }}</span>
+          <p>{{ item }}</p>
         </div>
       </div>
-      {% endif %}
+      {% endfor %}
+    </div>
+  </article>
+  <article class="panel compact-panel">
+    <div class="panel-head">
+      <div>
+        <p class="eyebrow">Seleccion de sesiones</p>
+        <h3>Familias a priorizar</h3>
+      </div>
+      <span class="badge">{{ dashboard.decision.session_guidance.quality_volume_cap or '-' }}</span>
+    </div>
+    <div class="split inner-split">
+      <article class="panel inset-panel">
+        <h3>Priorizar</h3>
+        <div class="today-plan-tags">
+          {% for item in dashboard.decision.session_guidance.primary_labels %}
+          <span class="mini-badge">{{ item }}</span>
+          {% else %}
+          <span class="mini-badge">Sin guia principal</span>
+          {% endfor %}
+        </div>
+      </article>
+      <article class="panel inset-panel">
+        <h3>Evitar</h3>
+        <div class="today-plan-tags">
+          {% for item in dashboard.decision.session_guidance.avoid_labels %}
+          <span class="mini-badge mini-badge-warn">{{ item }}</span>
+          {% else %}
+          <span class="mini-badge">Sin restricciones fuertes</span>
+          {% endfor %}
+        </div>
+      </article>
+    </div>
+    {% if dashboard.decision.session_guidance.protection_note %}
+    <p class="muted"><strong>Nota:</strong> {{ dashboard.decision.session_guidance.protection_note }}</p>
+    {% endif %}
+  </article>
+</section>
+
+<section class="panel compact-panel">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Progreso</p>
+      <h3>{{ progress.headline }}</h3>
+    </div>
+    <span class="badge">{{ progress.protection_mode.label }}</span>
+  </div>
+  <p>{{ progress.summary }}</p>
+  <div class="cards four">
+    {% for metric in progress.metrics %}
+    <article class="card">
+      <h3>{{ metric.label }}</h3>
+      <p class="metric">{{ metric.value_label }}</p>
+      <p class="muted">{{ metric.detail }}</p>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="split state-grid">
+  <article class="panel compact-panel">
+    <div class="panel-head">
+      <div>
+        <p class="eyebrow">Tendencias</p>
+        <h3>¿Vas mejor que hace 4 semanas?</h3>
+      </div>
+      <span class="badge {{ 'ok' if progress.insights.comparison_4w.state == 'mejor' else 'warn' if progress.insights.comparison_4w.state == 'peor' else '' }}">{{ progress.insights.comparison_4w.state|capitalize }}</span>
+    </div>
+    <p>{{ progress.insights.comparison_4w.summary }}</p>
+    <div class="cards three">
+      {% for item in progress.insights.trends %}
+      <article class="card">
+        <h3>{{ item.label }}</h3>
+        <p class="metric">{{ item.current }}</p>
+        <p class="muted">Antes {{ item.previous }} · cambio {{ item.delta }}</p>
+      </article>
+      {% endfor %}
+    </div>
+  </article>
+  <article class="panel compact-panel">
+    <div class="panel-head">
+      <div>
+        <p class="eyebrow">Focos</p>
+        <h3>Lo que suma y lo que frena</h3>
+      </div>
+    </div>
+    <div class="split inner-split">
+      <article class="panel inset-panel">
+        <h3>Señales a favor</h3>
+        <div class="list compact-list">
+          {% for item in progress.strengths %}
+          <div class="list-item static status-green"><div><p>{{ item }}</p></div></div>
+          {% else %}
+          <p class="muted">Todavia no hay suficientes señales positivas consolidadas.</p>
+          {% endfor %}
+        </div>
+      </article>
+      <article class="panel inset-panel">
+        <h3>Vigilancias</h3>
+        <div class="list compact-list">
+          {% for item in progress.watchouts %}
+          <div class="list-item static status-yellow"><div><p>{{ item }}</p></div></div>
+          {% else %}
+          <p class="muted">No hay alertas principales activas ahora mismo.</p>
+          {% endfor %}
+        </div>
+      </article>
     </div>
   </article>
 </section>
 
-<section class="panel">
+<section class="panel compact-panel">
   <div class="panel-head">
     <div>
-      <p class="eyebrow">Aprendizaje del atleta</p>
-      <h3>Patrones basicos de respuesta</h3>
+      <p class="eyebrow">Checkpoints</p>
+      <h3>Cómo va el desbloqueo del objetivo</h3>
     </div>
-    <span class="badge">{{ dashboard.response_patterns.window_label }}</span>
+    <span class="badge">{{ progress.goal_gates.passed_count }}/{{ progress.goal_gates.total_gates }}</span>
   </div>
-  <p>{{ dashboard.response_patterns.headline }}</p>
-  <div class="cards three">
-    {% for pattern in dashboard.response_patterns.patterns %}
-    <article class="card status-{{ pattern.status }}">
-      <p class="eyebrow">{{ pattern.label }}</p>
-      <p><span class="badge {{ pattern.badge.tone }}">{{ pattern.badge.label }}</span></p>
-      <p>{{ pattern.summary }}</p>
-    </article>
-    {% endfor %}
-  </div>
-  {% if dashboard.response_patterns.notes %}
   <div class="list compact-list">
-    {% for item in dashboard.response_patterns.notes %}
-    <div class="list-item static">
-      <div>
-        <strong>{{ item.date }}</strong>
-        <p>{{ item.note }}</p>
-      </div>
-      <span class="badge">{{ item.summary }}</span>
-    </div>
-    {% endfor %}
-  </div>
-  {% endif %}
-</section>
-
-<section class="panel">
-  <div class="panel-head">
-    <div>
-      <p class="eyebrow">Adaptacion visible</p>
-      <h3>Triggers que pueden cambiar el plan</h3>
-    </div>
-    <span class="badge">{{ dashboard.adaptation_triggers.summary }}</span>
-  </div>
-  <p>{{ dashboard.adaptation_triggers.headline }}</p>
-  <div class="list compact-list">
-    {% for item in dashboard.adaptation_triggers.triggers %}
-    <div class="list-item static {{ 'status-yellow' if item.active else 'status-green' }}">
-      <div>
-        <strong>{{ item.label }}</strong>
-        <p>{{ item.summary }}</p>
-        <p class="muted"><strong>Si se activa:</strong> {{ item.plan_change }}</p>
-      </div>
-      <span class="badge {{ item.badge.tone }}">{{ 'Activo' if item.active else 'Quieto' }}</span>
-    </div>
-    {% endfor %}
-  </div>
-</section>
-
-<section class="panel">
-  <div class="panel-head">
-    <div>
-      <p class="eyebrow">Objetivo</p>
-      <h3>Checkpoints hacia el 35:00</h3>
-    </div>
-    <span class="badge warn">{{ dashboard.goal_gates.summary }}</span>
-  </div>
-  <div class="list">
-    {% for gate in dashboard.goal_gates.gates %}
+    {% for gate in progress.goal_gates.gates %}
     <div class="list-item static {{ 'status-green' if gate.passed else 'status-yellow' }}">
       <div>
         <strong>{{ gate.name }}</strong>
-        <p>{{ gate.description }}</p>
-        <p class="muted"><strong>Ahora mismo:</strong> {{ gate.evidence }}</p>
-        <p class="muted"><strong>Que falta para pasarlo:</strong> {{ gate.next_step }}</p>
-        {% if gate.checks %}
-        <div class="gate-checks">
-          {% for check in gate.checks %}
-          <div class="gate-check {{ 'is-passed' if check.passed else 'is-failed' }}">
-            <strong>{{ check.label }}</strong>
-            <span><strong>Hay que conseguir:</strong> {{ check.required }}</span>
-            <span><strong>Valor actual:</strong> {{ check.current }}</span>
-          </div>
-          {% endfor %}
-        </div>
+        <p>{{ gate.evidence }}</p>
+        {% if gate.next_step %}
+        <p class="muted"><strong>Siguiente paso:</strong> {{ gate.next_step }}</p>
         {% endif %}
       </div>
-      <span class="badge {{ 'ok' if gate.passed else 'warn' }}">{{ 'OK' if gate.passed else 'NO' }}</span>
+      <span class="badge {{ 'ok' if gate.passed else 'warn' }}">{{ 'OK' if gate.passed else 'Pendiente' }}</span>
     </div>
+    {% else %}
+    <p class="muted">Todavia no hay checkpoints disponibles.</p>
     {% endfor %}
-    {% if not dashboard.goal_gates.gates %}
-    <p class="muted">Los checkpoints apareceran cuando exista un plan activo y una decision automatica.</p>
-    {% endif %}
   </div>
 </section>
 
-<section class="panel">
-  <div class="panel-head">
-    <div>
-      <p class="eyebrow">Seleccion de sesiones</p>
-      <h3>Lo que tiene mas sentido ahora</h3>
-    </div>
-    <span class="badge">{{ dashboard.decision.session_guidance.quality_volume_cap or '-' }}</span>
-  </div>
-  <div class="split">
-    <article class="panel">
-      <h3>Priorizar</h3>
-      <ul class="plain-list">
-        {% for item in dashboard.decision.session_guidance.primary_labels %}
-        <li>{{ item }}</li>
-        {% else %}
-        <li>-</li>
-        {% endfor %}
-      </ul>
-    </article>
-    <article class="panel">
-      <h3>Evitar o vigilar</h3>
-      <ul class="plain-list">
-        {% for item in dashboard.decision.session_guidance.avoid_labels %}
-        <li>{{ item }}</li>
-        {% else %}
-        <li>-</li>
-        {% endfor %}
-      </ul>
-    </article>
-  </div>
-  {% if dashboard.decision.session_guidance.protection_note %}
-  <p class="muted"><strong>Nota de proteccion:</strong> {{ dashboard.decision.session_guidance.protection_note }}</p>
-  {% endif %}
-</section>
-
-<section class="panel">
-  <div class="panel-head">
-    <div>
-      <p class="eyebrow">Historico corto</p>
-      <h3>Volumen semanal reciente</h3>
-    </div>
-  </div>
-  <div class="list compact-list">
-    {% for item in dashboard.weekly_volume %}
-    <div class="list-item static weekly-line-item">
+<section class="split state-grid">
+  <article class="panel compact-panel {{ 'status-green' if dashboard.automation_pipeline.healthy else 'status-yellow' }}">
+    <div class="panel-head">
       <div>
-        <strong>{{ item.week }}</strong>
-        <p>{{ "%.1f"|format(item.km) }} km, {{ item.runs }} sesiones, {{ item.quality_runs }} exigentes.</p>
+        <p class="eyebrow">Automatizacion</p>
+        <h3>Salud del pipeline</h3>
       </div>
-      <span class="badge">{{ "%.1f"|format(item.long_run_km) }} km LR</span>
+      <span class="badge {{ 'ok' if dashboard.automation_pipeline.healthy else 'warn' }}">{{ dashboard.automation_pipeline.status_label }}</span>
     </div>
-    {% endfor %}
-  </div>
-  {% if not dashboard.weekly_volume %}
-  <p class="muted">Todavia no hay historico suficiente para mostrar volumen semanal.</p>
-  {% endif %}
+    <p>{{ dashboard.automation_pipeline.summary }}</p>
+    <p class="muted">Ultimo run correcto: {{ dashboard.automation_pipeline.last_successful_run or '-' }}. Ultimo procesado: {{ dashboard.automation_pipeline.last_processed_at or '-' }}.</p>
+  </article>
+  <article class="panel compact-panel">
+    <div class="panel-head">
+      <div>
+        <p class="eyebrow">Historico corto</p>
+        <h3>Volumen semanal reciente</h3>
+      </div>
+    </div>
+    <div class="list compact-list">
+      {% for item in dashboard.weekly_volume %}
+      <div class="list-item static weekly-line-item">
+        <div>
+          <strong>{{ item.week }}</strong>
+          <p>{{ "%.1f"|format(item.km) }} km, {{ item.runs }} sesiones, {{ item.quality_runs }} exigentes.</p>
+        </div>
+        <span class="badge">{{ "%.1f"|format(item.long_run_km) }} km LR</span>
+      </div>
+      {% else %}
+      <p class="muted">Todavia no hay historico suficiente para mostrar volumen semanal.</p>
+      {% endfor %}
+    </div>
+  </article>
 </section>
 {% endblock %}

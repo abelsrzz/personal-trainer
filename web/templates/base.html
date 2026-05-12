@@ -14,35 +14,39 @@
         <div class="brand-logo-frame">
           <img class="brand-logo" src="{{ url_for('static', path='/logo.png') }}" alt="RunPilot logo">
         </div>
-        <p class="muted">Seguimiento operativo del plan, la ejecución real y las carreras.</p>
+        <div>
+          <h1 class="brand-title">RunPilot</h1>
+          <p class="muted">Consola diaria para decidir, ejecutar y revisar el plan.</p>
+        </div>
       </div>
       {% if authenticated %}
       <nav class="nav grouped-nav">
         <div class="nav-group">
-          <p class="nav-label">Seguimiento</p>
-          <a class="{{ 'active' if current_path == '/' else '' }}" href="/">Inicio</a>
+          <p class="nav-label">Operativa</p>
+          <a class="{{ 'active' if current_path == '/' else '' }}" href="/">Hoy</a>
           <a class="{{ 'active' if current_path == '/calendar' else '' }}" href="/calendar">Calendario</a>
-          <a class="{{ 'active' if current_path == '/planned-workouts' else '' }}" href="/planned-workouts?view=week">Planificados</a>
+          <a class="{{ 'active' if current_path == '/planned-workouts' else '' }}" href="/planned-workouts?view=week">Plan</a>
           <a class="{{ 'active' if current_path == '/completed-workouts' else '' }}" href="/completed-workouts">Completados</a>
-        </div>
-        <div class="nav-group">
-          <p class="nav-label">Análisis</p>
-          <a class="{{ 'active' if current_path == '/decision' else '' }}" href="/decision">Qué hago ahora</a>
-          <a class="{{ 'active' if current_path == '/dashboard' else '' }}" href="/dashboard">Dashboard</a>
-          <a class="{{ 'active' if current_path == '/risk' else '' }}" href="/risk">Molestias y riesgo</a>
-          <a class="{{ 'active' if current_path == '/fueling' else '' }}" href="/fueling">Fueling</a>
-          <a class="{{ 'active' if current_path == '/progress' else '' }}" href="/progress">Progreso</a>
-          <a class="{{ 'active' if current_path == '/cycle' else '' }}" href="/cycle">Ciclo activo</a>
+          <a class="{{ 'active' if current_path == '/dashboard' else '' }}" href="/dashboard">Estado</a>
           <a class="{{ 'active' if current_path == '/chat' else '' }}" href="/chat">Chat</a>
         </div>
         <div class="nav-group">
           <p class="nav-label">Contexto</p>
-          <a class="{{ 'active' if current_path == '/athlete' else '' }}" href="/athlete">Atleta</a>
+          <a class="{{ 'active' if current_path == '/cycle' else '' }}" href="/cycle">Ciclo</a>
           <a class="{{ 'active' if current_path == '/races' else '' }}" href="/races">Carreras</a>
+          <a class="{{ 'active' if current_path == '/athlete' else '' }}" href="/athlete">Atleta</a>
+        </div>
+        <div class="nav-group">
+          <p class="nav-label">Vistas secundarias</p>
+          <a class="{{ 'active' if current_path == '/risk' else '' }}" href="/risk">Riesgo</a>
+          <a class="{{ 'active' if current_path == '/fueling' else '' }}" href="/fueling">Fueling</a>
           <a class="{{ 'active' if current_path == '/master-plan' else '' }}" href="/master-plan">Plan general</a>
         </div>
       </nav>
-      <a class="logout" href="/logout">Cerrar sesión</a>
+      <div class="sidebar-footer">
+        <p class="muted small">Nucleo diario arriba. Analisis y documentacion solo cuando hagan falta.</p>
+        <a class="logout" href="/logout">Cerrar sesión</a>
+      </div>
       {% endif %}
     </aside>
     <main class="content">

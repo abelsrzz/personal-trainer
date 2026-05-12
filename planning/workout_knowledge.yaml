@@ -1,0 +1,719 @@
+workout_knowledge:
+  pace_legend:
+    E: facil / conversacional / Z1-Z2
+    M: ritmo maraton
+    HM: ritmo medio maraton
+    K10: ritmo competicion 10 km
+    K5: ritmo competicion 5 km
+    K3_1500: ritmo rapido, VO2max o capacidad anaerobica
+    R: repeticiones muy rapidas, tecnica, economia, velocidad
+    REC: recuperacion trotando o parado segun objetivo
+
+  standard_goals:
+    - recuperacion
+    - base_aerobica
+    - resistencia_aerobica
+    - eficiencia_aerobica
+    - fondo_largo
+    - stamina
+    - umbral_aerobico
+    - umbral_lactico
+    - umbral_fraccionado
+    - ritmo_maraton
+    - resistencia_especifica_maraton
+    - ritmo_medio_maraton
+    - resistencia_especifica_21k
+    - ritmo_10k
+    - resistencia_especifica_10k
+    - ritmo_5k
+    - vo2max
+    - potencia_aerobica
+    - velocidad_aerobica
+    - economia_de_carrera
+    - tecnica
+    - strides_progresivos
+    - fuerza_especifica
+    - cuestas_cortas
+    - cuestas_largas
+    - capacidad_anaerobica
+    - tolerancia_al_lactato
+    - velocidad_resistencia
+    - activacion_precompetitiva
+    - test_de_forma
+    - trail_montana
+    - ultra_tiempo_en_pies
+
+  safety_rules:
+    - No programar mas de 2 sesiones duras por semana en corredores populares.
+    - Separar VO2max, series fuertes, cuestas duras y tiradas largas exigentes por 48h si es posible.
+    - Subir volumen o intensidad, no ambas a la vez.
+    - Mantener la mayoria del volumen en facil/Z2.
+    - Ajustar por nivel: principiante reduce repeticiones un 30-50%; avanzado puede aumentar volumen, no necesariamente ritmo.
+    - Cada sesion dura deberia incluir calentamiento 15-25' + tecnica/strides + enfriamiento 10-20'.
+    - Si hay dolor que cambia la pisada, fatiga inusual o pulsaciones anomalas, cambiar por rodaje suave o descanso.
+
+  categories:
+    base_aerobica_y_recuperacion:
+      - label: 30' suave
+        goals: [recuperacion, base_aerobica]
+      - label: 40' suave
+        goals: [base_aerobica]
+      - label: 50' suave
+        goals: [base_aerobica]
+      - label: 60' suave
+        goals: [base_aerobica]
+      - label: 75' suave
+        goals: [resistencia_aerobica]
+      - label: 90' suave
+        goals: [resistencia_aerobica]
+      - label: 45' suave + 6x100 progresivos
+        goals: [base_aerobica, tecnica]
+      - label: 60' suave + 8x100 progresivos
+        goals: [base_aerobica, economia_de_carrera]
+      - label: 30' regenerativo muy suave
+        goals: [recuperacion]
+      - label: 40' regenerativo muy suave
+        goals: [recuperacion]
+      - label: 25' suave post-competicion
+        goals: [recuperacion]
+      - label: 50' en Z2 estable
+        goals: [eficiencia_aerobica]
+      - label: 70' en Z2 estable
+        goals: [resistencia_aerobica]
+      - label: 90' en Z2 estable
+        goals: [resistencia_aerobica, fondo_largo]
+      - label: 2h suave
+        goals: [fondo_largo]
+      - label: 2h30 suave
+        goals: [fondo_largo, resistencia_especifica_maraton]
+
+    rodajes_progresivos:
+      - label: 45' progresivo de suave a ritmo M
+        goals: [resistencia_aerobica, ritmo_maraton]
+      - label: 60' progresivo de suave a ritmo M
+        goals: [resistencia_especifica_maraton]
+      - label: 75' progresivo acabando ultimos 20' a ritmo M
+        goals: [resistencia_especifica_maraton]
+      - label: 90' progresivo acabando ultimos 30' a ritmo M
+        goals: [resistencia_especifica_maraton, ritmo_maraton]
+      - label: 50' progresivo acabando ultimos 10' a ritmo 21k
+        goals: [umbral_aerobico]
+      - label: 60' progresivo acabando ultimos 15' a ritmo 21k
+        goals: [umbral_lactico, stamina]
+      - label: 70' progresivo 30' E + 25' M + 15' 21k
+        goals: [resistencia_aerobica, ritmo_maraton, ritmo_medio_maraton]
+      - label: 40' progresivo ultimos 5' fuertes
+        goals: [activacion_precompetitiva]
+
+    strides_tecnica_y_economia:
+      - label: 8x80m progresivos rec caminando
+        goals: [tecnica, economia_de_carrera]
+      - label: 10x100m progresivos rec caminando
+        goals: [economia_de_carrera]
+      - label: 12x100m en recta rec 60-90"
+        goals: [tecnica, economia_de_carrera]
+      - label: 6x150m rapido-relajado rec completa
+        goals: [velocidad_resistencia]
+      - label: 8x150m rapido-relajado rec completa
+        goals: [economia_de_carrera]
+      - label: 10x200m @ ritmo 1500-3k rec 200m trote
+        goals: [economia_de_carrera, velocidad_aerobica]
+      - label: 8x200m @ ritmo 3k rec 200m trote
+        goals: [velocidad_aerobica]
+      - label: 12x200m @ ritmo 3k-5k rec 200m trote
+        goals: [economia_de_carrera, tolerancia_al_lactato]
+      - label: 6x200m rapido pero relajado rec 2'
+        goals: [velocidad_aerobica]
+      - label: 4x200m @ ritmo 1500 rec completa
+        goals: [activacion_precompetitiva]
+
+    cuestas_cortas:
+      - label: 8x10" cuesta muy fuerte rec bajando andando
+        goals: [cuestas_cortas, fuerza_especifica]
+      - label: 10x10" cuesta muy fuerte rec completa
+        goals: [cuestas_cortas, fuerza_especifica]
+      - label: 8x15" cuesta fuerte rec completa
+        goals: [cuestas_cortas, fuerza_especifica]
+      - label: 10x20" cuesta fuerte rec bajando suave
+        goals: [cuestas_cortas, fuerza_especifica]
+      - label: 12x20" cuesta fuerte rec bajando suave
+        goals: [cuestas_cortas, tecnica]
+      - label: 8x30" cuesta @ esfuerzo 3k rec bajando
+        goals: [cuestas_cortas, fuerza_especifica, velocidad_aerobica]
+      - label: 10x30" cuesta @ esfuerzo 3k-5k rec bajando
+        goals: [cuestas_cortas, fuerza_especifica]
+      - label: 6x45" cuesta fuerte rec bajando
+        goals: [potencia_aerobica]
+      - label: 8x45" cuesta fuerte rec bajando
+        goals: [vo2max]
+      - label: 10x60" cuesta @ esfuerzo 5k rec bajando
+        goals: [vo2max, fuerza_especifica]
+
+    cuestas_largas_y_resistencia_muscular:
+      - label: 6x2' cuesta @ esfuerzo 10k rec bajando
+        goals: [cuestas_largas, fuerza_especifica]
+      - label: 8x2' cuesta @ esfuerzo 10k rec bajando
+        goals: [cuestas_largas, fuerza_especifica]
+      - label: 5x3' cuesta @ esfuerzo 10k rec bajando
+        goals: [umbral_lactico, fuerza_especifica]
+      - label: 6x3' cuesta @ esfuerzo 10k rec bajando
+        goals: [potencia_aerobica]
+      - label: 4x5' cuesta @ esfuerzo 21k-10k rec bajando
+        goals: [cuestas_largas, fuerza_especifica]
+      - label: 5x5' cuesta @ esfuerzo 21k-10k rec bajando
+        goals: [cuestas_largas, fuerza_especifica]
+      - label: 3x8' cuesta tendida @ esfuerzo 21k rec bajando
+        goals: [umbral_lactico, cuestas_largas]
+
+    fartlek_aerobico:
+      - label: 10x1' alegre / 1' suave
+        goals: [base_aerobica, resistencia_aerobica]
+      - label: 15x1' alegre / 1' suave
+        goals: [resistencia_aerobica]
+      - label: 20x1' alegre / 1' suave
+        goals: [resistencia_aerobica]
+      - label: 8x2' alegre / 1' suave
+        goals: [resistencia_aerobica, control_de_ritmo]
+      - label: 10x2' alegre / 1' suave
+        goals: [ritmo_10k]
+      - label: 6x3' alegre / 90" suave
+        goals: [umbral_aerobico]
+      - label: 8x3' alegre / 90" suave
+        goals: [stamina, ritmo_10k]
+      - label: 5x4' alegre / 2' suave
+        goals: [resistencia_aerobica]
+      - label: 6x4' alegre / 2' suave
+        goals: [umbral_aerobico]
+      - label: 4x5' alegre / 2' suave
+        goals: [umbral_aerobico]
+      - label: 5x5' alegre / 2' suave
+        goals: [umbral_lactico]
+
+    fartlek_de_competicion:
+      - label: 12x1' @ ritmo 5k / 1' suave
+        goals: [vo2max]
+      - label: 16x1' @ ritmo 5k / 1' suave
+        goals: [vo2max, tolerancia_al_lactato]
+      - label: 10x90" @ ritmo 5k / 90" suave
+        goals: [vo2max]
+      - label: 8x2' @ ritmo 5k / 2' suave
+        goals: [vo2max]
+      - label: 10x2' @ ritmo 5k / 90" suave
+        goals: [vo2max, resistencia_especifica_10k]
+      - label: 6x3' @ ritmo 5k / 2' suave
+        goals: [vo2max]
+      - label: 8x3' @ ritmo 5k / 2' suave
+        goals: [vo2max]
+      - label: 5x4' @ ritmo 5k / 3' suave
+        goals: [vo2max]
+      - label: 4x5' @ ritmo 5k / 3' suave
+        goals: [vo2max]
+      - label: 3x6' @ ritmo 5k-10k / 3' suave
+        goals: [potencia_aerobica]
+
+    umbral_continuo:
+      - label: 20' @ ritmo umbral / 21k
+        goals: [umbral_lactico]
+      - label: 25' @ ritmo umbral / 21k
+        goals: [umbral_lactico]
+      - label: 30' @ ritmo umbral / 21k
+        goals: [umbral_lactico]
+      - label: 35' @ ritmo 21k controlado
+        goals: [umbral_aerobico]
+      - label: 40' @ ritmo 21k suave
+        goals: [umbral_aerobico]
+      - label: 45' @ ritmo entre M y 21k
+        goals: [stamina]
+      - label: 50' @ ritmo entre M y 21k
+        goals: [resistencia_aerobica]
+      - label: 60' @ ritmo M+10-20"/km
+        goals: [umbral_aerobico]
+      - label: 2x20' @ ritmo 21k rec 3'
+        goals: [umbral_lactico]
+      - label: 2x25' @ ritmo 21k rec 4'
+        goals: [umbral_aerobico]
+
+    cruise_intervals_umbral_fraccionado:
+      - label: 4x5' @ ritmo 21k rec 1'
+        goals: [umbral_fraccionado]
+      - label: 5x5' @ ritmo 21k rec 1'
+        goals: [umbral_fraccionado]
+      - label: 6x5' @ ritmo 21k rec 1'
+        goals: [umbral_fraccionado]
+      - label: 3x8' @ ritmo 21k rec 90"
+        goals: [umbral_fraccionado]
+      - label: 4x8' @ ritmo 21k rec 90"
+        goals: [umbral_fraccionado]
+      - label: 5x8' @ ritmo 21k rec 90"
+        goals: [umbral_aerobico]
+      - label: 3x10' @ ritmo 21k rec 2'
+        goals: [umbral_fraccionado]
+      - label: 4x10' @ ritmo 21k rec 2'
+        goals: [umbral_fraccionado]
+      - label: 5x10' @ ritmo 21k rec 2'
+        goals: [umbral_lactico]
+      - label: 3x12' @ ritmo 21k rec 2'
+        goals: [umbral_aerobico]
+      - label: 4x12' @ ritmo 21k rec 2'
+        goals: [umbral_aerobico]
+      - label: 3x15' @ ritmo 21k rec 3'
+        goals: [umbral_fraccionado]
+      - label: 4x15' @ ritmo 21k rec 3'
+        goals: [ritmo_medio_maraton, ritmo_maraton]
+      - label: 2x20' @ ritmo 21k rec 3'
+        goals: [umbral_lactico]
+      - label: 3x20' @ ritmo M-21k rec 4'
+        goals: [resistencia_especifica_maraton]
+
+    umbral_mixto_10k_21k:
+      - label: 6x1000 @ ritmo 21k rec 60"
+        goals: [umbral_fraccionado]
+      - label: 8x1000 @ ritmo 21k rec 60"
+        goals: [umbral_aerobico]
+      - label: 10x1000 @ ritmo 21k rec 60"
+        goals: [umbral_lactico]
+      - label: 5x1200 @ ritmo 21k rec 75"
+        goals: [umbral_fraccionado]
+      - label: 6x1200 @ ritmo 21k rec 75"
+        goals: [umbral_aerobico]
+      - label: 4x1600 @ ritmo 21k rec 90"
+        goals: [umbral_fraccionado]
+      - label: 5x1600 @ ritmo 21k rec 90"
+        goals: [umbral_aerobico]
+      - label: 3x2000 @ ritmo 21k rec 2'
+        goals: [umbral_lactico]
+      - label: 4x2000 @ ritmo 21k rec 2'
+        goals: [resistencia_especifica_21k, ritmo_10k]
+      - label: 5x2000 @ ritmo 21k rec 2'
+        goals: [resistencia_especifica_21k]
+      - label: 3x3000 @ ritmo 21k rec 3'
+        goals: [umbral_lactico]
+      - label: 2x4000 @ ritmo 21k rec 3'
+        goals: [resistencia_especifica_21k]
+
+    ritmo_10k_y_resistencia_especifica:
+      - label: 5x1000 @ ritmo 10k rec 2'
+        goals: [vo2max, resistencia_especifica_10k]
+      - label: 6x1000 @ ritmo 10k rec 2'
+        goals: [ritmo_10k]
+      - label: 8x1000 @ ritmo 10k rec 2'
+        goals: [ritmo_10k, potencia_aerobica]
+      - label: 10x1000 @ ritmo 10k rec 90"-2'
+        goals: [resistencia_especifica_10k]
+      - label: 4x1200 @ ritmo 10k rec 2'
+        goals: [ritmo_10k]
+      - label: 5x1200 @ ritmo 10k rec 2'
+        goals: [ritmo_10k]
+      - label: 6x1200 @ ritmo 10k rec 2'
+        goals: [resistencia_especifica_10k]
+      - label: 4x1600 @ ritmo 10k rec 2'-3'
+        goals: [ritmo_10k]
+      - label: 5x1600 @ ritmo 10k rec 2'-3'
+        goals: [resistencia_especifica_10k]
+      - label: 3x2000 @ ritmo 10k rec 3'
+        goals: [ritmo_10k]
+      - label: 4x2000 @ ritmo 10k rec 3'
+        goals: [resistencia_especifica_10k]
+      - label: 2x3000 @ ritmo 10k rec 4'
+        goals: [ritmo_10k]
+      - label: 3x3000 @ ritmo 10k rec 4'
+        goals: [resistencia_especifica_10k]
+      - label: 8x1000m con 2' rec a ritmo objetivo 10k
+        source_note: World Athletics example
+        goals: [ritmo_10k, resistencia_especifica_10k]
+      - label: 1600-1200-800-800-1200-1600 a ritmo 10k rec 2'-3'
+        source_note: World Athletics example
+        goals: [ritmo_10k, resistencia_especifica_10k]
+
+    vo2max_clasico:
+      - label: 10x400 @ ritmo 5k rec 200m trote
+        goals: [vo2max, economia_de_carrera]
+      - label: 12x400 @ ritmo 5k rec 200m trote
+        goals: [vo2max]
+      - label: 15x400 @ ritmo 5k rec 200m trote
+        goals: [vo2max]
+      - label: 8x500 @ ritmo 5k rec 90"
+        goals: [vo2max]
+      - label: 10x500 @ ritmo 5k rec 90"
+        goals: [vo2max]
+      - label: 6x600 @ ritmo 5k rec 2'
+        goals: [vo2max]
+      - label: 8x600 @ ritmo 5k rec 2'
+        goals: [vo2max]
+      - label: 10x600 @ ritmo 5k rec 2'
+        goals: [vo2max]
+      - label: 5x800 @ ritmo 5k rec 2'
+        goals: [vo2max]
+      - label: 6x800 @ ritmo 5k rec 2'
+        goals: [vo2max]
+      - label: 8x800 @ ritmo 5k rec 2'
+        goals: [vo2max]
+      - label: 4x1000 @ ritmo 5k rec 2'-3'
+        goals: [vo2max]
+      - label: 5x1000 @ ritmo 5k rec 2'-3'
+        goals: [vo2max]
+      - label: 6x1000 @ ritmo 5k rec 2'-3'
+        goals: [vo2max]
+      - label: 4x1200 @ ritmo 5k rec 3'
+        goals: [vo2max]
+      - label: 5x1200 @ ritmo 5k rec 3'
+        goals: [vo2max]
+      - label: 3x1600 @ ritmo 5k rec 3'-4'
+        goals: [vo2max]
+
+    vo2max_por_tiempo:
+      - label: 4x3' @ ritmo 5k rec 2'
+        goals: [vo2max]
+      - label: 5x3' @ ritmo 5k rec 2'
+        goals: [vo2max]
+      - label: 6x3' @ ritmo 5k rec 2'
+        goals: [vo2max]
+      - label: 4x4' @ ritmo 5k rec 3'
+        goals: [vo2max]
+      - label: 5x4' @ ritmo 5k rec 3'
+        goals: [vo2max]
+      - label: 6x4' @ ritmo 5k rec 3'
+        goals: [vo2max]
+      - label: 4x5' @ ritmo 5k rec 3'
+        goals: [vo2max]
+      - label: 5x5' @ ritmo 5k rec 3'
+        goals: [vo2max]
+      - label: 3x6' @ ritmo 5k rec 3'
+        goals: [vo2max]
+      - label: 4x6' @ ritmo 5k-10k rec 3'
+        goals: [potencia_aerobica]
+
+    ritmo_5k_especifico:
+      - label: 12x400 @ ritmo 5k rec 60"-75"
+        goals: [ritmo_5k]
+      - label: 8x600 @ ritmo 5k rec 90"
+        goals: [ritmo_5k]
+      - label: 6x800 @ ritmo 5k rec 2'
+        goals: [ritmo_5k]
+      - label: 5x1000 @ ritmo 5k rec 2'-3'
+        goals: [ritmo_5k]
+      - label: 3x1600 @ ritmo 5k rec 3'
+        goals: [ritmo_5k]
+      - label: 2000 + 1600 + 1200 + 800 + 400 @ ritmo 5k progresivo rec 2'-3'
+        goals: [ritmo_5k]
+      - label: 5x1000 @ ritmo 5k + 4x200 rapido
+        goals: [ritmo_5k, velocidad_aerobica]
+      - label: 3x1000 @ ritmo 5k + 6x400 @ ritmo 3k rec 2'
+        goals: [ritmo_5k, tolerancia_al_lactato]
+      - label: 2x1600 @ ritmo 5k + 4x800 @ ritmo 5k rec 2'
+        goals: [ritmo_5k]
+      - label: 3000 @ ritmo 5k + 5x400 @ ritmo 3k rec 90"
+        goals: [ritmo_5k, velocidad_aerobica]
+
+    ritmo_3k_potencia_anaerobica_controlada:
+      - label: 10x300 @ ritmo 3k rec 100m trote
+        goals: [velocidad_aerobica]
+      - label: 12x300 @ ritmo 3k rec 100m trote
+        goals: [economia_de_carrera, vo2max]
+      - label: 8x400 @ ritmo 3k rec 90"
+        goals: [vo2max, velocidad_aerobica]
+      - label: 10x400 @ ritmo 3k rec 90"
+        goals: [velocidad_aerobica]
+      - label: 6x500 @ ritmo 3k rec 2'
+        goals: [velocidad_aerobica]
+      - label: 8x500 @ ritmo 3k rec 2'
+        goals: [vo2max]
+      - label: 5x600 @ ritmo 3k rec 2'
+        goals: [velocidad_aerobica]
+      - label: 6x600 @ ritmo 3k rec 2'
+        goals: [potencia_aerobica]
+      - label: 4x800 @ ritmo 3k rec 3'
+        goals: [velocidad_aerobica]
+      - label: 5x800 @ ritmo 3k rec 3'
+        goals: [velocidad_aerobica]
+      - label: 3x1000 @ ritmo 3k rec 3'-4'
+        goals: [potencia_aerobica]
+
+    ritmo_1500_milla_velocidad_resistencia:
+      - label: 10x200 @ ritmo 1500 rec 200m trote
+        goals: [economia_de_carrera]
+      - label: 12x200 @ ritmo 1500 rec 200m trote
+        goals: [velocidad_resistencia]
+      - label: 8x300 @ ritmo 1500 rec 2'
+        goals: [velocidad_resistencia]
+      - label: 10x300 @ ritmo 1500 rec 2'
+        goals: [velocidad_resistencia]
+      - label: 6x400 @ ritmo 1500 rec 2'-3'
+        goals: [velocidad_resistencia]
+      - label: 8x400 @ ritmo 1500 rec 2'-3'
+        goals: [velocidad_resistencia]
+      - label: 5x500 @ ritmo 1500 rec 3'
+        goals: [capacidad_anaerobica]
+      - label: 4x600 @ ritmo 1500 rec 4'
+        goals: [velocidad_resistencia]
+      - label: 3x800 @ ritmo 1500-milla rec 5'
+        goals: [velocidad_resistencia]
+      - label: 600 + 500 + 400 + 300 + 200 @ ritmo 1500 rec completa
+        goals: [velocidad_resistencia]
+      - label: 400 + 300 + 200 + 100 rapido rec completa
+        goals: [activacion_precompetitiva]
+
+    tolerancia_lactato_capacidad_anaerobica:
+      - label: 6x300 muy fuerte rec 3'
+        goals: [capacidad_anaerobica]
+      - label: 8x300 muy fuerte rec 3'
+        goals: [tolerancia_al_lactato]
+      - label: 5x400 @ ritmo 1500 rec 3'
+        goals: [capacidad_anaerobica]
+      - label: 6x400 @ ritmo 1500 rec 3'
+        goals: [tolerancia_al_lactato]
+      - label: 4x500 @ ritmo 1500 rec 4'
+        goals: [capacidad_anaerobica]
+      - label: 3x600 @ ritmo 1500 rec 5'
+        goals: [tolerancia_al_lactato]
+      - label: 2x800 @ ritmo 1500-milla rec 6'
+        goals: [capacidad_anaerobica]
+      - label: 3x500 + 3x300 rapidos rec completa
+        goals: [tolerancia_al_lactato]
+      - label: 4x200 all fast relaxed rec completa
+        goals: [velocidad_resistencia]
+
+    ritmo_maraton:
+      - label: 40' @ ritmo M
+        goals: [ritmo_maraton]
+      - label: 50' @ ritmo M
+        goals: [ritmo_maraton]
+      - label: 60' @ ritmo M
+        goals: [ritmo_maraton]
+      - label: 70' @ ritmo M
+        goals: [ritmo_maraton]
+      - label: 2x30' @ ritmo M rec 5'
+        goals: [resistencia_especifica_maraton]
+      - label: 3x20' @ ritmo M rec 3'
+        goals: [resistencia_especifica_maraton]
+      - label: 4x15' @ ritmo M rec 2'
+        goals: [ritmo_maraton]
+      - label: 5x12' @ ritmo M rec 2'
+        goals: [economia_de_carrera, ritmo_maraton]
+      - label: 3x5k @ ritmo M rec 1k suave
+        goals: [resistencia_especifica_maraton]
+      - label: 4x5k @ ritmo M rec 1k suave
+        goals: [resistencia_especifica_maraton]
+      - label: 2x8k @ ritmo M rec 1k suave
+        goals: [resistencia_especifica_maraton]
+      - label: 16k continuos @ ritmo M
+        goals: [resistencia_especifica_maraton]
+      - label: 20k continuos @ ritmo M
+        goals: [resistencia_especifica_maraton]
+
+    tiradas_largas_maraton:
+      - label: 24k suave
+        goals: [fondo_largo, resistencia_especifica_maraton]
+      - label: 26k suave
+        goals: [fondo_largo, resistencia_especifica_maraton]
+      - label: 28k suave
+        goals: [fondo_largo, resistencia_especifica_maraton]
+      - label: 30k suave
+        goals: [fondo_largo, resistencia_especifica_maraton]
+      - label: 32k suave
+        goals: [fondo_largo, resistencia_especifica_maraton]
+      - label: 24k con ultimos 6k @ ritmo M
+        goals: [resistencia_especifica_maraton]
+      - label: 26k con ultimos 8k @ ritmo M
+        goals: [resistencia_especifica_maraton]
+      - label: 28k con ultimos 10k @ ritmo M
+        goals: [resistencia_especifica_maraton]
+      - label: 30k con ultimos 12k @ ritmo M
+        goals: [resistencia_especifica_maraton]
+      - label: 32k con 3x5k @ ritmo M rec 1k suave
+        goals: [resistencia_especifica_maraton]
+      - label: 30k alternando 3k M / 2k suave
+        goals: [ritmo_maraton, resistencia_especifica_maraton]
+      - label: 34k suave con ultimos 5k progresivos
+        goals: [fondo_largo, stamina]
+
+    medio_maraton_especifico:
+      - label: 8k @ ritmo 21k
+        goals: [ritmo_medio_maraton]
+      - label: 10k @ ritmo 21k
+        goals: [ritmo_medio_maraton]
+      - label: 12k @ ritmo 21k
+        goals: [resistencia_especifica_21k]
+      - label: 2x5k @ ritmo 21k rec 3'
+        goals: [resistencia_especifica_21k]
+      - label: 3x4k @ ritmo 21k rec 3'
+        goals: [resistencia_especifica_21k]
+      - label: 4x3k @ ritmo 21k rec 2'
+        goals: [resistencia_especifica_21k]
+      - label: 5x2k @ ritmo 21k rec 90"
+        goals: [resistencia_especifica_21k]
+      - label: 6x2k @ ritmo 21k rec 90"
+        goals: [resistencia_especifica_21k]
+      - label: 16k progresivo 8k E + 6k M + 2k 21k
+        goals: [resistencia_especifica_21k, ritmo_maraton]
+      - label: 18k con 3x4k @ ritmo 21k rec 1k suave
+        goals: [resistencia_especifica_21k]
+      - label: 20k con ultimos 8k @ ritmo 21k-M
+        goals: [resistencia_especifica_21k]
+
+    diez_k_especifico_avanzado:
+      - label: 3x2k @ ritmo 10k rec 2' + 4x400 @ ritmo 5k
+        goals: [ritmo_10k, resistencia_especifica_10k]
+      - label: 4x2k @ ritmo 10k rec 2' + 4x200 rapido
+        goals: [ritmo_10k, resistencia_especifica_10k]
+      - label: 5k @ ritmo 10k + 5x1000 @ ritmo 10k rec 2'
+        goals: [resistencia_especifica_10k]
+      - label: 2x3k @ ritmo 10k rec 3' + 4x500 @ ritmo 5k
+        goals: [resistencia_especifica_10k, vo2max]
+      - label: 6k @ ritmo 10k controlado + 6x300 rapido
+        goals: [ritmo_10k, velocidad_aerobica]
+      - label: 12x600 @ ritmo 10k rec 60"-75"
+        goals: [ritmo_10k]
+      - label: 16x400 @ ritmo 10k rec 45"-60"
+        goals: [economia_de_carrera, ritmo_10k]
+
+    cinco_k_especifico_avanzado:
+      - label: 2x2k @ ritmo 5k rec 4' + 4x400 @ ritmo 3k
+        goals: [ritmo_5k, velocidad_aerobica]
+      - label: 3x1600 @ ritmo 5k rec 3' + 4x200 rapido
+        goals: [ritmo_5k, activacion_precompetitiva]
+      - label: 5x1000 @ ritmo 5k rec 2' + 5x200 rapido
+        goals: [ritmo_5k, velocidad_aerobica]
+      - label: 6x800 @ ritmo 5k rec 90" + 4x300 @ ritmo 3k
+        goals: [vo2max, velocidad_aerobica]
+      - label: 3k @ ritmo 5k + 2k @ ritmo 5k + 1k rapido rec 4'
+        goals: [ritmo_5k]
+      - label: 5x1200 @ ritmo 5k rec 2'
+        goals: [ritmo_5k]
+
+    sesiones_piramidales:
+      - label: 200-400-600-800-600-400-200 @ ritmo 3k-5k rec igual distancia trote
+        goals: [vo2max, economia_de_carrera]
+      - label: 400-800-1200-800-400 @ ritmo 5k rec 2'
+        goals: [vo2max]
+      - label: 800-1200-1600-1200-800 @ ritmo 10k rec 2'-3'
+        goals: [ritmo_10k]
+      - label: 1600-1200-800-800-1200-1600 @ ritmo 10k rec 2'-3'
+        goals: [ritmo_10k, resistencia_especifica_10k]
+      - label: 1000-2000-3000-2000-1000 @ ritmo 21k-10k rec 2'-3'
+        goals: [umbral_lactico, resistencia_especifica_21k]
+      - label: 3k-2k-1k @ ritmo 10k progresivo rec 3'
+        goals: [ritmo_10k]
+      - label: 5k-3k-2k @ ritmo 21k-10k rec 3'
+        goals: [ritmo_medio_maraton, ritmo_10k]
+
+    alternancias_y_cambios_de_ritmo:
+      - label: 10k alternando 1k @ ritmo M / 1k suave
+        goals: [ritmo_maraton]
+      - label: 12k alternando 1k @ ritmo 21k / 1k suave
+        goals: [umbral_fraccionado]
+      - label: 10k alternando 500m @ ritmo 10k / 500m suave
+        goals: [ritmo_10k]
+      - label: 12k alternando 500m @ ritmo 10k / 500m suave
+        goals: [resistencia_especifica_10k]
+      - label: 8k alternando 400m @ ritmo 5k / 400m suave
+        goals: [vo2max]
+      - label: 10k alternando 400m @ ritmo 5k / 400m suave
+        goals: [vo2max]
+      - label: 6k alternando 1' rapido / 1' suave
+        goals: [ritmo_5k]
+      - label: 40' alternando 3' M / 2' E
+        goals: [resistencia_especifica_maraton]
+      - label: 50' alternando 4' 21k / 2' E
+        goals: [umbral_fraccionado]
+      - label: 60' alternando 5' M / 5' E
+        goals: [resistencia_aerobica]
+
+    final_fuerte_y_cierre:
+      - label: 60' suave + ultimos 10' @ ritmo M
+        goals: [ritmo_maraton, stamina]
+      - label: 70' suave + ultimos 15' @ ritmo M
+        goals: [resistencia_especifica_maraton]
+      - label: 80' suave + ultimos 20' @ ritmo M
+        goals: [resistencia_especifica_maraton]
+      - label: 90' suave + ultimos 20' @ ritmo 21k-M
+        goals: [resistencia_especifica_21k, ritmo_maraton]
+      - label: 20k suave + ultimos 5k @ ritmo M
+        goals: [resistencia_especifica_maraton]
+      - label: 24k suave + ultimos 6k @ ritmo M
+        goals: [resistencia_especifica_maraton]
+      - label: 16k suave + ultimos 3k @ ritmo 10k-21k
+        goals: [ritmo_10k, ritmo_medio_maraton]
+      - label: 12k suave + ultimos 2k @ ritmo 10k
+        goals: [ritmo_10k]
+
+    precompeticion_y_afinado:
+      - label: 30' suave + 4x100 progresivos
+        goals: [activacion_precompetitiva]
+      - label: 25' suave + 4x200 @ ritmo 5k rec completa
+        goals: [activacion_precompetitiva]
+      - label: 30' suave + 3x1' @ ritmo 5k rec 2'
+        goals: [activacion_precompetitiva]
+      - label: 20' suave + 2x5' @ ritmo 21k rec 3'
+        goals: [activacion_precompetitiva]
+      - label: 30' suave + 3x1000 @ ritmo 10k rec 2'
+        goals: [activacion_precompetitiva]
+      - label: 25' suave + 6x400 @ ritmo 5k rec 90"
+        goals: [activacion_precompetitiva]
+      - label: 40' con 15' @ ritmo M
+        goals: [activacion_precompetitiva]
+      - label: 20' suave + 5x100 rectas
+        goals: [activacion_precompetitiva]
+
+    test_y_control_de_forma:
+      - label: Test 3k maximo
+        goals: [test_de_forma, vo2max]
+      - label: Test 5k maximo
+        goals: [test_de_forma, ritmo_5k]
+      - label: Test 10k maximo
+        goals: [test_de_forma, ritmo_10k]
+      - label: Test 20' maximo controlado
+        goals: [test_de_forma, umbral_lactico]
+      - label: Test 30' fuerte estable
+        goals: [test_de_forma, umbral_lactico]
+      - label: Test 2x3k @ ritmo 10k rec 3'
+        goals: [test_de_forma, ritmo_10k]
+      - label: Test 3x2k @ ritmo 10k rec 2'
+        goals: [test_de_forma, ritmo_10k]
+      - label: Test 2x5k @ ritmo 21k rec 3'
+        goals: [test_de_forma, ritmo_medio_maraton]
+      - label: Test 16k @ ritmo M controlado
+        goals: [test_de_forma, ritmo_maraton]
+      - label: Test tirada 28k con 12k M
+        goals: [test_de_forma, resistencia_especifica_maraton]
+
+    trail_montana_ultra:
+      - label: 90' trail suave
+        goals: [trail_montana, base_aerobica]
+      - label: 2h trail suave
+        goals: [trail_montana, resistencia_aerobica]
+      - label: 3h trail suave
+        goals: [ultra_tiempo_en_pies]
+      - label: 4h trail suave
+        goals: [ultra_tiempo_en_pies]
+      - label: 5h caminata-carrera en montana
+        goals: [ultra_tiempo_en_pies]
+      - label: 10x2' subida fuerte rec bajando
+        goals: [trail_montana, fuerza_especifica]
+      - label: 6x5' subida constante rec bajando
+        goals: [trail_montana, umbral_lactico]
+      - label: 3x15' subida @ esfuerzo 21k rec bajando
+        goals: [trail_montana, umbral_lactico]
+      - label: 2h con 1000m+ suave
+        goals: [trail_montana, fuerza_especifica]
+      - label: 3h con 1500m+ suave
+        goals: [ultra_tiempo_en_pies]
+      - label: Back-to-back 2h sabado + 2h domingo suave
+        goals: [ultra_tiempo_en_pies]
+      - label: Back-to-back 3h sabado + 2h domingo suave
+        goals: [ultra_tiempo_en_pies]
+      - label: 60' bajadas tecnicas controladas
+        goals: [trail_montana, tecnica]
+
+    doble_umbral_avanzado:
+      notes:
+        - Solo para corredores con base alta y buena recuperacion.
+      sessions:
+        - label: AM 5x6' @ umbral rec 1' + PM 10x1000 @ umbral suave rec 60"
+          goals: [umbral_fraccionado, umbral_lactico]
+        - label: AM 4x8' @ umbral rec 90" + PM 20x400 @ umbral rec 30"
+          goals: [umbral_lactico]
+        - label: AM 3x10' @ umbral rec 2' + PM 6x5' @ umbral rec 1'
+          goals: [umbral_fraccionado, umbral_lactico]
+        - label: AM 10x1000 @ ritmo 21k rec 60" + PM 30' tempo suave
+          goals: [resistencia_especifica_10k, resistencia_especifica_21k]

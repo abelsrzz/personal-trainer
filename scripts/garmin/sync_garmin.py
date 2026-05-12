@@ -15,6 +15,14 @@ from garminconnect import Garmin
 from garminconnect.workout import ExecutableStep, FitnessEquipmentWorkout, RepeatGroup, RunningWorkout, WorkoutSegment
 
 try:
+    from scripts.system.athlete_state import write_athlete_state
+except ModuleNotFoundError:  # pragma: no cover - direct script execution path fix
+    import sys
+
+    sys.path.append(str(Path(__file__).resolve().parents[2]))
+    from scripts.system.athlete_state import write_athlete_state
+
+try:
     from garminconnect import ActivityDownloadFormat
 except ImportError:  # pragma: no cover - depends on installed library version
     ActivityDownloadFormat = None
@@ -169,8 +177,40 @@ def normalize_path(path: Path) -> Path:
     return (ROOT / path).resolve()
 
 
+def display_path(path: Path) -> str:
+    try:
+        return str(path.relative_to(ROOT))
+    except ValueError:
+        return str(path)
+
+
 def iso_date_days_ago(days: int) -> str:
     return (date.today() - timedelta(days=days)).isoformat()
+
+
+def normalize_weight_kg(value: Any) -> float | None:
+    if value in {None, ""}:
+        return None
+    numeric = float(value)
+    if numeric > 250:
+        return round(numeric / 1000.0, 3)
+    return round(numeric, 3)
+
+
+def imported_activity_max_hr() -> int | None:
+    values: list[int] = []
+    for path in sorted((DEFAULT_IMPORT_ROOT / "activities").glob("*/summary.json")):
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            continue
+        max_hr = payload.get("maxHR")
+        if max_hr is None:
+            continue
+        numeric = int(float(max_hr))
+        if numeric >= 120:
+            values.append(numeric)
+    return max(values) if values else None
 
 
 def activity_dir(activity: dict[str, Any]) -> Path:
@@ -468,7 +508,7 @@ def schedule_workout_file(client: Garmin, workout_file: Path) -> None:
     prefers_other_fallback = normalized_sport in {"mobility", "stretching", "other"}
     logger.info(
         "Scheduling workout file=%s name=%s date=%s sport=%s prefers_other_fallback=%s",
-        str(workout_path.relative_to(ROOT)),
+        display_path(workout_path),
         workout.get("name"),
         schedule_date,
         sport,
@@ -480,7 +520,7 @@ def schedule_workout_file(client: Garmin, workout_file: Path) -> None:
         logger.info("Uploading Garmin workout mode=%s payload_preview=%s", upload_mode, preview_json(payload.to_dict()))
         response = client.upload_workout(payload.to_dict())
     except Exception as exc:
-        logger.warning("Structured Garmin upload failed file=%s error=%s", str(workout_path.relative_to(ROOT)), exc)
+        logger.warning("Structured Garmin upload failed file=%s error=%s", display_path(workout_path), exc)
         if prefers_other_fallback:
             upload_mode = "other_workout_fallback"
             print(f"Structured upload failed, retrying as Garmin other workout: {exc}")
@@ -492,7 +532,7 @@ def schedule_workout_file(client: Garmin, workout_file: Path) -> None:
                 upload_mode = "fitness_equipment_fallback"
                 print(f"Garmin other workout failed, retrying as fitness equipment: {other_exc}")
                 payload = build_workout_payload({"workout": {**workout, "sport": "fitness_equipment"}}, include_targets=False)
-                logger.warning("Garmin other upload failed file=%s error=%s", str(workout_path.relative_to(ROOT)), other_exc)
+                logger.warning("Garmin other upload failed file=%s error=%s", display_path(workout_path), other_exc)
                 logger.info("Uploading Garmin workout mode=%s payload_preview=%s", upload_mode, preview_json(payload.to_dict()))
                 response = client.upload_workout(payload.to_dict())
         else:
@@ -508,7 +548,7 @@ def schedule_workout_file(client: Garmin, workout_file: Path) -> None:
 
     logger.info(
         "Garmin workout uploaded file=%s workout_id=%s upload_mode=%s response_preview=%s",
-        str(workout_path.relative_to(ROOT)),
+        display_path(workout_path),
         workout_id,
         upload_mode,
         preview_json(response),
@@ -516,7 +556,7 @@ def schedule_workout_file(client: Garmin, workout_file: Path) -> None:
     scheduled = client.schedule_workout(workout_id, schedule_date)
     logger.info(
         "Garmin workout scheduled file=%s workout_id=%s date=%s response_preview=%s",
-        str(workout_path.relative_to(ROOT)),
+        display_path(workout_path),
         workout_id,
         schedule_date,
         preview_json(scheduled),
@@ -527,7 +567,7 @@ def schedule_workout_file(client: Garmin, workout_file: Path) -> None:
         "generated_at": datetime.utcnow().isoformat() + "Z",
         "status": "scheduled",
         "upload_mode": upload_mode,
-        "workout_file": str(workout_path.relative_to(ROOT)),
+        "workout_file": display_path(workout_path),
         "uploaded_response": response,
         "scheduled_response": scheduled,
     })
@@ -572,6 +612,13 @@ def import_daily_metrics(client: Garmin, days: int) -> None:
     start = date.today() - timedelta(days=days)
     for offset in range(days + 1):
         current = (start + timedelta(days=offset)).isoformat()
+        sleep_payload = None
+        sleep_method = getattr(client, "get_sleep_data", None)
+        if sleep_method is not None:
+            try:
+                sleep_payload = sleep_method(current)
+            except Exception as exc:
+                sleep_payload = {"error": str(exc)}
         payload = {
             "date": current,
             "heart_rates": client.get_heart_rates(current),
@@ -579,6 +626,7 @@ def import_daily_metrics(client: Garmin, days: int) -> None:
             "training_readiness": client.get_training_readiness(current),
             "training_status": client.get_training_status(current),
             "max_metrics": client.get_max_metrics(current),
+            "sleep": sleep_payload,
         }
         save_json(DEFAULT_IMPORT_ROOT / "daily" / f"{current}.json", payload)
         imported_days.append(current)
@@ -598,21 +646,35 @@ def import_daily_metrics(client: Garmin, days: int) -> None:
 def import_athlete_profile(client: Garmin) -> None:
     profile: dict[str, Any] = {}
 
-    for method_name in ["get_user_summary", "get_full_name", "get_user_profile", "get_settings", "get_gear", "get_personal_record"]:
+    def call_client(method_name: str, *args: Any) -> Any:
         method = getattr(client, method_name, None)
         if method is None:
-            continue
+            return None
         try:
-            profile[method_name] = method()
+            return method(*args)
         except Exception as exc:
-            profile[method_name] = {"error": str(exc)}
+            return {"error": str(exc)}
+
+    profile["get_full_name"] = call_client("get_full_name")
+    profile["get_user_profile"] = call_client("get_user_profile")
+    profile["get_settings"] = call_client("get_settings")
+    profile["get_personal_record"] = call_client("get_personal_record")
+
+    user_profile = profile.get("get_user_profile") if isinstance(profile.get("get_user_profile"), dict) else {}
+    user_data = user_profile.get("userData") if isinstance(user_profile.get("userData"), dict) else {}
+    user_id = user_profile.get("id") or user_profile.get("userProfileId") or user_data.get("userProfilePk")
+    profile["get_user_summary"] = call_client("get_user_summary", date.today().isoformat())
+    if user_id is not None:
+        profile["get_gear"] = call_client("get_gear", user_id)
+    else:
+        profile["get_gear"] = {"error": "Could not determine Garmin user profile id for gear sync"}
 
     flattened = {
         "synced_at": datetime.utcnow().isoformat() + "Z",
         "raw": profile,
     }
 
-    user_profile = profile.get("get_user_profile") if isinstance(profile.get("get_user_profile"), dict) else {}
+    user_summary = profile.get("get_user_summary") if isinstance(profile.get("get_user_summary"), dict) else {}
     user_settings = profile.get("get_settings") if isinstance(profile.get("get_settings"), dict) else {}
     gear = profile.get("get_gear") if isinstance(profile.get("get_gear"), list) else []
     full_name = profile.get("get_full_name")
@@ -620,13 +682,18 @@ def import_athlete_profile(client: Garmin) -> None:
         flattened["full_name"] = full_name
 
     flattened["display_name"] = user_profile.get("displayName") or user_profile.get("fullName")
-    flattened["gender"] = user_profile.get("gender") or user_settings.get("gender")
-    flattened["birth_date"] = user_profile.get("birthDate") or user_settings.get("birthDate")
-    flattened["weight_kg"] = user_profile.get("weight") or user_settings.get("weight")
-    flattened["height_cm"] = user_profile.get("height") or user_settings.get("height")
-    flattened["resting_heart_rate"] = user_profile.get("restingHeartRate") or user_settings.get("restingHR")
-    flattened["max_heart_rate"] = user_profile.get("maxHeartRate") or user_settings.get("maxHR")
-    flattened["vo2max"] = user_profile.get("vo2MaxRunning") or user_profile.get("vo2Max")
+    flattened["gender"] = user_data.get("gender") or user_profile.get("gender") or user_settings.get("gender")
+    flattened["birth_date"] = user_data.get("birthDate") or user_profile.get("birthDate") or user_settings.get("birthDate")
+    flattened["weight_kg"] = normalize_weight_kg(user_data.get("weight") or user_profile.get("weight") or user_settings.get("weight"))
+    flattened["height_cm"] = user_data.get("height") or user_profile.get("height") or user_settings.get("height")
+    flattened["resting_heart_rate"] = user_summary.get("restingHeartRate") or user_profile.get("restingHeartRate") or user_settings.get("restingHR")
+    explicit_max_hr = user_data.get("maxHeartRate") or user_profile.get("maxHeartRate") or user_settings.get("maxHR")
+    explicit_max_hr = int(float(explicit_max_hr)) if explicit_max_hr not in {None, ""} else None
+    flattened["max_heart_rate"] = explicit_max_hr if explicit_max_hr and explicit_max_hr >= 120 else imported_activity_max_hr()
+    flattened["vo2max"] = user_data.get("vo2MaxRunning") or user_profile.get("vo2MaxRunning") or user_profile.get("vo2Max")
+    flattened["lactate_threshold_heart_rate"] = user_data.get("lactateThresholdHeartRate") or user_profile.get("lactateThresholdHeartRate")
+    flattened["training_days"] = user_data.get("availableTrainingDays") or []
+    flattened["preferred_long_training_days"] = user_data.get("preferredLongTrainingDays") or []
     flattened["gear"] = []
 
     for item in gear:
@@ -642,7 +709,8 @@ def import_athlete_profile(client: Garmin) -> None:
 
     target_dir = DEFAULT_IMPORT_ROOT / "profile"
     save_json(target_dir / "athlete_profile_snapshot.json", flattened)
-    print(json.dumps({"written": str((target_dir / 'athlete_profile_snapshot.json').relative_to(ROOT))}, indent=2, ensure_ascii=True))
+    write_athlete_state()
+    print(json.dumps({"written": display_path(target_dir / 'athlete_profile_snapshot.json')}, indent=2, ensure_ascii=True))
 
 
 def main() -> None:

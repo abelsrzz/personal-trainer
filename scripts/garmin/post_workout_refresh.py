@@ -12,6 +12,14 @@ from typing import Any
 
 import yaml
 
+try:
+    from scripts.system.athlete_state import write_athlete_state
+except ModuleNotFoundError:  # pragma: no cover - direct script execution path fix
+    import sys
+
+    sys.path.append(str(Path(__file__).resolve().parents[2]))
+    from scripts.system.athlete_state import write_athlete_state
+
 
 ROOT = Path(__file__).resolve().parents[2]
 IMPORT_ROOT = ROOT / "training" / "completed" / "imports" / "garmin" / "activities"
@@ -69,10 +77,17 @@ def load_state() -> dict[str, Any]:
         STATE_PATH,
         {
             "last_seen_activity_id": None,
+            "last_seen_activity_date": None,
             "last_processed_activity_id": None,
+            "last_processed_activity_date": None,
             "last_processed_at": None,
             "last_successful_run": None,
             "last_error": None,
+            "last_activity_import_at": None,
+            "last_daily_import_at": None,
+            "last_profile_sync_at": None,
+            "next_action": "import_recent_activities",
+            "timer_interval_minutes": 5,
             "processed_activities": [],
             "processed_feedback_updates": [],
             "runs": [],
@@ -321,12 +336,16 @@ def main() -> None:
     pending_feedback_updates = [item for item in feedback_updates() if (item["slug"], item["updated_at"]) not in processed_feedback_versions]
     if summaries:
         state["last_seen_activity_id"] = summaries[-1]["activity_id"]
+        state["last_seen_activity_date"] = summaries[-1]["activity_date"]
+    state["last_activity_import_at"] = utcnow_iso()
 
     if not new_activities and not pending_feedback_updates:
         state["last_error"] = None
         state["last_successful_run"] = utcnow_iso()
+        state["next_action"] = "wait_for_new_activity_or_feedback"
         remember_run(state, [], launched=False)
         save_json(STATE_PATH, state)
+        write_athlete_state()
         print(json.dumps({"detected": 0, "triggered": False}, indent=2, ensure_ascii=True))
         return
 
@@ -335,9 +354,12 @@ def main() -> None:
         ok = True
         if not args.skip_daily:
             ok, pipeline_error = run_step([sys.executable, str(SYNC_SCRIPT), "import-daily", "--days", str(args.daily_days)])
+            if ok:
+                state["last_daily_import_at"] = utcnow_iso()
         if ok and not args.skip_athlete_profile:
             ok, pipeline_error = run_step([sys.executable, str(SYNC_SCRIPT), "import-athlete-profile"])
             if ok:
+                state["last_profile_sync_at"] = utcnow_iso()
                 ok, pipeline_error = run_step([sys.executable, str(ATHLETE_SYNC_SCRIPT)])
         for activity in sorted(new_activities, key=lambda item: (item["activity_date"], item["activity_id"])):
             if not ok:
@@ -378,6 +400,7 @@ def main() -> None:
             remember_processed(state, activity, "success" if ok else "error", review_slug=review_slug)
             if ok:
                 state["last_processed_activity_id"] = activity["activity_id"]
+                state["last_processed_activity_date"] = activity["activity_date"]
                 state["last_processed_at"] = utcnow_iso()
         if ok:
             for item in pending_feedback_updates:
@@ -403,8 +426,17 @@ def main() -> None:
 
     state["last_error"] = pipeline_error
     state["last_successful_run"] = utcnow_iso() if pipeline_error is None else state.get("last_successful_run")
+    if pipeline_error:
+        state["next_action"] = "inspect_last_error"
+    elif pending_feedback_updates:
+        state["next_action"] = "wait_for_new_activity_or_feedback"
+    elif new_activities:
+        state["next_action"] = "wait_for_new_activity"
+    else:
+        state["next_action"] = "wait_for_new_activity_or_feedback"
     remember_run(state, new_activities, launched=not args.skip_trigger, error=pipeline_error)
     save_json(STATE_PATH, state)
+    write_athlete_state()
 
     if pipeline_error:
         raise SystemExit(pipeline_error)

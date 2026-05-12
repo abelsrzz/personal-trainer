@@ -1,0 +1,15 @@
+workout:
+  name: Rodaje 7 km controlado
+  schedule_date: 2026-05-28
+  sport: running
+  description: Rodaje facil para consolidar continuidad aerobica sin convertir el dia en una sesion de carga.
+  estimated_duration_s: 3120
+  steps:
+    - order: 1
+      step_type: interval
+      description: 7 km faciles
+      distance_m: 7000
+      target:
+        type: heart_rate_range
+        min_bpm: 135
+        max_bpm: 150

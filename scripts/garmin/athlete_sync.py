@@ -9,6 +9,14 @@ from typing import Any
 
 import yaml
 
+try:
+    from scripts.system.athlete_state import write_athlete_state
+except ModuleNotFoundError:  # pragma: no cover - direct script execution path fix
+    import sys
+
+    sys.path.append(str(Path(__file__).resolve().parents[2]))
+    from scripts.system.athlete_state import write_athlete_state
+
 
 ROOT = Path(__file__).resolve().parents[2]
 GARMIN_IMPORT_ROOT = ROOT / "training" / "completed" / "imports" / "garmin"
@@ -65,6 +73,8 @@ def update_profile(snapshot: dict[str, Any]) -> bool:
     birth_date = first_present(snapshot, ["birth_date", "dob"])
     weight_kg = first_present(snapshot, ["weight_kg", "weight"])
     height_cm = first_present(snapshot, ["height_cm", "height"])
+    training_days = first_present(snapshot, ["training_days"])
+    preferred_long_training_days = first_present(snapshot, ["preferred_long_training_days"])
 
     updates = {
         "name": full_name,
@@ -77,6 +87,16 @@ def update_profile(snapshot: dict[str, Any]) -> bool:
         if value is not None and athlete.get(key) != value:
             athlete[key] = value
             changed = True
+
+    availability = athlete.get("availability", {}) if isinstance(athlete.get("availability"), dict) else {}
+    if isinstance(training_days, list) and availability.get("garmin_training_days") != training_days:
+        availability["garmin_training_days"] = training_days
+        changed = True
+    if isinstance(preferred_long_training_days, list) and availability.get("garmin_preferred_long_training_days") != preferred_long_training_days:
+        availability["garmin_preferred_long_training_days"] = preferred_long_training_days
+        changed = True
+    if availability:
+        athlete["availability"] = availability
 
     source = athlete.get("data_sources", {})
     garmin_source = source.get("garmin", {})
@@ -101,12 +121,14 @@ def update_health(snapshot: dict[str, Any]) -> bool:
     resting_hr = first_present(snapshot, ["resting_heart_rate", "resting_hr"])
     max_hr = first_present(snapshot, ["max_heart_rate", "max_hr"])
     vo2max = first_present(snapshot, ["vo2max", "vo2_max"])
+    lactate_threshold_hr = first_present(snapshot, ["lactate_threshold_heart_rate"])
 
     garmin_data = health.get("garmin_metrics", {})
     desired = {
         "resting_hr": resting_hr,
         "max_hr": max_hr,
         "vo2max": vo2max,
+        "lactate_threshold_hr": lactate_threshold_hr,
         "last_sync": snapshot.get("synced_at") or utc_now(),
     }
     for key, value in desired.items():
@@ -169,6 +191,8 @@ def update_shoes(snapshot: dict[str, Any]) -> bool:
         if not model:
             continue
         distance_km = first_present(item, ["distance_km", "distance", "total_distance_km"])
+        if distance_km is not None and float(distance_km) > 1000:
+            distance_km = round(float(distance_km) / 1000.0, 3)
         existing = by_model.get(str(model))
         if existing is None:
             shoes.append(
@@ -203,6 +227,7 @@ def main() -> None:
         "shoes_updated": update_shoes(snapshot),
         "source": str(PROFILE_IMPORT_PATH.relative_to(ROOT)),
     }
+    write_athlete_state()
     print(json.dumps(result, indent=2, ensure_ascii=True))
 
 

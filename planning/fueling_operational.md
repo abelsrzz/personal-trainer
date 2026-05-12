@@ -1,7 +1,7 @@
 # Fueling Operational Plan
 
-- Generated: `2026-05-11T21:21:37.972844+00:00`
-- Athlete weight: `64.2` kg
+- Generated: `2026-05-12T10:03:46.598783+00:00`
+- Athlete weight: `64.199` kg
 
 ## Supplements
 
@@ -77,3 +77,9 @@
 - `2026-05-17 T-90m` pre: Llegar con hidratos disponibles y sin pesadez antes de la sesion exigente. (30-60 g CHO; Maltodextrina + Fructosa)
 - `2026-05-17 Durante` during: Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho. (30-45 g CHO/h + sodio; Maltodextrina + Fructosa + Electrolitos Evolytes)
 - `2026-05-17 T+30m` post: Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura. (20-30 g proteina + 3-5 g creatina + 30-60 g CHO; Proteina + Creatina + Maltodextrina)
+
+### 2026-05-31 · Rodaje 10 km Z2 continuidad
+
+- `2026-05-31 T-90m` pre: Llegar con hidratos disponibles y sin pesadez antes de la sesion exigente. (30-60 g CHO; Maltodextrina + Fructosa)
+- `2026-05-31 Durante` during: Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho. (30-45 g CHO/h + sodio; Maltodextrina + Fructosa + Electrolitos Evolytes)
+- `2026-05-31 T+30m` post: Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura. (20-30 g proteina + 3-5 g creatina + 30-60 g CHO; Proteina + Creatina + Maltodextrina)

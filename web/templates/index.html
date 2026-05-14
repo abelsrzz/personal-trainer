@@ -88,7 +88,12 @@
   </div>
   <div class="today-plan-layout">
     <div class="today-plan-main">
-      {% if today_plan.planned_workout %}
+      {% if today_plan.completed_review %}
+      <h4><a href="{{ today_plan.links.feedback_url }}">{{ today_plan.completed_review.activity_name }}</a></h4>
+      <p class="muted">{{ today_plan.completed_review.distance_km }} km · {{ today_plan.completed_review.duration }} · {{ today_plan.completed_review.pace }}</p>
+      <p>{{ today_plan.completed_review.compliance_note }}</p>
+      <p><a class="action-link" href="{{ today_plan.links.feedback_url }}">{{ 'Editar feedback' if today_plan.feedback_present else 'Añadir feedback' }}</a></p>
+      {% elif today_plan.planned_workout %}
       <div class="today-plan-title-row">
         <h4><a href="{{ today_plan.links.detail_url }}">{{ today_plan.planned_workout.name }}</a></h4>
         {% if today_plan.action_badge %}
@@ -100,11 +105,6 @@
       </div>
       <p class="muted">{{ today_plan.planned_workout.session_kind_label }} · {{ today_plan.planned_workout.estimated_duration }}</p>
       <p>{{ today_plan.planned_workout.description or today_plan.why_today }}</p>
-      {% elif today_plan.completed_review %}
-      <h4>{{ today_plan.completed_review.activity_name }}</h4>
-      <p class="muted">{{ today_plan.completed_review.distance_km }} km · {{ today_plan.completed_review.duration }} · {{ today_plan.completed_review.pace }}</p>
-      <p>{{ today_plan.completed_review.compliance_note }}</p>
-      <p><a class="action-link" href="{{ today_plan.links.feedback_url }}">{{ 'Editar feedback' if today_plan.feedback_present else 'Añadir feedback' }}</a></p>
       {% else %}
       <h4>Sin sesion operativa cargada</h4>
       <p>{{ today_plan.why_today }}</p>

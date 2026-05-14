@@ -1,8 +1,8 @@
 # Garmin Data Quality Report
 
-- Fecha de analisis: `2026-05-12`
-- Ultima actividad importada: `2026-05-09`
-- Ultimo daily importado: `2026-05-12`
+- Fecha de analisis: `2026-05-13`
+- Ultima actividad importada: `2026-05-13`
+- Ultimo daily importado: `2026-05-13`
 
 ## Cobertura
 
@@ -19,7 +19,7 @@
 
 - HRV: `137864769.0`
 - Training readiness: `-`
-- Resting HR: `55.0`
+- Resting HR: `52.0`
 - Training status: `{'userId': 137864769, 'mostRecentVO2Max': None, 'mostRecentTrainingLoadBalance': None, 'mostRecentTrainingStatus': None, 'heatAltitudeAcclimationDTO': None}`
 - Sleep score: `-`
 

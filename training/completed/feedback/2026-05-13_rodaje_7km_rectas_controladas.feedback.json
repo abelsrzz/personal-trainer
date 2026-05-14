@@ -1,0 +1,18 @@
+{
+  "source": "web_manual_feedback",
+  "created_at": "2026-05-13T20:54:22.359266",
+  "updated_at": "2026-05-13T20:54:27.779508",
+  "updated_by": "change-me",
+  "date": "2026-05-13",
+  "planned_workout_slug": "2026-05-13_rodaje_7km_rectas_controladas",
+  "completed_review_slug": "2026-05-13_rodaje_7km_rectas_controladas",
+  "garmin_activity_id": 22870230448,
+  "athlete_feedback": {
+    "rpe": 2,
+    "pain_level": 2,
+    "pain_location": "Tibial posterior izquierdo",
+    "compliance": "full",
+    "time_feeling": "ok",
+    "note": "Mejores sensaciones que en sesiones similares anteriores"
+  }
+}

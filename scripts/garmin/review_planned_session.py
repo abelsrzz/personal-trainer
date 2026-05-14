@@ -396,8 +396,15 @@ def comparable_session(candidate: dict[str, Any], planned: dict[str, Any], summa
         candidate_goal = candidate.get("planned", {}).get("goal_category")
         planned_goal = planned.get("goal_category")
         goal_groups = {
-            "easy_family": {"reintroduction_easy", "recovery_easy", "easy_aerobic", "steady_easy", "general_run"},
-            "strides_family": {"easy_plus_strides", "activation"},
+            "easy_family": {
+                "reintroduction_easy",
+                "recovery_easy",
+                "easy_aerobic",
+                "steady_easy",
+                "general_run",
+                "easy_plus_strides",
+            },
+            "strides_family": {"activation"},
             "quality_family": {"controlled_quality", "quality"},
         }
         same_goal = candidate_goal == planned_goal

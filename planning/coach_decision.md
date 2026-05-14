@@ -1,6 +1,6 @@
 # Coach Decision
 
-- Fecha de analisis: `2026-05-12`
+- Fecha de analisis: `2026-05-13`
 - Estado: `red`
 - Accion: `reduce_or_replace_quality`
 - Decision: Reducir carga inmediata: cambiar la proxima calidad por rodaje muy facil o descanso, y mantener FC capada.

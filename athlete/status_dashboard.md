@@ -1,17 +1,17 @@
 # Athlete Status Dashboard
 
-- Fecha de analisis: `2026-05-12`
+- Fecha de analisis: `2026-05-13`
 - Estado: `red`
 - Accion recomendada: `reduce_or_replace_quality`
 - Recomendacion: Reducir carga inmediata: cambiar la proxima calidad por rodaje muy facil o descanso, y mantener FC capada.
 
 ## Carga Reciente
 
-- Ultimos 7 dias: `21.1 km`, `3` carreras, `2` exigentes, tirada larga `10.8 km`.
+- Ultimos 7 dias: `28.4 km`, `4` carreras, `2` exigentes, tirada larga `10.8 km`.
 - Ultima semana completa: `26.2 km` vs semana previa `14.7 km` (`79%`).
-- Ultimos 28 dias: `83.5 km`, `12` carreras, media `20.9 km/sem`.
-- Ritmo medio 7d: `5:46/km`, FC media `166.5`.
-- Ventana movil 7d vs 7d previos: `320%`.
+- Ultimos 28 dias: `83.8 km`, `12` carreras, media `20.9 km/sem`.
+- Ritmo medio 7d: `6:04/km`, FC media `161.7`.
+- Ventana movil 7d vs 7d previos: `464%`.
 
 ## Predictor De Marca
 
@@ -41,12 +41,13 @@
 
 ## Volumen Semanal
 
-- `2026-W16`: `30.1 km`, `4` carreras, `1` exigentes, tirada `10.0 km`.
+- `2026-W16`: `23.1 km`, `3` carreras, `1` exigentes, tirada `10.0 km`.
 - `2026-W17`: `12.6 km`, `2` carreras, `1` exigentes, tirada `7.0 km`.
 - `2026-W18`: `14.7 km`, `2` carreras, `1` exigentes, tirada `8.0 km`.
 - `2026-W19`: `26.2 km`, `4` carreras, `2` exigentes, tirada `10.8 km`.
+- `2026-W20`: `7.3 km`, `1` carreras, `0` exigentes, tirada `7.3 km`.
 
 ## Datos Garmin Daily
 
-- Dias disponibles en ventana: `19`.
-- Ultimo dia diario importado: `2026-05-12`.
+- Dias disponibles en ventana: `20`.
+- Ultimo dia diario importado: `2026-05-13`.

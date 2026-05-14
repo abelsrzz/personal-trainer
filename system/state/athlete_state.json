@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-12T16:15:19.353837+00:00",
+  "generated_at": "2026-05-13T18:52:33.418383+00:00",
   "source_of_truth": "system/state/athlete_state.json",
   "identity": {
     "id": "main",
@@ -35,13 +35,13 @@
           "Work schedule 07:30-15:00"
         ],
         "garmin_training_days": [
-          "SATURDAY",
+          "TUESDAY",
           "THURSDAY",
-          "FRIDAY",
+          "SUNDAY",
+          "SATURDAY",
           "MONDAY",
           "WEDNESDAY",
-          "TUESDAY",
-          "SUNDAY"
+          "FRIDAY"
         ],
         "garmin_preferred_long_training_days": [
           "SUNDAY"
@@ -52,7 +52,7 @@
       },
       "data_sources": {
         "garmin": {
-          "last_sync": "2026-05-12T16:15:19.048007Z",
+          "last_sync": "2026-05-13T18:52:29.467424Z",
           "profile_snapshot": "training/completed/imports/garmin/profile/athlete_profile_snapshot.json"
         }
       }
@@ -69,15 +69,15 @@
       "stress_notes": null,
       "recovery_notes": "General sensations recently poor",
       "garmin_metrics": {
-        "last_sync": "2026-05-12T16:15:19.048007Z",
-        "resting_hr": 55,
+        "last_sync": "2026-05-13T18:52:29.467424Z",
+        "resting_hr": 52,
         "max_hr": 196,
         "vo2max": 46.0
       }
     },
     "zones": {
       "heart_rate": {
-        "resting_hr": 55,
+        "resting_hr": 52,
         "max_hr": 196,
         "threshold_hr": null,
         "z0": "<130",
@@ -122,7 +122,7 @@
       },
       "data_sources": {
         "garmin": {
-          "last_sync": "2026-05-12T16:15:19.048007Z",
+          "last_sync": "2026-05-13T18:52:29.467424Z",
           "profile_snapshot": "training/completed/imports/garmin/profile/athlete_profile_snapshot.json"
         }
       }
@@ -140,7 +140,7 @@
     }
   },
   "coach": {
-    "as_of": "2026-05-12",
+    "as_of": "2026-05-13",
     "status": "red",
     "action": "reduce_or_replace_quality",
     "recommendation": "Reducir carga inmediata: cambiar la proxima calidad por rodaje muy facil o descanso, y mantener FC capada.",
@@ -186,18 +186,17 @@
     }
   },
   "garmin": {
-    "profile_synced_at": "2026-05-12T16:15:19.048007Z",
-    "latest_activity_import_at": "2026-05-12T16:14:38.927186Z",
-    "latest_daily_import_at": "2026-05-12T16:15:03.380615Z",
+    "profile_synced_at": "2026-05-13T18:52:29.467424Z",
+    "latest_activity_import_at": "2026-05-13T18:51:57.237132Z",
+    "latest_daily_import_at": "2026-05-13T18:52:26.649937Z",
     "latest_activity_ids": [
+      22870230448,
       22823255797,
       22822541135,
       22798592588,
-      22776053069,
-      22693329165
+      22776053069
     ],
     "latest_daily_days": [
-      "2026-04-28",
       "2026-04-29",
       "2026-04-30",
       "2026-05-01",
@@ -211,13 +210,14 @@
       "2026-05-09",
       "2026-05-10",
       "2026-05-11",
-      "2026-05-12"
+      "2026-05-12",
+      "2026-05-13"
     ],
     "daily_metrics": {
-      "latest_date": "2026-05-12",
+      "latest_date": "2026-05-13",
       "latest_hrv": 137864769.0,
       "latest_training_readiness": null,
-      "latest_resting_heart_rate": 55.0,
+      "latest_resting_heart_rate": 52.0,
       "latest_training_status": {
         "userId": 137864769,
         "mostRecentVO2Max": null,

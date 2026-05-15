@@ -13,7 +13,7 @@ workout:
     target:
       type: heart_rate_range
       min_bpm: 130
-      max_bpm: 145
+      max_bpm: 150
   - order: 2
     type: repeat_group
     iterations: 4
@@ -33,4 +33,4 @@ workout:
     target:
       type: heart_rate_range
       min_bpm: 130
-      max_bpm: 145
+      max_bpm: 150

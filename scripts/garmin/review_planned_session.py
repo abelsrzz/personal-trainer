@@ -11,13 +11,24 @@ from typing import Any
 
 import yaml
 
-try:
-    from scripts.garmin.sync_garmin import DEFAULT_WORKOUTS_ROOT, ROOT, load_credentials, login, save_json
-except ModuleNotFoundError:  # pragma: no cover - direct script execution path fix
-    import sys
+ROOT = Path(__file__).resolve().parents[2]
+DEFAULT_WORKOUTS_ROOT = ROOT / "training" / "planned" / "workouts"
 
-    sys.path.append(str(Path(__file__).resolve().parents[2]))
-    from scripts.garmin.sync_garmin import DEFAULT_WORKOUTS_ROOT, ROOT, load_credentials, login, save_json
+
+def save_json(path: Path, payload: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, indent=2, ensure_ascii=True, default=str) + "\n", encoding="utf-8")
+
+
+def load_garmin_sync_helpers() -> tuple[Any, Any]:
+    try:
+        from scripts.garmin.sync_garmin import load_credentials, login
+    except ModuleNotFoundError:  # pragma: no cover - direct script execution path fix
+        import sys
+
+        sys.path.append(str(ROOT))
+        from scripts.garmin.sync_garmin import load_credentials, login
+    return load_credentials, login
 
 try:
     from scripts.system.workout_knowledge import match_workout_knowledge
@@ -31,6 +42,7 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path f
 DEFAULT_IMPORT_ROOT = ROOT / "training" / "completed" / "imports" / "garmin"
 DEFAULT_ACTIVITY_ROOT = ROOT / "training" / "completed" / "activities"
 DEFAULT_REVIEW_ROOT = ROOT / "training" / "completed" / "reviews"
+PREFERENCES_PATH = ROOT / "athlete" / "preferences.yaml"
 
 
 def parse_args() -> argparse.Namespace:
@@ -66,6 +78,10 @@ def save_text(path: Path, content: str) -> None:
     path.write_text(content.rstrip() + "\n", encoding="utf-8")
 
 
+def load_preferences() -> dict[str, Any]:
+    return load_yaml(PREFERENCES_PATH).get("preferences", {}) if PREFERENCES_PATH.exists() else {}
+
+
 def find_planned_workout(day: str) -> Path:
     matches = sorted(DEFAULT_WORKOUTS_ROOT.glob(f"{day}_*.yaml"))
     if not matches:
@@ -79,6 +95,7 @@ def find_planned_workout(day: str) -> Path:
 
 
 def import_recent_running_activities(day: str, credentials_path: Path, days: int, limit: int) -> list[dict[str, Any]]:
+    load_credentials, login = load_garmin_sync_helpers()
     credentials = load_credentials(credentials_path)
     client = login(credentials)
     activities = client.get_activities(0, limit)
@@ -145,14 +162,128 @@ def flatten_steps(steps: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return flat
 
 
+def step_duration_s(step: dict[str, Any]) -> float | None:
+    if step.get("duration_s") is not None:
+        return float(step["duration_s"])
+    if step.get("duration") is not None:
+        return parse_duration_text(str(step.get("duration")))
+    return None
+
+
+def pace_text_to_seconds(value: Any) -> float | None:
+    if value is None:
+        return None
+    text = str(value).strip()
+    if text.endswith("/km"):
+        text = text[:-3]
+    return parse_duration_text(text)
+
+
+def easy_run_floor_policy() -> dict[str, float | None]:
+    preferences = load_preferences()
+    constraints = preferences.get("easy_run_constraints", {}) if isinstance(preferences, dict) else {}
+    floor_pace_s = pace_text_to_seconds(constraints.get("mechanical_floor_pace"))
+    tolerance_bpm = float(constraints.get("max_hr_tolerance_bpm_at_floor") or 0.0)
+    activation_text = str(constraints.get("floor_activation_band") or "").strip()
+    activation_min = None
+    activation_max = None
+    if "-" in activation_text:
+        left, right = [part.strip() for part in activation_text.split("-", 1)]
+        activation_min = pace_text_to_seconds(left)
+        activation_max = pace_text_to_seconds(right)
+    return {
+        "floor_pace_s": floor_pace_s,
+        "tolerance_bpm": tolerance_bpm,
+        "activation_min_s": activation_min,
+        "activation_max_s": activation_max,
+    }
+
+
+def within_easy_floor_tolerance(speed_mps: float | None, heart_rate: float, max_bpm: float) -> bool:
+    policy = easy_run_floor_policy()
+    floor_pace_s = policy.get("floor_pace_s")
+    tolerance_bpm = policy.get("tolerance_bpm")
+    activation_min_s = policy.get("activation_min_s")
+    activation_max_s = policy.get("activation_max_s")
+    if speed_mps is None or floor_pace_s is None or tolerance_bpm is None or tolerance_bpm <= 0:
+        return False
+    pace_s = pace_from_speed(speed_mps)
+    if pace_s is None:
+        return False
+    if activation_min_s is not None and pace_s < activation_min_s:
+        return False
+    if activation_max_s is not None and pace_s > activation_max_s:
+        return False
+    return heart_rate <= max_bpm + tolerance_bpm
+
+
+def step_target_distance_m(step: dict[str, Any]) -> float | None:
+    if step.get("distance_m") is not None:
+        return float(step["distance_m"])
+    target = step.get("target") or {}
+    duration_s = step_duration_s(step)
+    if duration_s is None or target.get("type") != "pace_range":
+        return None
+    min_pace_s = pace_text_to_seconds(target.get("min_pace"))
+    max_pace_s = pace_text_to_seconds(target.get("max_pace"))
+    pace_candidates = [value for value in [min_pace_s, max_pace_s] if value and value > 0]
+    if not pace_candidates:
+        return None
+    target_pace_s = sum(pace_candidates) / len(pace_candidates)
+    return duration_s * 1000.0 / target_pace_s if target_pace_s > 0 else None
+
+
+def planned_steps_with_timing(workout: dict[str, Any]) -> list[dict[str, Any]]:
+    steps = flatten_steps(workout.get("workout", {}).get("steps", []))
+    if not steps:
+        return []
+    estimated_duration_s = float(workout.get("workout", {}).get("estimated_duration_s") or 0.0)
+    fixed_duration_s = 0.0
+    distance_without_duration_total_m = 0.0
+    for step in steps:
+        duration_s = step_duration_s(step)
+        if duration_s is not None:
+            fixed_duration_s += duration_s
+            continue
+        if step.get("distance_m") is not None:
+            distance_without_duration_total_m += float(step["distance_m"])
+    remaining_duration_s = max(0.0, estimated_duration_s - fixed_duration_s)
+    elapsed_s = 0.0
+    scheduled: list[dict[str, Any]] = []
+    for index, step in enumerate(steps):
+        duration_s = step_duration_s(step)
+        if duration_s is None and step.get("distance_m") is not None and distance_without_duration_total_m > 0:
+            duration_s = remaining_duration_s * float(step["distance_m"]) / distance_without_duration_total_m
+        scheduled_step = dict(step)
+        scheduled_step["sequence_index"] = index
+        scheduled_step["planned_duration_s"] = duration_s
+        scheduled_step["planned_distance_m"] = step_target_distance_m(step)
+        scheduled_step["start_s"] = elapsed_s
+        if duration_s is not None:
+            elapsed_s += duration_s
+            scheduled_step["end_s"] = elapsed_s
+        else:
+            scheduled_step["end_s"] = None
+        scheduled.append(scheduled_step)
+    return scheduled
+
+
 def planned_distance_m(workout: dict[str, Any]) -> float | None:
     total = 0.0
     found = False
-    for step in flatten_steps(workout.get("workout", {}).get("steps", [])):
-        if step.get("distance_m") is not None:
-            total += float(step["distance_m"])
+    for step in planned_steps_with_timing(workout):
+        distance_m = step.get("planned_distance_m")
+        if distance_m is not None:
+            total += float(distance_m)
             found = True
     return total if found else None
+
+
+def distance_compliance_supported(workout: dict[str, Any]) -> bool:
+    steps = flatten_steps(workout.get("workout", {}).get("steps", []))
+    has_timed_pace_block = any(step_duration_s(step) is not None and ((step.get("target") or {}).get("type") == "pace_range") for step in steps)
+    has_repeat_group = any(step.get("type") == "repeat_group" for step in workout.get("workout", {}).get("steps", []))
+    return not (has_timed_pace_block or has_repeat_group)
 
 
 def planned_primary_hr_range(workout: dict[str, Any]) -> tuple[float | None, float | None]:
@@ -166,6 +297,53 @@ def planned_primary_hr_range(workout: dict[str, Any]) -> tuple[float | None, flo
             if target.get("max_bpm") is not None:
                 maxs.append(float(target["max_bpm"]))
     return (min(mins) if mins else None, max(maxs) if maxs else None)
+
+
+def hr_target_windows(workout: dict[str, Any], actual_duration_s: float) -> tuple[list[dict[str, float]], float | None, float | None]:
+    scheduled_steps = planned_steps_with_timing(workout)
+    total_planned_duration_s = sum(float(step.get("planned_duration_s") or 0.0) for step in scheduled_steps)
+    if not scheduled_steps or total_planned_duration_s <= 0 or actual_duration_s <= 0:
+        return [], None, None
+    scale = actual_duration_s / total_planned_duration_s
+    windows: list[dict[str, float]] = []
+    mins: list[float] = []
+    maxs: list[float] = []
+    for index, step in enumerate(scheduled_steps):
+        target = step.get("target") or {}
+        if target.get("type") != "heart_rate_range":
+            continue
+        start_s = step.get("start_s")
+        end_s = step.get("end_s")
+        duration_s = step.get("planned_duration_s")
+        if start_s is None or end_s is None or duration_s is None or duration_s <= 0:
+            continue
+        min_bpm = target.get("min_bpm")
+        max_bpm = target.get("max_bpm")
+        if min_bpm is None or max_bpm is None:
+            continue
+        previous_step = scheduled_steps[index - 1] if index > 0 else None
+        previous_target_type = ((previous_step or {}).get("target") or {}).get("type")
+        prior_quality_seen = any((((candidate.get("target") or {}).get("type") == "pace_range") for candidate in scheduled_steps[:index]))
+        step_type = str(step.get("step_type") or "")
+        if step_type == "recovery" and previous_target_type == "pace_range":
+            continue
+        if step_type == "cooldown" and prior_quality_seen:
+            continue
+        start_actual_s = float(start_s) * scale
+        end_actual_s = float(end_s) * scale
+        if end_actual_s <= start_actual_s:
+            continue
+        mins.append(float(min_bpm))
+        maxs.append(float(max_bpm))
+        windows.append(
+            {
+                "start_s": start_actual_s,
+                "end_s": end_actual_s,
+                "min_bpm": float(min_bpm),
+                "max_bpm": float(max_bpm),
+            }
+        )
+    return windows, (min(mins) if mins else None), (max(maxs) if maxs else None)
 
 
 def planned_goal_category(workout: dict[str, Any]) -> str:
@@ -219,6 +397,47 @@ def planned_knowledge_summary(workout: dict[str, Any]) -> dict[str, Any] | None:
     return match_workout_knowledge(workout_data, session_kind, template_id=str(workout_data.get("template_id") or "").strip() or None)
 
 
+def planned_structural_goals(workout: dict[str, Any]) -> list[str]:
+    workout_data = workout.get("workout", {}) if isinstance(workout.get("workout"), dict) else {}
+    steps = flatten_steps(workout_data.get("steps", []))
+    goal_category = planned_goal_category(workout)
+    goals: list[str] = []
+    pace_steps = [step for step in steps if ((step.get("target") or {}).get("type") == "pace_range")]
+    if goal_category in {"recovery_easy", "reintroduction_easy"}:
+        goals.append("recuperacion")
+    if goal_category in {"easy_aerobic", "steady_easy", "general_run", "long_run"}:
+        goals.append("base_aerobica")
+    if goal_category == "controlled_quality":
+        goals.extend(["base_aerobica", "umbral_lactico"])
+    elif goal_category == "quality":
+        goals.append("umbral_lactico")
+    if any(str(step.get("step_type") or "") == "recovery" for step in steps):
+        goals.append("base_aerobica")
+    for step in pace_steps:
+        target = step.get("target") or {}
+        pace_candidates = [
+            pace_text_to_seconds(target.get("min_pace")),
+            pace_text_to_seconds(target.get("max_pace")),
+        ]
+        pace_candidates = [value for value in pace_candidates if value and value > 0]
+        if not pace_candidates:
+            continue
+        target_pace_s = sum(pace_candidates) / len(pace_candidates)
+        if target_pace_s <= 255:
+            goals.append("ritmo_5k")
+        elif target_pace_s <= 285:
+            goals.extend(["ritmo_10k", "umbral_lactico"])
+        elif target_pace_s <= 320:
+            goals.append("umbral_lactico")
+    return list(dict.fromkeys(goals))
+
+
+def planned_expected_goals(workout: dict[str, Any], planned_knowledge: dict[str, Any] | None) -> list[str]:
+    knowledge_goals = list((planned_knowledge or {}).get("goals") or [])
+    structural_goals = planned_structural_goals(workout)
+    return list(dict.fromkeys([*knowledge_goals, *structural_goals]))
+
+
 def actual_stimulus_summary(summary: dict[str, Any]) -> list[str]:
     goals: list[str] = []
     te_label = str(summary.get("trainingEffectLabel") or "").lower()
@@ -249,7 +468,7 @@ def actual_stimulus_summary(summary: dict[str, Any]) -> list[str]:
 
 def planned_vs_actual_stimulus(workout: dict[str, Any], summary: dict[str, Any]) -> dict[str, Any]:
     planned_knowledge = planned_knowledge_summary(workout)
-    planned_goals = planned_knowledge.get("goals") if isinstance(planned_knowledge, dict) else []
+    planned_goals = planned_expected_goals(workout, planned_knowledge)
     actual_goals = actual_stimulus_summary(summary)
     overlap = [goal for goal in actual_goals if goal in planned_goals]
     alignment = "aligned" if overlap else ("unknown" if not planned_goals or not actual_goals else "drifted")
@@ -620,12 +839,13 @@ def risk_level(score: int, above_zone_pct: float, decoupling_pct: float | None) 
     return "alto"
 
 
-def score_session(distance_diff_m: float, above_zone_pct: float, decoupling_pct: float | None) -> int:
-    score = 8
-    if abs(distance_diff_m) > 800:
-        score -= 2
-    elif abs(distance_diff_m) > 400:
-        score -= 1
+def score_session(distance_diff_m: float | None, above_zone_pct: float, decoupling_pct: float | None) -> int:
+    score = 10
+    if distance_diff_m is not None:
+        if abs(distance_diff_m) > 800:
+            score -= 2
+        elif abs(distance_diff_m) > 400:
+            score -= 1
     if above_zone_pct > 70:
         score -= 3
     elif above_zone_pct > 50:
@@ -643,32 +863,57 @@ def analyze_workout(planned: dict[str, Any], summary: dict[str, Any], details: d
     rows = metric_rows(details)
     segments = segment_rows(rows)
     planned_distance = planned_distance_m(planned)
-    planned_hr_min, planned_hr_max = planned_primary_hr_range(planned)
+    distance_supported = distance_compliance_supported(planned)
     actual_distance = float(summary["distance"])
     actual_duration = float(summary["duration"])
+    hr_windows, planned_hr_min, planned_hr_max = hr_target_windows(planned, actual_duration)
 
     time_in_zone = 0.0
     time_below_zone = 0.0
     time_above_zone = 0.0
     time_to_enter_zone: float | None = None
     distance_to_enter_zone: float | None = None
+    hr_evaluable_time = 0.0
     elapsed_time = 0.0
     elapsed_distance = 0.0
+    hr_window_index = 0
     for segment in segments:
+        segment_dt = float(segment["dt"] or 0.0)
+        segment_dd = float(segment["dd"] or 0.0)
+        segment_start_time = elapsed_time
         elapsed_time += float(segment["dt"] or 0.0)
-        elapsed_distance += float(segment["dd"] or 0.0)
+        elapsed_distance += segment_dd
         heart_rate = segment.get("directHeartRate")
-        if heart_rate is None or planned_hr_min is None or planned_hr_max is None:
+        if heart_rate is None or not hr_windows:
             continue
-        if planned_hr_min <= float(heart_rate) <= planned_hr_max:
-            time_in_zone += float(segment["dt"] or 0.0)
-            if time_to_enter_zone is None:
-                time_to_enter_zone = elapsed_time
-                distance_to_enter_zone = elapsed_distance
-        elif float(heart_rate) < planned_hr_min:
-            time_below_zone += float(segment["dt"] or 0.0)
-        else:
-            time_above_zone += float(segment["dt"] or 0.0)
+        while hr_window_index < len(hr_windows) and hr_windows[hr_window_index]["end_s"] <= segment_start_time:
+            hr_window_index += 1
+        active_index = hr_window_index
+        while active_index < len(hr_windows) and hr_windows[active_index]["start_s"] < elapsed_time:
+            window = hr_windows[active_index]
+            overlap_start = max(segment_start_time, float(window["start_s"]))
+            overlap_end = min(elapsed_time, float(window["end_s"]))
+            overlap_s = overlap_end - overlap_start
+            if overlap_s > 0:
+                hr_evaluable_time += overlap_s
+                heart_rate_value = float(heart_rate)
+                if float(window["min_bpm"]) <= heart_rate_value <= float(window["max_bpm"]):
+                    time_in_zone += overlap_s
+                    if time_to_enter_zone is None:
+                        segment_fraction = (overlap_end - segment_start_time) / segment_dt if segment_dt > 0 else 0.0
+                        time_to_enter_zone = overlap_end
+                        distance_to_enter_zone = (elapsed_distance - segment_dd) + (segment_dd * segment_fraction)
+                elif heart_rate_value > float(window["max_bpm"]) and within_easy_floor_tolerance(segment.get("directSpeed"), heart_rate_value, float(window["max_bpm"])):
+                    time_in_zone += overlap_s
+                    if time_to_enter_zone is None:
+                        segment_fraction = (overlap_end - segment_start_time) / segment_dt if segment_dt > 0 else 0.0
+                        time_to_enter_zone = overlap_end
+                        distance_to_enter_zone = (elapsed_distance - segment_dd) + (segment_dd * segment_fraction)
+                elif heart_rate_value < float(window["min_bpm"]):
+                    time_below_zone += overlap_s
+                else:
+                    time_above_zone += overlap_s
+            active_index += 1
 
     first_half, second_half = split_halves(segments, actual_distance)
     first_half_speed = weighted_average(first_half, "directSpeed")
@@ -692,19 +937,20 @@ def analyze_workout(planned: dict[str, Any], summary: dict[str, Any], details: d
         pace_std = (1000.0 / (avg_speed ** 2)) * speed_std
 
     compliance = {
-        "distance_diff_m": actual_distance - planned_distance if planned_distance is not None else None,
+        "distance_diff_m": actual_distance - planned_distance if planned_distance is not None and distance_supported else None,
         "duration_diff_s_vs_est": actual_duration - float(planned["workout"].get("estimated_duration_s") or 0.0),
+        "hr_evaluable_time_s": hr_evaluable_time,
         "time_in_hr_zone_s": time_in_zone,
         "time_below_hr_zone_s": time_below_zone,
         "time_above_hr_zone_s": time_above_zone,
-        "pct_in_hr_zone": (time_in_zone / actual_duration) * 100.0 if actual_duration else None,
-        "pct_below_hr_zone": (time_below_zone / actual_duration) * 100.0 if actual_duration else None,
-        "pct_above_hr_zone": (time_above_zone / actual_duration) * 100.0 if actual_duration else None,
+        "pct_in_hr_zone": (time_in_zone / hr_evaluable_time) * 100.0 if hr_evaluable_time else None,
+        "pct_below_hr_zone": (time_below_zone / hr_evaluable_time) * 100.0 if hr_evaluable_time else None,
+        "pct_above_hr_zone": (time_above_zone / hr_evaluable_time) * 100.0 if hr_evaluable_time else None,
         "time_to_enter_zone_s": time_to_enter_zone,
         "distance_to_enter_zone_m": distance_to_enter_zone,
     }
     score = score_session(
-        float(compliance["distance_diff_m"] or 0.0),
+        float(compliance["distance_diff_m"]) if compliance["distance_diff_m"] is not None else None,
         float(compliance["pct_above_hr_zone"] or 0.0),
         decoupling,
     )
@@ -721,7 +967,7 @@ def analyze_workout(planned: dict[str, Any], summary: dict[str, Any], details: d
             "primary_goal": planned["workout"].get("primary_goal"),
             "description": planned["workout"].get("description"),
             "estimated_duration_s": planned["workout"].get("estimated_duration_s"),
-            "distance_m": planned_distance,
+            "distance_m": planned_distance if distance_supported else None,
             "primary_hr_min": planned_hr_min,
             "primary_hr_max": planned_hr_max,
         },
@@ -813,6 +1059,7 @@ def coaching_text(review: dict[str, Any]) -> tuple[str, str, str, str]:
     summary = review["summary"]
     compliance = review["compliance"]
     halves = review["halves"]
+    stimulus_alignment = review.get("stimulus_alignment", {})
     goal = planned.get("description") or planned["name"]
     if halves["decoupling_pct"] is None:
         good = "Se completo la distancia prevista con estabilidad mecanica y sin senales de fatiga clara."
@@ -829,6 +1076,8 @@ def coaching_text(review: dict[str, Any]) -> tuple[str, str, str, str]:
         missed = f"La intensidad se fue algo por encima de lo ideal en varios tramos ({compliance['pct_above_hr_zone']:.1f}% del tiempo sobre el techo de FC), pero no implica por si sola que haya que replantear la semana."
     elif compliance["pct_above_hr_zone"] and compliance["pct_above_hr_zone"] > 15:
         missed = f"Hubo algunos tramos por encima del techo de FC ({compliance['pct_above_hr_zone']:.1f}% del tiempo), aunque dentro de un desvio relativamente normal para un rodaje al aire libre."
+    elif stimulus_alignment.get("alignment") == "drifted":
+        missed = "El bloque principal se fue a un estimulo mas exigente del previsto, aunque la FC de los tramos faciles no justifica por si sola una alarma roja."
     else:
         missed = "La intensidad se mantuvo razonablemente alineada con el objetivo previsto."
     relevant = (
@@ -863,6 +1112,17 @@ def review_markdown(review: dict[str, Any], planned_reference: str, completed_re
     changes = "none" if keep_week == "yes" else "Reduce upcoming load and review shin response."
     split_lines = []
     progression = review.get("progression", {})
+    hr_target_text = "-"
+    planned_distance_text = f"{review['planned']['distance_m']} m" if review['planned'].get('distance_m') is not None else "-"
+    distance_diff_text = f"{compliance['distance_diff_m']:.1f} m" if compliance.get('distance_diff_m') is not None else "-"
+    if review["planned"].get("primary_hr_min") is not None and review["planned"].get("primary_hr_max") is not None:
+        hr_target_text = f"{review['planned']['primary_hr_min']}-{review['planned']['primary_hr_max']} bpm"
+    hr_in_text = "-"
+    hr_above_text = "-"
+    if compliance.get("pct_in_hr_zone") is not None:
+        hr_in_text = f"{format_duration(compliance['time_in_hr_zone_s'])} ({compliance['pct_in_hr_zone']:.1f}% de {format_duration(compliance.get('hr_evaluable_time_s'))})"
+    if compliance.get("pct_above_hr_zone") is not None:
+        hr_above_text = f"{format_duration(compliance['time_above_hr_zone_s'])} ({compliance['pct_above_hr_zone']:.1f}% de {format_duration(compliance.get('hr_evaluable_time_s'))})"
     for split in review["splits"]:
         split_lines.append(
             f"- {split['label']} km: {format_pace(split['pace_s_per_km'])}, {split['avg_hr']:.1f} bpm, {split['avg_power_w']:.0f} W, {split['avg_cadence_spm']:.1f} spm"
@@ -913,15 +1173,15 @@ def review_markdown(review: dict[str, Any], planned_reference: str, completed_re
             "",
             "## Planned Vs Completed",
             "",
-            f"- Planned distance: {review['planned']['distance_m']} m",
+            f"- Planned distance: {planned_distance_text}",
             f"- Completed distance: {summary['distance_m']:.1f} m",
-            f"- Distance difference: {compliance['distance_diff_m']:.1f} m",
+            f"- Distance difference: {distance_diff_text}",
             f"- Planned duration: {format_duration(review['planned']['estimated_duration_s'])}",
             f"- Completed duration: {format_duration(summary['duration_s'])}",
             f"- Duration difference: {format_duration(compliance['duration_diff_s_vs_est'])}",
-            f"- HR target: {review['planned']['primary_hr_min']}-{review['planned']['primary_hr_max']} bpm",
-            f"- Time in HR target: {format_duration(compliance['time_in_hr_zone_s'])} ({compliance['pct_in_hr_zone']:.1f}%)",
-            f"- Time above HR target: {format_duration(compliance['time_above_hr_zone_s'])} ({compliance['pct_above_hr_zone']:.1f}%)",
+            f"- HR target: {hr_target_text}",
+            f"- Time in HR target: {hr_in_text}",
+            f"- Time above HR target: {hr_above_text}",
             f"- Time to enter target zone: {format_duration(compliance['time_to_enter_zone_s'])}",
             "",
             "## Split Detail",

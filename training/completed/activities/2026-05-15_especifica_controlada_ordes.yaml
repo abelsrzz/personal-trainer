@@ -1,0 +1,16 @@
+activity:
+  id: garmin-22889384200
+  source: garmin
+  garmin_activity_id: 22889384200
+  date: 2026-05-15
+  title: Ordes - Especifica controlada Ordes
+  type: run
+  planned_session_reference: training/planned/workouts/2026-05-15_especifica_controlada_ordes.yaml
+  distance_km: 7.588
+  duration: '48:00'
+  elevation_gain_m: 20.0
+  avg_pace: 6:20/km
+  avg_hr: 159.0
+  max_hr: 186.0
+  shoes: null
+  notes: Autoimported from Garmin on 2026-05-15T17:04:37

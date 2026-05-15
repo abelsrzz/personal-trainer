@@ -57,6 +57,38 @@ class WorkoutKnowledgeTests(unittest.TestCase):
         self.assertEqual(match["primary_goal"], "Ritmo 10k")
         self.assertIn("resistencia especifica 10k", match["summary"].lower())
 
+    @patch("scripts.system.workout_knowledge.load_workout_knowledge")
+    def test_shared_matcher_derives_primary_goal_for_controlled_quality(self, load_mock) -> None:
+        load_mock.return_value = {
+            "categories": {
+                "base": [
+                    {"label": "50' suave", "goals": ["base_aerobica"]}
+                ]
+            }
+        }
+        match = shared_knowledge.match_workout_knowledge(
+            {
+                "name": "Especifica controlada Ordes",
+                "description": "Recordatorio controlado de ritmo cercano al objetivo de carrera.",
+                "estimated_duration_s": 3120,
+                "steps": [
+                    {"step_type": "warmup", "distance_m": 2000, "target": {"type": "heart_rate_range", "min_bpm": 135, "max_bpm": 150}},
+                    {
+                        "type": "repeat_group",
+                        "iterations": 3,
+                        "steps": [
+                            {"step_type": "interval", "duration_s": 240, "target": {"type": "pace_range", "min_pace": "4:25/km", "max_pace": "4:20/km"}},
+                            {"step_type": "recovery", "duration_s": 120, "target": {"type": "heart_rate_range", "min_bpm": 131, "max_bpm": 150}},
+                        ],
+                    },
+                    {"step_type": "cooldown", "distance_m": 2000, "target": {"type": "heart_rate_range", "min_bpm": 135, "max_bpm": 150}},
+                ],
+            },
+            "quality",
+        )
+        self.assertIsNotNone(match)
+        self.assertEqual(match["primary_goal"], "Umbral lactico")
+
     @patch("scripts.system.workout_knowledge.template_knowledge_map")
     @patch("scripts.system.workout_knowledge.iter_knowledge_entries")
     def test_template_id_mapping_has_priority_over_text_heuristic(self, entries_mock, template_map_mock) -> None:

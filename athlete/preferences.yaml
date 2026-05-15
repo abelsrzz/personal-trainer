@@ -12,5 +12,10 @@ preferences:
       - pace_or_hr
       - shoes
     notes: Use pace for intervals and tempo sessions, otherwise heart rate.
+  easy_run_constraints:
+    mechanical_floor_pace: 7:30/km
+    max_hr_tolerance_bpm_at_floor: 3
+    floor_activation_band: 7:20-7:30/km
+    notes: If keeping the prescribed HR cap would require running slower than 7:30/km, hold 7:30/km and accept a small HR drift up to 1-3 bpm, especially on climbs.
   session_detail_level: high
   other_notes: null

@@ -1,52 +1,52 @@
 {
-  "generated_at": "2026-05-13T18:52:33.386111+00:00",
-  "as_of": "2026-05-13",
+  "generated_at": "2026-05-15T14:49:19.895466+00:00",
+  "as_of": "2026-05-15",
   "lookback_days": 28,
-  "activity_count_total": 62,
-  "review_count_total": 4,
+  "activity_count_total": 63,
+  "review_count_total": 5,
   "decision": {
-    "as_of": "2026-05-13",
-    "status": "red",
-    "action": "reduce_or_replace_quality",
-    "recommendation": "Reducir carga inmediata: cambiar la proxima calidad por rodaje muy facil o descanso, y mantener FC capada.",
+    "as_of": "2026-05-15",
+    "status": "yellow",
+    "action": "maintain_with_caution",
+    "recommendation": "Mantener estructura, pero sin subir volumen ni intensidad hasta ver 2-3 sesiones faciles estables.",
     "reasons": [
-      "Revision reciente de alto riesgo: 2026-05-07 Rodaje 6 km + 4 rectas controladas.",
       "Subida de volumen semanal de 79% (14.7 -> 26.2 km entre semanas completas).",
+      "Demasiada densidad de calidad: 3 sesiones exigentes en 7 dias.",
       "El bloque activo prioriza reconstruccion, consistencia y tolerancia tisular antes de ritmos agresivos.",
       "El limitador principal declarado sigue siendo la durabilidad aerobica; la construccion debe respetarlo.",
       "La automatizacion prioriza como backbone de calidad: cruise_intervals, tempo_broken, tempo_continuous."
     ],
     "windows": {
       "last_7_days": {
-        "start": "2026-05-07",
-        "end": "2026-05-13",
+        "start": "2026-05-09",
+        "end": "2026-05-15",
         "runs": 4,
-        "km": 28.41568994140625,
-        "duration_s": 10333.574829101562,
-        "avg_pace_s_per_km": 363.6573614932318,
-        "avg_hr": 161.68027222303567,
-        "quality_runs": 2,
+        "km": 29.3233701171875,
+        "duration_s": 10322.229858398438,
+        "avg_pace_s_per_km": 352.0137629865471,
+        "avg_hr": 163.92426329007975,
+        "quality_runs": 3,
         "long_run_km": 10.8192099609375
       },
       "previous_7_days": {
-        "start": "2026-04-30",
-        "end": "2026-05-06",
-        "runs": 1,
-        "km": 5.03560009765625,
-        "duration_s": 2234.6708984375,
-        "avg_pace_s_per_km": 443.7744966042074,
-        "avg_hr": 144.0,
+        "start": "2026-05-02",
+        "end": "2026-05-08",
+        "runs": 2,
+        "km": 11.71610009765625,
+        "duration_s": 5126.243896484375,
+        "avg_pace_s_per_km": 437.5384175413332,
+        "avg_hr": 147.94850721016408,
         "quality_runs": 0,
-        "long_run_km": 5.03560009765625
+        "long_run_km": 6.6805
       },
       "last_28_days": {
-        "start": "2026-04-16",
-        "end": "2026-05-13",
+        "start": "2026-04-18",
+        "end": "2026-05-15",
         "runs": 12,
-        "km": 83.781740234375,
-        "duration_s": 32287.628784179688,
-        "avg_pace_s_per_km": 385.3778722410963,
-        "avg_hr": 157.21713041070603,
+        "km": 84.3020302734375,
+        "duration_s": 32765.543823242188,
+        "avg_pace_s_per_km": 388.66850201549886,
+        "avg_hr": 156.65658901344068,
         "quality_runs": 5,
         "long_run_km": 10.8192099609375
       },
@@ -73,7 +73,7 @@
         "long_run_km": 8.045740234375
       }
     },
-    "volume_spike_pct": 464.2960002846918,
+    "volume_spike_pct": 150.28268683922818,
     "weekly_spike_pct": 78.69704284297025,
     "latest_shin_entry": {
       "date": "2026-05-08",
@@ -85,231 +85,33 @@
       "shoes": null,
       "notes": "Reevaluacion manual. Dolor tibial actual 1/10 y cansancio subjetivo 0/10; sin empeoramiento relevante reportado."
     },
-    "latest_high_risk_review": {
-      "planned": {
-        "name": "Rodaje 6 km + 4 rectas controladas",
-        "date": "2026-05-07",
-        "sport": "running",
-        "goal_category": "steady_easy",
-        "description": "Rodaje facil de continuidad con 4 rectas suaves para despertar piernas, sin sprintar.",
-        "estimated_duration_s": 2460,
-        "distance_m": 6000.0,
-        "primary_hr_min": 135.0,
-        "primary_hr_max": 150.0
+    "latest_high_risk_review": null,
+    "latest_feedback": {
+      "source": "web_manual_feedback",
+      "created_at": "2026-05-15T16:33:38.619698",
+      "updated_at": "2026-05-15T16:33:38.619698",
+      "updated_by": "change-me",
+      "date": "2026-05-15",
+      "planned_workout_slug": "2026-05-15_especifica_controlada_ordes",
+      "completed_review_slug": "2026-05-15_especifica_controlada_ordes",
+      "garmin_activity_id": 22889384200,
+      "athlete_feedback": {
+        "rpe": 4,
+        "pain_level": 1,
+        "pain_location": "Tibial posterior izquierdo",
+        "compliance": "full",
+        "time_feeling": "tight",
+        "note": null
       },
-      "summary": {
-        "activity_id": 22798592588,
-        "activity_name": "Ordes - Rodaje 6 km + 4 rectas controlad",
-        "start_time_local": "2026-05-07 17:26:18",
-        "distance_m": 6680.5,
-        "duration_s": 2891.572998046875,
-        "elapsed_s": 2891.572998046875,
-        "moving_s": 2889.6380004882812,
-        "pace_s_per_km": 432.8378112486902,
-        "moving_pace_s_per_km": 432.54816263577294,
-        "avg_hr": 151.0,
-        "max_hr": 169.0,
-        "avg_cadence_spm": 166.984375,
-        "max_cadence_spm": 178.0,
-        "avg_power_w": 215.0,
-        "max_power_w": 367.0,
-        "elevation_gain_m": 18.0,
-        "elevation_loss_m": 15.0,
-        "avg_stride_cm": 82.75999755859375,
-        "avg_gct_ms": 283.20001220703125,
-        "avg_vo_cm": 8.19000015258789,
-        "avg_vr": 9.920000076293945,
-        "calories": 427.0,
-        "water_estimated_ml": 629.0,
-        "aerobic_training_effect": 3.0,
-        "anaerobic_training_effect": 0.4000000059604645,
-        "training_effect_label": "AEROBIC_BASE",
-        "min_temp_c": 22.0,
-        "max_temp_c": 28.0,
-        "gap_pace_s_per_km": 434.59363259750654
-      },
-      "compliance": {
-        "distance_diff_m": 680.5,
-        "duration_diff_s_vs_est": 431.572998046875,
-        "time_in_hr_zone_s": 1302.0,
-        "time_below_hr_zone_s": 24.0,
-        "time_above_hr_zone_s": 1566.0,
-        "pct_in_hr_zone": 45.02739515410613,
-        "pct_below_hr_zone": 0.829998067356795,
-        "pct_above_hr_zone": 54.15737389503088,
-        "time_to_enter_zone_s": 26.0,
-        "distance_to_enter_zone_m": 56.88000178337097
-      },
-      "stability": {
-        "pace_std_s_per_km": 39.52739182027367,
-        "hr_std_bpm": 4.519866754209791,
-        "cadence_std_spm": 1.088013347769163,
-        "power_std_w": 19.39542304782847
-      },
-      "halves": {
-        "first_half_pace_s_per_km": 449.3208053312364,
-        "second_half_pace_s_per_km": 421.0807185384335,
-        "first_half_hr": 149.81262003996673,
-        "second_half_hr": 152.05943675317602,
-        "first_half_power_w": 212.37587318430695,
-        "second_half_power_w": 217.75311397971208,
-        "efficiency_first": 0.014855766752921344,
-        "efficiency_second": 0.015617850711998138,
-        "efficiency_change_pct": 5.1298864054050375,
-        "decoupling_pct": 8.306906458013486
-      },
-      "splits": [
-        {
-          "label": "1",
-          "distance_m": 1000.0,
-          "duration_s": 433.75771056384735,
-          "pace_s_per_km": 433.75771056384735,
-          "avg_hr": 146.4217218834617,
-          "avg_cadence_spm": 83.10835542252127,
-          "avg_power_w": 217.39629099892235,
-          "avg_gct_ms": 283.18733433109054,
-          "avg_vo_cm": 8.218610785711542,
-          "avg_vr": 9.894202471520952,
-          "avg_stride_cm": 83.0555538614936,
-          "avg_temp_c": 25.446066027554398,
-          "avg_elevation_m": 246.57167094821193,
-          "avg_gap_pace_s_per_km": 430.36048194079825
-        },
-        {
-          "label": "2",
-          "distance_m": 1000.0,
-          "duration_s": 448.5293787910938,
-          "pace_s_per_km": 448.5293787910938,
-          "avg_hr": 151.2126243037938,
-          "avg_cadence_spm": 82.32668847509171,
-          "avg_power_w": 214.84315418257793,
-          "avg_gct_ms": 286.81174080685395,
-          "avg_vo_cm": 8.177651970319586,
-          "avg_vr": 10.080530157922086,
-          "avg_stride_cm": 81.1147142194699,
-          "avg_temp_c": 22.491672093777847,
-          "avg_elevation_m": 251.2017034675503,
-          "avg_gap_pace_s_per_km": 441.26599695299774
-        },
-        {
-          "label": "3",
-          "distance_m": 1000.0,
-          "duration_s": 459.04995795001764,
-          "pace_s_per_km": 459.04995795001764,
-          "avg_hr": 151.34997964202023,
-          "avg_cadence_spm": 82.39004460157149,
-          "avg_power_w": 209.4423491128429,
-          "avg_gct_ms": 288.03847719053044,
-          "avg_vo_cm": 8.043390899984775,
-          "avg_vr": 10.202431233628296,
-          "avg_stride_cm": 78.83115256453725,
-          "avg_temp_c": 23.898240028484775,
-          "avg_elevation_m": 259.16184123522766,
-          "avg_gap_pace_s_per_km": 453.72323323190585
-        },
-        {
-          "label": "4",
-          "distance_m": 1000.0,
-          "duration_s": 434.7253170768529,
-          "pace_s_per_km": 434.7253170768529,
-          "avg_hr": 151.0513102509512,
-          "avg_cadence_spm": 83.57766299522702,
-          "avg_power_w": 208.89591341954974,
-          "avg_gct_ms": 281.9699593690483,
-          "avg_vo_cm": 8.132293668942836,
-          "avg_vr": 9.88553607649217,
-          "avg_stride_cm": 82.37062864844651,
-          "avg_temp_c": 24.77074499970421,
-          "avg_elevation_m": 259.5872534899191,
-          "avg_gap_pace_s_per_km": 440.9127066023661
-        },
-        {
-          "label": "5",
-          "distance_m": 1000.0,
-          "duration_s": 436.23222307043216,
-          "pace_s_per_km": 436.23222307043216,
-          "avg_hr": 149.82341702855254,
-          "avg_cadence_spm": 83.48764847312967,
-          "avg_power_w": 208.3840120849654,
-          "avg_gct_ms": 282.13651567433664,
-          "avg_vo_cm": 8.157323636070164,
-          "avg_vr": 9.873741000259926,
-          "avg_stride_cm": 82.62385684652887,
-          "avg_temp_c": 25.330099411241225,
-          "avg_elevation_m": 250.55836544350475,
-          "avg_gap_pace_s_per_km": 440.6234247780644
-        },
-        {
-          "label": "6",
-          "distance_m": 1000.0,
-          "duration_s": 392.3509763298912,
-          "pace_s_per_km": 392.3509763298912,
-          "avg_hr": 156.95192602423145,
-          "avg_cadence_spm": 83.9438603041061,
-          "avg_power_w": 233.3813766230839,
-          "avg_gct_ms": 276.10736222233544,
-          "avg_vo_cm": 8.390487543769455,
-          "avg_vr": 9.55060405158417,
-          "avg_stride_cm": 89.12583043862443,
-          "avg_temp_c": 24.653371577478506,
-          "avg_elevation_m": 248.43982286947917,
-          "avg_gap_pace_s_per_km": 400.09088301044625
-        },
-        {
-          "label": "0.68",
-          "distance_m": 680.5,
-          "duration_s": 286.92743426474,
-          "pace_s_per_km": 421.6420782729463,
-          "avg_hr": 149.55944663793392,
-          "avg_cadence_spm": 83.05854366514221,
-          "avg_power_w": 214.38207563108938,
-          "avg_gct_ms": 283.22602539237994,
-          "avg_vo_cm": 8.230659209150632,
-          "avg_vr": 9.88485924118188,
-          "avg_stride_cm": 83.2748600514685,
-          "avg_temp_c": 25.859565640436923,
-          "avg_elevation_m": 247.63588716350645,
-          "avg_gap_pace_s_per_km": 433.9097993485609
-        }
-      ],
-      "score": 4,
-      "traffic_light": "rojo",
-      "risk_level": "alto",
-      "progression": {
-        "comparable_count": 1,
-        "matches": [
-          {
-            "date": "2026-05-05",
-            "name": "Rodaje 5 km reintroduccion",
-            "goal_category": "reintroduction_easy",
-            "distance_m": 5035.60009765625,
-            "elevation_gain_m": 13.0,
-            "pace_s_per_km": 443.7744966042074,
-            "avg_hr": 144.0,
-            "avg_power_w": 212.0,
-            "decoupling_pct": 3.0259054638537286
-          }
-        ],
-        "baseline": {
-          "pace_s_per_km": 443.7744966042074,
-          "avg_hr": 144.0
-        },
-        "delta_vs_baseline": {
-          "pace_s_per_km": -10.936685355517227,
-          "avg_hr": 7.0
-        },
-        "trend": "neutral",
-        "summary": "Cambios pequenos o ambiguos frente a sesiones comparables; no hay una senal clara de progresion o regresion."
-      },
-      "review_date": "2026-05-07",
-      "source_path": "training/completed/reviews/2026-05-07_rodaje_6km_rectas_controladas.analysis.json"
+      "feedback_date": "2026-05-15",
+      "slug": "2026-05-15_especifica_controlada_ordes",
+      "source_path": "training/completed/feedback/2026-05-15_especifica_controlada_ordes.feedback.json"
     },
-    "latest_feedback": null,
     "daily_signals": {
       "snapshot": {
         "hrv": 137864769.0,
         "training_readiness": null,
-        "resting_heart_rate": 52.0,
+        "resting_heart_rate": 59.0,
         "training_status": {
           "userId": 137864769,
           "mostRecentVO2Max": null,
@@ -332,30 +134,30 @@
       "running_tolerance_flag": null
     },
     "session_guidance": {
-      "coach_state": "red",
+      "coach_state": "yellow",
       "shin_band": "green",
       "block": "block_1",
       "target_distance": "10k",
       "primary": [
+        "tempo_broken",
+        "easy_plus_strides",
         "easy_recovery",
-        "recovery_plus_mobility"
+        "easy_z2",
+        "long_run"
       ],
       "optional": [
-        "easy_z2"
+        "aerobic_steady"
       ],
       "avoid": [
-        "cruise_intervals",
-        "tempo_continuous",
         "short_intervals_vo2",
         "medium_intervals_vo2",
-        "ten_k_specific_reps",
         "ten_k_specific_continuous",
         "long_run_quality",
         "hills_strength",
         "five_k_specific_reps",
         "marathon_specific_blocks"
       ],
-      "quality_volume_cap": "none",
+      "quality_volume_cap": "low_to_medium",
       "selection_order": [
         "coach_state",
         "shin_band",
@@ -370,7 +172,7 @@
       "active_block": "Block 1: Reset, consistency and tissue tolerance",
       "goal_race_name": "XXIV Padron 10k",
       "goal_race_priority": "S",
-      "days_to_goal_race": 269,
+      "days_to_goal_race": 267,
       "preferred_plan_columns": [
         "day",
         "description",
@@ -393,7 +195,7 @@
     "passed_count": 0,
     "total_gates": 4,
     "metrics": {
-      "avg_weekly_km_28d": 20.94543505859375,
+      "avg_weekly_km_28d": 21.075507568359374,
       "long_run_km_28d": 10.8192099609375,
       "best_5k_s_90d": 1335.8609619140625,
       "best_10k_s_180d": 2663.23095703125,
@@ -405,7 +207,7 @@
       {
         "name": "Base estable",
         "passed": false,
-        "evidence": "Media 4 semanas 20.9 km/sem, tirada larga 10.8 km, alertas 1, periostio 1."
+        "evidence": "Media 4 semanas 21.1 km/sem, tirada larga 10.8 km, alertas 1, periostio 1."
       },
       {
         "name": "Umbral competitivo",
@@ -415,7 +217,7 @@
       {
         "name": "Precondicion 35:00",
         "passed": false,
-        "evidence": "Media 20.9 km/sem, tirada 10.8 km, 5k 22:16, alertas 1."
+        "evidence": "Media 21.1 km/sem, tirada 10.8 km, 5k 22:16, alertas 1."
       },
       {
         "name": "Seleccion 35:00",
@@ -435,9 +237,9 @@
   "weekly_volume": [
     {
       "week": "2026-W16",
-      "km": 23.10085986328125,
-      "runs": 3,
-      "quality_runs": 1,
+      "km": 16.0329697265625,
+      "runs": 2,
+      "quality_runs": 0,
       "long_run_km": 10.0062197265625
     },
     {
@@ -463,19 +265,19 @@
     },
     {
       "week": "2026-W20",
-      "km": 7.27010009765625,
-      "runs": 1,
-      "quality_runs": 0,
-      "long_run_km": 7.27010009765625
+      "km": 14.8582802734375,
+      "runs": 2,
+      "quality_runs": 1,
+      "long_run_km": 7.58818017578125
     }
   ],
   "daily_metrics": {
-    "available_days": 20,
-    "latest_date": "2026-05-13",
+    "available_days": 22,
+    "latest_date": "2026-05-15",
     "source": "garmin_daily",
     "latest_hrv": 137864769.0,
     "latest_training_readiness": null,
-    "latest_resting_heart_rate": 52.0,
+    "latest_resting_heart_rate": 59.0,
     "latest_training_status": {
       "userId": 137864769,
       "mostRecentVO2Max": null,
@@ -502,12 +304,12 @@
       "sleep",
       "running_tolerance"
     ],
-    "latest_daily_date": "2026-05-13",
-    "latest_activity_date": "2026-05-13",
+    "latest_daily_date": "2026-05-15",
+    "latest_activity_date": "2026-05-15",
     "daily_snapshot": {
       "hrv": 137864769.0,
       "training_readiness": null,
-      "resting_heart_rate": 52.0,
+      "resting_heart_rate": 59.0,
       "training_status": {
         "userId": 137864769,
         "mostRecentVO2Max": null,
@@ -526,8 +328,8 @@
   },
   "running_tolerance": {},
   "feedback_summary": {
-    "available_count": 0,
-    "latest_date": null
+    "available_count": 2,
+    "latest_date": "2026-05-15"
   },
   "active_context": {
     "cycle_id": "2026-05-25_padron_10k",
@@ -545,7 +347,7 @@
       },
       "coaching_note": "35:00 is aspirational and must be unlocked by checkpoint evidence before being used as training pace."
     },
-    "days_to_goal_race": 269,
+    "days_to_goal_race": 267,
     "available_race_count": 4
   }
 }

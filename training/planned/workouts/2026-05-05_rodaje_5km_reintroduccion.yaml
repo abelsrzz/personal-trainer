@@ -13,7 +13,7 @@ workout:
     target:
       type: heart_rate_range
       min_bpm: 131
-      max_bpm: 145
+      max_bpm: 150
   knowledge_id: 30_regenerativo_muy_suave
   knowledge_label: 30' regenerativo muy suave
   primary_goal: Recuperacion

@@ -19,6 +19,8 @@ This file is the default decision policy for weekly planning, workout creation a
 - Current main project target is a 10k, but the workout library is multi-distance and distance-specific logic must still be respected.
 - Current limiter is aerobic durability and repeatability, not isolated short-rep speed.
 - Easy running must stay controlled by heart rate while the athlete is rebuilding consistency.
+- For running workouts, use `150 ppm` as the default easy cap; reserve `145 ppm` for true recovery after competition or very hard sessions.
+- Use `7:30/km` as the mechanical floor for continuous running. If staying under the easy HR cap would require running slower than that, hold `7:30/km` and tolerate roughly `+1` to `+3 ppm` before treating it as a real execution issue.
 - The shin is a hard constraint: any progression is only valid when the next-morning response stays stable.
 - `35:00` is aspirational until checkpoints support it.
 

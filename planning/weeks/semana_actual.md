@@ -32,7 +32,7 @@
 | Dia | Descripcion | Distancia | Ritmo o FC | Zapatillas |
 | --- | --- | --- | --- | --- |
 | Lunes 04 | Fuerza general suave + movilidad, sin carrera | 0 km | - | - |
-| Martes 05 | Rodaje de reintroduccion muy facil | 5 km | `131-145 ppm` | Adidas Adistar BYD o Joma Supercross |
+| Martes 05 | Rodaje de reintroduccion muy facil | 5 km | `131-150 ppm` | Adidas Adistar BYD o Joma Supercross |
 | Miercoles 06 | Descanso + movilidad | 0 km | - | - |
 | Jueves 07 | Rodaje facil con 4 rectas controladas al final | 6 km | 5 km a `135-150 ppm` + rectas por sensacion, sin sprintar | Joma Supercross |
 | Viernes 08 | Descanso | 0 km | - | - |
@@ -46,11 +46,11 @@
 | Sabado 16 | Rodaje facil | 5 km | `135-150 ppm` | Adidas Adistar BYD o Joma Supercross |
 | Domingo 17 | Rodaje comodo de continuidad | 9 km | Z2 `141-155 ppm` | Adidas Adistar BYD |
 | Lunes 18 | Fuerza general suave + movilidad, sin carrera | 0 km | - | - |
-| Martes 19 | Rodaje de reintroduccion muy facil | 5 km | `131-145 ppm` | Adidas Adistar BYD o Joma Supercross |
+| Martes 19 | Rodaje de reintroduccion muy facil | 5 km | `131-150 ppm` | Adidas Adistar BYD o Joma Supercross |
 | Miercoles 20 | Rodaje facil con 4 rectas controladas al final | 6 km | 5 km a `135-150 ppm` + rectas por sensacion, sin sprintar | Joma Supercross |
 | Jueves 21 | Descanso + movilidad y descarga ligera | 0 km | - | - |
-| Viernes 22 | Activacion especifica corta: calentamiento + 3 bloques a ritmo objetivo de carrera | 6 km | 2 km faciles `135-145 ppm` + `3 x 2 min` a `4:10-4:20/km` con `2 min` suaves + vuelta a la calma | Adidas Adizero EVO SL |
-| Sabado 23 | Shakeout pre-carrera con 4 rectas cortas | 4 km | Muy facil `130-145 ppm`; rectas sueltas sin forzar | Joma Supercross |
+| Viernes 22 | Activacion especifica corta: calentamiento + 3 bloques a ritmo objetivo de carrera | 6 km | 2 km faciles `135-150 ppm` + `3 x 2 min` a `4:10-4:20/km` con `2 min` suaves + vuelta a la calma | Adidas Adizero EVO SL |
+| Sabado 23 | Shakeout pre-carrera con 4 rectas cortas | 4 km | Muy facil `130-150 ppm`; rectas sueltas sin forzar | Joma Supercross |
 | Domingo 24 | `XXIX CARREIRA POPULAR CONCELLO DE ORDES` | 8.5 km | Objetivo `4:10-4:20/km` | Adidas Adizero EVO SL o Joma R3000 |
 
 ## Fuerza Y Movilidad

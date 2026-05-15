@@ -1,0 +1,18 @@
+{
+  "source": "web_manual_feedback",
+  "created_at": "2026-05-15T16:33:38.619698",
+  "updated_at": "2026-05-15T16:33:38.619698",
+  "updated_by": "change-me",
+  "date": "2026-05-15",
+  "planned_workout_slug": "2026-05-15_especifica_controlada_ordes",
+  "completed_review_slug": "2026-05-15_especifica_controlada_ordes",
+  "garmin_activity_id": 22889384200,
+  "athlete_feedback": {
+    "rpe": 4,
+    "pain_level": 1,
+    "pain_location": "Tibial posterior izquierdo",
+    "compliance": "full",
+    "time_feeling": "tight",
+    "note": null
+  }
+}

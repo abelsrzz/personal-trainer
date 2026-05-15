@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-13T18:52:33.418383+00:00",
+  "generated_at": "2026-05-15T14:49:19.917020+00:00",
   "source_of_truth": "system/state/athlete_state.json",
   "identity": {
     "id": "main",
@@ -35,13 +35,13 @@
           "Work schedule 07:30-15:00"
         ],
         "garmin_training_days": [
-          "TUESDAY",
           "THURSDAY",
           "SUNDAY",
-          "SATURDAY",
-          "MONDAY",
           "WEDNESDAY",
-          "FRIDAY"
+          "SATURDAY",
+          "FRIDAY",
+          "MONDAY",
+          "TUESDAY"
         ],
         "garmin_preferred_long_training_days": [
           "SUNDAY"
@@ -52,7 +52,7 @@
       },
       "data_sources": {
         "garmin": {
-          "last_sync": "2026-05-13T18:52:29.467424Z",
+          "last_sync": "2026-05-15T14:35:51.804321Z",
           "profile_snapshot": "training/completed/imports/garmin/profile/athlete_profile_snapshot.json"
         }
       }
@@ -69,15 +69,15 @@
       "stress_notes": null,
       "recovery_notes": "General sensations recently poor",
       "garmin_metrics": {
-        "last_sync": "2026-05-13T18:52:29.467424Z",
-        "resting_hr": 52,
+        "last_sync": "2026-05-15T14:35:51.804321Z",
+        "resting_hr": 59,
         "max_hr": 196,
         "vo2max": 46.0
       }
     },
     "zones": {
       "heart_rate": {
-        "resting_hr": 52,
+        "resting_hr": 59,
         "max_hr": 196,
         "threshold_hr": null,
         "z0": "<130",
@@ -122,7 +122,7 @@
       },
       "data_sources": {
         "garmin": {
-          "last_sync": "2026-05-13T18:52:29.467424Z",
+          "last_sync": "2026-05-15T14:35:51.804321Z",
           "profile_snapshot": "training/completed/imports/garmin/profile/athlete_profile_snapshot.json"
         }
       }
@@ -140,35 +140,35 @@
     }
   },
   "coach": {
-    "as_of": "2026-05-13",
-    "status": "red",
-    "action": "reduce_or_replace_quality",
-    "recommendation": "Reducir carga inmediata: cambiar la proxima calidad por rodaje muy facil o descanso, y mantener FC capada.",
+    "as_of": "2026-05-15",
+    "status": "yellow",
+    "action": "maintain_with_caution",
+    "recommendation": "Mantener estructura, pero sin subir volumen ni intensidad hasta ver 2-3 sesiones faciles estables.",
     "session_guidance": {
-      "coach_state": "red",
+      "coach_state": "yellow",
       "shin_band": "green",
       "block": "block_1",
       "target_distance": "10k",
       "primary": [
+        "tempo_broken",
+        "easy_plus_strides",
         "easy_recovery",
-        "recovery_plus_mobility"
+        "easy_z2",
+        "long_run"
       ],
       "optional": [
-        "easy_z2"
+        "aerobic_steady"
       ],
       "avoid": [
-        "cruise_intervals",
-        "tempo_continuous",
         "short_intervals_vo2",
         "medium_intervals_vo2",
-        "ten_k_specific_reps",
         "ten_k_specific_continuous",
         "long_run_quality",
         "hills_strength",
         "five_k_specific_reps",
         "marathon_specific_blocks"
       ],
-      "quality_volume_cap": "none",
+      "quality_volume_cap": "low_to_medium",
       "selection_order": [
         "coach_state",
         "shin_band",
@@ -186,10 +186,11 @@
     }
   },
   "garmin": {
-    "profile_synced_at": "2026-05-13T18:52:29.467424Z",
-    "latest_activity_import_at": "2026-05-13T18:51:57.237132Z",
-    "latest_daily_import_at": "2026-05-13T18:52:26.649937Z",
+    "profile_synced_at": "2026-05-15T14:35:51.804321Z",
+    "latest_activity_import_at": "2026-05-15T12:52:57.437135Z",
+    "latest_daily_import_at": "2026-05-15T12:53:17.917917Z",
     "latest_activity_ids": [
+      22889384200,
       22870230448,
       22823255797,
       22822541135,
@@ -197,8 +198,6 @@
       22776053069
     ],
     "latest_daily_days": [
-      "2026-04-29",
-      "2026-04-30",
       "2026-05-01",
       "2026-05-02",
       "2026-05-03",
@@ -211,13 +210,15 @@
       "2026-05-10",
       "2026-05-11",
       "2026-05-12",
-      "2026-05-13"
+      "2026-05-13",
+      "2026-05-14",
+      "2026-05-15"
     ],
     "daily_metrics": {
-      "latest_date": "2026-05-13",
+      "latest_date": "2026-05-15",
       "latest_hrv": 137864769.0,
       "latest_training_readiness": null,
-      "latest_resting_heart_rate": 52.0,
+      "latest_resting_heart_rate": 59.0,
       "latest_training_status": {
         "userId": 137864769,
         "mostRecentVO2Max": null,

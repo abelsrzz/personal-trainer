@@ -13,7 +13,7 @@ workout:
     target:
       type: heart_rate_range
       min_bpm: 135
-      max_bpm: 145
+      max_bpm: 150
   - order: 2
     step_type: interval
     description: 2 km aerobicos sostenidos
@@ -29,7 +29,7 @@ workout:
     target:
       type: heart_rate_range
       min_bpm: 135
-      max_bpm: 145
+      max_bpm: 150
   knowledge_label: 1000-2000-3000-2000-1000 @ ritmo 21k-10k rec 2'-3'
   primary_goal: Umbral lactico
   knowledge_id: 1000_2000_3000_2000_1000_ritmo_21k_10k_rec_2_3

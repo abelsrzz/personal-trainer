@@ -1,6 +1,6 @@
 zones:
   heart_rate:
-    resting_hr: 52
+    resting_hr: 59
     max_hr: 196
     threshold_hr: null
     z0: <130
@@ -38,5 +38,5 @@ zones:
       note: High-cost interval ability, not current 10k pace.
   data_sources:
     garmin:
-      last_sync: '2026-05-13T18:52:29.467424Z'
+      last_sync: '2026-05-15T14:35:51.804321Z'
       profile_snapshot: training/completed/imports/garmin/profile/athlete_profile_snapshot.json

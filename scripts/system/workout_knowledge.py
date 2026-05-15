@@ -64,6 +64,77 @@ def goal_label(goal: str) -> str:
     return str(goal or "").replace("_", " ").strip().capitalize()
 
 
+def parse_duration_text(value: str | None) -> float | None:
+    if not value:
+        return None
+    parts = [int(part) for part in value.split(":")]
+    if len(parts) == 2:
+        return float(parts[0] * 60 + parts[1])
+    if len(parts) == 3:
+        return float(parts[0] * 3600 + parts[1] * 60 + parts[2])
+    return None
+
+
+def pace_text_to_seconds(value: Any) -> float | None:
+    if value is None:
+        return None
+    text = str(value).strip()
+    if text.endswith("/km"):
+        text = text[:-3]
+    return parse_duration_text(text)
+
+
+def derived_primary_goal(payload: dict[str, Any], session_kind: str, fallback_goal: str | None = None) -> str | None:
+    if session_kind not in {"quality", "easy"}:
+        return fallback_goal
+    steps = payload.get("steps") or []
+    if not isinstance(steps, list):
+        return fallback_goal
+    pace_targets: list[float] = []
+    has_warmup_or_cooldown = False
+    for step in steps:
+        if not isinstance(step, dict):
+            continue
+        if step.get("step_type") in {"warmup", "cooldown"}:
+            has_warmup_or_cooldown = True
+        target = step.get("target") or {}
+        if step.get("type") == "repeat_group":
+            nested = step.get("steps") or []
+            for nested_step in nested:
+                if not isinstance(nested_step, dict):
+                    continue
+                nested_target = nested_step.get("target") or {}
+                if nested_target.get("type") == "pace_range":
+                    values = [
+                        pace_text_to_seconds(nested_target.get("min_pace")),
+                        pace_text_to_seconds(nested_target.get("max_pace")),
+                    ]
+                    valid = [value for value in values if value and value > 0]
+                    if valid:
+                        pace_targets.append(sum(valid) / len(valid))
+            continue
+        if target.get("type") == "pace_range":
+            values = [
+                pace_text_to_seconds(target.get("min_pace")),
+                pace_text_to_seconds(target.get("max_pace")),
+            ]
+            valid = [value for value in values if value and value > 0]
+            if valid:
+                pace_targets.append(sum(valid) / len(valid))
+    if not pace_targets:
+        return fallback_goal
+    target_pace_s = sum(pace_targets) / len(pace_targets)
+    if has_warmup_or_cooldown and target_pace_s <= 320:
+        return "Umbral lactico"
+    if target_pace_s <= 255:
+        return "Ritmo 5k"
+    if target_pace_s <= 285:
+        return "Ritmo 10k"
+    if target_pace_s <= 320:
+        return "Umbral lactico"
+    return fallback_goal
+
+
 def knowledge_entry_id(entry: dict[str, Any]) -> str | None:
     explicit = str(entry.get("id") or "").strip()
     if explicit:
@@ -128,6 +199,17 @@ def summarized_entry(entry: dict[str, Any]) -> dict[str, Any]:
     return result
 
 
+def apply_primary_goal_override(match: dict[str, Any], payload: dict[str, Any], session_kind: str) -> dict[str, Any]:
+    result = dict(match)
+    result["primary_goal"] = derived_primary_goal(payload, session_kind, result.get("primary_goal"))
+    primary_goal = str(result.get("primary_goal") or "").strip()
+    secondary = [item.lower() for item in (result.get("goal_labels") or [])[1:3] if item]
+    result["summary"] = f"Esta sesion se usa sobre todo para {primary_goal.lower()}." if primary_goal else "Esta sesion tiene un objetivo operativo reconocido."
+    if secondary:
+        result["summary"] += f" Tambien aporta {', '.join(secondary)}."
+    return result
+
+
 def easy_recovery_fallback(payload: dict[str, Any], session_kind: str) -> dict[str, Any] | None:
     if session_kind not in {"easy", "recovery"}:
         return None
@@ -174,13 +256,13 @@ def match_workout_knowledge(payload: dict[str, Any], session_kind: str, template
         if explicit_knowledge_id:
             entry = knowledge_entry_by_id(explicit_knowledge_id)
             if entry:
-                return summarized_entry(entry)
+                return apply_primary_goal_override(summarized_entry(entry), payload, session_kind)
 
         explicit_knowledge_label = str(payload.get("knowledge_label") or "").strip()
         if explicit_knowledge_label:
             entry = knowledge_entry_by_label(explicit_knowledge_label)
             if entry:
-                return summarized_entry(entry)
+                return apply_primary_goal_override(summarized_entry(entry), payload, session_kind)
 
     resolved_template_id = str(template_id or payload.get("template_id") or "").strip()
     if resolved_template_id:
@@ -188,7 +270,7 @@ def match_workout_knowledge(payload: dict[str, Any], session_kind: str, template
         for knowledge_id in (mapping or {}).get("preferred_knowledge_ids", []):
             entry = knowledge_entry_by_id(str(knowledge_id))
             if entry:
-                return summarized_entry(entry)
+                return apply_primary_goal_override(summarized_entry(entry), payload, session_kind)
 
     name_text = str(payload.get("name") or "")
     description_text = str(payload.get("description") or "")
@@ -226,5 +308,8 @@ def match_workout_knowledge(payload: dict[str, Any], session_kind: str, template
             best_score = score
             best_match = entry
     if not best_match:
-        return easy_recovery_fallback(payload, session_kind)
-    return summarized_entry(best_match)
+        fallback = easy_recovery_fallback(payload, session_kind)
+        if fallback:
+            return apply_primary_goal_override(fallback, payload, session_kind)
+        return fallback
+    return apply_primary_goal_override(summarized_entry(best_match), payload, session_kind)

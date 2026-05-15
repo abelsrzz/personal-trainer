@@ -842,10 +842,29 @@ def build_decision(activities: list[dict[str, Any]], reviews: list[dict[str, Any
     shin_entry = latest_shin_entry(shin_entries, as_of)
     shin_pain = max_shin_pain(shin_entry)
     daily_signals = classify_daily_signals(load_daily_metrics(), activities, as_of)
+    latest_athlete_feedback = latest_feedback_item.get("athlete_feedback", {}) if latest_feedback_item else {}
+    latest_pain_level = int(latest_athlete_feedback.get("pain_level") or 0) if latest_athlete_feedback else 0
+    latest_compliance = str(latest_athlete_feedback.get("compliance") or "") if latest_athlete_feedback else ""
+    latest_rpe = int(latest_athlete_feedback.get("rpe") or 0) if latest_athlete_feedback else 0
     context = active_context(as_of)
     reasons: list[str] = []
     status = "green"
     action = "maintain_or_progress_carefully"
+    tolerance_caution = any(
+        [
+            risky_review is not None,
+            shin_pain is not None and shin_pain >= 3,
+            daily_signals["readiness_flag"] == "low",
+            daily_signals["hrv_flag"] == "low",
+            daily_signals["resting_hr_flag"] == "high",
+            daily_signals["sleep_flag"] == "poor",
+            daily_signals["training_status_flag"] == "caution",
+            daily_signals["running_tolerance_flag"] == "high",
+            latest_pain_level >= 3,
+            latest_compliance in {"aborted", "modified", "partial"},
+            latest_rpe >= 8,
+        ]
+    )
 
     if risky_review:
         reasons.append(f"Revision reciente de alto riesgo: {risky_review['planned']['date']} {risky_review['planned']['name']}.")
@@ -860,10 +879,16 @@ def build_decision(activities: list[dict[str, Any]], reviews: list[dict[str, Any
         reasons.append(
             f"Subida de volumen semanal de {weekly_spike:.0f}% ({previous_complete_week['km']:.1f} -> {last_complete_week['km']:.1f} km entre semanas completas)."
         )
-        status = "red" if weekly_spike > 50 else "yellow"
+        if weekly_spike > 50 and tolerance_caution:
+            status = "red"
+        elif status == "green":
+            status = "yellow"
     if last_7["quality_runs"] >= 3:
         reasons.append(f"Demasiada densidad de calidad: {last_7['quality_runs']} sesiones exigentes en 7 dias.")
-        status = "red"
+        if tolerance_caution:
+            status = "red"
+        elif status == "green":
+            status = "yellow"
     if last_7["avg_hr"] and last_7["avg_hr"] > 152 and last_7["avg_pace_s_per_km"] and last_7["avg_pace_s_per_km"] > 420:
         reasons.append("Rodajes recientes muestran pulso alto para ritmo facil; senal de fatiga, calor o baja eficiencia actual.")
         status = "yellow" if status == "green" else status
@@ -889,10 +914,6 @@ def build_decision(activities: list[dict[str, Any]], reviews: list[dict[str, Any
         reasons.append("La relación carga aguda/crónica sale alta; conviene evitar un nuevo salto de carga.")
         status = "red" if status == "red" else "yellow"
 
-    latest_athlete_feedback = latest_feedback_item.get("athlete_feedback", {}) if latest_feedback_item else {}
-    latest_pain_level = int(latest_athlete_feedback.get("pain_level") or 0) if latest_athlete_feedback else 0
-    latest_compliance = str(latest_athlete_feedback.get("compliance") or "") if latest_athlete_feedback else ""
-    latest_rpe = int(latest_athlete_feedback.get("rpe") or 0) if latest_athlete_feedback else 0
     if latest_pain_level >= 4:
         reasons.append(f"Feedback subjetivo reciente con dolor {latest_pain_level}/10; conviene proteger carga.")
         status = "red"

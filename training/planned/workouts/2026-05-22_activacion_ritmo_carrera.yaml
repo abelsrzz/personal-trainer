@@ -13,7 +13,7 @@ workout:
     target:
       type: heart_rate_range
       min_bpm: 135
-      max_bpm: 145
+      max_bpm: 150
   - order: 2
     type: repeat_group
     iterations: 3
@@ -33,7 +33,7 @@ workout:
       target:
         type: heart_rate_range
         min_bpm: 131
-        max_bpm: 145
+        max_bpm: 150
   - order: 5
     step_type: cooldown
     description: 2 km faciles
@@ -41,4 +41,4 @@ workout:
     target:
       type: heart_rate_range
       min_bpm: 135
-      max_bpm: 145
+      max_bpm: 150

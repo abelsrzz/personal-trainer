@@ -12,6 +12,7 @@ response_profile:
       - responds to low-risk neuromuscular touches without needing large doses
     current_constraints:
       - easy running still needs heart-rate control
+      - easy running should not go slower than 7:30/km because that degrades mechanics and raises injury risk
       - recent weekly volume is below historical best and should be treated as rebuild status
       - left shin tolerance must stay in green band before any real progression
   workout_response:

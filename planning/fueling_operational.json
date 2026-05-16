@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-16T11:53:31.127017+00:00",
+  "generated_at": "2026-05-16T13:02:09.073702+00:00",
   "athlete": {
     "weight_kg": 64.199
   },
@@ -689,7 +689,7 @@
     },
     {
       "slug": "2026-05-17_rodaje_9km_continuidad",
-      "name": "Rodaje 9 km continuidad",
+      "name": "Bicicleta Z2 continuidad 80 min",
       "date": "2026-05-17",
       "plan": {
         "entries": [
@@ -770,8 +770,254 @@
       }
     },
     {
+      "slug": "2026-05-19_rodaje_5km_reintroduccion",
+      "name": "Bicicleta aerobica estable 65 min",
+      "date": "2026-05-19",
+      "plan": {
+        "entries": [
+          {
+            "context_type": "workout",
+            "context_id": "2026-05-19_rodaje_5km_reintroduccion",
+            "date": "2026-05-19",
+            "time_label": "T-90m",
+            "phase": "pre",
+            "recommendation": "Llegar con hidratos disponibles y sin pesadez antes de la sesion exigente.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa",
+            "quantity": "30-60 g CHO",
+            "reason": "Mejora la calidad del entrenamiento y evita recortarlo por falta de energia."
+          },
+          {
+            "context_type": "workout",
+            "context_id": "2026-05-19_rodaje_5km_reintroduccion",
+            "date": "2026-05-19",
+            "time_label": "Durante",
+            "phase": "during",
+            "recommendation": "Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              },
+              {
+                "id": "evolytes",
+                "name": "Electrolitos Evolytes"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa + Electrolitos Evolytes",
+            "quantity": "30-45 g CHO/h + sodio",
+            "reason": "Reduce la deriva final y mejora la tolerancia al bloque completo."
+          },
+          {
+            "context_type": "workout",
+            "context_id": "2026-05-19_rodaje_5km_reintroduccion",
+            "date": "2026-05-19",
+            "time_label": "T+30m",
+            "phase": "post",
+            "recommendation": "Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura.",
+            "products": [
+              {
+                "id": "whey_protein",
+                "name": "Proteina"
+              },
+              {
+                "id": "creatine_monohydrate",
+                "name": "Creatina"
+              },
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              }
+            ],
+            "products_label": "Proteina + Creatina + Maltodextrina",
+            "quantity": "20-30 g proteina + 3-5 g creatina + 30-60 g CHO",
+            "reason": "Acelera recuperacion y ayuda a llegar mejor al siguiente dia util."
+          }
+        ],
+        "is_recommended": true,
+        "intensity": "hard"
+      }
+    },
+    {
+      "slug": "2026-05-28_rodaje_7km_controlado",
+      "name": "Bicicleta aerobica continua 65 min",
+      "date": "2026-05-28",
+      "plan": {
+        "entries": [
+          {
+            "context_type": "workout",
+            "context_id": "2026-05-28_rodaje_7km_controlado",
+            "date": "2026-05-28",
+            "time_label": "T-90m",
+            "phase": "pre",
+            "recommendation": "Llegar con hidratos disponibles y sin pesadez antes de la sesion exigente.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa",
+            "quantity": "30-60 g CHO",
+            "reason": "Mejora la calidad del entrenamiento y evita recortarlo por falta de energia."
+          },
+          {
+            "context_type": "workout",
+            "context_id": "2026-05-28_rodaje_7km_controlado",
+            "date": "2026-05-28",
+            "time_label": "Durante",
+            "phase": "during",
+            "recommendation": "Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              },
+              {
+                "id": "evolytes",
+                "name": "Electrolitos Evolytes"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa + Electrolitos Evolytes",
+            "quantity": "30-45 g CHO/h + sodio",
+            "reason": "Reduce la deriva final y mejora la tolerancia al bloque completo."
+          },
+          {
+            "context_type": "workout",
+            "context_id": "2026-05-28_rodaje_7km_controlado",
+            "date": "2026-05-28",
+            "time_label": "T+30m",
+            "phase": "post",
+            "recommendation": "Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura.",
+            "products": [
+              {
+                "id": "whey_protein",
+                "name": "Proteina"
+              },
+              {
+                "id": "creatine_monohydrate",
+                "name": "Creatina"
+              },
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              }
+            ],
+            "products_label": "Proteina + Creatina + Maltodextrina",
+            "quantity": "20-30 g proteina + 3-5 g creatina + 30-60 g CHO",
+            "reason": "Acelera recuperacion y ayuda a llegar mejor al siguiente dia util."
+          }
+        ],
+        "is_recommended": true,
+        "intensity": "hard"
+      }
+    },
+    {
+      "slug": "2026-05-30_rodaje_6km_progresivo_suave",
+      "name": "Bicicleta base aerobica 85 min",
+      "date": "2026-05-30",
+      "plan": {
+        "entries": [
+          {
+            "context_type": "workout",
+            "context_id": "2026-05-30_rodaje_6km_progresivo_suave",
+            "date": "2026-05-30",
+            "time_label": "T-90m",
+            "phase": "pre",
+            "recommendation": "Llegar con hidratos disponibles y sin pesadez antes de la sesion exigente.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa",
+            "quantity": "30-60 g CHO",
+            "reason": "Mejora la calidad del entrenamiento y evita recortarlo por falta de energia."
+          },
+          {
+            "context_type": "workout",
+            "context_id": "2026-05-30_rodaje_6km_progresivo_suave",
+            "date": "2026-05-30",
+            "time_label": "Durante",
+            "phase": "during",
+            "recommendation": "Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              },
+              {
+                "id": "evolytes",
+                "name": "Electrolitos Evolytes"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa + Electrolitos Evolytes",
+            "quantity": "30-45 g CHO/h + sodio",
+            "reason": "Reduce la deriva final y mejora la tolerancia al bloque completo."
+          },
+          {
+            "context_type": "workout",
+            "context_id": "2026-05-30_rodaje_6km_progresivo_suave",
+            "date": "2026-05-30",
+            "time_label": "T+30m",
+            "phase": "post",
+            "recommendation": "Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura.",
+            "products": [
+              {
+                "id": "whey_protein",
+                "name": "Proteina"
+              },
+              {
+                "id": "creatine_monohydrate",
+                "name": "Creatina"
+              },
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              }
+            ],
+            "products_label": "Proteina + Creatina + Maltodextrina",
+            "quantity": "20-30 g proteina + 3-5 g creatina + 30-60 g CHO",
+            "reason": "Acelera recuperacion y ayuda a llegar mejor al siguiente dia util."
+          }
+        ],
+        "is_recommended": true,
+        "intensity": "hard"
+      }
+    },
+    {
       "slug": "2026-05-31_rodaje_10km_z2_continuidad",
-      "name": "Rodaje 10 km Z2 continuidad",
+      "name": "Bicicleta larga comoda 100 min",
       "date": "2026-05-31",
       "plan": {
         "entries": [
@@ -818,7 +1064,7 @@
               }
             ],
             "products_label": "Maltodextrina + Fructosa + Electrolitos Evolytes",
-            "quantity": "30-45 g CHO/h + sodio",
+            "quantity": "60-75 g CHO/h + sodio",
             "reason": "Reduce la deriva final y mejora la tolerancia al bloque completo."
           },
           {
@@ -848,7 +1094,909 @@
           }
         ],
         "is_recommended": true,
+        "intensity": "very_hard"
+      }
+    },
+    {
+      "slug": "2026-06-02_bicicleta_z2_65min",
+      "name": "Bicicleta Z2 65 min",
+      "date": "2026-06-02",
+      "plan": {
+        "entries": [
+          {
+            "context_type": "workout",
+            "context_id": "2026-06-02_bicicleta_z2_65min",
+            "date": "2026-06-02",
+            "time_label": "T-90m",
+            "phase": "pre",
+            "recommendation": "Llegar con hidratos disponibles y sin pesadez antes de la sesion exigente.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa",
+            "quantity": "30-60 g CHO",
+            "reason": "Mejora la calidad del entrenamiento y evita recortarlo por falta de energia."
+          },
+          {
+            "context_type": "workout",
+            "context_id": "2026-06-02_bicicleta_z2_65min",
+            "date": "2026-06-02",
+            "time_label": "Durante",
+            "phase": "during",
+            "recommendation": "Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              },
+              {
+                "id": "evolytes",
+                "name": "Electrolitos Evolytes"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa + Electrolitos Evolytes",
+            "quantity": "30-45 g CHO/h + sodio",
+            "reason": "Reduce la deriva final y mejora la tolerancia al bloque completo."
+          },
+          {
+            "context_type": "workout",
+            "context_id": "2026-06-02_bicicleta_z2_65min",
+            "date": "2026-06-02",
+            "time_label": "T+30m",
+            "phase": "post",
+            "recommendation": "Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura.",
+            "products": [
+              {
+                "id": "whey_protein",
+                "name": "Proteina"
+              },
+              {
+                "id": "creatine_monohydrate",
+                "name": "Creatina"
+              },
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              }
+            ],
+            "products_label": "Proteina + Creatina + Maltodextrina",
+            "quantity": "20-30 g proteina + 3-5 g creatina + 30-60 g CHO",
+            "reason": "Acelera recuperacion y ayuda a llegar mejor al siguiente dia util."
+          }
+        ],
+        "is_recommended": true,
         "intensity": "hard"
+      }
+    },
+    {
+      "slug": "2026-06-04_bicicleta_bloque_medio_80min",
+      "name": "Bicicleta bloque medio 80 min",
+      "date": "2026-06-04",
+      "plan": {
+        "entries": [
+          {
+            "context_type": "workout",
+            "context_id": "2026-06-04_bicicleta_bloque_medio_80min",
+            "date": "2026-06-04",
+            "time_label": "T-90m",
+            "phase": "pre",
+            "recommendation": "Llegar con hidratos disponibles y sin pesadez antes de la sesion exigente.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa",
+            "quantity": "30-60 g CHO",
+            "reason": "Mejora la calidad del entrenamiento y evita recortarlo por falta de energia."
+          },
+          {
+            "context_type": "workout",
+            "context_id": "2026-06-04_bicicleta_bloque_medio_80min",
+            "date": "2026-06-04",
+            "time_label": "Durante",
+            "phase": "during",
+            "recommendation": "Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              },
+              {
+                "id": "evolytes",
+                "name": "Electrolitos Evolytes"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa + Electrolitos Evolytes",
+            "quantity": "30-45 g CHO/h + sodio",
+            "reason": "Reduce la deriva final y mejora la tolerancia al bloque completo."
+          },
+          {
+            "context_type": "workout",
+            "context_id": "2026-06-04_bicicleta_bloque_medio_80min",
+            "date": "2026-06-04",
+            "time_label": "T+30m",
+            "phase": "post",
+            "recommendation": "Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura.",
+            "products": [
+              {
+                "id": "whey_protein",
+                "name": "Proteina"
+              },
+              {
+                "id": "creatine_monohydrate",
+                "name": "Creatina"
+              },
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              }
+            ],
+            "products_label": "Proteina + Creatina + Maltodextrina",
+            "quantity": "20-30 g proteina + 3-5 g creatina + 30-60 g CHO",
+            "reason": "Acelera recuperacion y ayuda a llegar mejor al siguiente dia util."
+          }
+        ],
+        "is_recommended": true,
+        "intensity": "hard"
+      }
+    },
+    {
+      "slug": "2026-06-06_bicicleta_aerobica_95min",
+      "name": "Bicicleta aerobica 95 min",
+      "date": "2026-06-06",
+      "plan": {
+        "entries": [
+          {
+            "context_type": "workout",
+            "context_id": "2026-06-06_bicicleta_aerobica_95min",
+            "date": "2026-06-06",
+            "time_label": "T-90m",
+            "phase": "pre",
+            "recommendation": "Llegar con hidratos disponibles y sin pesadez antes de la sesion exigente.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa",
+            "quantity": "30-60 g CHO",
+            "reason": "Mejora la calidad del entrenamiento y evita recortarlo por falta de energia."
+          },
+          {
+            "context_type": "workout",
+            "context_id": "2026-06-06_bicicleta_aerobica_95min",
+            "date": "2026-06-06",
+            "time_label": "Durante",
+            "phase": "during",
+            "recommendation": "Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              },
+              {
+                "id": "evolytes",
+                "name": "Electrolitos Evolytes"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa + Electrolitos Evolytes",
+            "quantity": "60-75 g CHO/h + sodio",
+            "reason": "Reduce la deriva final y mejora la tolerancia al bloque completo."
+          },
+          {
+            "context_type": "workout",
+            "context_id": "2026-06-06_bicicleta_aerobica_95min",
+            "date": "2026-06-06",
+            "time_label": "T+30m",
+            "phase": "post",
+            "recommendation": "Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura.",
+            "products": [
+              {
+                "id": "whey_protein",
+                "name": "Proteina"
+              },
+              {
+                "id": "creatine_monohydrate",
+                "name": "Creatina"
+              },
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              }
+            ],
+            "products_label": "Proteina + Creatina + Maltodextrina",
+            "quantity": "20-30 g proteina + 3-5 g creatina + 30-60 g CHO",
+            "reason": "Acelera recuperacion y ayuda a llegar mejor al siguiente dia util."
+          }
+        ],
+        "is_recommended": true,
+        "intensity": "very_hard"
+      }
+    },
+    {
+      "slug": "2026-06-07_bicicleta_larga_115min",
+      "name": "Bicicleta larga 115 min",
+      "date": "2026-06-07",
+      "plan": {
+        "entries": [
+          {
+            "context_type": "workout",
+            "context_id": "2026-06-07_bicicleta_larga_115min",
+            "date": "2026-06-07",
+            "time_label": "T-90m",
+            "phase": "pre",
+            "recommendation": "Llegar con hidratos disponibles y sin pesadez antes de la sesion exigente.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa",
+            "quantity": "30-60 g CHO",
+            "reason": "Mejora la calidad del entrenamiento y evita recortarlo por falta de energia."
+          },
+          {
+            "context_type": "workout",
+            "context_id": "2026-06-07_bicicleta_larga_115min",
+            "date": "2026-06-07",
+            "time_label": "Durante",
+            "phase": "during",
+            "recommendation": "Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              },
+              {
+                "id": "evolytes",
+                "name": "Electrolitos Evolytes"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa + Electrolitos Evolytes",
+            "quantity": "60-75 g CHO/h + sodio",
+            "reason": "Reduce la deriva final y mejora la tolerancia al bloque completo."
+          },
+          {
+            "context_type": "workout",
+            "context_id": "2026-06-07_bicicleta_larga_115min",
+            "date": "2026-06-07",
+            "time_label": "T+30m",
+            "phase": "post",
+            "recommendation": "Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura.",
+            "products": [
+              {
+                "id": "whey_protein",
+                "name": "Proteina"
+              },
+              {
+                "id": "creatine_monohydrate",
+                "name": "Creatina"
+              },
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              }
+            ],
+            "products_label": "Proteina + Creatina + Maltodextrina",
+            "quantity": "20-30 g proteina + 3-5 g creatina + 30-60 g CHO",
+            "reason": "Acelera recuperacion y ayuda a llegar mejor al siguiente dia util."
+          }
+        ],
+        "is_recommended": true,
+        "intensity": "very_hard"
+      }
+    },
+    {
+      "slug": "2026-06-09_bicicleta_aerobica_80min",
+      "name": "Bicicleta aerobica 80 min",
+      "date": "2026-06-09",
+      "plan": {
+        "entries": [
+          {
+            "context_type": "workout",
+            "context_id": "2026-06-09_bicicleta_aerobica_80min",
+            "date": "2026-06-09",
+            "time_label": "T-90m",
+            "phase": "pre",
+            "recommendation": "Llegar con hidratos disponibles y sin pesadez antes de la sesion exigente.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa",
+            "quantity": "30-60 g CHO",
+            "reason": "Mejora la calidad del entrenamiento y evita recortarlo por falta de energia."
+          },
+          {
+            "context_type": "workout",
+            "context_id": "2026-06-09_bicicleta_aerobica_80min",
+            "date": "2026-06-09",
+            "time_label": "Durante",
+            "phase": "during",
+            "recommendation": "Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              },
+              {
+                "id": "evolytes",
+                "name": "Electrolitos Evolytes"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa + Electrolitos Evolytes",
+            "quantity": "30-45 g CHO/h + sodio",
+            "reason": "Reduce la deriva final y mejora la tolerancia al bloque completo."
+          },
+          {
+            "context_type": "workout",
+            "context_id": "2026-06-09_bicicleta_aerobica_80min",
+            "date": "2026-06-09",
+            "time_label": "T+30m",
+            "phase": "post",
+            "recommendation": "Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura.",
+            "products": [
+              {
+                "id": "whey_protein",
+                "name": "Proteina"
+              },
+              {
+                "id": "creatine_monohydrate",
+                "name": "Creatina"
+              },
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              }
+            ],
+            "products_label": "Proteina + Creatina + Maltodextrina",
+            "quantity": "20-30 g proteina + 3-5 g creatina + 30-60 g CHO",
+            "reason": "Acelera recuperacion y ayuda a llegar mejor al siguiente dia util."
+          }
+        ],
+        "is_recommended": true,
+        "intensity": "hard"
+      }
+    },
+    {
+      "slug": "2026-06-11_bicicleta_continua_90min",
+      "name": "Bicicleta continua 90 min",
+      "date": "2026-06-11",
+      "plan": {
+        "entries": [
+          {
+            "context_type": "workout",
+            "context_id": "2026-06-11_bicicleta_continua_90min",
+            "date": "2026-06-11",
+            "time_label": "T-90m",
+            "phase": "pre",
+            "recommendation": "Llegar con hidratos disponibles y sin pesadez antes de la sesion exigente.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa",
+            "quantity": "30-60 g CHO",
+            "reason": "Mejora la calidad del entrenamiento y evita recortarlo por falta de energia."
+          },
+          {
+            "context_type": "workout",
+            "context_id": "2026-06-11_bicicleta_continua_90min",
+            "date": "2026-06-11",
+            "time_label": "Durante",
+            "phase": "during",
+            "recommendation": "Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              },
+              {
+                "id": "evolytes",
+                "name": "Electrolitos Evolytes"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa + Electrolitos Evolytes",
+            "quantity": "60-75 g CHO/h + sodio",
+            "reason": "Reduce la deriva final y mejora la tolerancia al bloque completo."
+          },
+          {
+            "context_type": "workout",
+            "context_id": "2026-06-11_bicicleta_continua_90min",
+            "date": "2026-06-11",
+            "time_label": "T+30m",
+            "phase": "post",
+            "recommendation": "Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura.",
+            "products": [
+              {
+                "id": "whey_protein",
+                "name": "Proteina"
+              },
+              {
+                "id": "creatine_monohydrate",
+                "name": "Creatina"
+              },
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              }
+            ],
+            "products_label": "Proteina + Creatina + Maltodextrina",
+            "quantity": "20-30 g proteina + 3-5 g creatina + 30-60 g CHO",
+            "reason": "Acelera recuperacion y ayuda a llegar mejor al siguiente dia util."
+          }
+        ],
+        "is_recommended": true,
+        "intensity": "very_hard"
+      }
+    },
+    {
+      "slug": "2026-06-13_bicicleta_larga_110min",
+      "name": "Bicicleta larga 110 min",
+      "date": "2026-06-13",
+      "plan": {
+        "entries": [
+          {
+            "context_type": "workout",
+            "context_id": "2026-06-13_bicicleta_larga_110min",
+            "date": "2026-06-13",
+            "time_label": "T-90m",
+            "phase": "pre",
+            "recommendation": "Llegar con hidratos disponibles y sin pesadez antes de la sesion exigente.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa",
+            "quantity": "30-60 g CHO",
+            "reason": "Mejora la calidad del entrenamiento y evita recortarlo por falta de energia."
+          },
+          {
+            "context_type": "workout",
+            "context_id": "2026-06-13_bicicleta_larga_110min",
+            "date": "2026-06-13",
+            "time_label": "Durante",
+            "phase": "during",
+            "recommendation": "Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              },
+              {
+                "id": "evolytes",
+                "name": "Electrolitos Evolytes"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa + Electrolitos Evolytes",
+            "quantity": "60-75 g CHO/h + sodio",
+            "reason": "Reduce la deriva final y mejora la tolerancia al bloque completo."
+          },
+          {
+            "context_type": "workout",
+            "context_id": "2026-06-13_bicicleta_larga_110min",
+            "date": "2026-06-13",
+            "time_label": "T+30m",
+            "phase": "post",
+            "recommendation": "Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura.",
+            "products": [
+              {
+                "id": "whey_protein",
+                "name": "Proteina"
+              },
+              {
+                "id": "creatine_monohydrate",
+                "name": "Creatina"
+              },
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              }
+            ],
+            "products_label": "Proteina + Creatina + Maltodextrina",
+            "quantity": "20-30 g proteina + 3-5 g creatina + 30-60 g CHO",
+            "reason": "Acelera recuperacion y ayuda a llegar mejor al siguiente dia util."
+          }
+        ],
+        "is_recommended": true,
+        "intensity": "very_hard"
+      }
+    },
+    {
+      "slug": "2026-06-14_bicicleta_larga_cierre_125min",
+      "name": "Bicicleta larga cierre 125 min",
+      "date": "2026-06-14",
+      "plan": {
+        "entries": [
+          {
+            "context_type": "workout",
+            "context_id": "2026-06-14_bicicleta_larga_cierre_125min",
+            "date": "2026-06-14",
+            "time_label": "T-90m",
+            "phase": "pre",
+            "recommendation": "Llegar con hidratos disponibles y sin pesadez antes de la sesion exigente.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa",
+            "quantity": "30-60 g CHO",
+            "reason": "Mejora la calidad del entrenamiento y evita recortarlo por falta de energia."
+          },
+          {
+            "context_type": "workout",
+            "context_id": "2026-06-14_bicicleta_larga_cierre_125min",
+            "date": "2026-06-14",
+            "time_label": "Durante",
+            "phase": "during",
+            "recommendation": "Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              },
+              {
+                "id": "evolytes",
+                "name": "Electrolitos Evolytes"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa + Electrolitos Evolytes",
+            "quantity": "60-75 g CHO/h + sodio",
+            "reason": "Reduce la deriva final y mejora la tolerancia al bloque completo."
+          },
+          {
+            "context_type": "workout",
+            "context_id": "2026-06-14_bicicleta_larga_cierre_125min",
+            "date": "2026-06-14",
+            "time_label": "T+30m",
+            "phase": "post",
+            "recommendation": "Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura.",
+            "products": [
+              {
+                "id": "whey_protein",
+                "name": "Proteina"
+              },
+              {
+                "id": "creatine_monohydrate",
+                "name": "Creatina"
+              },
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              }
+            ],
+            "products_label": "Proteina + Creatina + Maltodextrina",
+            "quantity": "20-30 g proteina + 3-5 g creatina + 30-60 g CHO",
+            "reason": "Acelera recuperacion y ayuda a llegar mejor al siguiente dia util."
+          }
+        ],
+        "is_recommended": true,
+        "intensity": "very_hard"
+      }
+    },
+    {
+      "slug": "2026-06-18_bicicleta_continua_80min",
+      "name": "Bicicleta continua 80 min",
+      "date": "2026-06-18",
+      "plan": {
+        "entries": [
+          {
+            "context_type": "workout",
+            "context_id": "2026-06-18_bicicleta_continua_80min",
+            "date": "2026-06-18",
+            "time_label": "T-90m",
+            "phase": "pre",
+            "recommendation": "Llegar con hidratos disponibles y sin pesadez antes de la sesion exigente.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa",
+            "quantity": "30-60 g CHO",
+            "reason": "Mejora la calidad del entrenamiento y evita recortarlo por falta de energia."
+          },
+          {
+            "context_type": "workout",
+            "context_id": "2026-06-18_bicicleta_continua_80min",
+            "date": "2026-06-18",
+            "time_label": "Durante",
+            "phase": "during",
+            "recommendation": "Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              },
+              {
+                "id": "evolytes",
+                "name": "Electrolitos Evolytes"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa + Electrolitos Evolytes",
+            "quantity": "30-45 g CHO/h + sodio",
+            "reason": "Reduce la deriva final y mejora la tolerancia al bloque completo."
+          },
+          {
+            "context_type": "workout",
+            "context_id": "2026-06-18_bicicleta_continua_80min",
+            "date": "2026-06-18",
+            "time_label": "T+30m",
+            "phase": "post",
+            "recommendation": "Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura.",
+            "products": [
+              {
+                "id": "whey_protein",
+                "name": "Proteina"
+              },
+              {
+                "id": "creatine_monohydrate",
+                "name": "Creatina"
+              },
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              }
+            ],
+            "products_label": "Proteina + Creatina + Maltodextrina",
+            "quantity": "20-30 g proteina + 3-5 g creatina + 30-60 g CHO",
+            "reason": "Acelera recuperacion y ayuda a llegar mejor al siguiente dia util."
+          }
+        ],
+        "is_recommended": true,
+        "intensity": "hard"
+      }
+    },
+    {
+      "slug": "2026-06-20_bicicleta_aerobica_95min_retorno",
+      "name": "Bicicleta aerobica 95 min retorno",
+      "date": "2026-06-20",
+      "plan": {
+        "entries": [
+          {
+            "context_type": "workout",
+            "context_id": "2026-06-20_bicicleta_aerobica_95min_retorno",
+            "date": "2026-06-20",
+            "time_label": "T-90m",
+            "phase": "pre",
+            "recommendation": "Llegar con hidratos disponibles y sin pesadez antes de la sesion exigente.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa",
+            "quantity": "30-60 g CHO",
+            "reason": "Mejora la calidad del entrenamiento y evita recortarlo por falta de energia."
+          },
+          {
+            "context_type": "workout",
+            "context_id": "2026-06-20_bicicleta_aerobica_95min_retorno",
+            "date": "2026-06-20",
+            "time_label": "Durante",
+            "phase": "during",
+            "recommendation": "Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              },
+              {
+                "id": "evolytes",
+                "name": "Electrolitos Evolytes"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa + Electrolitos Evolytes",
+            "quantity": "60-75 g CHO/h + sodio",
+            "reason": "Reduce la deriva final y mejora la tolerancia al bloque completo."
+          },
+          {
+            "context_type": "workout",
+            "context_id": "2026-06-20_bicicleta_aerobica_95min_retorno",
+            "date": "2026-06-20",
+            "time_label": "T+30m",
+            "phase": "post",
+            "recommendation": "Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura.",
+            "products": [
+              {
+                "id": "whey_protein",
+                "name": "Proteina"
+              },
+              {
+                "id": "creatine_monohydrate",
+                "name": "Creatina"
+              },
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              }
+            ],
+            "products_label": "Proteina + Creatina + Maltodextrina",
+            "quantity": "20-30 g proteina + 3-5 g creatina + 30-60 g CHO",
+            "reason": "Acelera recuperacion y ayuda a llegar mejor al siguiente dia util."
+          }
+        ],
+        "is_recommended": true,
+        "intensity": "very_hard"
+      }
+    },
+    {
+      "slug": "2026-06-21_bicicleta_larga_110min_retorno",
+      "name": "Bicicleta larga 110 min retorno",
+      "date": "2026-06-21",
+      "plan": {
+        "entries": [
+          {
+            "context_type": "workout",
+            "context_id": "2026-06-21_bicicleta_larga_110min_retorno",
+            "date": "2026-06-21",
+            "time_label": "T-90m",
+            "phase": "pre",
+            "recommendation": "Llegar con hidratos disponibles y sin pesadez antes de la sesion exigente.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa",
+            "quantity": "30-60 g CHO",
+            "reason": "Mejora la calidad del entrenamiento y evita recortarlo por falta de energia."
+          },
+          {
+            "context_type": "workout",
+            "context_id": "2026-06-21_bicicleta_larga_110min_retorno",
+            "date": "2026-06-21",
+            "time_label": "Durante",
+            "phase": "during",
+            "recommendation": "Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              },
+              {
+                "id": "evolytes",
+                "name": "Electrolitos Evolytes"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa + Electrolitos Evolytes",
+            "quantity": "60-75 g CHO/h + sodio",
+            "reason": "Reduce la deriva final y mejora la tolerancia al bloque completo."
+          },
+          {
+            "context_type": "workout",
+            "context_id": "2026-06-21_bicicleta_larga_110min_retorno",
+            "date": "2026-06-21",
+            "time_label": "T+30m",
+            "phase": "post",
+            "recommendation": "Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura.",
+            "products": [
+              {
+                "id": "whey_protein",
+                "name": "Proteina"
+              },
+              {
+                "id": "creatine_monohydrate",
+                "name": "Creatina"
+              },
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              }
+            ],
+            "products_label": "Proteina + Creatina + Maltodextrina",
+            "quantity": "20-30 g proteina + 3-5 g creatina + 30-60 g CHO",
+            "reason": "Acelera recuperacion y ayuda a llegar mejor al siguiente dia util."
+          }
+        ],
+        "is_recommended": true,
+        "intensity": "very_hard"
       }
     }
   ]

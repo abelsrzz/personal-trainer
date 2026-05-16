@@ -1,7 +1,7 @@
 workout:
   name: Bicicleta larga comoda 100 min
   schedule_date: 2026-05-31
-  sport: fitness_equipment
+  sport: cycling
   description: Sesion larga, comoda y en Z2 para sostener la base aerobica de la semana
     sin impacto sobre la tibia.
   estimated_duration_s: 6000

@@ -1,7 +1,7 @@
 workout:
   name: Bicicleta aerobica estable 65 min
   schedule_date: 2026-05-19
-  sport: fitness_equipment
+  sport: cycling
   description: Carga aerobica equivalente al rodaje previsto, sin impacto y con trabajo
     continuo de base.
   estimated_duration_s: 3900

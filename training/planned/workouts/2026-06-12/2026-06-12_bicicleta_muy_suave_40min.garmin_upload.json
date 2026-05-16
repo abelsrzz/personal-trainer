@@ -1,19 +1,19 @@
 {
-  "generated_at": "2026-05-16T12:42:20.659048Z",
+  "generated_at": "2026-05-16T13:06:46.012857Z",
   "status": "scheduled",
   "upload_mode": "structured_targets",
   "workout_file": "training/planned/workouts/2026-06-12_bicicleta_muy_suave_40min.yaml",
   "uploaded_response": {
-    "workoutId": 1569240323,
+    "workoutId": 1569255591,
     "ownerId": 137864769,
     "workoutName": "Bicicleta muy suave 40 min",
     "description": "Descarga activa para facilitar absorcion de la semana sin perder continuidad.",
-    "updatedDate": "2026-05-16T12:42:20.0",
-    "createdDate": "2026-05-16T12:42:20.0",
+    "updatedDate": "2026-05-16T13:06:46.0",
+    "createdDate": "2026-05-16T13:06:46.0",
     "sportType": {
-      "sportTypeId": 6,
-      "sportTypeKey": "cardio_training",
-      "displayOrder": 6
+      "sportTypeId": 2,
+      "sportTypeKey": "cycling",
+      "displayOrder": 2
     },
     "subSportType": null,
     "trainingPlanId": null,
@@ -34,9 +34,9 @@
       {
         "segmentOrder": 1,
         "sportType": {
-          "sportTypeId": 6,
-          "sportTypeKey": "cardio_training",
-          "displayOrder": 6
+          "sportTypeId": 2,
+          "sportTypeKey": "cycling",
+          "displayOrder": 2
         },
         "poolLengthUnit": null,
         "poolLength": null,
@@ -49,7 +49,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13376332112,
+            "stepId": 13376476516,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 3,
@@ -122,23 +122,23 @@
       "unitKey": null,
       "factor": null
     },
-    "workoutThumbnailUrl": null,
+    "workoutThumbnailUrl": "https://connect.garmin.com/chart-service/workout?data=125,40,ch",
     "isSessionTransitionEnabled": null,
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1650769454,
+    "workoutScheduleId": 1650784642,
     "workout": {
-      "workoutId": 1569240323,
+      "workoutId": 1569255591,
       "ownerId": 137864769,
       "workoutName": "Bicicleta muy suave 40 min",
       "description": "Descarga activa para facilitar absorcion de la semana sin perder continuidad.",
-      "updatedDate": "2026-05-16T12:42:20.0",
-      "createdDate": "2026-05-16T12:42:20.0",
+      "updatedDate": "2026-05-16T13:06:46.0",
+      "createdDate": "2026-05-16T13:06:46.0",
       "sportType": {
-        "sportTypeId": 6,
-        "sportTypeKey": "cardio_training",
-        "displayOrder": 6
+        "sportTypeId": 2,
+        "sportTypeKey": "cycling",
+        "displayOrder": 2
       },
       "subSportType": null,
       "trainingPlanId": null,
@@ -150,9 +150,9 @@
         {
           "segmentOrder": 1,
           "sportType": {
-            "sportTypeId": 6,
-            "sportTypeKey": "cardio_training",
-            "displayOrder": 6
+            "sportTypeId": 2,
+            "sportTypeKey": "cycling",
+            "displayOrder": 2
           },
           "poolLengthUnit": null,
           "poolLength": null,
@@ -165,7 +165,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13376332112,
+              "stepId": 13376476516,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 3,
@@ -238,7 +238,7 @@
         "unitKey": null,
         "factor": null
       },
-      "workoutThumbnailUrl": null,
+      "workoutThumbnailUrl": "https://connect.garmin.com/chart-service/workout?data=125,40,ch",
       "isSessionTransitionEnabled": null,
       "shared": false
     },
@@ -252,9 +252,9 @@
     "priority": null,
     "associatedActivityDateTime": null,
     "tpType": null,
-    "nameChanged": false,
-    "itp": false,
     "race": false,
+    "itp": false,
+    "nameChanged": false,
     "protected": false
   }
 }

@@ -13,7 +13,7 @@
           {
             "file": "training/planned/workouts/2026-05-26_rodaje_6km_recuperacion_post_ordes.yaml",
             "status": "ok",
-            "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569240257,\n  \"schedule_date\": \"2026-05-26\",\n  \"workout_name\": \"Bicicleta recuperacion post-Ordes 50 min\",\n  \"sport\": \"fitness_equipment\"\n}"
+            "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569255550,\n  \"schedule_date\": \"2026-05-26\",\n  \"workout_name\": \"Bicicleta recuperacion post-Ordes 50 min\",\n  \"sport\": \"cycling\"\n}"
           },
           {
             "file": "training/planned/workouts/2026-05-27_fuerza_movilidad_tolerancia_35min.yaml",
@@ -23,17 +23,17 @@
           {
             "file": "training/planned/workouts/2026-05-28_rodaje_7km_controlado.yaml",
             "status": "ok",
-            "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569240274,\n  \"schedule_date\": \"2026-05-28\",\n  \"workout_name\": \"Bicicleta aerobica continua 65 min\",\n  \"sport\": \"fitness_equipment\"\n}"
+            "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569255554,\n  \"schedule_date\": \"2026-05-28\",\n  \"workout_name\": \"Bicicleta aerobica continua 65 min\",\n  \"sport\": \"cycling\"\n}"
           },
           {
             "file": "training/planned/workouts/2026-05-30_rodaje_6km_progresivo_suave.yaml",
             "status": "ok",
-            "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569240278,\n  \"schedule_date\": \"2026-05-30\",\n  \"workout_name\": \"Bicicleta base aerobica 85 min\",\n  \"sport\": \"fitness_equipment\"\n}"
+            "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569255563,\n  \"schedule_date\": \"2026-05-30\",\n  \"workout_name\": \"Bicicleta base aerobica 85 min\",\n  \"sport\": \"cycling\"\n}"
           },
           {
             "file": "training/planned/workouts/2026-05-31_rodaje_10km_z2_continuidad.yaml",
             "status": "ok",
-            "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569240282,\n  \"schedule_date\": \"2026-05-31\",\n  \"workout_name\": \"Bicicleta larga comoda 100 min\",\n  \"sport\": \"fitness_equipment\"\n}"
+            "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569255569,\n  \"schedule_date\": \"2026-05-31\",\n  \"workout_name\": \"Bicicleta larga comoda 100 min\",\n  \"sport\": \"cycling\"\n}"
           }
         ],
         "synced": 5,
@@ -58,7 +58,7 @@
         {
           "file": "training/planned/workouts/2026-05-26_rodaje_6km_recuperacion_post_ordes.yaml",
           "status": "ok",
-          "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569240257,\n  \"schedule_date\": \"2026-05-26\",\n  \"workout_name\": \"Bicicleta recuperacion post-Ordes 50 min\",\n  \"sport\": \"fitness_equipment\"\n}"
+          "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569255550,\n  \"schedule_date\": \"2026-05-26\",\n  \"workout_name\": \"Bicicleta recuperacion post-Ordes 50 min\",\n  \"sport\": \"cycling\"\n}"
         },
         {
           "file": "training/planned/workouts/2026-05-27_fuerza_movilidad_tolerancia_35min.yaml",
@@ -68,17 +68,17 @@
         {
           "file": "training/planned/workouts/2026-05-28_rodaje_7km_controlado.yaml",
           "status": "ok",
-          "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569240274,\n  \"schedule_date\": \"2026-05-28\",\n  \"workout_name\": \"Bicicleta aerobica continua 65 min\",\n  \"sport\": \"fitness_equipment\"\n}"
+          "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569255554,\n  \"schedule_date\": \"2026-05-28\",\n  \"workout_name\": \"Bicicleta aerobica continua 65 min\",\n  \"sport\": \"cycling\"\n}"
         },
         {
           "file": "training/planned/workouts/2026-05-30_rodaje_6km_progresivo_suave.yaml",
           "status": "ok",
-          "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569240278,\n  \"schedule_date\": \"2026-05-30\",\n  \"workout_name\": \"Bicicleta base aerobica 85 min\",\n  \"sport\": \"fitness_equipment\"\n}"
+          "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569255563,\n  \"schedule_date\": \"2026-05-30\",\n  \"workout_name\": \"Bicicleta base aerobica 85 min\",\n  \"sport\": \"cycling\"\n}"
         },
         {
           "file": "training/planned/workouts/2026-05-31_rodaje_10km_z2_continuidad.yaml",
           "status": "ok",
-          "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569240282,\n  \"schedule_date\": \"2026-05-31\",\n  \"workout_name\": \"Bicicleta larga comoda 100 min\",\n  \"sport\": \"fitness_equipment\"\n}"
+          "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569255569,\n  \"schedule_date\": \"2026-05-31\",\n  \"workout_name\": \"Bicicleta larga comoda 100 min\",\n  \"sport\": \"cycling\"\n}"
         }
       ],
       "synced": 5,

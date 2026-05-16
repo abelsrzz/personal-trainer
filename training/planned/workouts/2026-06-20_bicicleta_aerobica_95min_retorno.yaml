@@ -1,7 +1,7 @@
 workout:
   name: Bicicleta aerobica 95 min retorno
   schedule_date: 2026-06-20
-  sport: fitness_equipment
+  sport: cycling
   description: Carga de base en bici para complementar la reintroduccion del trote.
   estimated_duration_s: 5700
   steps:

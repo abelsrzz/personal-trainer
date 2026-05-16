@@ -1,7 +1,7 @@
 workout:
   name: Bicicleta continua 90 min
   schedule_date: 2026-06-11
-  sport: fitness_equipment
+  sport: cycling
   description: Trabajo continuo, suave y en Z2 de base con cadencia fluida y sin tension excesiva.
   estimated_duration_s: 5400
   steps:

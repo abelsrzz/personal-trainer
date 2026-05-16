@@ -1,7 +1,7 @@
 workout:
   name: Bicicleta aerobica 80 min
   schedule_date: 2026-06-09
-  sport: fitness_equipment
+  sport: cycling
   description: Carga estable de Z2 para abrir la tercera semana de rehabilitacion.
   estimated_duration_s: 4800
   steps:

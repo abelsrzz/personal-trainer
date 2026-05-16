@@ -1,7 +1,7 @@
 workout:
   name: Bicicleta muy suave 40 min
   schedule_date: 2026-06-12
-  sport: fitness_equipment
+  sport: cycling
   description: Descarga activa para facilitar absorcion de la semana sin perder continuidad.
   estimated_duration_s: 2400
   steps:

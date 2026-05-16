@@ -1,7 +1,7 @@
 workout:
   name: Bicicleta larga 110 min retorno
   schedule_date: 2026-06-21
-  sport: fitness_equipment
+  sport: cycling
   description: Salida larga, comoda y en Z2 para cerrar la semana de vuelta al impacto con buena carga aerobica.
   estimated_duration_s: 6600
   steps:

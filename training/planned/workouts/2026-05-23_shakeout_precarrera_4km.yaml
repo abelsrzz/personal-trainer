@@ -1,7 +1,7 @@
 workout:
   name: Bicicleta soltura pre-Ordes 30 min
   schedule_date: 2026-05-23
-  sport: fitness_equipment
+  sport: cycling
   description: Sesion muy suave para llegar con piernas activas a Ordes sin sumar impacto.
   estimated_duration_s: 1800
   steps:

@@ -1,7 +1,7 @@
 workout:
   name: Bicicleta larga 110 min
   schedule_date: 2026-06-13
-  sport: fitness_equipment
+  sport: cycling
   description: Salida larga, comoda y en Z2 de base para reforzar el trabajo aerobico previo a la reevaluacion.
   estimated_duration_s: 6600
   steps:

@@ -1,19 +1,19 @@
 {
-  "generated_at": "2026-05-16T12:45:00.910244Z",
+  "generated_at": "2026-05-16T13:06:42.875924Z",
   "status": "scheduled",
   "upload_mode": "structured_targets",
   "workout_file": "training/planned/workouts/2026-05-30_rodaje_6km_progresivo_suave.yaml",
   "uploaded_response": {
-    "workoutId": 1569242701,
+    "workoutId": 1569255563,
     "ownerId": 137864769,
     "workoutName": "Bicicleta base aerobica 85 min",
     "description": "Sesion suave y continua en Z2 para construir base aerobica sin impacto, con cadencia estable y sin apretar desarrollo.",
-    "updatedDate": "2026-05-16T12:45:01.0",
-    "createdDate": "2026-05-16T12:45:01.0",
+    "updatedDate": "2026-05-16T13:06:43.0",
+    "createdDate": "2026-05-16T13:06:43.0",
     "sportType": {
-      "sportTypeId": 6,
-      "sportTypeKey": "cardio_training",
-      "displayOrder": 6
+      "sportTypeId": 2,
+      "sportTypeKey": "cycling",
+      "displayOrder": 2
     },
     "subSportType": null,
     "trainingPlanId": null,
@@ -34,9 +34,9 @@
       {
         "segmentOrder": 1,
         "sportType": {
-          "sportTypeId": 6,
-          "sportTypeKey": "cardio_training",
-          "displayOrder": 6
+          "sportTypeId": 2,
+          "sportTypeKey": "cycling",
+          "displayOrder": 2
         },
         "poolLengthUnit": null,
         "poolLength": null,
@@ -49,7 +49,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13376351174,
+            "stepId": 13376476349,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 1,
@@ -101,7 +101,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13376351175,
+            "stepId": 13376476350,
             "stepOrder": 2,
             "stepType": {
               "stepTypeId": 3,
@@ -153,7 +153,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13376351176,
+            "stepId": 13376476351,
             "stepOrder": 3,
             "stepType": {
               "stepTypeId": 2,
@@ -226,23 +226,23 @@
       "unitKey": null,
       "factor": null
     },
-    "workoutThumbnailUrl": null,
+    "workoutThumbnailUrl": "https://connect.garmin.com/chart-service/workout?data=129,10,ch-139,65,ch-125,10,ch",
     "isSessionTransitionEnabled": null,
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1650771852,
+    "workoutScheduleId": 1650784618,
     "workout": {
-      "workoutId": 1569242701,
+      "workoutId": 1569255563,
       "ownerId": 137864769,
       "workoutName": "Bicicleta base aerobica 85 min",
       "description": "Sesion suave y continua en Z2 para construir base aerobica sin impacto, con cadencia estable y sin apretar desarrollo.",
-      "updatedDate": "2026-05-16T12:45:01.0",
-      "createdDate": "2026-05-16T12:45:01.0",
+      "updatedDate": "2026-05-16T13:06:43.0",
+      "createdDate": "2026-05-16T13:06:43.0",
       "sportType": {
-        "sportTypeId": 6,
-        "sportTypeKey": "cardio_training",
-        "displayOrder": 6
+        "sportTypeId": 2,
+        "sportTypeKey": "cycling",
+        "displayOrder": 2
       },
       "subSportType": null,
       "trainingPlanId": null,
@@ -254,9 +254,9 @@
         {
           "segmentOrder": 1,
           "sportType": {
-            "sportTypeId": 6,
-            "sportTypeKey": "cardio_training",
-            "displayOrder": 6
+            "sportTypeId": 2,
+            "sportTypeKey": "cycling",
+            "displayOrder": 2
           },
           "poolLengthUnit": null,
           "poolLength": null,
@@ -269,7 +269,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13376351174,
+              "stepId": 13376476349,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 1,
@@ -321,7 +321,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13376351175,
+              "stepId": 13376476350,
               "stepOrder": 2,
               "stepType": {
                 "stepTypeId": 3,
@@ -373,7 +373,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13376351176,
+              "stepId": 13376476351,
               "stepOrder": 3,
               "stepType": {
                 "stepTypeId": 2,
@@ -446,7 +446,7 @@
         "unitKey": null,
         "factor": null
       },
-      "workoutThumbnailUrl": null,
+      "workoutThumbnailUrl": "https://connect.garmin.com/chart-service/workout?data=129,10,ch-139,65,ch-125,10,ch",
       "isSessionTransitionEnabled": null,
       "shared": false
     },

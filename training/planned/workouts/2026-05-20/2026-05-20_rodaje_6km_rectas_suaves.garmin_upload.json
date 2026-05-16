@@ -1,19 +1,19 @@
 {
-  "generated_at": "2026-05-16T12:42:13.850900Z",
+  "generated_at": "2026-05-16T13:06:41.290548Z",
   "status": "scheduled",
   "upload_mode": "structured_targets",
   "workout_file": "training/planned/workouts/2026-05-20_rodaje_6km_rectas_suaves.yaml",
   "uploaded_response": {
-    "workoutId": 1569240236,
+    "workoutId": 1569255543,
     "ownerId": 137864769,
     "workoutName": "Bicicleta muy suave 35 min",
     "description": "Descarga aerobica muy suave para mantener movimiento sin sumar impacto.",
-    "updatedDate": "2026-05-16T12:42:14.0",
-    "createdDate": "2026-05-16T12:42:14.0",
+    "updatedDate": "2026-05-16T13:06:41.0",
+    "createdDate": "2026-05-16T13:06:41.0",
     "sportType": {
-      "sportTypeId": 6,
-      "sportTypeKey": "cardio_training",
-      "displayOrder": 6
+      "sportTypeId": 2,
+      "sportTypeKey": "cycling",
+      "displayOrder": 2
     },
     "subSportType": null,
     "trainingPlanId": null,
@@ -34,9 +34,9 @@
       {
         "segmentOrder": 1,
         "sportType": {
-          "sportTypeId": 6,
-          "sportTypeKey": "cardio_training",
-          "displayOrder": 6
+          "sportTypeId": 2,
+          "sportTypeKey": "cycling",
+          "displayOrder": 2
         },
         "poolLengthUnit": null,
         "poolLength": null,
@@ -49,7 +49,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13376331600,
+            "stepId": 13376476204,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 3,
@@ -122,23 +122,23 @@
       "unitKey": null,
       "factor": null
     },
-    "workoutThumbnailUrl": null,
+    "workoutThumbnailUrl": "https://connect.garmin.com/chart-service/workout?data=125,35,ch",
     "isSessionTransitionEnabled": null,
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1650769372,
+    "workoutScheduleId": 1650784600,
     "workout": {
-      "workoutId": 1569240236,
+      "workoutId": 1569255543,
       "ownerId": 137864769,
       "workoutName": "Bicicleta muy suave 35 min",
       "description": "Descarga aerobica muy suave para mantener movimiento sin sumar impacto.",
-      "updatedDate": "2026-05-16T12:42:14.0",
-      "createdDate": "2026-05-16T12:42:14.0",
+      "updatedDate": "2026-05-16T13:06:41.0",
+      "createdDate": "2026-05-16T13:06:41.0",
       "sportType": {
-        "sportTypeId": 6,
-        "sportTypeKey": "cardio_training",
-        "displayOrder": 6
+        "sportTypeId": 2,
+        "sportTypeKey": "cycling",
+        "displayOrder": 2
       },
       "subSportType": null,
       "trainingPlanId": null,
@@ -150,9 +150,9 @@
         {
           "segmentOrder": 1,
           "sportType": {
-            "sportTypeId": 6,
-            "sportTypeKey": "cardio_training",
-            "displayOrder": 6
+            "sportTypeId": 2,
+            "sportTypeKey": "cycling",
+            "displayOrder": 2
           },
           "poolLengthUnit": null,
           "poolLength": null,
@@ -165,7 +165,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13376331600,
+              "stepId": 13376476204,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 3,
@@ -238,7 +238,7 @@
         "unitKey": null,
         "factor": null
       },
-      "workoutThumbnailUrl": null,
+      "workoutThumbnailUrl": "https://connect.garmin.com/chart-service/workout?data=125,35,ch",
       "isSessionTransitionEnabled": null,
       "shared": false
     },
@@ -252,9 +252,9 @@
     "priority": null,
     "associatedActivityDateTime": null,
     "tpType": null,
-    "itp": false,
     "protected": false,
     "nameChanged": false,
+    "itp": false,
     "race": false
   }
 }

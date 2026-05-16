@@ -1,19 +1,19 @@
 {
-  "generated_at": "2026-05-16T12:42:23.307821Z",
+  "generated_at": "2026-05-16T13:06:47.551651Z",
   "status": "scheduled",
   "upload_mode": "structured_targets",
   "workout_file": "training/planned/workouts/2026-06-20_bicicleta_aerobica_95min_retorno.yaml",
   "uploaded_response": {
-    "workoutId": 1569240369,
+    "workoutId": 1569255598,
     "ownerId": 137864769,
     "workoutName": "Bicicleta aerobica 95 min retorno",
     "description": "Carga de base en bici para complementar la reintroduccion del trote.",
-    "updatedDate": "2026-05-16T12:42:23.0",
-    "createdDate": "2026-05-16T12:42:23.0",
+    "updatedDate": "2026-05-16T13:06:47.0",
+    "createdDate": "2026-05-16T13:06:47.0",
     "sportType": {
-      "sportTypeId": 6,
-      "sportTypeKey": "cardio_training",
-      "displayOrder": 6
+      "sportTypeId": 2,
+      "sportTypeKey": "cycling",
+      "displayOrder": 2
     },
     "subSportType": null,
     "trainingPlanId": null,
@@ -34,9 +34,9 @@
       {
         "segmentOrder": 1,
         "sportType": {
-          "sportTypeId": 6,
-          "sportTypeKey": "cardio_training",
-          "displayOrder": 6
+          "sportTypeId": 2,
+          "sportTypeKey": "cycling",
+          "displayOrder": 2
         },
         "poolLengthUnit": null,
         "poolLength": null,
@@ -49,7 +49,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13376332303,
+            "stepId": 13376476628,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 1,
@@ -101,7 +101,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13376332305,
+            "stepId": 13376476629,
             "stepOrder": 2,
             "stepType": {
               "stepTypeId": 3,
@@ -153,7 +153,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13376332307,
+            "stepId": 13376476630,
             "stepOrder": 3,
             "stepType": {
               "stepTypeId": 2,
@@ -226,23 +226,23 @@
       "unitKey": null,
       "factor": null
     },
-    "workoutThumbnailUrl": null,
+    "workoutThumbnailUrl": "https://connect.garmin.com/chart-service/workout?data=129,10,ch-139,75,ch-125,10,ch",
     "isSessionTransitionEnabled": null,
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1650769498,
+    "workoutScheduleId": 1650784651,
     "workout": {
-      "workoutId": 1569240369,
+      "workoutId": 1569255598,
       "ownerId": 137864769,
       "workoutName": "Bicicleta aerobica 95 min retorno",
       "description": "Carga de base en bici para complementar la reintroduccion del trote.",
-      "updatedDate": "2026-05-16T12:42:23.0",
-      "createdDate": "2026-05-16T12:42:23.0",
+      "updatedDate": "2026-05-16T13:06:47.0",
+      "createdDate": "2026-05-16T13:06:47.0",
       "sportType": {
-        "sportTypeId": 6,
-        "sportTypeKey": "cardio_training",
-        "displayOrder": 6
+        "sportTypeId": 2,
+        "sportTypeKey": "cycling",
+        "displayOrder": 2
       },
       "subSportType": null,
       "trainingPlanId": null,
@@ -254,9 +254,9 @@
         {
           "segmentOrder": 1,
           "sportType": {
-            "sportTypeId": 6,
-            "sportTypeKey": "cardio_training",
-            "displayOrder": 6
+            "sportTypeId": 2,
+            "sportTypeKey": "cycling",
+            "displayOrder": 2
           },
           "poolLengthUnit": null,
           "poolLength": null,
@@ -269,7 +269,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13376332303,
+              "stepId": 13376476628,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 1,
@@ -321,7 +321,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13376332305,
+              "stepId": 13376476629,
               "stepOrder": 2,
               "stepType": {
                 "stepTypeId": 3,
@@ -373,7 +373,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13376332307,
+              "stepId": 13376476630,
               "stepOrder": 3,
               "stepType": {
                 "stepTypeId": 2,
@@ -446,7 +446,7 @@
         "unitKey": null,
         "factor": null
       },
-      "workoutThumbnailUrl": null,
+      "workoutThumbnailUrl": "https://connect.garmin.com/chart-service/workout?data=129,10,ch-139,75,ch-125,10,ch",
       "isSessionTransitionEnabled": null,
       "shared": false
     },

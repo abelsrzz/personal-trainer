@@ -1,7 +1,7 @@
 workout:
   name: Bicicleta aerobica 95 min
   schedule_date: 2026-06-06
-  sport: fitness_equipment
+  sport: cycling
   description: Salida aerobica suave y continua en Z2 para reforzar fondo sin impacto.
   estimated_duration_s: 5700
   steps:

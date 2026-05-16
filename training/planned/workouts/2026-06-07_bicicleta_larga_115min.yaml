@@ -1,7 +1,7 @@
 workout:
   name: Bicicleta larga 115 min
   schedule_date: 2026-06-07
-  sport: fitness_equipment
+  sport: cycling
   description: Trabajo largo, comodo y en Z2 de base aerobica para seguir mejorando eficiencia sin impacto.
   estimated_duration_s: 6900
   steps:

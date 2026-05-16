@@ -1,0 +1,18 @@
+{
+  "source": "web_manual_feedback",
+  "created_at": "2026-05-16T15:05:33.535586",
+  "updated_at": "2026-05-16T15:05:33.535586",
+  "updated_by": "change-me",
+  "date": "2026-05-05",
+  "planned_workout_slug": "2026-05-05_rodaje_5km_reintroduccion",
+  "completed_review_slug": "2026-05-05_rodaje_5km_reintroduccion",
+  "garmin_activity_id": 22776053069,
+  "athlete_feedback": {
+    "rpe": 1,
+    "pain_level": 6,
+    "pain_location": "Tibial posterior izquierdo",
+    "compliance": "full",
+    "time_feeling": "ok",
+    "note": null
+  }
+}

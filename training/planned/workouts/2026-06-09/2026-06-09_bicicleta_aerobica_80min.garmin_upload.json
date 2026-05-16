@@ -1,19 +1,19 @@
 {
-  "generated_at": "2026-05-16T12:42:19.525255Z",
+  "generated_at": "2026-05-16T13:06:45.247358Z",
   "status": "scheduled",
   "upload_mode": "structured_targets",
   "workout_file": "training/planned/workouts/2026-06-09_bicicleta_aerobica_80min.yaml",
   "uploaded_response": {
-    "workoutId": 1569240311,
+    "workoutId": 1569255587,
     "ownerId": 137864769,
     "workoutName": "Bicicleta aerobica 80 min",
     "description": "Carga estable de Z2 para abrir la tercera semana de rehabilitacion.",
-    "updatedDate": "2026-05-16T12:42:19.0",
-    "createdDate": "2026-05-16T12:42:19.0",
+    "updatedDate": "2026-05-16T13:06:45.0",
+    "createdDate": "2026-05-16T13:06:45.0",
     "sportType": {
-      "sportTypeId": 6,
-      "sportTypeKey": "cardio_training",
-      "displayOrder": 6
+      "sportTypeId": 2,
+      "sportTypeKey": "cycling",
+      "displayOrder": 2
     },
     "subSportType": null,
     "trainingPlanId": null,
@@ -34,9 +34,9 @@
       {
         "segmentOrder": 1,
         "sportType": {
-          "sportTypeId": 6,
-          "sportTypeKey": "cardio_training",
-          "displayOrder": 6
+          "sportTypeId": 2,
+          "sportTypeKey": "cycling",
+          "displayOrder": 2
         },
         "poolLengthUnit": null,
         "poolLength": null,
@@ -49,7 +49,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13376332049,
+            "stepId": 13376476497,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 1,
@@ -101,7 +101,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13376332050,
+            "stepId": 13376476502,
             "stepOrder": 2,
             "stepType": {
               "stepTypeId": 3,
@@ -153,7 +153,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13376332051,
+            "stepId": 13376476503,
             "stepOrder": 3,
             "stepType": {
               "stepTypeId": 2,
@@ -226,23 +226,23 @@
       "unitKey": null,
       "factor": null
     },
-    "workoutThumbnailUrl": null,
+    "workoutThumbnailUrl": "https://connect.garmin.com/chart-service/workout?data=129,10,ch-139,60,ch-125,10,ch",
     "isSessionTransitionEnabled": null,
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1650769440,
+    "workoutScheduleId": 1650784639,
     "workout": {
-      "workoutId": 1569240311,
+      "workoutId": 1569255587,
       "ownerId": 137864769,
       "workoutName": "Bicicleta aerobica 80 min",
       "description": "Carga estable de Z2 para abrir la tercera semana de rehabilitacion.",
-      "updatedDate": "2026-05-16T12:42:19.0",
-      "createdDate": "2026-05-16T12:42:19.0",
+      "updatedDate": "2026-05-16T13:06:45.0",
+      "createdDate": "2026-05-16T13:06:45.0",
       "sportType": {
-        "sportTypeId": 6,
-        "sportTypeKey": "cardio_training",
-        "displayOrder": 6
+        "sportTypeId": 2,
+        "sportTypeKey": "cycling",
+        "displayOrder": 2
       },
       "subSportType": null,
       "trainingPlanId": null,
@@ -254,9 +254,9 @@
         {
           "segmentOrder": 1,
           "sportType": {
-            "sportTypeId": 6,
-            "sportTypeKey": "cardio_training",
-            "displayOrder": 6
+            "sportTypeId": 2,
+            "sportTypeKey": "cycling",
+            "displayOrder": 2
           },
           "poolLengthUnit": null,
           "poolLength": null,
@@ -269,7 +269,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13376332049,
+              "stepId": 13376476497,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 1,
@@ -321,7 +321,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13376332050,
+              "stepId": 13376476502,
               "stepOrder": 2,
               "stepType": {
                 "stepTypeId": 3,
@@ -373,7 +373,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13376332051,
+              "stepId": 13376476503,
               "stepOrder": 3,
               "stepType": {
                 "stepTypeId": 2,
@@ -446,7 +446,7 @@
         "unitKey": null,
         "factor": null
       },
-      "workoutThumbnailUrl": null,
+      "workoutThumbnailUrl": "https://connect.garmin.com/chart-service/workout?data=129,10,ch-139,60,ch-125,10,ch",
       "isSessionTransitionEnabled": null,
       "shared": false
     },
@@ -460,9 +460,9 @@
     "priority": null,
     "associatedActivityDateTime": null,
     "tpType": null,
+    "race": false,
     "nameChanged": false,
     "protected": false,
-    "race": false,
     "itp": false
   }
 }

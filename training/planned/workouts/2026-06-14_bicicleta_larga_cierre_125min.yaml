@@ -1,7 +1,7 @@
 workout:
   name: Bicicleta larga cierre 125 min
   schedule_date: 2026-06-14
-  sport: fitness_equipment
+  sport: cycling
   description: Cierre de la rehabilitacion sin impacto con trabajo largo, comodo y en Z2 de base aerobica.
   estimated_duration_s: 7500
   steps:

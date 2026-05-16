@@ -1,7 +1,7 @@
 workout:
   name: Bicicleta continua 80 min
   schedule_date: 2026-06-18
-  sport: fitness_equipment
+  sport: cycling
   description: Base aerobica suave en Z2 en bici para sostener carga mientras vuelve el impacto.
   estimated_duration_s: 4800
   steps:

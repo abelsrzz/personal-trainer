@@ -1,7 +1,7 @@
 workout:
   name: Bicicleta aerobica continua 65 min
   schedule_date: 2026-05-28
-  sport: fitness_equipment
+  sport: cycling
   description: Base aerobica continua para sustituir el rodaje facil y preservar la
     adaptacion Z2 sin impacto.
   estimated_duration_s: 3900

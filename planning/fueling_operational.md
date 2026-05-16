@@ -1,6 +1,6 @@
 # Fueling Operational Plan
 
-- Generated: `2026-05-16T11:53:31.127017+00:00`
+- Generated: `2026-05-16T13:02:09.073702+00:00`
 - Athlete weight: `64.199` kg
 
 ## Supplements
@@ -60,14 +60,98 @@
 - `2026-05-15 T-90m` pre: Llegar con hidratos disponibles y sin pesadez antes de la sesion exigente. (30-60 g CHO; Maltodextrina + Fructosa)
 - `2026-05-15 T+30m` post: Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura. (20-30 g proteina + 3-5 g creatina + 30-60 g CHO; Proteina + Creatina + Maltodextrina)
 
-### 2026-05-17 · Rodaje 9 km continuidad
+### 2026-05-17 · Bicicleta Z2 continuidad 80 min
 
 - `2026-05-17 T-90m` pre: Llegar con hidratos disponibles y sin pesadez antes de la sesion exigente. (30-60 g CHO; Maltodextrina + Fructosa)
 - `2026-05-17 Durante` during: Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho. (30-45 g CHO/h + sodio; Maltodextrina + Fructosa + Electrolitos Evolytes)
 - `2026-05-17 T+30m` post: Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura. (20-30 g proteina + 3-5 g creatina + 30-60 g CHO; Proteina + Creatina + Maltodextrina)
 
-### 2026-05-31 · Rodaje 10 km Z2 continuidad
+### 2026-05-19 · Bicicleta aerobica estable 65 min
+
+- `2026-05-19 T-90m` pre: Llegar con hidratos disponibles y sin pesadez antes de la sesion exigente. (30-60 g CHO; Maltodextrina + Fructosa)
+- `2026-05-19 Durante` during: Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho. (30-45 g CHO/h + sodio; Maltodextrina + Fructosa + Electrolitos Evolytes)
+- `2026-05-19 T+30m` post: Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura. (20-30 g proteina + 3-5 g creatina + 30-60 g CHO; Proteina + Creatina + Maltodextrina)
+
+### 2026-05-28 · Bicicleta aerobica continua 65 min
+
+- `2026-05-28 T-90m` pre: Llegar con hidratos disponibles y sin pesadez antes de la sesion exigente. (30-60 g CHO; Maltodextrina + Fructosa)
+- `2026-05-28 Durante` during: Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho. (30-45 g CHO/h + sodio; Maltodextrina + Fructosa + Electrolitos Evolytes)
+- `2026-05-28 T+30m` post: Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura. (20-30 g proteina + 3-5 g creatina + 30-60 g CHO; Proteina + Creatina + Maltodextrina)
+
+### 2026-05-30 · Bicicleta base aerobica 85 min
+
+- `2026-05-30 T-90m` pre: Llegar con hidratos disponibles y sin pesadez antes de la sesion exigente. (30-60 g CHO; Maltodextrina + Fructosa)
+- `2026-05-30 Durante` during: Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho. (30-45 g CHO/h + sodio; Maltodextrina + Fructosa + Electrolitos Evolytes)
+- `2026-05-30 T+30m` post: Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura. (20-30 g proteina + 3-5 g creatina + 30-60 g CHO; Proteina + Creatina + Maltodextrina)
+
+### 2026-05-31 · Bicicleta larga comoda 100 min
 
 - `2026-05-31 T-90m` pre: Llegar con hidratos disponibles y sin pesadez antes de la sesion exigente. (30-60 g CHO; Maltodextrina + Fructosa)
-- `2026-05-31 Durante` during: Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho. (30-45 g CHO/h + sodio; Maltodextrina + Fructosa + Electrolitos Evolytes)
+- `2026-05-31 Durante` during: Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho. (60-75 g CHO/h + sodio; Maltodextrina + Fructosa + Electrolitos Evolytes)
 - `2026-05-31 T+30m` post: Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura. (20-30 g proteina + 3-5 g creatina + 30-60 g CHO; Proteina + Creatina + Maltodextrina)
+
+### 2026-06-02 · Bicicleta Z2 65 min
+
+- `2026-06-02 T-90m` pre: Llegar con hidratos disponibles y sin pesadez antes de la sesion exigente. (30-60 g CHO; Maltodextrina + Fructosa)
+- `2026-06-02 Durante` during: Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho. (30-45 g CHO/h + sodio; Maltodextrina + Fructosa + Electrolitos Evolytes)
+- `2026-06-02 T+30m` post: Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura. (20-30 g proteina + 3-5 g creatina + 30-60 g CHO; Proteina + Creatina + Maltodextrina)
+
+### 2026-06-04 · Bicicleta bloque medio 80 min
+
+- `2026-06-04 T-90m` pre: Llegar con hidratos disponibles y sin pesadez antes de la sesion exigente. (30-60 g CHO; Maltodextrina + Fructosa)
+- `2026-06-04 Durante` during: Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho. (30-45 g CHO/h + sodio; Maltodextrina + Fructosa + Electrolitos Evolytes)
+- `2026-06-04 T+30m` post: Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura. (20-30 g proteina + 3-5 g creatina + 30-60 g CHO; Proteina + Creatina + Maltodextrina)
+
+### 2026-06-06 · Bicicleta aerobica 95 min
+
+- `2026-06-06 T-90m` pre: Llegar con hidratos disponibles y sin pesadez antes de la sesion exigente. (30-60 g CHO; Maltodextrina + Fructosa)
+- `2026-06-06 Durante` during: Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho. (60-75 g CHO/h + sodio; Maltodextrina + Fructosa + Electrolitos Evolytes)
+- `2026-06-06 T+30m` post: Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura. (20-30 g proteina + 3-5 g creatina + 30-60 g CHO; Proteina + Creatina + Maltodextrina)
+
+### 2026-06-07 · Bicicleta larga 115 min
+
+- `2026-06-07 T-90m` pre: Llegar con hidratos disponibles y sin pesadez antes de la sesion exigente. (30-60 g CHO; Maltodextrina + Fructosa)
+- `2026-06-07 Durante` during: Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho. (60-75 g CHO/h + sodio; Maltodextrina + Fructosa + Electrolitos Evolytes)
+- `2026-06-07 T+30m` post: Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura. (20-30 g proteina + 3-5 g creatina + 30-60 g CHO; Proteina + Creatina + Maltodextrina)
+
+### 2026-06-09 · Bicicleta aerobica 80 min
+
+- `2026-06-09 T-90m` pre: Llegar con hidratos disponibles y sin pesadez antes de la sesion exigente. (30-60 g CHO; Maltodextrina + Fructosa)
+- `2026-06-09 Durante` during: Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho. (30-45 g CHO/h + sodio; Maltodextrina + Fructosa + Electrolitos Evolytes)
+- `2026-06-09 T+30m` post: Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura. (20-30 g proteina + 3-5 g creatina + 30-60 g CHO; Proteina + Creatina + Maltodextrina)
+
+### 2026-06-11 · Bicicleta continua 90 min
+
+- `2026-06-11 T-90m` pre: Llegar con hidratos disponibles y sin pesadez antes de la sesion exigente. (30-60 g CHO; Maltodextrina + Fructosa)
+- `2026-06-11 Durante` during: Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho. (60-75 g CHO/h + sodio; Maltodextrina + Fructosa + Electrolitos Evolytes)
+- `2026-06-11 T+30m` post: Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura. (20-30 g proteina + 3-5 g creatina + 30-60 g CHO; Proteina + Creatina + Maltodextrina)
+
+### 2026-06-13 · Bicicleta larga 110 min
+
+- `2026-06-13 T-90m` pre: Llegar con hidratos disponibles y sin pesadez antes de la sesion exigente. (30-60 g CHO; Maltodextrina + Fructosa)
+- `2026-06-13 Durante` during: Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho. (60-75 g CHO/h + sodio; Maltodextrina + Fructosa + Electrolitos Evolytes)
+- `2026-06-13 T+30m` post: Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura. (20-30 g proteina + 3-5 g creatina + 30-60 g CHO; Proteina + Creatina + Maltodextrina)
+
+### 2026-06-14 · Bicicleta larga cierre 125 min
+
+- `2026-06-14 T-90m` pre: Llegar con hidratos disponibles y sin pesadez antes de la sesion exigente. (30-60 g CHO; Maltodextrina + Fructosa)
+- `2026-06-14 Durante` during: Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho. (60-75 g CHO/h + sodio; Maltodextrina + Fructosa + Electrolitos Evolytes)
+- `2026-06-14 T+30m` post: Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura. (20-30 g proteina + 3-5 g creatina + 30-60 g CHO; Proteina + Creatina + Maltodextrina)
+
+### 2026-06-18 · Bicicleta continua 80 min
+
+- `2026-06-18 T-90m` pre: Llegar con hidratos disponibles y sin pesadez antes de la sesion exigente. (30-60 g CHO; Maltodextrina + Fructosa)
+- `2026-06-18 Durante` during: Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho. (30-45 g CHO/h + sodio; Maltodextrina + Fructosa + Electrolitos Evolytes)
+- `2026-06-18 T+30m` post: Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura. (20-30 g proteina + 3-5 g creatina + 30-60 g CHO; Proteina + Creatina + Maltodextrina)
+
+### 2026-06-20 · Bicicleta aerobica 95 min retorno
+
+- `2026-06-20 T-90m` pre: Llegar con hidratos disponibles y sin pesadez antes de la sesion exigente. (30-60 g CHO; Maltodextrina + Fructosa)
+- `2026-06-20 Durante` during: Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho. (60-75 g CHO/h + sodio; Maltodextrina + Fructosa + Electrolitos Evolytes)
+- `2026-06-20 T+30m` post: Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura. (20-30 g proteina + 3-5 g creatina + 30-60 g CHO; Proteina + Creatina + Maltodextrina)
+
+### 2026-06-21 · Bicicleta larga 110 min retorno
+
+- `2026-06-21 T-90m` pre: Llegar con hidratos disponibles y sin pesadez antes de la sesion exigente. (30-60 g CHO; Maltodextrina + Fructosa)
+- `2026-06-21 Durante` during: Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho. (60-75 g CHO/h + sodio; Maltodextrina + Fructosa + Electrolitos Evolytes)
+- `2026-06-21 T+30m` post: Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura. (20-30 g proteina + 3-5 g creatina + 30-60 g CHO; Proteina + Creatina + Maltodextrina)

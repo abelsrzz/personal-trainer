@@ -397,6 +397,7 @@ def garmin_workout_type(sport: str | None) -> str:
     normalized = str(sport or "running").strip().lower()
     return {
         "running": "running",
+        "cycling": "cycling",
         "strength": "other",
         "fitness_equipment": "other",
         "mobility": "other",

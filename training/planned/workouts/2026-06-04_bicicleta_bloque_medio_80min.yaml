@@ -1,7 +1,7 @@
 workout:
   name: Bicicleta bloque medio 80 min
   schedule_date: 2026-06-04
-  sport: fitness_equipment
+  sport: cycling
   description: Sesion aerobica en Z2 con un bloque medio sostenido para reforzar base sin acercarse al umbral.
   estimated_duration_s: 4800
   steps:

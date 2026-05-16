@@ -1,7 +1,7 @@
 workout:
   name: Bicicleta recuperacion post-Ordes 50 min
   schedule_date: 2026-05-26
-  sport: fitness_equipment
+  sport: cycling
   description: Carga muy controlada para absorber Ordes, mover sangre y recuperar sin
     impacto.
   estimated_duration_s: 3000

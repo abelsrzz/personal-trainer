@@ -1,7 +1,7 @@
 workout:
   name: Bicicleta base aerobica 85 min
   schedule_date: 2026-05-30
-  sport: fitness_equipment
+  sport: cycling
   description: Sesion suave y continua en Z2 para construir base aerobica sin impacto,
     con cadencia estable y sin apretar desarrollo.
   estimated_duration_s: 5100

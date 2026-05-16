@@ -12,7 +12,7 @@ from typing import Any
 
 import yaml
 from garminconnect import Garmin
-from garminconnect.workout import ExecutableStep, FitnessEquipmentWorkout, RepeatGroup, RunningWorkout, WorkoutSegment
+from garminconnect.workout import CyclingWorkout, ExecutableStep, FitnessEquipmentWorkout, RepeatGroup, RunningWorkout, WorkoutSegment
 
 try:
     from scripts.system.athlete_state import write_athlete_state
@@ -444,17 +444,38 @@ def build_workout_step(step_data: dict[str, Any], include_targets: bool) -> Exec
     return build_executable_step(step_data, include_targets)
 
 
-def build_workout_payload(spec: dict[str, Any], include_targets: bool) -> RunningWorkout | FitnessEquipmentWorkout:
+def infer_workout_sport(workout: dict[str, Any]) -> str:
+    raw_sport = str(workout.get("sport", "running")).strip().lower()
+    if raw_sport in {"cycling", "bike", "biking"}:
+        return "cycling"
+
+    text = " ".join(
+        str(value or "")
+        for value in (
+            workout.get("name"),
+            workout.get("description"),
+        )
+    ).lower()
+    if raw_sport == "fitness_equipment" and any(marker in text for marker in {"bicicleta", "bike", "cycling", "rodillo", "ciclismo"}):
+        return "cycling"
+    return raw_sport
+
+
+def sport_type_payload(sport: str) -> dict[str, Any]:
+    if sport == "running":
+        return {"sportTypeId": 1, "sportTypeKey": "running", "displayOrder": 1}
+    if sport == "cycling":
+        return {"sportTypeId": 2, "sportTypeKey": "cycling", "displayOrder": 2}
+    return {"sportTypeId": 6, "sportTypeKey": "fitness_equipment", "displayOrder": 6}
+
+
+def build_workout_payload(spec: dict[str, Any], include_targets: bool) -> RunningWorkout | CyclingWorkout | FitnessEquipmentWorkout:
     workout = spec["workout"]
-    sport = workout.get("sport", "running")
+    sport = infer_workout_sport(workout)
     steps = [build_workout_step(step, include_targets) for step in workout["steps"]]
     segment = WorkoutSegment(
         segmentOrder=1,
-        sportType={
-            "sportTypeId": 1 if sport == "running" else 6,
-            "sportTypeKey": "running" if sport == "running" else "fitness_equipment",
-            "displayOrder": 1 if sport == "running" else 6,
-        },
+        sportType=sport_type_payload(sport),
         workoutSteps=steps,
     )
 
@@ -466,6 +487,8 @@ def build_workout_payload(spec: dict[str, Any], include_targets: bool) -> Runnin
     }
     if sport == "running":
         return RunningWorkout(**common_kwargs)
+    if sport == "cycling":
+        return CyclingWorkout(**common_kwargs)
     if sport in {"fitness_equipment", "strength", "mobility", "stretching", "other"}:
         return FitnessEquipmentWorkout(**common_kwargs)
     raise ValueError(f"Unsupported workout sport: {sport}")
@@ -502,7 +525,7 @@ def schedule_workout_file(client: Garmin, workout_file: Path) -> None:
         schedule_date = str(schedule_date)
 
     response: dict[str, Any] | None = None
-    sport = workout.get("sport", "running")
+    sport = infer_workout_sport(workout)
     upload_mode = "structured_targets"
     normalized_sport = str(sport).strip().lower()
     prefers_other_fallback = normalized_sport in {"mobility", "stretching", "other"}
@@ -518,7 +541,10 @@ def schedule_workout_file(client: Garmin, workout_file: Path) -> None:
     try:
         payload = build_workout_payload(spec, include_targets=True)
         logger.info("Uploading Garmin workout mode=%s payload_preview=%s", upload_mode, preview_json(payload.to_dict()))
-        response = client.upload_workout(payload.to_dict())
+        if normalized_sport == "cycling":
+            response = client.upload_cycling_workout(payload)
+        else:
+            response = client.upload_workout(payload.to_dict())
     except Exception as exc:
         logger.warning("Structured Garmin upload failed file=%s error=%s", display_path(workout_path), exc)
         if prefers_other_fallback:
@@ -540,7 +566,10 @@ def schedule_workout_file(client: Garmin, workout_file: Path) -> None:
             print(f"Structured target upload failed, retrying without targets: {exc}")
             payload = build_workout_payload(spec, include_targets=False)
             logger.info("Uploading Garmin workout mode=%s payload_preview=%s", upload_mode, preview_json(payload.to_dict()))
-            response = client.upload_workout(payload.to_dict())
+            if normalized_sport == "cycling":
+                response = client.upload_cycling_workout(payload)
+            else:
+                response = client.upload_workout(payload.to_dict())
 
     workout_id = response.get("workoutId") or response.get("id")
     if not workout_id:

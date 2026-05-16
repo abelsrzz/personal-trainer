@@ -1,0 +1,32 @@
+workout:
+  name: Bicicleta continua 90 min
+  schedule_date: 2026-06-11
+  sport: fitness_equipment
+  description: Trabajo continuo, suave y en Z2 de base con cadencia fluida y sin tension excesiva.
+  estimated_duration_s: 5400
+  steps:
+  - order: 1
+    step_type: warmup
+    description: 10 min suaves
+    duration_s: 600
+    target:
+      type: heart_rate_range
+      min_bpm: 120
+      max_bpm: 138
+  - order: 2
+    step_type: interval
+    description: 70 min Z2 estable
+    duration_s: 4200
+    target:
+      type: heart_rate_range
+      min_bpm: 130
+      max_bpm: 148
+  - order: 3
+    step_type: cooldown
+    description: 10 min suaves
+    duration_s: 600
+    target:
+      type: heart_rate_range
+      min_bpm: 115
+      max_bpm: 135
+  primary_goal: Base aerobica

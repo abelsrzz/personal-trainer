@@ -1,0 +1,19 @@
+workout:
+  name: Fuerza rehabilitadora A 35 min
+  schedule_date: 2026-06-10
+  sport: strength
+  description: Sesion A de rehabilitacion para pie, soleo, gemelo y control lateral.
+  estimated_duration_s: 2100
+  steps:
+  - order: 1
+    step_type: warmup
+    description: Activacion y movilidad articular
+    duration_s: 300
+  - order: 2
+    step_type: interval
+    description: Seated soleus raise, standing calf raise, tibialis raises, short-foot hold, split squat, glute bridge y side plank
+    duration_s: 1500
+  - order: 3
+    step_type: cooldown
+    description: Movilidad final y descarga suave
+    duration_s: 300

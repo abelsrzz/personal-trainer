@@ -1,0 +1,32 @@
+workout:
+  name: Bicicleta larga 110 min retorno
+  schedule_date: 2026-06-21
+  sport: fitness_equipment
+  description: Salida larga, comoda y en Z2 para cerrar la semana de vuelta al impacto con buena carga aerobica.
+  estimated_duration_s: 6600
+  steps:
+  - order: 1
+    step_type: warmup
+    description: 10 min suaves
+    duration_s: 600
+    target:
+      type: heart_rate_range
+      min_bpm: 120
+      max_bpm: 138
+  - order: 2
+    step_type: interval
+    description: 90 min Z2 baja y continua
+    duration_s: 5400
+    target:
+      type: heart_rate_range
+      min_bpm: 128
+      max_bpm: 145
+  - order: 3
+    step_type: cooldown
+    description: 10 min suaves
+    duration_s: 600
+    target:
+      type: heart_rate_range
+      min_bpm: 115
+      max_bpm: 135
+  primary_goal: Base aerobica

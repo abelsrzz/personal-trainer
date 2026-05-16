@@ -7,6 +7,14 @@
       "date": "2026-05-12",
       "name": "Alternativa: Alternativa: Eliptica 42 min recuperacion",
       "updated_by": "change-me"
+    },
+    "2026-05-16_rodaje_5km_facil": {
+      "action": "done",
+      "label": "Marcada como hecha",
+      "updated_at": "2026-05-16T13:40:45.108269",
+      "date": "2026-05-16",
+      "name": "Rodaje 5 km facil",
+      "updated_by": "change-me"
     }
   }
 }

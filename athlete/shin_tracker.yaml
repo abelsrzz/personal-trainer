@@ -13,6 +13,15 @@ shin_tracker:
       surface: null
       shoes: null
       notes: Reevaluacion manual. Dolor tibial actual 1/10 y cansancio subjetivo 0/10; sin empeoramiento relevante reportado.
+    - date: 2026-05-16
+      pain_during: 7
+      pain_after: 7
+      pain_next_morning: 7
+      location: left_shin
+      surface: null
+      shoes: null
+      notes: "Actualizacion manual. Dolor actual en el periostio 6,5/10; redondeado a 7/10 para las reglas automaticas. Localizacion reportada: tibial posterior izquierdo."
+      source: manual
   entry_template:
     date: YYYY-MM-DD
     pain_during: 0

@@ -1,9 +1,9 @@
 workout:
-  name: Fuerza movilidad tolerancia 35 min
+  name: Fuerza rehabilitadora A 35 min
   schedule_date: 2026-05-27
   sport: strength
-  description: Sesion corta de fuerza general y movilidad para mejorar tolerancia
-    tisular sin dejar fatiga residual.
+  description: Sesion A de rehabilitacion para fortalecer pie, soleo, gemelo, gluteo
+    medio y core sin agujetas.
   estimated_duration_s: 2100
   steps:
   - order: 1
@@ -12,8 +12,7 @@ workout:
     duration_s: 300
   - order: 2
     step_type: interval
-    description: Fuerza general suave enfocada en pie, soleo, gemelo, gluteo medio
-      y core
+    description: Seated soleus raise, standing calf raise, tibialis raises, short-foot hold, split squat, glute bridge y side plank
     duration_s: 1500
   - order: 3
     step_type: cooldown

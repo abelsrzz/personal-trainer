@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from datetime import date
 import unittest
 from unittest.mock import patch
 
@@ -167,6 +168,17 @@ class ReviewStimulusAlignmentTests(unittest.TestCase):
         accepted = review_planned_session.within_easy_floor_tolerance(1000.0 / 450.0, 154.5, 150.0)
 
         self.assertFalse(accepted)
+
+    def test_planned_session_kind_accepts_yaml_dates(self) -> None:
+        workout = {
+            "workout": {
+                "name": "Rodaje 5 km facil",
+                "schedule_date": date(2026, 5, 16),
+                "description": "Rodaje corto de recuperacion",
+            }
+        }
+
+        self.assertEqual(review_planned_session.planned_session_kind(workout), "recovery")
 
 
 if __name__ == "__main__":

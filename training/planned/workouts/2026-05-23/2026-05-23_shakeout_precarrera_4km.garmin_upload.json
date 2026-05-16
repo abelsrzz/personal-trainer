@@ -1,17 +1,19 @@
 {
+  "generated_at": "2026-05-16T12:42:14.865303Z",
+  "status": "scheduled",
   "upload_mode": "structured_targets",
   "workout_file": "training/planned/workouts/2026-05-23_shakeout_precarrera_4km.yaml",
   "uploaded_response": {
-    "workoutId": 1557402311,
+    "workoutId": 1569240252,
     "ownerId": 137864769,
-    "workoutName": "Shakeout pre-carrera 4 km",
-    "description": "Rodaje muy corto para despertar piernas antes de la carrera. Debe dejar sensacion de frescura.",
-    "updatedDate": "2026-05-04T12:41:20.0",
-    "createdDate": "2026-05-04T12:41:20.0",
+    "workoutName": "Bicicleta soltura pre-Ordes 30 min",
+    "description": "Sesion muy suave para llegar con piernas activas a Ordes sin sumar impacto.",
+    "updatedDate": "2026-05-16T12:42:15.0",
+    "createdDate": "2026-05-16T12:42:15.0",
     "sportType": {
-      "sportTypeId": 1,
-      "sportTypeKey": "running",
-      "displayOrder": 1
+      "sportTypeId": 6,
+      "sportTypeKey": "cardio_training",
+      "displayOrder": 6
     },
     "subSportType": null,
     "trainingPlanId": null,
@@ -26,15 +28,15 @@
       "vivokidUser": false
     },
     "sharedWithUsers": null,
-    "estimatedDurationInSecs": 1560,
+    "estimatedDurationInSecs": 1800,
     "estimatedDistanceInMeters": null,
     "workoutSegments": [
       {
         "segmentOrder": 1,
         "sportType": {
-          "sportTypeId": 1,
-          "sportTypeKey": "running",
-          "displayOrder": 1
+          "sportTypeId": 6,
+          "sportTypeKey": "cardio_training",
+          "displayOrder": 6
         },
         "poolLengthUnit": null,
         "poolLength": null,
@@ -47,7 +49,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13256319721,
+            "stepId": 13376331704,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 3,
@@ -55,212 +57,23 @@
               "displayOrder": 3
             },
             "childStepId": null,
-            "description": "3 km muy faciles",
+            "description": "30 min muy suaves con cadencia ligera",
             "endCondition": {
-              "conditionTypeId": 3,
-              "conditionTypeKey": "distance",
-              "displayOrder": 3,
+              "conditionTypeId": 2,
+              "conditionTypeKey": "time",
+              "displayOrder": 2,
               "displayable": true
             },
-            "endConditionValue": 3000.0,
-            "preferredEndConditionUnit": {
-              "unitId": 1,
-              "unitKey": "meter",
-              "factor": 100.0
-            },
-            "endConditionCompare": null,
-            "targetType": {
-              "workoutTargetTypeId": 4,
-              "workoutTargetTypeKey": "heart.rate.zone",
-              "displayOrder": 4
-            },
-            "targetValueOne": 130.0,
-            "targetValueTwo": 145.0,
-            "targetValueUnit": null,
-            "zoneNumber": null,
-            "secondaryTargetType": null,
-            "secondaryTargetValueOne": null,
-            "secondaryTargetValueTwo": null,
-            "secondaryTargetValueUnit": null,
-            "secondaryZoneNumber": null,
-            "endConditionZone": null,
-            "strokeType": {
-              "strokeTypeId": 0,
-              "strokeTypeKey": null,
-              "displayOrder": 0
-            },
-            "equipmentType": {
-              "equipmentTypeId": 0,
-              "equipmentTypeKey": null,
-              "displayOrder": 0
-            },
-            "category": null,
-            "exerciseName": null,
-            "workoutProvider": null,
-            "providerExerciseSourceId": null,
-            "weightValue": null,
-            "weightUnit": null
-          },
-          {
-            "type": "RepeatGroupDTO",
-            "stepId": 13256319722,
-            "stepOrder": 2,
-            "stepType": {
-              "stepTypeId": 6,
-              "stepTypeKey": "repeat",
-              "displayOrder": 6
-            },
-            "childStepId": 1,
-            "numberOfIterations": 4,
-            "workoutSteps": [
-              {
-                "type": "ExecutableStepDTO",
-                "stepId": 13256319723,
-                "stepOrder": 3,
-                "stepType": {
-                  "stepTypeId": 3,
-                  "stepTypeKey": "interval",
-                  "displayOrder": 3
-                },
-                "childStepId": 1,
-                "description": "Recta 15 s",
-                "endCondition": {
-                  "conditionTypeId": 2,
-                  "conditionTypeKey": "time",
-                  "displayOrder": 2,
-                  "displayable": true
-                },
-                "endConditionValue": 15.0,
-                "preferredEndConditionUnit": null,
-                "endConditionCompare": null,
-                "targetType": {
-                  "workoutTargetTypeId": 1,
-                  "workoutTargetTypeKey": "no.target",
-                  "displayOrder": 1
-                },
-                "targetValueOne": null,
-                "targetValueTwo": null,
-                "targetValueUnit": null,
-                "zoneNumber": null,
-                "secondaryTargetType": null,
-                "secondaryTargetValueOne": null,
-                "secondaryTargetValueTwo": null,
-                "secondaryTargetValueUnit": null,
-                "secondaryZoneNumber": null,
-                "endConditionZone": null,
-                "strokeType": {
-                  "strokeTypeId": 0,
-                  "strokeTypeKey": null,
-                  "displayOrder": 0
-                },
-                "equipmentType": {
-                  "equipmentTypeId": 0,
-                  "equipmentTypeKey": null,
-                  "displayOrder": 0
-                },
-                "category": null,
-                "exerciseName": null,
-                "workoutProvider": null,
-                "providerExerciseSourceId": null,
-                "weightValue": null,
-                "weightUnit": null
-              },
-              {
-                "type": "ExecutableStepDTO",
-                "stepId": 13256319724,
-                "stepOrder": 4,
-                "stepType": {
-                  "stepTypeId": 4,
-                  "stepTypeKey": "recovery",
-                  "displayOrder": 4
-                },
-                "childStepId": 1,
-                "description": "Recuperacion 45 s",
-                "endCondition": {
-                  "conditionTypeId": 2,
-                  "conditionTypeKey": "time",
-                  "displayOrder": 2,
-                  "displayable": true
-                },
-                "endConditionValue": 45.0,
-                "preferredEndConditionUnit": null,
-                "endConditionCompare": null,
-                "targetType": {
-                  "workoutTargetTypeId": 1,
-                  "workoutTargetTypeKey": "no.target",
-                  "displayOrder": 1
-                },
-                "targetValueOne": null,
-                "targetValueTwo": null,
-                "targetValueUnit": null,
-                "zoneNumber": null,
-                "secondaryTargetType": null,
-                "secondaryTargetValueOne": null,
-                "secondaryTargetValueTwo": null,
-                "secondaryTargetValueUnit": null,
-                "secondaryZoneNumber": null,
-                "endConditionZone": null,
-                "strokeType": {
-                  "strokeTypeId": 0,
-                  "strokeTypeKey": null,
-                  "displayOrder": 0
-                },
-                "equipmentType": {
-                  "equipmentTypeId": 0,
-                  "equipmentTypeKey": null,
-                  "displayOrder": 0
-                },
-                "category": null,
-                "exerciseName": null,
-                "workoutProvider": null,
-                "providerExerciseSourceId": null,
-                "weightValue": null,
-                "weightUnit": null
-              }
-            ],
-            "endConditionValue": 4.0,
+            "endConditionValue": 1800.0,
             "preferredEndConditionUnit": null,
             "endConditionCompare": null,
-            "endCondition": {
-              "conditionTypeId": 7,
-              "conditionTypeKey": "iterations",
-              "displayOrder": 7,
-              "displayable": false
-            },
-            "skipLastRestStep": null,
-            "smartRepeat": false
-          },
-          {
-            "type": "ExecutableStepDTO",
-            "stepId": 13256319725,
-            "stepOrder": 5,
-            "stepType": {
-              "stepTypeId": 2,
-              "stepTypeKey": "cooldown",
-              "displayOrder": 2
-            },
-            "childStepId": null,
-            "description": "1 km muy facil",
-            "endCondition": {
-              "conditionTypeId": 3,
-              "conditionTypeKey": "distance",
-              "displayOrder": 3,
-              "displayable": true
-            },
-            "endConditionValue": 1000.0,
-            "preferredEndConditionUnit": {
-              "unitId": 1,
-              "unitKey": "meter",
-              "factor": 100.0
-            },
-            "endConditionCompare": null,
             "targetType": {
               "workoutTargetTypeId": 4,
               "workoutTargetTypeKey": "heart.rate.zone",
               "displayOrder": 4
             },
-            "targetValueOne": 130.0,
-            "targetValueTwo": 145.0,
+            "targetValueOne": 115.0,
+            "targetValueTwo": 135.0,
             "targetValueUnit": null,
             "zoneNumber": null,
             "secondaryTargetType": null,
@@ -314,32 +127,32 @@
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1639069446,
+    "workoutScheduleId": 1650769389,
     "workout": {
-      "workoutId": 1557402311,
+      "workoutId": 1569240252,
       "ownerId": 137864769,
-      "workoutName": "Shakeout pre-carrera 4 km",
-      "description": "Rodaje muy corto para despertar piernas antes de la carrera. Debe dejar sensacion de frescura.",
-      "updatedDate": "2026-05-04T12:41:20.0",
-      "createdDate": "2026-05-04T12:41:20.0",
+      "workoutName": "Bicicleta soltura pre-Ordes 30 min",
+      "description": "Sesion muy suave para llegar con piernas activas a Ordes sin sumar impacto.",
+      "updatedDate": "2026-05-16T12:42:15.0",
+      "createdDate": "2026-05-16T12:42:15.0",
       "sportType": {
-        "sportTypeId": 1,
-        "sportTypeKey": "running",
-        "displayOrder": 1
+        "sportTypeId": 6,
+        "sportTypeKey": "cardio_training",
+        "displayOrder": 6
       },
       "subSportType": null,
       "trainingPlanId": null,
       "author": null,
       "sharedWithUsers": null,
-      "estimatedDurationInSecs": 1560,
+      "estimatedDurationInSecs": 1800,
       "estimatedDistanceInMeters": null,
       "workoutSegments": [
         {
           "segmentOrder": 1,
           "sportType": {
-            "sportTypeId": 1,
-            "sportTypeKey": "running",
-            "displayOrder": 1
+            "sportTypeId": 6,
+            "sportTypeKey": "cardio_training",
+            "displayOrder": 6
           },
           "poolLengthUnit": null,
           "poolLength": null,
@@ -352,7 +165,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13256319721,
+              "stepId": 13376331704,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 3,
@@ -360,212 +173,23 @@
                 "displayOrder": 3
               },
               "childStepId": null,
-              "description": "3 km muy faciles",
+              "description": "30 min muy suaves con cadencia ligera",
               "endCondition": {
-                "conditionTypeId": 3,
-                "conditionTypeKey": "distance",
-                "displayOrder": 3,
+                "conditionTypeId": 2,
+                "conditionTypeKey": "time",
+                "displayOrder": 2,
                 "displayable": true
               },
-              "endConditionValue": 3000.0,
-              "preferredEndConditionUnit": {
-                "unitId": 1,
-                "unitKey": "meter",
-                "factor": 100.0
-              },
-              "endConditionCompare": null,
-              "targetType": {
-                "workoutTargetTypeId": 4,
-                "workoutTargetTypeKey": "heart.rate.zone",
-                "displayOrder": 4
-              },
-              "targetValueOne": 130.0,
-              "targetValueTwo": 145.0,
-              "targetValueUnit": null,
-              "zoneNumber": null,
-              "secondaryTargetType": null,
-              "secondaryTargetValueOne": null,
-              "secondaryTargetValueTwo": null,
-              "secondaryTargetValueUnit": null,
-              "secondaryZoneNumber": null,
-              "endConditionZone": null,
-              "strokeType": {
-                "strokeTypeId": 0,
-                "strokeTypeKey": null,
-                "displayOrder": 0
-              },
-              "equipmentType": {
-                "equipmentTypeId": 0,
-                "equipmentTypeKey": null,
-                "displayOrder": 0
-              },
-              "category": null,
-              "exerciseName": null,
-              "workoutProvider": null,
-              "providerExerciseSourceId": null,
-              "weightValue": null,
-              "weightUnit": null
-            },
-            {
-              "type": "RepeatGroupDTO",
-              "stepId": 13256319722,
-              "stepOrder": 2,
-              "stepType": {
-                "stepTypeId": 6,
-                "stepTypeKey": "repeat",
-                "displayOrder": 6
-              },
-              "childStepId": 1,
-              "numberOfIterations": 4,
-              "workoutSteps": [
-                {
-                  "type": "ExecutableStepDTO",
-                  "stepId": 13256319723,
-                  "stepOrder": 3,
-                  "stepType": {
-                    "stepTypeId": 3,
-                    "stepTypeKey": "interval",
-                    "displayOrder": 3
-                  },
-                  "childStepId": 1,
-                  "description": "Recta 15 s",
-                  "endCondition": {
-                    "conditionTypeId": 2,
-                    "conditionTypeKey": "time",
-                    "displayOrder": 2,
-                    "displayable": true
-                  },
-                  "endConditionValue": 15.0,
-                  "preferredEndConditionUnit": null,
-                  "endConditionCompare": null,
-                  "targetType": {
-                    "workoutTargetTypeId": 1,
-                    "workoutTargetTypeKey": "no.target",
-                    "displayOrder": 1
-                  },
-                  "targetValueOne": null,
-                  "targetValueTwo": null,
-                  "targetValueUnit": null,
-                  "zoneNumber": null,
-                  "secondaryTargetType": null,
-                  "secondaryTargetValueOne": null,
-                  "secondaryTargetValueTwo": null,
-                  "secondaryTargetValueUnit": null,
-                  "secondaryZoneNumber": null,
-                  "endConditionZone": null,
-                  "strokeType": {
-                    "strokeTypeId": 0,
-                    "strokeTypeKey": null,
-                    "displayOrder": 0
-                  },
-                  "equipmentType": {
-                    "equipmentTypeId": 0,
-                    "equipmentTypeKey": null,
-                    "displayOrder": 0
-                  },
-                  "category": null,
-                  "exerciseName": null,
-                  "workoutProvider": null,
-                  "providerExerciseSourceId": null,
-                  "weightValue": null,
-                  "weightUnit": null
-                },
-                {
-                  "type": "ExecutableStepDTO",
-                  "stepId": 13256319724,
-                  "stepOrder": 4,
-                  "stepType": {
-                    "stepTypeId": 4,
-                    "stepTypeKey": "recovery",
-                    "displayOrder": 4
-                  },
-                  "childStepId": 1,
-                  "description": "Recuperacion 45 s",
-                  "endCondition": {
-                    "conditionTypeId": 2,
-                    "conditionTypeKey": "time",
-                    "displayOrder": 2,
-                    "displayable": true
-                  },
-                  "endConditionValue": 45.0,
-                  "preferredEndConditionUnit": null,
-                  "endConditionCompare": null,
-                  "targetType": {
-                    "workoutTargetTypeId": 1,
-                    "workoutTargetTypeKey": "no.target",
-                    "displayOrder": 1
-                  },
-                  "targetValueOne": null,
-                  "targetValueTwo": null,
-                  "targetValueUnit": null,
-                  "zoneNumber": null,
-                  "secondaryTargetType": null,
-                  "secondaryTargetValueOne": null,
-                  "secondaryTargetValueTwo": null,
-                  "secondaryTargetValueUnit": null,
-                  "secondaryZoneNumber": null,
-                  "endConditionZone": null,
-                  "strokeType": {
-                    "strokeTypeId": 0,
-                    "strokeTypeKey": null,
-                    "displayOrder": 0
-                  },
-                  "equipmentType": {
-                    "equipmentTypeId": 0,
-                    "equipmentTypeKey": null,
-                    "displayOrder": 0
-                  },
-                  "category": null,
-                  "exerciseName": null,
-                  "workoutProvider": null,
-                  "providerExerciseSourceId": null,
-                  "weightValue": null,
-                  "weightUnit": null
-                }
-              ],
-              "endConditionValue": 4.0,
+              "endConditionValue": 1800.0,
               "preferredEndConditionUnit": null,
               "endConditionCompare": null,
-              "endCondition": {
-                "conditionTypeId": 7,
-                "conditionTypeKey": "iterations",
-                "displayOrder": 7,
-                "displayable": false
-              },
-              "skipLastRestStep": null,
-              "smartRepeat": false
-            },
-            {
-              "type": "ExecutableStepDTO",
-              "stepId": 13256319725,
-              "stepOrder": 5,
-              "stepType": {
-                "stepTypeId": 2,
-                "stepTypeKey": "cooldown",
-                "displayOrder": 2
-              },
-              "childStepId": null,
-              "description": "1 km muy facil",
-              "endCondition": {
-                "conditionTypeId": 3,
-                "conditionTypeKey": "distance",
-                "displayOrder": 3,
-                "displayable": true
-              },
-              "endConditionValue": 1000.0,
-              "preferredEndConditionUnit": {
-                "unitId": 1,
-                "unitKey": "meter",
-                "factor": 100.0
-              },
-              "endConditionCompare": null,
               "targetType": {
                 "workoutTargetTypeId": 4,
                 "workoutTargetTypeKey": "heart.rate.zone",
                 "displayOrder": 4
               },
-              "targetValueOne": 130.0,
-              "targetValueTwo": 145.0,
+              "targetValueOne": 115.0,
+              "targetValueTwo": 135.0,
               "targetValueUnit": null,
               "zoneNumber": null,
               "secondaryTargetType": null,
@@ -619,7 +243,7 @@
       "shared": false
     },
     "calendarDate": "2026-05-23",
-    "createdDate": "2026-05-04",
+    "createdDate": "2026-05-16",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -628,9 +252,9 @@
     "priority": null,
     "associatedActivityDateTime": null,
     "tpType": null,
-    "race": false,
-    "protected": false,
     "itp": false,
-    "nameChanged": false
+    "protected": false,
+    "nameChanged": false,
+    "race": false
   }
 }

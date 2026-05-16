@@ -1,6 +1,6 @@
 # Fueling Operational Plan
 
-- Generated: `2026-05-15T14:35:53.475952+00:00`
+- Generated: `2026-05-16T11:53:31.127017+00:00`
 - Athlete weight: `64.199` kg
 
 ## Supplements
@@ -39,18 +39,6 @@
 - `2026-05-24 T-30m` pre: Cafeina opcional solo si ya esta probada en entrenos o carreras. (40 mg cafeina; SUB9 PRO SALTS ELECTROLYTES)
 - `2026-05-24 Durante` during: Para esta distancia basta con pequeños sorbos de agua/electrolitos si hace calor o hay espera larga. (A demanda; Electrolitos Evolytes)
 - `2026-05-24 T+30m` post: Recuperacion inmediata con proteina, creatina y algo de hidratos si no comes pronto. (20-30 g proteina + 3-5 g creatina + 40-60 g CHO; Proteina + Creatina + Maltodextrina)
-
-### 2026-06-28 · VI CARREIRA 5K EL CANARIO
-
-- Distance: `5k`
-- Prediction: `21:17` · pace `4:15/km`
-- `2026-06-27 Durante el dia` carb_load: Apuntar a 321 g de hidratos en el dia, priorizando comidas faciles de digerir. (321 g CHO/dia; Maltodextrina + Fructosa)
-- `2026-06-27 Distribuido en el dia` hydration: Beber entre 2.2 y 2.6 L repartidos y añadir sodio si hace calor. (2.2-2.6 L; Electrolitos Evolytes)
-- `2026-06-28 T-3h` pre: Comida previa con 77 g de hidratos y muy baja en fibra/grasa. (77 g CHO; Maltodextrina + Fructosa)
-- `2026-06-28 T-45m` pre: Top-up pequeño si llegas con hambre o la salida se retrasa. (20-25 g CHO; Maltodextrina + Fructosa)
-- `2026-06-28 T-30m` pre: Cafeina opcional solo si ya esta probada en entrenos o carreras. (40 mg cafeina; SUB9 PRO SALTS ELECTROLYTES)
-- `2026-06-28 Durante` during: Para esta distancia basta con pequeños sorbos de agua/electrolitos si hace calor o hay espera larga. (A demanda; Electrolitos Evolytes)
-- `2026-06-28 T+30m` post: Recuperacion inmediata con proteina, creatina y algo de hidratos si no comes pronto. (20-30 g proteina + 3-5 g creatina + 40-60 g CHO; Proteina + Creatina + Maltodextrina)
 
 ### 2027-02-06 · XXIV Padron 10k
 

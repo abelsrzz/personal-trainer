@@ -1,36 +1,16 @@
 workout:
-  name: Shakeout pre-carrera 4 km
+  name: Bicicleta soltura pre-Ordes 30 min
   schedule_date: 2026-05-23
-  sport: running
-  description: Rodaje muy corto para despertar piernas antes de la carrera. Debe dejar
-    sensacion de frescura.
-  estimated_duration_s: 1560
+  sport: fitness_equipment
+  description: Sesion muy suave para llegar con piernas activas a Ordes sin sumar impacto.
+  estimated_duration_s: 1800
   steps:
   - order: 1
     step_type: interval
-    description: 3 km muy faciles
-    distance_m: 3000
+    description: 30 min muy suaves con cadencia ligera
+    duration_s: 1800
     target:
       type: heart_rate_range
-      min_bpm: 130
-      max_bpm: 150
-  - order: 2
-    type: repeat_group
-    iterations: 4
-    steps:
-    - order: 3
-      step_type: interval
-      description: Recta 15 s
-      duration_s: 15
-    - order: 4
-      step_type: recovery
-      description: Recuperacion 45 s
-      duration_s: 45
-  - order: 5
-    step_type: cooldown
-    description: 1 km muy facil
-    distance_m: 1000
-    target:
-      type: heart_rate_range
-      min_bpm: 130
-      max_bpm: 150
+      min_bpm: 115
+      max_bpm: 135
+  primary_goal: Recuperacion

@@ -1,0 +1,16 @@
+workout:
+  name: Bicicleta muy suave 40 min
+  schedule_date: 2026-06-12
+  sport: fitness_equipment
+  description: Descarga activa para facilitar absorcion de la semana sin perder continuidad.
+  estimated_duration_s: 2400
+  steps:
+  - order: 1
+    step_type: interval
+    description: 40 min muy suaves con cadencia ligera
+    duration_s: 2400
+    target:
+      type: heart_rate_range
+      min_bpm: 115
+      max_bpm: 135
+  primary_goal: Recuperacion

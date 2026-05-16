@@ -1,52 +1,53 @@
 {
-  "generated_at": "2026-05-15T14:49:19.895466+00:00",
-  "as_of": "2026-05-15",
+  "generated_at": "2026-05-16T11:56:15.326883+00:00",
+  "as_of": "2026-05-16",
   "lookback_days": 28,
-  "activity_count_total": 63,
-  "review_count_total": 5,
+  "activity_count_total": 64,
+  "review_count_total": 6,
   "decision": {
-    "as_of": "2026-05-15",
-    "status": "yellow",
-    "action": "maintain_with_caution",
-    "recommendation": "Mantener estructura, pero sin subir volumen ni intensidad hasta ver 2-3 sesiones faciles estables.",
+    "as_of": "2026-05-16",
+    "status": "red",
+    "action": "reduce_or_replace_quality",
+    "recommendation": "Reducir carga inmediata: cambiar la proxima calidad por rodaje muy facil o descanso, y mantener FC capada.",
     "reasons": [
+      "Periostio con dolor maximo 7/10 en el ultimo registro.",
       "Subida de volumen semanal de 79% (14.7 -> 26.2 km entre semanas completas).",
-      "Demasiada densidad de calidad: 3 sesiones exigentes en 7 dias.",
+      "Feedback subjetivo reciente con dolor 7/10; conviene proteger carga.",
       "El bloque activo prioriza reconstruccion, consistencia y tolerancia tisular antes de ritmos agresivos.",
       "El limitador principal declarado sigue siendo la durabilidad aerobica; la construccion debe respetarlo.",
       "La automatizacion prioriza como backbone de calidad: cruise_intervals, tempo_broken, tempo_continuous."
     ],
     "windows": {
       "last_7_days": {
-        "start": "2026-05-09",
-        "end": "2026-05-15",
-        "runs": 4,
-        "km": 29.3233701171875,
-        "duration_s": 10322.229858398438,
-        "avg_pace_s_per_km": 352.0137629865471,
-        "avg_hr": 163.92426329007975,
-        "quality_runs": 3,
-        "long_run_km": 10.8192099609375
+        "start": "2026-05-10",
+        "end": "2026-05-16",
+        "runs": 3,
+        "km": 19.860090332031252,
+        "duration_s": 7984.258056640625,
+        "avg_pace_s_per_km": 402.0252638913355,
+        "avg_hr": 152.72633848814016,
+        "quality_runs": 1,
+        "long_run_km": 7.58818017578125
       },
       "previous_7_days": {
-        "start": "2026-05-02",
-        "end": "2026-05-08",
-        "runs": 2,
-        "km": 11.71610009765625,
-        "duration_s": 5126.243896484375,
-        "avg_pace_s_per_km": 437.5384175413332,
-        "avg_hr": 147.94850721016408,
-        "quality_runs": 0,
-        "long_run_km": 6.6805
+        "start": "2026-05-03",
+        "end": "2026-05-09",
+        "runs": 4,
+        "km": 26.18118994140625,
+        "duration_s": 9541.346801757812,
+        "avg_pace_s_per_km": 364.43518507414814,
+        "avg_hr": 161.24484246088028,
+        "quality_runs": 2,
+        "long_run_km": 10.8192099609375
       },
       "last_28_days": {
-        "start": "2026-04-18",
-        "end": "2026-05-15",
+        "start": "2026-04-19",
+        "end": "2026-05-16",
         "runs": 12,
-        "km": 84.3020302734375,
-        "duration_s": 32765.543823242188,
-        "avg_pace_s_per_km": 388.66850201549886,
-        "avg_hr": 156.65658901344068,
+        "km": 83.27709033203125,
+        "duration_s": 32256.453002929688,
+        "avg_pace_s_per_km": 387.3388572333769,
+        "avg_hr": 156.47250498867785,
         "quality_runs": 5,
         "long_run_km": 10.8192099609375
       },
@@ -73,45 +74,46 @@
         "long_run_km": 8.045740234375
       }
     },
-    "volume_spike_pct": 150.28268683922818,
+    "volume_spike_pct": -24.143668120210265,
     "weekly_spike_pct": 78.69704284297025,
     "latest_shin_entry": {
-      "date": "2026-05-08",
-      "pain_during": 1,
-      "pain_after": 1,
-      "pain_next_morning": 1,
+      "date": "2026-05-16",
+      "pain_during": 7,
+      "pain_after": 7,
+      "pain_next_morning": 7,
       "location": "left_shin",
       "surface": null,
       "shoes": null,
-      "notes": "Reevaluacion manual. Dolor tibial actual 1/10 y cansancio subjetivo 0/10; sin empeoramiento relevante reportado."
+      "notes": "Actualizacion manual. Dolor actual en el periostio 6,5/10; redondeado a 7/10 para las reglas automaticas. Localizacion reportada: tibial posterior izquierdo.",
+      "source": "manual"
     },
     "latest_high_risk_review": null,
     "latest_feedback": {
       "source": "web_manual_feedback",
-      "created_at": "2026-05-15T16:33:38.619698",
-      "updated_at": "2026-05-15T16:33:38.619698",
-      "updated_by": "change-me",
-      "date": "2026-05-15",
-      "planned_workout_slug": "2026-05-15_especifica_controlada_ordes",
-      "completed_review_slug": "2026-05-15_especifica_controlada_ordes",
-      "garmin_activity_id": 22889384200,
+      "created_at": "2026-05-16T13:54:17.801496",
+      "updated_at": "2026-05-16T13:55:44+02:00",
+      "updated_by": "opencode",
+      "date": "2026-05-16",
+      "planned_workout_slug": "2026-05-16_rodaje_5km_facil",
+      "completed_review_slug": "2026-05-16_rodaje_5km_facil",
+      "garmin_activity_id": 22900018441,
       "athlete_feedback": {
-        "rpe": 4,
-        "pain_level": 1,
+        "rpe": 1,
+        "pain_level": 7,
         "pain_location": "Tibial posterior izquierdo",
         "compliance": "full",
-        "time_feeling": "tight",
-        "note": null
+        "time_feeling": "ok",
+        "note": "Actualizacion manual: dolor actual en periostio 6,5/10; redondeado a 7/10 para las reglas automaticas."
       },
-      "feedback_date": "2026-05-15",
-      "slug": "2026-05-15_especifica_controlada_ordes",
-      "source_path": "training/completed/feedback/2026-05-15_especifica_controlada_ordes.feedback.json"
+      "feedback_date": "2026-05-16",
+      "slug": "2026-05-16_rodaje_5km_facil",
+      "source_path": "training/completed/feedback/2026-05-16_rodaje_5km_facil.feedback.json"
     },
     "daily_signals": {
       "snapshot": {
         "hrv": 137864769.0,
         "training_readiness": null,
-        "resting_heart_rate": 59.0,
+        "resting_heart_rate": 53.0,
         "training_status": {
           "userId": 137864769,
           "mostRecentVO2Max": null,
@@ -134,30 +136,32 @@
       "running_tolerance_flag": null
     },
     "session_guidance": {
-      "coach_state": "yellow",
-      "shin_band": "green",
+      "coach_state": "red",
+      "shin_band": "red",
       "block": "block_1",
       "target_distance": "10k",
       "primary": [
-        "tempo_broken",
-        "easy_plus_strides",
         "easy_recovery",
-        "easy_z2",
-        "long_run"
+        "recovery_plus_mobility"
       ],
       "optional": [
-        "aerobic_steady"
+        "easy_z2"
       ],
       "avoid": [
+        "cruise_intervals",
+        "tempo_continuous",
         "short_intervals_vo2",
         "medium_intervals_vo2",
+        "ten_k_specific_reps",
         "ten_k_specific_continuous",
         "long_run_quality",
         "hills_strength",
+        "short_hills_power",
+        "short_intervals_economy",
         "five_k_specific_reps",
         "marathon_specific_blocks"
       ],
-      "quality_volume_cap": "low_to_medium",
+      "quality_volume_cap": "none",
       "selection_order": [
         "coach_state",
         "shin_band",
@@ -172,7 +176,7 @@
       "active_block": "Block 1: Reset, consistency and tissue tolerance",
       "goal_race_name": "XXIV Padron 10k",
       "goal_race_priority": "S",
-      "days_to_goal_race": 267,
+      "days_to_goal_race": 266,
       "preferred_plan_columns": [
         "day",
         "description",
@@ -195,19 +199,19 @@
     "passed_count": 0,
     "total_gates": 4,
     "metrics": {
-      "avg_weekly_km_28d": 21.075507568359374,
+      "avg_weekly_km_28d": 20.819272583007812,
       "long_run_km_28d": 10.8192099609375,
       "best_5k_s_90d": 1335.8609619140625,
       "best_10k_s_180d": 2663.23095703125,
-      "high_risk_reviews_28d": 1,
-      "subjective_alerts_28d": 0,
-      "latest_shin_pain": 1
+      "high_risk_reviews_28d": 2,
+      "subjective_alerts_28d": 1,
+      "latest_shin_pain": 7
     },
     "gates": [
       {
         "name": "Base estable",
         "passed": false,
-        "evidence": "Media 4 semanas 21.1 km/sem, tirada larga 10.8 km, alertas 1, periostio 1."
+        "evidence": "Media 4 semanas 20.8 km/sem, tirada larga 10.8 km, alertas 2, periostio 7."
       },
       {
         "name": "Umbral competitivo",
@@ -217,7 +221,7 @@
       {
         "name": "Precondicion 35:00",
         "passed": false,
-        "evidence": "Media 21.1 km/sem, tirada 10.8 km, 5k 22:16, alertas 1."
+        "evidence": "Media 20.8 km/sem, tirada 10.8 km, 5k 22:16, alertas 2."
       },
       {
         "name": "Seleccion 35:00",
@@ -237,8 +241,8 @@
   "weekly_volume": [
     {
       "week": "2026-W16",
-      "km": 16.0329697265625,
-      "runs": 2,
+      "km": 10.0062197265625,
+      "runs": 1,
       "quality_runs": 0,
       "long_run_km": 10.0062197265625
     },
@@ -265,19 +269,19 @@
     },
     {
       "week": "2026-W20",
-      "km": 14.8582802734375,
-      "runs": 2,
+      "km": 19.860090332031252,
+      "runs": 3,
       "quality_runs": 1,
       "long_run_km": 7.58818017578125
     }
   ],
   "daily_metrics": {
-    "available_days": 22,
-    "latest_date": "2026-05-15",
+    "available_days": 23,
+    "latest_date": "2026-05-16",
     "source": "garmin_daily",
     "latest_hrv": 137864769.0,
     "latest_training_readiness": null,
-    "latest_resting_heart_rate": 59.0,
+    "latest_resting_heart_rate": 53.0,
     "latest_training_status": {
       "userId": 137864769,
       "mostRecentVO2Max": null,
@@ -304,12 +308,12 @@
       "sleep",
       "running_tolerance"
     ],
-    "latest_daily_date": "2026-05-15",
-    "latest_activity_date": "2026-05-15",
+    "latest_daily_date": "2026-05-16",
+    "latest_activity_date": "2026-05-16",
     "daily_snapshot": {
       "hrv": 137864769.0,
       "training_readiness": null,
-      "resting_heart_rate": 59.0,
+      "resting_heart_rate": 53.0,
       "training_status": {
         "userId": 137864769,
         "mostRecentVO2Max": null,
@@ -328,8 +332,8 @@
   },
   "running_tolerance": {},
   "feedback_summary": {
-    "available_count": 2,
-    "latest_date": "2026-05-15"
+    "available_count": 3,
+    "latest_date": "2026-05-16"
   },
   "active_context": {
     "cycle_id": "2026-05-25_padron_10k",
@@ -347,7 +351,7 @@
       },
       "coaching_note": "35:00 is aspirational and must be unlocked by checkpoint evidence before being used as training pace."
     },
-    "days_to_goal_race": 267,
+    "days_to_goal_race": 266,
     "available_race_count": 4
   }
 }

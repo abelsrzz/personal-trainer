@@ -386,7 +386,7 @@ def planned_session_kind(workout: dict[str, Any]) -> str:
         return "long_run"
     if goal_category in {"activation", "easy_plus_strides", "controlled_quality", "quality"}:
         return "quality"
-    if "strength" in json.dumps(workout, ensure_ascii=False).lower():
+    if "strength" in json.dumps(workout, ensure_ascii=False, default=str).lower():
         return "strength"
     return "easy"
 

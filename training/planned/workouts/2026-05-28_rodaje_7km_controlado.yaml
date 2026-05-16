@@ -1,19 +1,33 @@
 workout:
-  name: Rodaje 7 km controlado
+  name: Bicicleta aerobica continua 65 min
   schedule_date: 2026-05-28
-  sport: running
-  description: Rodaje facil para consolidar continuidad aerobica sin convertir el
-    dia en una sesion de carga.
-  estimated_duration_s: 3120
+  sport: fitness_equipment
+  description: Base aerobica continua para sustituir el rodaje facil y preservar la
+    adaptacion Z2 sin impacto.
+  estimated_duration_s: 3900
   steps:
   - order: 1
-    step_type: interval
-    description: 7 km faciles
-    distance_m: 7000
+    step_type: warmup
+    description: 10 min suaves
+    duration_s: 600
     target:
       type: heart_rate_range
-      min_bpm: 135
-      max_bpm: 150
-  knowledge_id: 50_suave
-  knowledge_label: 50' suave
+      min_bpm: 120
+      max_bpm: 138
+  - order: 2
+    step_type: interval
+    description: 45 min Z2 estable
+    duration_s: 2700
+    target:
+      type: heart_rate_range
+      min_bpm: 130
+      max_bpm: 148
+  - order: 3
+    step_type: cooldown
+    description: 10 min suaves
+    duration_s: 600
+    target:
+      type: heart_rate_range
+      min_bpm: 115
+      max_bpm: 135
   primary_goal: Base aerobica

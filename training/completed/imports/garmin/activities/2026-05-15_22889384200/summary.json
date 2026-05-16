@@ -191,8 +191,8 @@
   ],
   "hasSplits": true,
   "hasIntensityIntervals": true,
-  "moderateIntensityMinutes": 7,
-  "vigorousIntensityMinutes": 5,
+  "moderateIntensityMinutes": 11,
+  "vigorousIntensityMinutes": 35,
   "avgGradeAdjustedSpeed": 2.624000072479248,
   "differenceBodyBattery": -13,
   "hasHeatMap": false,
@@ -215,10 +215,10 @@
   "autoCalcCalories": false,
   "elevationCorrected": false,
   "atpActivity": false,
-  "pr": false,
-  "decoDive": false,
-  "manualActivity": false,
   "favorite": false,
+  "purposeful": false,
+  "manualActivity": false,
+  "pr": false,
   "parent": false,
-  "purposeful": false
+  "decoDive": false
 }

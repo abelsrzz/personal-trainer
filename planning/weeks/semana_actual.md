@@ -13,13 +13,14 @@
 - Hay dos competiciones antes del inicio del plan principal:
   - `2026-05-09`: `IV EDICION OS 11 DAS VIAS - CONCELLO DE CERCEDA`, a ritmo aproximado `5:00/km`, sin objetivo competitivo real.
   - `2026-05-24`: `XXIX CARREIRA POPULAR CONCELLO DE ORDES`, objetivo `4:10-4:20/km`.
+- Por dolor reciente en periostio, el tramo final del puente pasa a una estrategia de descarga con prioridad en bicicleta y fuerza sin impacto.
 
 ## Objetivo Del Puente
 
 - Reintroducir carrera sin sobrecargar el periostio ni la musculatura tocada por la caminata.
 - Usar la carrera del `09/05` como rodaje con dorsal, no como objetivo de rendimiento.
-- Recuperar sensaciones y continuidad durante la semana intermedia.
-- Llegar a Ordes con piernas activas y margen para correr entre `4:10/km` y `4:20/km` si el cuerpo acompana.
+- Recuperar sensaciones aerobicas sin sumar impacto innecesario antes de Ordes.
+- Llegar a Ordes con piernas activas y margen para competir, manteniendo una unica afinacion de calidad antes de la carrera.
 
 ## Relacion Con El Plan General
 
@@ -44,20 +45,28 @@
 | Jueves 14 | Descanso + movilidad y pie/tobillo | 0 km | - | - |
 | Viernes 15 | Sesion especifica controlada con bloques a ritmo cercano al objetivo de Ordes | 8 km | 2 km faciles + `3 x 4 min` a `4:20-4:25/km` con `2 min` suaves + vuelta a la calma | Adidas Adizero EVO SL |
 | Sabado 16 | Rodaje facil | 5 km | `135-150 ppm` | Adidas Adistar BYD o Joma Supercross |
-| Domingo 17 | Rodaje comodo de continuidad | 9 km | Z2 `141-155 ppm` | Adidas Adistar BYD |
-| Lunes 18 | Fuerza general suave + movilidad, sin carrera | 0 km | - | - |
-| Martes 19 | Rodaje de reintroduccion muy facil | 5 km | `131-150 ppm` | Adidas Adistar BYD o Joma Supercross |
-| Miercoles 20 | Rodaje facil con 4 rectas controladas al final | 6 km | 5 km a `135-150 ppm` + rectas por sensacion, sin sprintar | Joma Supercross |
+| Domingo 17 | Bicicleta suave de continuidad | `75-90 min` | Z1-Z2, cadencia comoda | - |
+| Lunes 18 | Fuerza de rehabilitacion + movilidad, sin carrera | 0 km | - | - |
+| Martes 19 | Bicicleta aerobica | `60-75 min` | Z2 estable | - |
+| Miercoles 20 | Descanso activo o bicicleta muy suave | `30-45 min` | Z1 | - |
 | Jueves 21 | Descanso + movilidad y descarga ligera | 0 km | - | - |
 | Viernes 22 | Activacion especifica corta: calentamiento + 3 bloques a ritmo objetivo de carrera | 6 km | 2 km faciles `135-150 ppm` + `3 x 2 min` a `4:10-4:20/km` con `2 min` suaves + vuelta a la calma | Adidas Adizero EVO SL |
-| Sabado 23 | Shakeout pre-carrera con 4 rectas cortas | 4 km | Muy facil `130-150 ppm`; rectas sueltas sin forzar | Joma Supercross |
+| Sabado 23 | Bicicleta muy suave o shakeout opcional segun tibia | `30-40 min` bici o `15-20 min` trote | Muy facil, sin rectas | - |
 | Domingo 24 | `XXIX CARREIRA POPULAR CONCELLO DE ORDES` | 8.5 km | Objetivo `4:10-4:20/km` | Adidas Adizero EVO SL o Joma R3000 |
 
 ## Fuerza Y Movilidad
 
-- Dos sesiones de fuerza suave: `04/05` y `18/05`.
-- Deben ser de recordatorio, no de carga.
-- Prioridad en pie, tobillo, gemelo, soleo, gluteo medio y core.
+- Sesion del `18/05`, formato rehabilitacion, sin agujetas buscadas:
+  - Seated soleus raise: `3 x 15-20`
+  - Standing calf raise: `3 x 12-15`
+  - Tibialis raises en pared: `3 x 15-20`
+  - Short-foot hold: `3 x 30 s` por pie
+  - Banded ankle inversion: `2 x 15` por lado
+  - Banded ankle eversion: `2 x 15` por lado
+  - Split squat: `3 x 8` por lado
+  - Glute bridge: `3 x 12`
+  - Side plank: `3 x 30 s` por lado
+- Mantener movilidad de tobillo, gemelo y cadera a diario en dosis cortas.
 - Nada de agujetas fuertes ni trabajo excéntrico agresivo en todo el puente.
 
 ## Recuperacion
@@ -77,16 +86,17 @@
    - convierte el `12/05` en `5 km` muy suaves
    - y reduce la sesion del `15/05` a `2 x 4 min`
 
-3. Si el periostio avisa entre el `12/05` y el `17/05`:
-   - elimina rectas y bloques de ritmo
-   - manten solo rodajes suaves
+3. Si el periostio avisa entre el `18/05` y el `23/05`:
+   - elimina cualquier trote opcional
+   - manten solo bicicleta suave, movilidad y la activacion del `22/05` si llega sin dolor
 
 4. Si el `22/05` el ritmo objetivo se siente duro:
    - no lo persigas
    - corre por sensacion controlada y deja que la carrera decida el nivel real
 
 5. Si el `23/05` aun hay fatiga pesada:
-   - reduce el shakeout a `20 min` suaves sin rectas
+   - haz solo `20-30 min` de bicicleta muy suave
+   - y evita cualquier impacto extra antes de competir
 
 ## Senales De Exito
 

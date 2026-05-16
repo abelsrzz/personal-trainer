@@ -1,0 +1,40 @@
+workout:
+  name: Bicicleta bloque medio 80 min
+  schedule_date: 2026-06-04
+  sport: fitness_equipment
+  description: Sesion aerobica en Z2 con un bloque medio sostenido para reforzar base sin acercarse al umbral.
+  estimated_duration_s: 4800
+  steps:
+  - order: 1
+    step_type: warmup
+    description: 15 min suaves
+    duration_s: 900
+    target:
+      type: heart_rate_range
+      min_bpm: 120
+      max_bpm: 138
+  - order: 2
+    step_type: interval
+    description: 20 min Z2 controlada algo mas alegre
+    duration_s: 1200
+    target:
+      type: heart_rate_range
+      min_bpm: 136
+      max_bpm: 150
+  - order: 3
+    step_type: interval
+    description: 35 min Z2 estable
+    duration_s: 2100
+    target:
+      type: heart_rate_range
+      min_bpm: 130
+      max_bpm: 146
+  - order: 4
+    step_type: cooldown
+    description: 10 min suaves
+    duration_s: 600
+    target:
+      type: heart_rate_range
+      min_bpm: 115
+      max_bpm: 135
+  primary_goal: Base aerobica

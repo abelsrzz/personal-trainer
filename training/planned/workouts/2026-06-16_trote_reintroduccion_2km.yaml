@@ -1,0 +1,16 @@
+workout:
+  name: Trote reintroduccion 2 km
+  schedule_date: 2026-06-16
+  sport: running
+  description: Primer trote de vuelta al impacto. Debe sentirse muy facil y completamente controlado.
+  estimated_duration_s: 900
+  steps:
+  - order: 1
+    step_type: interval
+    description: 2 km muy faciles
+    distance_m: 2000
+    target:
+      type: heart_rate_range
+      min_bpm: 135
+      max_bpm: 145
+  primary_goal: Recuperacion

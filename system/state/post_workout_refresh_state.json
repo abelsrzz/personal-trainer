@@ -1,15 +1,15 @@
 {
-  "last_seen_activity_id": 22823255797,
-  "last_seen_activity_date": "2026-05-09",
-  "last_processed_activity_id": 22823255797,
-  "last_processed_activity_date": "2026-05-09",
-  "last_processed_at": "2026-05-12T09:58:32.598718+00:00",
+  "last_seen_activity_id": 22900018441,
+  "last_seen_activity_date": "2026-05-16",
+  "last_processed_activity_id": 22889384200,
+  "last_processed_activity_date": "2026-05-15",
+  "last_processed_at": "2026-05-16T11:43:56.273526+00:00",
   "last_successful_run": "2026-05-12T09:58:53.213947+00:00",
-  "last_error": null,
-  "last_activity_import_at": "2026-05-12T09:58:53.213931+00:00",
-  "last_daily_import_at": "2026-05-12T09:58:02.855701+00:00",
-  "last_profile_sync_at": "2026-05-12T09:58:05.279320+00:00",
-  "next_action": "wait_for_new_activity_or_feedback",
+  "last_error": "Traceback (most recent call last):\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/sync_garmin.py\", line 14, in <module>\n    from garminconnect import Garmin\nModuleNotFoundError: No module named 'garminconnect'",
+  "last_activity_import_at": "2026-05-16T11:43:30.421417+00:00",
+  "last_daily_import_at": "2026-05-16T11:43:52.356160+00:00",
+  "last_profile_sync_at": "2026-05-16T11:43:54.219147+00:00",
+  "next_action": "inspect_last_error",
   "timer_interval_minutes": 5,
   "processed_activities": [
     {
@@ -523,6 +523,30 @@
       "review_slug": null,
       "result": "success",
       "processed_at": "2026-05-12T09:58:32.598693+00:00"
+    },
+    {
+      "activity_id": 22870230448,
+      "activity_date": "2026-05-13",
+      "activity_name": "Ordes - Rodaje 7 km + 5 rectas controlad",
+      "review_slug": "2026-05-13_rodaje_7km_rectas_controladas",
+      "result": "success",
+      "processed_at": "2026-05-16T11:43:55.568359+00:00"
+    },
+    {
+      "activity_id": 22889384200,
+      "activity_date": "2026-05-15",
+      "activity_name": "Ordes - Especifica controlada Ordes",
+      "review_slug": "2026-05-15_especifica_controlada_ordes",
+      "result": "success",
+      "processed_at": "2026-05-16T11:43:56.273507+00:00"
+    },
+    {
+      "activity_id": 22900018441,
+      "activity_date": "2026-05-16",
+      "activity_name": "Ordes - Rodaje 5 km facil",
+      "review_slug": null,
+      "result": "error",
+      "processed_at": "2026-05-16T11:43:57.030623+00:00"
     }
   ],
   "processed_feedback_updates": [],
@@ -677,6 +701,31 @@
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
+    },
+    {
+      "run_at": "2026-05-16T11:43:15.706774+00:00",
+      "detected_count": 0,
+      "detected_activity_ids": [],
+      "triggered_pipeline": false,
+      "error": "Traceback (most recent call last):\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/sync_garmin.py\", line 14, in <module>\n    from garminconnect import Garmin\nModuleNotFoundError: No module named 'garminconnect'"
+    },
+    {
+      "run_at": "2026-05-16T11:43:57.030652+00:00",
+      "detected_count": 3,
+      "detected_activity_ids": [
+        22870230448,
+        22889384200,
+        22900018441
+      ],
+      "triggered_pipeline": true,
+      "error": "Traceback (most recent call last):\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1266, in <module>\n    main()\n    ~~~~^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1244, in main\n    review = analyze_workout(planned, summary, details)\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 965, in analyze_workout\n    \"knowledge_id\": (planned_knowledge_summary(planned) or {}).get(\"id\") or planned[\"workout\"].get(\"knowledge_id\"),\n                     ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 396, in planned_knowledge_summary\n    session_kind = planned_session_kind(workout)\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 389, in planned_session_kind\n    if \"strength\" in json.dumps(workout, ensure_ascii=False).lower():\n                     ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.13/json/__init__.py\", line 238, in dumps\n    **kw).encode(obj)\n          ~~~~~~^^^^^\n  File \"/usr/lib/python3.13/json/encoder.py\", line 200, in encode\n    chunks = self.iterencode(o, _one_shot=True)\n  File \"/usr/lib/python3.13/json/encoder.py\", line 261, in iterencode\n    return _iterencode(o, 0)\n  File \"/usr/lib/python3.13/json/encoder.py\", line 180, in default\n    raise TypeError(f'Object of type {o.__class__.__name__} '\n                    f'is not JSON serializable')\nTypeError: Object of type date is not JSON serializable"
+    },
+    {
+      "run_at": "2026-05-16T11:52:25.338957+00:00",
+      "detected_count": 0,
+      "detected_activity_ids": [],
+      "triggered_pipeline": false,
+      "error": "Traceback (most recent call last):\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/sync_garmin.py\", line 14, in <module>\n    from garminconnect import Garmin\nModuleNotFoundError: No module named 'garminconnect'"
     }
   ]
 }

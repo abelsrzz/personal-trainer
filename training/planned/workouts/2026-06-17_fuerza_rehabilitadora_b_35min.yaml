@@ -1,0 +1,19 @@
+workout:
+  name: Fuerza rehabilitadora B 35 min
+  schedule_date: 2026-06-17
+  sport: strength
+  description: Mantenimiento de fuerza durante la vuelta al impacto.
+  estimated_duration_s: 2100
+  steps:
+  - order: 1
+    step_type: warmup
+    description: Activacion y movilidad articular
+    duration_s: 300
+  - order: 2
+    step_type: interval
+    description: Banded inversion y eversion, step-up to knee drive, Romanian deadlift, hamstring bridge, Pallof press y dead bug
+    duration_s: 1500
+  - order: 3
+    step_type: cooldown
+    description: Movilidad final y descarga suave
+    duration_s: 300

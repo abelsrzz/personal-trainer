@@ -5,7 +5,7 @@
 - Start date: `2026-05-25`
 - Goal race date: `2027-02-06`
 - Total duration: `37 weeks`
-- Last full review: `2026-05-07`
+- Last full review: `2026-05-16`
 
 ## Main Goal Race
 
@@ -33,17 +33,6 @@
 - Goal: `4:10-4:20/km` only if the shin and fatigue are controlled
 - Practical impact: the cycle start on `2026-05-25` assumes this race is the final stimulus of the bridge week, not part of Block 1 itself.
 
-## Intermediate Priority Race
-
-- `VI CARREIRA 5K EL CANARIO`
-- Date: `2026-06-28`
-- Distance: `5k`
-- Elevation gain: `unknown`
-- Priority: `A`
-- Goal: try to break `20:00` at `3:59/km` or faster
-- Role: end-of-Block-1 progress check and calibration race before the bigger aerobic build
-- Practical impact: treat it as an important checkpoint race, but do not force sub-20 training paces into the plan unless the block evidence starts to support them.
-
 ## Current Level Audit
 
 - Recent race reference from Garmin: `2026-02-07 Padron`, `10.08 km` at about `4:26/km`, fastest 10k split `44:23`, average HR `186 bpm`, aerobic TE `5.0`.
@@ -56,37 +45,37 @@
 ## Planning Logic
 
 - Base the whole cycle on the only `S` race.
-- Fit `A`, `B`, `C` and `D` races around the active block.
+- Do not use any June race as a mandatory checkpoint; the priority is rehabilitation continuity.
 - Update weekly planning every Sunday using completed training, fatigue, shin response and race proximity.
-- Use heart rate to control easy and long runs, and pace to control intervals or tempo work.
+- Use heart rate to control easy work and pace only when the return to impact is already stable.
 - Keep load progression conservative until the left shin is stable.
 - Do not use final-goal pace until checkpoints prove that it is a realistic training stimulus.
 
 ## Revised Block Structure
 
-1. `Block 1: Reset, consistency and tissue tolerance`
-   - Dates: `2026-05-25` to `2026-06-28`
-   - Duration: `5 weeks`
-   - Focus: absorb the Ordes race, rebuild frequency, make easy running repeatable without shin escalation, and arrive at the `2026-06-28` 5k with enough freshness to use it as a meaningful checkpoint.
+1. `Block 1: Rehabilitation, consistency and impact return`
+   - Dates: `2026-05-25` to `2026-07-12`
+   - Duration: `7 weeks`
+   - Focus: complete a `3-week` rehabilitation phase based on bike plus strength and then reintroduce running impact progressively without losing aerobic continuity.
 
 2. `Block 2: Aerobic base and volume consolidation`
-   - Dates: `2026-06-29` to `2026-08-23`
+   - Dates: `2026-07-13` to `2026-09-06`
    - Duration: `8 weeks`
-   - Focus: increase durable weekly volume, long-run tolerance and easy aerobic efficiency.
+   - Focus: increase durable weekly running volume, long-run tolerance and easy aerobic efficiency while still using bike when useful.
 
 3. `Block 3: Threshold development and strength endurance`
-   - Dates: `2026-08-24` to `2026-10-18`
+   - Dates: `2026-09-07` to `2026-11-01`
    - Duration: `8 weeks`
    - Focus: lift sustainable speed through controlled threshold work and strength endurance.
 
 4. `Block 4: Specific 10k development`
-   - Dates: `2026-10-19` to `2026-12-13`
+   - Dates: `2026-11-02` to `2026-12-27`
    - Duration: `8 weeks`
    - Focus: convert threshold gains into 10k-specific rhythm, but only from current checkpoint paces.
 
 5. `Block 5: Specific consolidation and competitive sharpening`
-   - Dates: `2026-12-14` to `2027-01-24`
-   - Duration: `6 weeks`
+   - Dates: `2026-12-28` to `2027-01-24`
+   - Duration: `4 weeks`
    - Focus: stabilize the final target pace band, sharpen economy and validate race strategy.
 
 6. `Block 6: Taper and race execution`
@@ -96,9 +85,15 @@
 
 ## Volume Progression
 
-- Immediate restart after Ordes: `25-35 km/week` if the race leaves residual fatigue or shin symptoms.
-- End of Block 1 target: `36-42 km/week` if stable.
-- Block 2 target range: `38-55 km/week`, with `55 km` only after several controlled weeks.
+- Rehabilitation week 1 after Ordes: about `4h30-5h30` of bike, `0 km` running.
+- Rehabilitation week 2: about `5h15-6h15` of bike, `0 km` running.
+- Rehabilitation week 3: about `6h-7h` of bike, `0 km` running.
+- First week of impact return: about `4h30-5h30` of bike + `5 km` running.
+- Second week of impact return: about `4h15-5h15` of bike + `7 km` running.
+- Use bike duration as the main aerobic equivalent of the removed running load instead of forcing a fixed bike kilometer target.
+- Then progress gradually by reducing bike only as needed to fit `2-4 km` extra running per week when tibia response stays at `0-2/10` during the session and the next morning.
+- End of Block 1 target: arrive at roughly `14-18 km/week` of running plus `3h30-4h30` of bike support if stable.
+- Block 2 target range: `22-40 km/week` running, using bike to preserve aerobic load without forcing impact.
 - Block 3 target range: `45-60 km/week`; do not exceed this if quality or shin response worsens.
 - Blocks 4-5 target range: usually `48-62 km/week`, with `65 km` only if months of data show stable recovery and no shin reaction.
 - The goal is the highest repeatable load, not the highest single-week number.
@@ -107,16 +102,17 @@
 ## Weekly Structure Principles
 
 1. `Tuesday`
-   - Main quality day when recovered.
+   - Main quality day when recovered, or aerobic bike day during rehabilitation.
 
 2. `Thursday`
    - Secondary quality day, aerobic-steady day or controlled threshold depending on the block.
 
 3. `Sunday`
-   - Long run day by preference.
+   - Long aerobic day by preference, on bike during rehabilitation and later on foot when impact is stable.
 
 4. `Strength`
-   - Minimum one short session per week, focused on foot, calf, soleus, glute medius, hamstrings and trunk.
+   - Minimum two sessions per week during rehabilitation, then at least one session per week afterwards.
+   - Main exercises: seated soleus raises, standing calf raises, tibialis raises, short-foot holds, banded inversion/eversion, split squats, step-ups, Romanian deadlifts, glute bridge, side plank and Pallof press.
 
 5. `Recovery`
    - Easy running and heart-rate caps matter more than pace.
@@ -128,40 +124,45 @@
 
 ## Intensity Rules
 
-- Easy and long runs: mostly `Z1-Z2`, with stricter caps around `135-150 bpm` while the shin and fatigue are uncertain.
+- Easy bike and easy running: mostly `Z1-Z2`, with stricter caps around `135-150 bpm` while the shin and fatigue are uncertain.
 - Threshold work: controlled effort, stable form and repeatability; no racing reps in training.
-- VO2 or faster work: not before Block 4, except small economy doses if the body is clearly tolerating volume.
+- VO2 or faster work: not before Block 4, except very small economy doses if the body is clearly tolerating volume.
 - Final 10k pace work: based on checkpoint results, not on the declared `35:00` target.
 
 ## Checkpoints
 
-1. End of Block 1
-    - Five consistent weeks or a clear reason for any missed session.
-    - Shin symptoms stable at `0-2/10` and not worse the next morning.
-    - Easy runs stay controlled without forcing pace.
-    - The `2026-06-28` 5k should be used to calibrate current 5k ability; sub-20 is a valid attempt goal, but any result should update the next block from evidence, not desire alone.
+1. End of rehabilitation week 3
+   - Three consistent weeks of bike and strength without flare-up.
+   - Shin symptoms stable at `0-2/10` in daily life and after strength.
+   - Bike load can reach about `6-7 h/week` without excessive residual fatigue.
 
-2. Mid Block 2
+2. End of Block 1
+   - Running has been reintroduced without next-day worsening.
+   - Weekly running volume is still modest but repeatable.
+   - Easy runs stay controlled without forcing pace.
+   - A re-evaluation decides whether Block 2 can increase impact or should keep a hybrid bike-running structure.
+
+3. Mid Block 2
    - Weekly volume is rising without accumulating pain.
    - Long run is moving toward `13-15 km` comfortably.
    - Easy pace improves at similar HR, or HR drops at similar pace.
 
-3. End of Block 2
+4. End of Block 2
    - Complete a controlled 20-minute effort, 5k test or low-priority race to update threshold and 10k bands.
    - If the result does not show clear aerobic progress, Block 3 starts conservatively.
 
-4. End of Block 3
+5. End of Block 3
    - Enough data to estimate threshold pace.
    - Short race or workout evidence should show whether an aggressive 10k target remains plausible.
    - If a 5k is still far from sub-19 shape, `35:00` should be treated as unlikely and not used for training prescriptions.
 
-5. End of Block 4
+6. End of Block 4
    - A controlled 5k, 8k-10k tune-up or specific session defines realistic race-pace bands.
    - To keep `35:00` alive as more than an aspiration, evidence should be moving toward sub-18 5k ability and controlled longer reps well under `3:50/km`.
 
-6. End of Block 5
+7. End of Block 5
    - Final race strategy and target pace locked in.
-   - `35:00` is only selected if recent evidence supports it, such as a very strong 5k/tune-up result plus repeatable 10k-specific sessions without excessive fatigue.
+   - `35:00` is only selected if recent evidence supports it, such as a very strong tune-up result plus repeatable 10k-specific sessions without excessive fatigue.
 
 ## Calibration Rule
 

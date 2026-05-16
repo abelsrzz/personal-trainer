@@ -1,19 +1,33 @@
 workout:
-  name: Rodaje 5 km reintroduccion
+  name: Bicicleta aerobica estable 65 min
   schedule_date: 2026-05-19
-  sport: running
-  description: Primer contacto de carrera tras la carga andando. Muy facil y sin buscar
-    ritmo.
-  estimated_duration_s: 2100
+  sport: fitness_equipment
+  description: Carga aerobica equivalente al rodaje previsto, sin impacto y con trabajo
+    continuo de base.
+  estimated_duration_s: 3900
   steps:
   - order: 1
-    step_type: interval
-    description: 5 km muy faciles
-    distance_m: 5000
+    step_type: warmup
+    description: 10 min suaves
+    duration_s: 600
     target:
       type: heart_rate_range
-      min_bpm: 131
-      max_bpm: 150
-  knowledge_id: 30_regenerativo_muy_suave
-  knowledge_label: 30' regenerativo muy suave
-  primary_goal: Recuperacion
+      min_bpm: 120
+      max_bpm: 138
+  - order: 2
+    step_type: interval
+    description: 45 min Z2 estable
+    duration_s: 2700
+    target:
+      type: heart_rate_range
+      min_bpm: 130
+      max_bpm: 148
+  - order: 3
+    step_type: cooldown
+    description: 10 min suaves
+    duration_s: 600
+    target:
+      type: heart_rate_range
+      min_bpm: 115
+      max_bpm: 135
+  primary_goal: Base aerobica

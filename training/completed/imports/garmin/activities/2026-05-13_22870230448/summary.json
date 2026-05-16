@@ -230,10 +230,10 @@
   "autoCalcCalories": false,
   "elevationCorrected": false,
   "atpActivity": false,
-  "pr": false,
-  "decoDive": false,
-  "manualActivity": false,
   "favorite": false,
+  "purposeful": false,
+  "manualActivity": false,
+  "pr": false,
   "parent": false,
-  "purposeful": false
+  "decoDive": false
 }

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-15T14:49:19.917020+00:00",
+  "generated_at": "2026-05-16T11:56:15.348398+00:00",
   "source_of_truth": "system/state/athlete_state.json",
   "identity": {
     "id": "main",
@@ -35,13 +35,13 @@
           "Work schedule 07:30-15:00"
         ],
         "garmin_training_days": [
-          "THURSDAY",
+          "TUESDAY",
           "SUNDAY",
-          "WEDNESDAY",
-          "SATURDAY",
-          "FRIDAY",
           "MONDAY",
-          "TUESDAY"
+          "WEDNESDAY",
+          "FRIDAY",
+          "THURSDAY",
+          "SATURDAY"
         ],
         "garmin_preferred_long_training_days": [
           "SUNDAY"
@@ -52,7 +52,7 @@
       },
       "data_sources": {
         "garmin": {
-          "last_sync": "2026-05-15T14:35:51.804321Z",
+          "last_sync": "2026-05-16T11:43:54.113704Z",
           "profile_snapshot": "training/completed/imports/garmin/profile/athlete_profile_snapshot.json"
         }
       }
@@ -69,15 +69,15 @@
       "stress_notes": null,
       "recovery_notes": "General sensations recently poor",
       "garmin_metrics": {
-        "last_sync": "2026-05-15T14:35:51.804321Z",
-        "resting_hr": 59,
+        "last_sync": "2026-05-16T11:43:54.113704Z",
+        "resting_hr": 53,
         "max_hr": 196,
         "vo2max": 46.0
       }
     },
     "zones": {
       "heart_rate": {
-        "resting_hr": 59,
+        "resting_hr": 53,
         "max_hr": 196,
         "threshold_hr": null,
         "z0": "<130",
@@ -122,53 +122,56 @@
       },
       "data_sources": {
         "garmin": {
-          "last_sync": "2026-05-15T14:35:51.804321Z",
+          "last_sync": "2026-05-16T11:43:54.113704Z",
           "profile_snapshot": "training/completed/imports/garmin/profile/athlete_profile_snapshot.json"
         }
       }
     },
     "shoes_count": 8,
     "latest_shin_entry": {
-      "date": "2026-05-08",
-      "pain_during": 1,
-      "pain_after": 1,
-      "pain_next_morning": 1,
+      "date": "2026-05-16",
+      "pain_during": 7,
+      "pain_after": 7,
+      "pain_next_morning": 7,
       "location": "left_shin",
       "surface": null,
       "shoes": null,
-      "notes": "Reevaluacion manual. Dolor tibial actual 1/10 y cansancio subjetivo 0/10; sin empeoramiento relevante reportado."
+      "notes": "Actualizacion manual. Dolor actual en el periostio 6,5/10; redondeado a 7/10 para las reglas automaticas. Localizacion reportada: tibial posterior izquierdo.",
+      "source": "manual"
     }
   },
   "coach": {
-    "as_of": "2026-05-15",
-    "status": "yellow",
-    "action": "maintain_with_caution",
-    "recommendation": "Mantener estructura, pero sin subir volumen ni intensidad hasta ver 2-3 sesiones faciles estables.",
+    "as_of": "2026-05-16",
+    "status": "red",
+    "action": "reduce_or_replace_quality",
+    "recommendation": "Reducir carga inmediata: cambiar la proxima calidad por rodaje muy facil o descanso, y mantener FC capada.",
     "session_guidance": {
-      "coach_state": "yellow",
-      "shin_band": "green",
+      "coach_state": "red",
+      "shin_band": "red",
       "block": "block_1",
       "target_distance": "10k",
       "primary": [
-        "tempo_broken",
-        "easy_plus_strides",
         "easy_recovery",
-        "easy_z2",
-        "long_run"
+        "recovery_plus_mobility"
       ],
       "optional": [
-        "aerobic_steady"
+        "easy_z2"
       ],
       "avoid": [
+        "cruise_intervals",
+        "tempo_continuous",
         "short_intervals_vo2",
         "medium_intervals_vo2",
+        "ten_k_specific_reps",
         "ten_k_specific_continuous",
         "long_run_quality",
         "hills_strength",
+        "short_hills_power",
+        "short_intervals_economy",
         "five_k_specific_reps",
         "marathon_specific_blocks"
       ],
-      "quality_volume_cap": "low_to_medium",
+      "quality_volume_cap": "none",
       "selection_order": [
         "coach_state",
         "shin_band",
@@ -186,19 +189,15 @@
     }
   },
   "garmin": {
-    "profile_synced_at": "2026-05-15T14:35:51.804321Z",
-    "latest_activity_import_at": "2026-05-15T12:52:57.437135Z",
-    "latest_daily_import_at": "2026-05-15T12:53:17.917917Z",
+    "profile_synced_at": "2026-05-16T11:43:54.113704Z",
+    "latest_activity_import_at": "2026-05-16T11:43:30.347390Z",
+    "latest_daily_import_at": "2026-05-16T11:43:52.278967Z",
     "latest_activity_ids": [
+      22900018441,
       22889384200,
-      22870230448,
-      22823255797,
-      22822541135,
-      22798592588,
-      22776053069
+      22870230448
     ],
     "latest_daily_days": [
-      "2026-05-01",
       "2026-05-02",
       "2026-05-03",
       "2026-05-04",
@@ -212,13 +211,14 @@
       "2026-05-12",
       "2026-05-13",
       "2026-05-14",
-      "2026-05-15"
+      "2026-05-15",
+      "2026-05-16"
     ],
     "daily_metrics": {
-      "latest_date": "2026-05-15",
+      "latest_date": "2026-05-16",
       "latest_hrv": 137864769.0,
       "latest_training_readiness": null,
-      "latest_resting_heart_rate": 59.0,
+      "latest_resting_heart_rate": 53.0,
       "latest_training_status": {
         "userId": 137864769,
         "mostRecentVO2Max": null,
@@ -240,14 +240,14 @@
   },
   "automation": {
     "post_workout_refresh": {
-      "last_seen_activity_id": 22823255797,
-      "last_seen_activity_date": "2026-05-09",
-      "last_processed_activity_id": 22823255797,
-      "last_processed_activity_date": "2026-05-09",
-      "last_processed_at": "2026-05-12T09:58:32.598718+00:00",
+      "last_seen_activity_id": 22900018441,
+      "last_seen_activity_date": "2026-05-16",
+      "last_processed_activity_id": 22889384200,
+      "last_processed_activity_date": "2026-05-15",
+      "last_processed_at": "2026-05-16T11:43:56.273526+00:00",
       "last_successful_run": "2026-05-12T09:58:53.213947+00:00",
-      "last_error": null,
-      "next_action": "wait_for_new_activity_or_feedback",
+      "last_error": "Traceback (most recent call last):\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/sync_garmin.py\", line 14, in <module>\n    from garminconnect import Garmin\nModuleNotFoundError: No module named 'garminconnect'",
+      "next_action": "inspect_last_error",
       "timer_interval_minutes": 5
     },
     "weekly_planning": {

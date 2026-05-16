@@ -10,7 +10,7 @@
     "primary_goal": "Recuperacion",
     "description": "Rodaje facil con 5 rectas para recuperar chispa sin hacer una sesion exigente.",
     "estimated_duration_s": 2940,
-    "distance_m": 7000.0,
+    "distance_m": null,
     "primary_hr_min": 135.0,
     "primary_hr_max": 150.0
   },
@@ -46,14 +46,15 @@
     "gap_pace_s_per_km": 418.2350424252444
   },
   "compliance": {
-    "distance_diff_m": 270.10009765625,
+    "distance_diff_m": null,
     "duration_diff_s_vs_est": 86.89892578125,
-    "time_in_hr_zone_s": 2075.0,
+    "hr_evaluable_time_s": 2718.0316884566323,
+    "time_in_hr_zone_s": 1969.640373029792,
     "time_below_hr_zone_s": 32.0,
-    "time_above_hr_zone_s": 920.0,
-    "pct_in_hr_zone": 68.5520082063671,
-    "pct_below_hr_zone": 1.0571875964355408,
-    "pct_above_hr_zone": 30.394143397521795,
+    "time_above_hr_zone_s": 716.3913154268403,
+    "pct_in_hr_zone": 72.4656883653996,
+    "pct_below_hr_zone": 1.1773225505759433,
+    "pct_above_hr_zone": 26.356989084024455,
     "time_to_enter_zone_s": 26.0,
     "distance_to_enter_zone_m": 60.71999931335449
   },
@@ -205,7 +206,7 @@
       "avg_gap_pace_s_per_km": 470.9357566987683
     }
   ],
-  "score": 8,
+  "score": 10,
   "traffic_light": "verde",
   "risk_level": "medio",
   "stimulus_alignment": {
@@ -227,32 +228,12 @@
     ],
     "overlap": [],
     "alignment": "drifted",
-    "summary": "El estimulo real se desvia del objetivo previsto. Previsto: recuperacion. Real observado: umbral_lactico."
+    "summary": "El estimulo real se desvia del objetivo previsto. Previsto: recuperacion, base_aerobica. Real observado: umbral_lactico."
   },
   "progression": {
-    "comparable_count": 1,
-    "matches": [
-      {
-        "date": "2026-05-07",
-        "name": "Rodaje 6 km + 4 rectas controladas",
-        "goal_category": "steady_easy",
-        "distance_m": 6680.5,
-        "elevation_gain_m": 18.0,
-        "pace_s_per_km": 432.8378112486902,
-        "avg_hr": 151.0,
-        "avg_power_w": 215.0,
-        "decoupling_pct": 8.306906458013486
-      }
-    ],
-    "baseline": {
-      "pace_s_per_km": 432.8378112486902,
-      "avg_hr": 151.0
-    },
-    "delta_vs_baseline": {
-      "pace_s_per_km": -16.48880846713729,
-      "avg_hr": -1.0
-    },
-    "trend": "progress",
-    "summary": "Ritmo mas rapido con pulso similar o mejor controlado frente a sesiones comparables."
+    "comparable_count": 0,
+    "matches": [],
+    "trend": "insufficient_data",
+    "summary": "Aun no hay sesiones comparables previas para medir progresion o regresion."
   }
 }

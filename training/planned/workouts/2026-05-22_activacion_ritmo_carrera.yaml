@@ -1,9 +1,9 @@
 workout:
-  name: Activacion ritmo carrera
+  name: Activacion running ritmo carrera
   schedule_date: 2026-05-22
   sport: running
-  description: Sesion corta para recordar el ritmo objetivo de la carrera sin acumular
-    fatiga.
+  description: Unica activacion de calidad de running antes de Ordes. Debe recordar
+    ritmo de carrera sin dejar fatiga residual.
   estimated_duration_s: 2160
   steps:
   - order: 1

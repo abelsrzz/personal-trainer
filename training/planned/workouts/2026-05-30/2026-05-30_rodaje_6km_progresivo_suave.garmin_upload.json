@@ -1,19 +1,19 @@
 {
-  "generated_at": "2026-05-12T07:45:05.399707Z",
+  "generated_at": "2026-05-16T12:45:00.910244Z",
   "status": "scheduled",
   "upload_mode": "structured_targets",
   "workout_file": "training/planned/workouts/2026-05-30_rodaje_6km_progresivo_suave.yaml",
   "uploaded_response": {
-    "workoutId": 1565770478,
+    "workoutId": 1569242701,
     "ownerId": 137864769,
-    "workoutName": "Rodaje 6 km progresivo suave",
-    "description": "Sesion aerobica controlada con pequena progresion final, siempre por debajo de un coste de umbral.",
-    "updatedDate": "2026-05-12T07:45:05.0",
-    "createdDate": "2026-05-12T07:45:05.0",
+    "workoutName": "Bicicleta base aerobica 85 min",
+    "description": "Sesion suave y continua en Z2 para construir base aerobica sin impacto, con cadencia estable y sin apretar desarrollo.",
+    "updatedDate": "2026-05-16T12:45:01.0",
+    "createdDate": "2026-05-16T12:45:01.0",
     "sportType": {
-      "sportTypeId": 1,
-      "sportTypeKey": "running",
-      "displayOrder": 1
+      "sportTypeId": 6,
+      "sportTypeKey": "cardio_training",
+      "displayOrder": 6
     },
     "subSportType": null,
     "trainingPlanId": null,
@@ -28,15 +28,15 @@
       "vivokidUser": false
     },
     "sharedWithUsers": null,
-    "estimatedDurationInSecs": 2460,
-    "estimatedDistanceInMeters": 6000.0,
+    "estimatedDurationInSecs": 5100,
+    "estimatedDistanceInMeters": null,
     "workoutSegments": [
       {
         "segmentOrder": 1,
         "sportType": {
-          "sportTypeId": 1,
-          "sportTypeKey": "running",
-          "displayOrder": 1
+          "sportTypeId": 6,
+          "sportTypeKey": "cardio_training",
+          "displayOrder": 6
         },
         "poolLengthUnit": null,
         "poolLength": null,
@@ -49,7 +49,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13338388221,
+            "stepId": 13376351174,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 1,
@@ -57,27 +57,23 @@
               "displayOrder": 1
             },
             "childStepId": null,
-            "description": "3 km faciles",
+            "description": "10 min suaves",
             "endCondition": {
-              "conditionTypeId": 3,
-              "conditionTypeKey": "distance",
-              "displayOrder": 3,
+              "conditionTypeId": 2,
+              "conditionTypeKey": "time",
+              "displayOrder": 2,
               "displayable": true
             },
-            "endConditionValue": 3000.0,
-            "preferredEndConditionUnit": {
-              "unitId": 1,
-              "unitKey": "meter",
-              "factor": 100.0
-            },
+            "endConditionValue": 600.0,
+            "preferredEndConditionUnit": null,
             "endConditionCompare": null,
             "targetType": {
               "workoutTargetTypeId": 4,
               "workoutTargetTypeKey": "heart.rate.zone",
               "displayOrder": 4
             },
-            "targetValueOne": 135.0,
-            "targetValueTwo": 145.0,
+            "targetValueOne": 120.0,
+            "targetValueTwo": 138.0,
             "targetValueUnit": null,
             "zoneNumber": null,
             "secondaryTargetType": null,
@@ -105,7 +101,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13338388222,
+            "stepId": 13376351175,
             "stepOrder": 2,
             "stepType": {
               "stepTypeId": 3,
@@ -113,27 +109,23 @@
               "displayOrder": 3
             },
             "childStepId": null,
-            "description": "2 km aerobicos sostenidos",
+            "description": "65 min Z2 continua",
             "endCondition": {
-              "conditionTypeId": 3,
-              "conditionTypeKey": "distance",
-              "displayOrder": 3,
+              "conditionTypeId": 2,
+              "conditionTypeKey": "time",
+              "displayOrder": 2,
               "displayable": true
             },
-            "endConditionValue": 2000.0,
-            "preferredEndConditionUnit": {
-              "unitId": 1,
-              "unitKey": "meter",
-              "factor": 100.0
-            },
+            "endConditionValue": 3900.0,
+            "preferredEndConditionUnit": null,
             "endConditionCompare": null,
             "targetType": {
               "workoutTargetTypeId": 4,
               "workoutTargetTypeKey": "heart.rate.zone",
               "displayOrder": 4
             },
-            "targetValueOne": 146.0,
-            "targetValueTwo": 158.0,
+            "targetValueOne": 130.0,
+            "targetValueTwo": 148.0,
             "targetValueUnit": null,
             "zoneNumber": null,
             "secondaryTargetType": null,
@@ -161,7 +153,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13338388223,
+            "stepId": 13376351176,
             "stepOrder": 3,
             "stepType": {
               "stepTypeId": 2,
@@ -169,27 +161,23 @@
               "displayOrder": 2
             },
             "childStepId": null,
-            "description": "1 km muy facil",
+            "description": "10 min suaves",
             "endCondition": {
-              "conditionTypeId": 3,
-              "conditionTypeKey": "distance",
-              "displayOrder": 3,
+              "conditionTypeId": 2,
+              "conditionTypeKey": "time",
+              "displayOrder": 2,
               "displayable": true
             },
-            "endConditionValue": 1000.0,
-            "preferredEndConditionUnit": {
-              "unitId": 1,
-              "unitKey": "meter",
-              "factor": 100.0
-            },
+            "endConditionValue": 600.0,
+            "preferredEndConditionUnit": null,
             "endConditionCompare": null,
             "targetType": {
               "workoutTargetTypeId": 4,
               "workoutTargetTypeKey": "heart.rate.zone",
               "displayOrder": 4
             },
-            "targetValueOne": 135.0,
-            "targetValueTwo": 145.0,
+            "targetValueOne": 115.0,
+            "targetValueTwo": 135.0,
             "targetValueUnit": null,
             "zoneNumber": null,
             "secondaryTargetType": null,
@@ -243,32 +231,32 @@
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1647370285,
+    "workoutScheduleId": 1650771852,
     "workout": {
-      "workoutId": 1565770478,
+      "workoutId": 1569242701,
       "ownerId": 137864769,
-      "workoutName": "Rodaje 6 km progresivo suave",
-      "description": "Sesion aerobica controlada con pequena progresion final, siempre por debajo de un coste de umbral.",
-      "updatedDate": "2026-05-12T07:45:05.0",
-      "createdDate": "2026-05-12T07:45:05.0",
+      "workoutName": "Bicicleta base aerobica 85 min",
+      "description": "Sesion suave y continua en Z2 para construir base aerobica sin impacto, con cadencia estable y sin apretar desarrollo.",
+      "updatedDate": "2026-05-16T12:45:01.0",
+      "createdDate": "2026-05-16T12:45:01.0",
       "sportType": {
-        "sportTypeId": 1,
-        "sportTypeKey": "running",
-        "displayOrder": 1
+        "sportTypeId": 6,
+        "sportTypeKey": "cardio_training",
+        "displayOrder": 6
       },
       "subSportType": null,
       "trainingPlanId": null,
       "author": null,
       "sharedWithUsers": null,
-      "estimatedDurationInSecs": 2460,
-      "estimatedDistanceInMeters": 6000.0,
+      "estimatedDurationInSecs": 5100,
+      "estimatedDistanceInMeters": null,
       "workoutSegments": [
         {
           "segmentOrder": 1,
           "sportType": {
-            "sportTypeId": 1,
-            "sportTypeKey": "running",
-            "displayOrder": 1
+            "sportTypeId": 6,
+            "sportTypeKey": "cardio_training",
+            "displayOrder": 6
           },
           "poolLengthUnit": null,
           "poolLength": null,
@@ -281,7 +269,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13338388221,
+              "stepId": 13376351174,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 1,
@@ -289,27 +277,23 @@
                 "displayOrder": 1
               },
               "childStepId": null,
-              "description": "3 km faciles",
+              "description": "10 min suaves",
               "endCondition": {
-                "conditionTypeId": 3,
-                "conditionTypeKey": "distance",
-                "displayOrder": 3,
+                "conditionTypeId": 2,
+                "conditionTypeKey": "time",
+                "displayOrder": 2,
                 "displayable": true
               },
-              "endConditionValue": 3000.0,
-              "preferredEndConditionUnit": {
-                "unitId": 1,
-                "unitKey": "meter",
-                "factor": 100.0
-              },
+              "endConditionValue": 600.0,
+              "preferredEndConditionUnit": null,
               "endConditionCompare": null,
               "targetType": {
                 "workoutTargetTypeId": 4,
                 "workoutTargetTypeKey": "heart.rate.zone",
                 "displayOrder": 4
               },
-              "targetValueOne": 135.0,
-              "targetValueTwo": 145.0,
+              "targetValueOne": 120.0,
+              "targetValueTwo": 138.0,
               "targetValueUnit": null,
               "zoneNumber": null,
               "secondaryTargetType": null,
@@ -337,7 +321,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13338388222,
+              "stepId": 13376351175,
               "stepOrder": 2,
               "stepType": {
                 "stepTypeId": 3,
@@ -345,27 +329,23 @@
                 "displayOrder": 3
               },
               "childStepId": null,
-              "description": "2 km aerobicos sostenidos",
+              "description": "65 min Z2 continua",
               "endCondition": {
-                "conditionTypeId": 3,
-                "conditionTypeKey": "distance",
-                "displayOrder": 3,
+                "conditionTypeId": 2,
+                "conditionTypeKey": "time",
+                "displayOrder": 2,
                 "displayable": true
               },
-              "endConditionValue": 2000.0,
-              "preferredEndConditionUnit": {
-                "unitId": 1,
-                "unitKey": "meter",
-                "factor": 100.0
-              },
+              "endConditionValue": 3900.0,
+              "preferredEndConditionUnit": null,
               "endConditionCompare": null,
               "targetType": {
                 "workoutTargetTypeId": 4,
                 "workoutTargetTypeKey": "heart.rate.zone",
                 "displayOrder": 4
               },
-              "targetValueOne": 146.0,
-              "targetValueTwo": 158.0,
+              "targetValueOne": 130.0,
+              "targetValueTwo": 148.0,
               "targetValueUnit": null,
               "zoneNumber": null,
               "secondaryTargetType": null,
@@ -393,7 +373,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13338388223,
+              "stepId": 13376351176,
               "stepOrder": 3,
               "stepType": {
                 "stepTypeId": 2,
@@ -401,27 +381,23 @@
                 "displayOrder": 2
               },
               "childStepId": null,
-              "description": "1 km muy facil",
+              "description": "10 min suaves",
               "endCondition": {
-                "conditionTypeId": 3,
-                "conditionTypeKey": "distance",
-                "displayOrder": 3,
+                "conditionTypeId": 2,
+                "conditionTypeKey": "time",
+                "displayOrder": 2,
                 "displayable": true
               },
-              "endConditionValue": 1000.0,
-              "preferredEndConditionUnit": {
-                "unitId": 1,
-                "unitKey": "meter",
-                "factor": 100.0
-              },
+              "endConditionValue": 600.0,
+              "preferredEndConditionUnit": null,
               "endConditionCompare": null,
               "targetType": {
                 "workoutTargetTypeId": 4,
                 "workoutTargetTypeKey": "heart.rate.zone",
                 "displayOrder": 4
               },
-              "targetValueOne": 135.0,
-              "targetValueTwo": 145.0,
+              "targetValueOne": 115.0,
+              "targetValueTwo": 135.0,
               "targetValueUnit": null,
               "zoneNumber": null,
               "secondaryTargetType": null,
@@ -475,7 +451,7 @@
       "shared": false
     },
     "calendarDate": "2026-05-30",
-    "createdDate": "2026-05-12",
+    "createdDate": "2026-05-16",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -484,9 +460,9 @@
     "priority": null,
     "associatedActivityDateTime": null,
     "tpType": null,
-    "race": false,
+    "nameChanged": false,
     "itp": false,
-    "protected": false,
-    "nameChanged": false
+    "race": false,
+    "protected": false
   }
 }

@@ -1,35 +1,33 @@
 workout:
-  name: Rodaje 6 km progresivo suave
+  name: Bicicleta base aerobica 85 min
   schedule_date: 2026-05-30
-  sport: running
-  description: Sesion aerobica controlada con pequena progresion final, siempre por
-    debajo de un coste de umbral.
-  estimated_duration_s: 2460
+  sport: fitness_equipment
+  description: Sesion suave y continua en Z2 para construir base aerobica sin impacto,
+    con cadencia estable y sin apretar desarrollo.
+  estimated_duration_s: 5100
   steps:
   - order: 1
     step_type: warmup
-    description: 3 km faciles
-    distance_m: 3000
+    description: 10 min suaves
+    duration_s: 600
     target:
       type: heart_rate_range
-      min_bpm: 135
-      max_bpm: 150
+      min_bpm: 120
+      max_bpm: 138
   - order: 2
     step_type: interval
-    description: 2 km aerobicos sostenidos
-    distance_m: 2000
+    description: 65 min Z2 continua
+    duration_s: 3900
     target:
       type: heart_rate_range
-      min_bpm: 146
-      max_bpm: 158
+      min_bpm: 130
+      max_bpm: 148
   - order: 3
     step_type: cooldown
-    description: 1 km muy facil
-    distance_m: 1000
+    description: 10 min suaves
+    duration_s: 600
     target:
       type: heart_rate_range
-      min_bpm: 135
-      max_bpm: 150
-  knowledge_label: 1000-2000-3000-2000-1000 @ ritmo 21k-10k rec 2'-3'
-  primary_goal: Umbral lactico
-  knowledge_id: 1000_2000_3000_2000_1000_ritmo_21k_10k_rec_2_3
+      min_bpm: 115
+      max_bpm: 135
+  primary_goal: Base aerobica

@@ -1,17 +1,19 @@
 {
+  "generated_at": "2026-05-16T12:42:12.673564Z",
+  "status": "scheduled",
   "upload_mode": "structured_targets",
   "workout_file": "training/planned/workouts/2026-05-17_rodaje_9km_continuidad.yaml",
   "uploaded_response": {
-    "workoutId": 1557408014,
+    "workoutId": 1569240212,
     "ownerId": 137864769,
-    "workoutName": "Rodaje 9 km continuidad",
-    "description": "Rodaje continuo comodo para encadenar volumen moderado sin castigar el periostio.",
-    "updatedDate": "2026-05-04T12:46:58.0",
-    "createdDate": "2026-05-04T12:46:58.0",
+    "workoutName": "Bicicleta Z2 continuidad 80 min",
+    "description": "Sustituye el rodaje continuo por bici aerobica para mantener base sin impacto sobre la tibia.",
+    "updatedDate": "2026-05-16T12:42:12.0",
+    "createdDate": "2026-05-16T12:42:12.0",
     "sportType": {
-      "sportTypeId": 1,
-      "sportTypeKey": "running",
-      "displayOrder": 1
+      "sportTypeId": 6,
+      "sportTypeKey": "cardio_training",
+      "displayOrder": 6
     },
     "subSportType": null,
     "trainingPlanId": null,
@@ -26,15 +28,15 @@
       "vivokidUser": false
     },
     "sharedWithUsers": null,
-    "estimatedDurationInSecs": 3780,
-    "estimatedDistanceInMeters": 9000.0,
+    "estimatedDurationInSecs": 4800,
+    "estimatedDistanceInMeters": null,
     "workoutSegments": [
       {
         "segmentOrder": 1,
         "sportType": {
-          "sportTypeId": 1,
-          "sportTypeKey": "running",
-          "displayOrder": 1
+          "sportTypeId": 6,
+          "sportTypeKey": "cardio_training",
+          "displayOrder": 6
         },
         "poolLengthUnit": null,
         "poolLength": null,
@@ -47,37 +49,137 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13256383903,
+            "stepId": 13376331460,
             "stepOrder": 1,
             "stepType": {
-              "stepTypeId": 3,
-              "stepTypeKey": "interval",
-              "displayOrder": 3
+              "stepTypeId": 1,
+              "stepTypeKey": "warmup",
+              "displayOrder": 1
             },
             "childStepId": null,
-            "description": "9 km en Z2",
+            "description": "10 min muy suaves para activar cadencia",
             "endCondition": {
-              "conditionTypeId": 3,
-              "conditionTypeKey": "distance",
-              "displayOrder": 3,
+              "conditionTypeId": 2,
+              "conditionTypeKey": "time",
+              "displayOrder": 2,
               "displayable": true
             },
-            "endConditionValue": 9000.0,
-            "preferredEndConditionUnit": {
-              "unitId": 1,
-              "unitKey": "meter",
-              "factor": 100.0
-            },
+            "endConditionValue": 600.0,
+            "preferredEndConditionUnit": null,
             "endConditionCompare": null,
             "targetType": {
               "workoutTargetTypeId": 4,
               "workoutTargetTypeKey": "heart.rate.zone",
               "displayOrder": 4
             },
-            "targetValueOne": null,
-            "targetValueTwo": null,
+            "targetValueOne": 120.0,
+            "targetValueTwo": 138.0,
             "targetValueUnit": null,
-            "zoneNumber": 2,
+            "zoneNumber": null,
+            "secondaryTargetType": null,
+            "secondaryTargetValueOne": null,
+            "secondaryTargetValueTwo": null,
+            "secondaryTargetValueUnit": null,
+            "secondaryZoneNumber": null,
+            "endConditionZone": null,
+            "strokeType": {
+              "strokeTypeId": 0,
+              "strokeTypeKey": null,
+              "displayOrder": 0
+            },
+            "equipmentType": {
+              "equipmentTypeId": 0,
+              "equipmentTypeKey": null,
+              "displayOrder": 0
+            },
+            "category": null,
+            "exerciseName": null,
+            "workoutProvider": null,
+            "providerExerciseSourceId": null,
+            "weightValue": null,
+            "weightUnit": null
+          },
+          {
+            "type": "ExecutableStepDTO",
+            "stepId": 13376331461,
+            "stepOrder": 2,
+            "stepType": {
+              "stepTypeId": 3,
+              "stepTypeKey": "interval",
+              "displayOrder": 3
+            },
+            "childStepId": null,
+            "description": "60 min Z2 estable con cadencia fluida",
+            "endCondition": {
+              "conditionTypeId": 2,
+              "conditionTypeKey": "time",
+              "displayOrder": 2,
+              "displayable": true
+            },
+            "endConditionValue": 3600.0,
+            "preferredEndConditionUnit": null,
+            "endConditionCompare": null,
+            "targetType": {
+              "workoutTargetTypeId": 4,
+              "workoutTargetTypeKey": "heart.rate.zone",
+              "displayOrder": 4
+            },
+            "targetValueOne": 130.0,
+            "targetValueTwo": 148.0,
+            "targetValueUnit": null,
+            "zoneNumber": null,
+            "secondaryTargetType": null,
+            "secondaryTargetValueOne": null,
+            "secondaryTargetValueTwo": null,
+            "secondaryTargetValueUnit": null,
+            "secondaryZoneNumber": null,
+            "endConditionZone": null,
+            "strokeType": {
+              "strokeTypeId": 0,
+              "strokeTypeKey": null,
+              "displayOrder": 0
+            },
+            "equipmentType": {
+              "equipmentTypeId": 0,
+              "equipmentTypeKey": null,
+              "displayOrder": 0
+            },
+            "category": null,
+            "exerciseName": null,
+            "workoutProvider": null,
+            "providerExerciseSourceId": null,
+            "weightValue": null,
+            "weightUnit": null
+          },
+          {
+            "type": "ExecutableStepDTO",
+            "stepId": 13376331462,
+            "stepOrder": 3,
+            "stepType": {
+              "stepTypeId": 2,
+              "stepTypeKey": "cooldown",
+              "displayOrder": 2
+            },
+            "childStepId": null,
+            "description": "10 min suaves para soltar piernas",
+            "endCondition": {
+              "conditionTypeId": 2,
+              "conditionTypeKey": "time",
+              "displayOrder": 2,
+              "displayable": true
+            },
+            "endConditionValue": 600.0,
+            "preferredEndConditionUnit": null,
+            "endConditionCompare": null,
+            "targetType": {
+              "workoutTargetTypeId": 4,
+              "workoutTargetTypeKey": "heart.rate.zone",
+              "displayOrder": 4
+            },
+            "targetValueOne": 115.0,
+            "targetValueTwo": 135.0,
+            "targetValueUnit": null,
+            "zoneNumber": null,
             "secondaryTargetType": null,
             "secondaryTargetValueOne": null,
             "secondaryTargetValueTwo": null,
@@ -129,32 +231,32 @@
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1639075212,
+    "workoutScheduleId": 1650769347,
     "workout": {
-      "workoutId": 1557408014,
+      "workoutId": 1569240212,
       "ownerId": 137864769,
-      "workoutName": "Rodaje 9 km continuidad",
-      "description": "Rodaje continuo comodo para encadenar volumen moderado sin castigar el periostio.",
-      "updatedDate": "2026-05-04T12:46:58.0",
-      "createdDate": "2026-05-04T12:46:58.0",
+      "workoutName": "Bicicleta Z2 continuidad 80 min",
+      "description": "Sustituye el rodaje continuo por bici aerobica para mantener base sin impacto sobre la tibia.",
+      "updatedDate": "2026-05-16T12:42:12.0",
+      "createdDate": "2026-05-16T12:42:12.0",
       "sportType": {
-        "sportTypeId": 1,
-        "sportTypeKey": "running",
-        "displayOrder": 1
+        "sportTypeId": 6,
+        "sportTypeKey": "cardio_training",
+        "displayOrder": 6
       },
       "subSportType": null,
       "trainingPlanId": null,
       "author": null,
       "sharedWithUsers": null,
-      "estimatedDurationInSecs": 3780,
-      "estimatedDistanceInMeters": 9000.0,
+      "estimatedDurationInSecs": 4800,
+      "estimatedDistanceInMeters": null,
       "workoutSegments": [
         {
           "segmentOrder": 1,
           "sportType": {
-            "sportTypeId": 1,
-            "sportTypeKey": "running",
-            "displayOrder": 1
+            "sportTypeId": 6,
+            "sportTypeKey": "cardio_training",
+            "displayOrder": 6
           },
           "poolLengthUnit": null,
           "poolLength": null,
@@ -167,37 +269,137 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13256383903,
+              "stepId": 13376331460,
               "stepOrder": 1,
               "stepType": {
-                "stepTypeId": 3,
-                "stepTypeKey": "interval",
-                "displayOrder": 3
+                "stepTypeId": 1,
+                "stepTypeKey": "warmup",
+                "displayOrder": 1
               },
               "childStepId": null,
-              "description": "9 km en Z2",
+              "description": "10 min muy suaves para activar cadencia",
               "endCondition": {
-                "conditionTypeId": 3,
-                "conditionTypeKey": "distance",
-                "displayOrder": 3,
+                "conditionTypeId": 2,
+                "conditionTypeKey": "time",
+                "displayOrder": 2,
                 "displayable": true
               },
-              "endConditionValue": 9000.0,
-              "preferredEndConditionUnit": {
-                "unitId": 1,
-                "unitKey": "meter",
-                "factor": 100.0
-              },
+              "endConditionValue": 600.0,
+              "preferredEndConditionUnit": null,
               "endConditionCompare": null,
               "targetType": {
                 "workoutTargetTypeId": 4,
                 "workoutTargetTypeKey": "heart.rate.zone",
                 "displayOrder": 4
               },
-              "targetValueOne": null,
-              "targetValueTwo": null,
+              "targetValueOne": 120.0,
+              "targetValueTwo": 138.0,
               "targetValueUnit": null,
-              "zoneNumber": 2,
+              "zoneNumber": null,
+              "secondaryTargetType": null,
+              "secondaryTargetValueOne": null,
+              "secondaryTargetValueTwo": null,
+              "secondaryTargetValueUnit": null,
+              "secondaryZoneNumber": null,
+              "endConditionZone": null,
+              "strokeType": {
+                "strokeTypeId": 0,
+                "strokeTypeKey": null,
+                "displayOrder": 0
+              },
+              "equipmentType": {
+                "equipmentTypeId": 0,
+                "equipmentTypeKey": null,
+                "displayOrder": 0
+              },
+              "category": null,
+              "exerciseName": null,
+              "workoutProvider": null,
+              "providerExerciseSourceId": null,
+              "weightValue": null,
+              "weightUnit": null
+            },
+            {
+              "type": "ExecutableStepDTO",
+              "stepId": 13376331461,
+              "stepOrder": 2,
+              "stepType": {
+                "stepTypeId": 3,
+                "stepTypeKey": "interval",
+                "displayOrder": 3
+              },
+              "childStepId": null,
+              "description": "60 min Z2 estable con cadencia fluida",
+              "endCondition": {
+                "conditionTypeId": 2,
+                "conditionTypeKey": "time",
+                "displayOrder": 2,
+                "displayable": true
+              },
+              "endConditionValue": 3600.0,
+              "preferredEndConditionUnit": null,
+              "endConditionCompare": null,
+              "targetType": {
+                "workoutTargetTypeId": 4,
+                "workoutTargetTypeKey": "heart.rate.zone",
+                "displayOrder": 4
+              },
+              "targetValueOne": 130.0,
+              "targetValueTwo": 148.0,
+              "targetValueUnit": null,
+              "zoneNumber": null,
+              "secondaryTargetType": null,
+              "secondaryTargetValueOne": null,
+              "secondaryTargetValueTwo": null,
+              "secondaryTargetValueUnit": null,
+              "secondaryZoneNumber": null,
+              "endConditionZone": null,
+              "strokeType": {
+                "strokeTypeId": 0,
+                "strokeTypeKey": null,
+                "displayOrder": 0
+              },
+              "equipmentType": {
+                "equipmentTypeId": 0,
+                "equipmentTypeKey": null,
+                "displayOrder": 0
+              },
+              "category": null,
+              "exerciseName": null,
+              "workoutProvider": null,
+              "providerExerciseSourceId": null,
+              "weightValue": null,
+              "weightUnit": null
+            },
+            {
+              "type": "ExecutableStepDTO",
+              "stepId": 13376331462,
+              "stepOrder": 3,
+              "stepType": {
+                "stepTypeId": 2,
+                "stepTypeKey": "cooldown",
+                "displayOrder": 2
+              },
+              "childStepId": null,
+              "description": "10 min suaves para soltar piernas",
+              "endCondition": {
+                "conditionTypeId": 2,
+                "conditionTypeKey": "time",
+                "displayOrder": 2,
+                "displayable": true
+              },
+              "endConditionValue": 600.0,
+              "preferredEndConditionUnit": null,
+              "endConditionCompare": null,
+              "targetType": {
+                "workoutTargetTypeId": 4,
+                "workoutTargetTypeKey": "heart.rate.zone",
+                "displayOrder": 4
+              },
+              "targetValueOne": 115.0,
+              "targetValueTwo": 135.0,
+              "targetValueUnit": null,
+              "zoneNumber": null,
               "secondaryTargetType": null,
               "secondaryTargetValueOne": null,
               "secondaryTargetValueTwo": null,
@@ -249,7 +451,7 @@
       "shared": false
     },
     "calendarDate": "2026-05-17",
-    "createdDate": "2026-05-04",
+    "createdDate": "2026-05-16",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -258,9 +460,9 @@
     "priority": null,
     "associatedActivityDateTime": null,
     "tpType": null,
-    "protected": false,
-    "race": false,
     "itp": false,
-    "nameChanged": false
+    "race": false,
+    "nameChanged": false,
+    "protected": false
   }
 }

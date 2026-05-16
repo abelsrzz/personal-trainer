@@ -1,13 +1,15 @@
 {
+  "generated_at": "2026-05-16T12:42:14.486797Z",
+  "status": "scheduled",
   "upload_mode": "structured_targets",
   "workout_file": "training/planned/workouts/2026-05-22_activacion_ritmo_carrera.yaml",
   "uploaded_response": {
-    "workoutId": 1557402234,
+    "workoutId": 1569240240,
     "ownerId": 137864769,
-    "workoutName": "Activacion ritmo carrera",
-    "description": "Sesion corta para recordar el ritmo objetivo de la carrera sin acumular fatiga.",
-    "updatedDate": "2026-05-04T12:41:19.0",
-    "createdDate": "2026-05-04T12:41:19.0",
+    "workoutName": "Activacion running ritmo carrera",
+    "description": "Unica activacion de calidad de running antes de Ordes. Debe recordar ritmo de carrera sin dejar fatiga residual.",
+    "updatedDate": "2026-05-16T12:42:14.0",
+    "createdDate": "2026-05-16T12:42:14.0",
     "sportType": {
       "sportTypeId": 1,
       "sportTypeKey": "running",
@@ -47,7 +49,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13256319252,
+            "stepId": 13376331647,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 1,
@@ -75,7 +77,7 @@
               "displayOrder": 4
             },
             "targetValueOne": 135.0,
-            "targetValueTwo": 145.0,
+            "targetValueTwo": 150.0,
             "targetValueUnit": null,
             "zoneNumber": null,
             "secondaryTargetType": null,
@@ -103,7 +105,7 @@
           },
           {
             "type": "RepeatGroupDTO",
-            "stepId": 13256319253,
+            "stepId": 13376331648,
             "stepOrder": 2,
             "stepType": {
               "stepTypeId": 6,
@@ -115,7 +117,7 @@
             "workoutSteps": [
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13256319254,
+                "stepId": 13376331649,
                 "stepOrder": 3,
                 "stepType": {
                   "stepTypeId": 3,
@@ -167,7 +169,7 @@
               },
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13256319255,
+                "stepId": 13376331650,
                 "stepOrder": 4,
                 "stepType": {
                   "stepTypeId": 4,
@@ -191,7 +193,7 @@
                   "displayOrder": 4
                 },
                 "targetValueOne": 131.0,
-                "targetValueTwo": 145.0,
+                "targetValueTwo": 150.0,
                 "targetValueUnit": null,
                 "zoneNumber": null,
                 "secondaryTargetType": null,
@@ -232,7 +234,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13256319256,
+            "stepId": 13376331651,
             "stepOrder": 5,
             "stepType": {
               "stepTypeId": 2,
@@ -260,7 +262,7 @@
               "displayOrder": 4
             },
             "targetValueOne": 135.0,
-            "targetValueTwo": 145.0,
+            "targetValueTwo": 150.0,
             "targetValueUnit": null,
             "zoneNumber": null,
             "secondaryTargetType": null,
@@ -314,14 +316,14 @@
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1639069385,
+    "workoutScheduleId": 1650769379,
     "workout": {
-      "workoutId": 1557402234,
+      "workoutId": 1569240240,
       "ownerId": 137864769,
-      "workoutName": "Activacion ritmo carrera",
-      "description": "Sesion corta para recordar el ritmo objetivo de la carrera sin acumular fatiga.",
-      "updatedDate": "2026-05-04T12:41:19.0",
-      "createdDate": "2026-05-04T12:41:19.0",
+      "workoutName": "Activacion running ritmo carrera",
+      "description": "Unica activacion de calidad de running antes de Ordes. Debe recordar ritmo de carrera sin dejar fatiga residual.",
+      "updatedDate": "2026-05-16T12:42:14.0",
+      "createdDate": "2026-05-16T12:42:14.0",
       "sportType": {
         "sportTypeId": 1,
         "sportTypeKey": "running",
@@ -352,7 +354,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13256319252,
+              "stepId": 13376331647,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 1,
@@ -380,7 +382,7 @@
                 "displayOrder": 4
               },
               "targetValueOne": 135.0,
-              "targetValueTwo": 145.0,
+              "targetValueTwo": 150.0,
               "targetValueUnit": null,
               "zoneNumber": null,
               "secondaryTargetType": null,
@@ -408,7 +410,7 @@
             },
             {
               "type": "RepeatGroupDTO",
-              "stepId": 13256319253,
+              "stepId": 13376331648,
               "stepOrder": 2,
               "stepType": {
                 "stepTypeId": 6,
@@ -420,7 +422,7 @@
               "workoutSteps": [
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13256319254,
+                  "stepId": 13376331649,
                   "stepOrder": 3,
                   "stepType": {
                     "stepTypeId": 3,
@@ -472,7 +474,7 @@
                 },
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13256319255,
+                  "stepId": 13376331650,
                   "stepOrder": 4,
                   "stepType": {
                     "stepTypeId": 4,
@@ -496,7 +498,7 @@
                     "displayOrder": 4
                   },
                   "targetValueOne": 131.0,
-                  "targetValueTwo": 145.0,
+                  "targetValueTwo": 150.0,
                   "targetValueUnit": null,
                   "zoneNumber": null,
                   "secondaryTargetType": null,
@@ -537,7 +539,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13256319256,
+              "stepId": 13376331651,
               "stepOrder": 5,
               "stepType": {
                 "stepTypeId": 2,
@@ -565,7 +567,7 @@
                 "displayOrder": 4
               },
               "targetValueOne": 135.0,
-              "targetValueTwo": 145.0,
+              "targetValueTwo": 150.0,
               "targetValueUnit": null,
               "zoneNumber": null,
               "secondaryTargetType": null,
@@ -619,7 +621,7 @@
       "shared": false
     },
     "calendarDate": "2026-05-22",
-    "createdDate": "2026-05-04",
+    "createdDate": "2026-05-16",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -628,9 +630,9 @@
     "priority": null,
     "associatedActivityDateTime": null,
     "tpType": null,
-    "itp": false,
     "race": false,
-    "protected": false,
-    "nameChanged": false
+    "itp": false,
+    "nameChanged": false,
+    "protected": false
   }
 }

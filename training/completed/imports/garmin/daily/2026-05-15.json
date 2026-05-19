@@ -3404,9 +3404,90 @@
   "training_readiness": [],
   "training_status": {
     "userId": 137864769,
-    "mostRecentVO2Max": null,
-    "mostRecentTrainingLoadBalance": null,
-    "mostRecentTrainingStatus": null,
+    "mostRecentVO2Max": {
+      "userId": 137864769,
+      "generic": {
+        "calendarDate": "2026-05-15",
+        "vo2MaxPreciseValue": 46.0,
+        "vo2MaxValue": 46.0,
+        "fitnessAge": null,
+        "fitnessAgeDescription": null,
+        "maxMetCategory": 0
+      },
+      "cycling": null,
+      "heatAltitudeAcclimation": null
+    },
+    "mostRecentTrainingLoadBalance": {
+      "userId": 137864769,
+      "metricsTrainingLoadBalanceDTOMap": {
+        "3621896103": {
+          "calendarDate": "2026-05-15",
+          "deviceId": 3621896103,
+          "monthlyLoadAerobicLow": 1077.3923,
+          "monthlyLoadAerobicHigh": 935.847,
+          "monthlyLoadAnaerobic": 336.0453,
+          "monthlyLoadAerobicLowTargetMin": 396,
+          "monthlyLoadAerobicLowTargetMax": 1048,
+          "monthlyLoadAerobicHighTargetMin": 800,
+          "monthlyLoadAerobicHighTargetMax": 1453,
+          "monthlyLoadAnaerobicTargetMin": 217,
+          "monthlyLoadAnaerobicTargetMax": 652,
+          "trainingBalanceFeedbackPhrase": "AEROBIC_LOW_FOCUS",
+          "primaryTrainingDevice": true
+        }
+      },
+      "recordedDevices": [
+        {
+          "deviceId": 3621896103,
+          "imageURL": "https://res.garmin.com/en/products/010-02969-10/v/cf-sm-2x3.png",
+          "deviceName": "Forerunner 970",
+          "category": 0
+        }
+      ]
+    },
+    "mostRecentTrainingStatus": {
+      "userId": 137864769,
+      "latestTrainingStatusData": {
+        "3621896103": {
+          "calendarDate": "2026-05-15",
+          "sinceDate": "2026-05-15",
+          "weeklyTrainingLoad": null,
+          "trainingStatus": 4,
+          "timestamp": 1778882399000,
+          "deviceId": 3621896103,
+          "loadTunnelMin": null,
+          "loadTunnelMax": null,
+          "loadLevelTrend": null,
+          "sport": "RUNNING",
+          "subSport": "GENERIC",
+          "fitnessTrendSport": "RUNNING",
+          "fitnessTrend": 2,
+          "trainingStatusFeedbackPhrase": "MAINTAINING_4",
+          "trainingPaused": false,
+          "acuteTrainingLoadDTO": {
+            "acwrPercent": 47,
+            "acwrStatus": "OPTIMAL",
+            "acwrStatusFeedback": "FEEDBACK_2",
+            "dailyTrainingLoadAcute": 691,
+            "maxTrainingLoadChronic": 910.5,
+            "minTrainingLoadChronic": 485.6,
+            "dailyTrainingLoadChronic": 607,
+            "dailyAcuteChronicWorkloadRatio": 1.1
+          },
+          "primaryTrainingDevice": true
+        }
+      },
+      "recordedDevices": [
+        {
+          "deviceId": 3621896103,
+          "imageURL": "https://res.garmin.com/en/products/010-02969-10/v/cf-sm-2x3.png",
+          "deviceName": "Forerunner 970",
+          "category": 0
+        }
+      ],
+      "showSelector": false,
+      "lastPrimarySyncDate": "2026-05-15"
+    },
     "heatAltitudeAcclimationDTO": null
   },
   "max_metrics": [

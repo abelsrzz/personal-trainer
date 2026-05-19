@@ -69,6 +69,8 @@
     "ROLE_CONNECTUSER",
     "ROLE_FITNESS_USER",
     "ROLE_WELLNESS_USER",
+    "ROLE_OUTDOOR_USER",
+    "ROLE_GHS_USER",
     "ROLE_GARMIN_USER"
   ],
   "privacy": {
@@ -153,11 +155,11 @@
   "activityUUID": "c562a705-61fb-4766-8e83-5b196fd56bb9",
   "autoCalcCalories": false,
   "elevationCorrected": false,
-  "pr": false,
   "atpActivity": false,
-  "favorite": false,
-  "decoDive": false,
+  "pr": false,
   "purposeful": false,
   "manualActivity": false,
+  "favorite": false,
+  "decoDive": false,
   "parent": false
 }

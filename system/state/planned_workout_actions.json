@@ -15,6 +15,14 @@
       "date": "2026-05-16",
       "name": "Rodaje 5 km facil",
       "updated_by": "change-me"
+    },
+    "2026-05-19_rodaje_5km_reintroduccion": {
+      "action": "done",
+      "label": "Marcada como hecha",
+      "updated_at": "2026-05-19T18:24:44.075999",
+      "date": "2026-05-19",
+      "name": "Eliptica aerobica estable 55 min",
+      "updated_by": "change-me"
     }
   }
 }

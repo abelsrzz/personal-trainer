@@ -69,6 +69,8 @@
     "ROLE_CONNECTUSER",
     "ROLE_FITNESS_USER",
     "ROLE_WELLNESS_USER",
+    "ROLE_OUTDOOR_USER",
+    "ROLE_GHS_USER",
     "ROLE_GARMIN_USER"
   ],
   "privacy": {
@@ -215,10 +217,10 @@
   "autoCalcCalories": false,
   "elevationCorrected": false,
   "atpActivity": false,
-  "favorite": false,
+  "pr": false,
   "purposeful": false,
   "manualActivity": false,
-  "pr": false,
-  "parent": false,
-  "decoDive": false
+  "favorite": false,
+  "decoDive": false,
+  "parent": false
 }

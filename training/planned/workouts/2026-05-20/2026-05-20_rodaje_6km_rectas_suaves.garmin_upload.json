@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-05-16T13:06:41.290548Z",
+  "generated_at": "2026-05-19T19:42:49.411301Z",
   "status": "scheduled",
   "upload_mode": "structured_targets",
   "workout_file": "training/planned/workouts/2026-05-20_rodaje_6km_rectas_suaves.yaml",
   "uploaded_response": {
-    "workoutId": 1569255543,
+    "workoutId": 1573690976,
     "ownerId": 137864769,
-    "workoutName": "Bicicleta muy suave 35 min",
-    "description": "Descarga aerobica muy suave para mantener movimiento sin sumar impacto.",
-    "updatedDate": "2026-05-16T13:06:41.0",
-    "createdDate": "2026-05-16T13:06:41.0",
+    "workoutName": "Bicicleta aerobica de continuidad 70 min",
+    "description": "Continuidad aerobica sin impacto para sumar carga util manteniendo la tibia protegida.",
+    "updatedDate": "2026-05-19T19:42:49.0",
+    "createdDate": "2026-05-19T19:42:49.0",
     "sportType": {
       "sportTypeId": 2,
       "sportTypeKey": "cycling",
@@ -28,7 +28,7 @@
       "vivokidUser": false
     },
     "sharedWithUsers": null,
-    "estimatedDurationInSecs": 2100,
+    "estimatedDurationInSecs": 4200,
     "estimatedDistanceInMeters": null,
     "workoutSegments": [
       {
@@ -49,22 +49,22 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13376476204,
+            "stepId": 13416777803,
             "stepOrder": 1,
             "stepType": {
-              "stepTypeId": 3,
-              "stepTypeKey": "interval",
-              "displayOrder": 3
+              "stepTypeId": 1,
+              "stepTypeKey": "warmup",
+              "displayOrder": 1
             },
             "childStepId": null,
-            "description": "35 min muy faciles con cadencia suelta",
+            "description": "10 min muy suaves con cadencia comoda",
             "endCondition": {
               "conditionTypeId": 2,
               "conditionTypeKey": "time",
               "displayOrder": 2,
               "displayable": true
             },
-            "endConditionValue": 2100.0,
+            "endConditionValue": 600.0,
             "preferredEndConditionUnit": null,
             "endConditionCompare": null,
             "targetType": {
@@ -73,6 +73,110 @@
               "displayOrder": 4
             },
             "targetValueOne": 115.0,
+            "targetValueTwo": 140.0,
+            "targetValueUnit": null,
+            "zoneNumber": null,
+            "secondaryTargetType": null,
+            "secondaryTargetValueOne": null,
+            "secondaryTargetValueTwo": null,
+            "secondaryTargetValueUnit": null,
+            "secondaryZoneNumber": null,
+            "endConditionZone": null,
+            "strokeType": {
+              "strokeTypeId": 0,
+              "strokeTypeKey": null,
+              "displayOrder": 0
+            },
+            "equipmentType": {
+              "equipmentTypeId": 0,
+              "equipmentTypeKey": null,
+              "displayOrder": 0
+            },
+            "category": null,
+            "exerciseName": null,
+            "workoutProvider": null,
+            "providerExerciseSourceId": null,
+            "weightValue": null,
+            "weightUnit": null
+          },
+          {
+            "type": "ExecutableStepDTO",
+            "stepId": 13416777804,
+            "stepOrder": 2,
+            "stepType": {
+              "stepTypeId": 3,
+              "stepTypeKey": "interval",
+              "displayOrder": 3
+            },
+            "childStepId": null,
+            "description": "50 min Z2 comoda continua, dejando subir el pulso si va fluido",
+            "endCondition": {
+              "conditionTypeId": 2,
+              "conditionTypeKey": "time",
+              "displayOrder": 2,
+              "displayable": true
+            },
+            "endConditionValue": 3000.0,
+            "preferredEndConditionUnit": null,
+            "endConditionCompare": null,
+            "targetType": {
+              "workoutTargetTypeId": 4,
+              "workoutTargetTypeKey": "heart.rate.zone",
+              "displayOrder": 4
+            },
+            "targetValueOne": 128.0,
+            "targetValueTwo": 150.0,
+            "targetValueUnit": null,
+            "zoneNumber": null,
+            "secondaryTargetType": null,
+            "secondaryTargetValueOne": null,
+            "secondaryTargetValueTwo": null,
+            "secondaryTargetValueUnit": null,
+            "secondaryZoneNumber": null,
+            "endConditionZone": null,
+            "strokeType": {
+              "strokeTypeId": 0,
+              "strokeTypeKey": null,
+              "displayOrder": 0
+            },
+            "equipmentType": {
+              "equipmentTypeId": 0,
+              "equipmentTypeKey": null,
+              "displayOrder": 0
+            },
+            "category": null,
+            "exerciseName": null,
+            "workoutProvider": null,
+            "providerExerciseSourceId": null,
+            "weightValue": null,
+            "weightUnit": null
+          },
+          {
+            "type": "ExecutableStepDTO",
+            "stepId": 13416777805,
+            "stepOrder": 3,
+            "stepType": {
+              "stepTypeId": 2,
+              "stepTypeKey": "cooldown",
+              "displayOrder": 2
+            },
+            "childStepId": null,
+            "description": "10 min muy suaves para soltar",
+            "endCondition": {
+              "conditionTypeId": 2,
+              "conditionTypeKey": "time",
+              "displayOrder": 2,
+              "displayable": true
+            },
+            "endConditionValue": 600.0,
+            "preferredEndConditionUnit": null,
+            "endConditionCompare": null,
+            "targetType": {
+              "workoutTargetTypeId": 4,
+              "workoutTargetTypeKey": "heart.rate.zone",
+              "displayOrder": 4
+            },
+            "targetValueOne": 110.0,
             "targetValueTwo": 135.0,
             "targetValueUnit": null,
             "zoneNumber": null,
@@ -122,19 +226,19 @@
       "unitKey": null,
       "factor": null
     },
-    "workoutThumbnailUrl": "https://connect.garmin.com/chart-service/workout?data=125,35,ch",
+    "workoutThumbnailUrl": "https://connect.garmin.com/chart-service/workout?data=127.5,10,ch-139,50,ch-122.5,10,ch",
     "isSessionTransitionEnabled": null,
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1650784600,
+    "workoutScheduleId": 1655203147,
     "workout": {
-      "workoutId": 1569255543,
+      "workoutId": 1573690976,
       "ownerId": 137864769,
-      "workoutName": "Bicicleta muy suave 35 min",
-      "description": "Descarga aerobica muy suave para mantener movimiento sin sumar impacto.",
-      "updatedDate": "2026-05-16T13:06:41.0",
-      "createdDate": "2026-05-16T13:06:41.0",
+      "workoutName": "Bicicleta aerobica de continuidad 70 min",
+      "description": "Continuidad aerobica sin impacto para sumar carga util manteniendo la tibia protegida.",
+      "updatedDate": "2026-05-19T19:42:49.0",
+      "createdDate": "2026-05-19T19:42:49.0",
       "sportType": {
         "sportTypeId": 2,
         "sportTypeKey": "cycling",
@@ -144,7 +248,7 @@
       "trainingPlanId": null,
       "author": null,
       "sharedWithUsers": null,
-      "estimatedDurationInSecs": 2100,
+      "estimatedDurationInSecs": 4200,
       "estimatedDistanceInMeters": null,
       "workoutSegments": [
         {
@@ -165,22 +269,22 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13376476204,
+              "stepId": 13416777803,
               "stepOrder": 1,
               "stepType": {
-                "stepTypeId": 3,
-                "stepTypeKey": "interval",
-                "displayOrder": 3
+                "stepTypeId": 1,
+                "stepTypeKey": "warmup",
+                "displayOrder": 1
               },
               "childStepId": null,
-              "description": "35 min muy faciles con cadencia suelta",
+              "description": "10 min muy suaves con cadencia comoda",
               "endCondition": {
                 "conditionTypeId": 2,
                 "conditionTypeKey": "time",
                 "displayOrder": 2,
                 "displayable": true
               },
-              "endConditionValue": 2100.0,
+              "endConditionValue": 600.0,
               "preferredEndConditionUnit": null,
               "endConditionCompare": null,
               "targetType": {
@@ -189,6 +293,110 @@
                 "displayOrder": 4
               },
               "targetValueOne": 115.0,
+              "targetValueTwo": 140.0,
+              "targetValueUnit": null,
+              "zoneNumber": null,
+              "secondaryTargetType": null,
+              "secondaryTargetValueOne": null,
+              "secondaryTargetValueTwo": null,
+              "secondaryTargetValueUnit": null,
+              "secondaryZoneNumber": null,
+              "endConditionZone": null,
+              "strokeType": {
+                "strokeTypeId": 0,
+                "strokeTypeKey": null,
+                "displayOrder": 0
+              },
+              "equipmentType": {
+                "equipmentTypeId": 0,
+                "equipmentTypeKey": null,
+                "displayOrder": 0
+              },
+              "category": null,
+              "exerciseName": null,
+              "workoutProvider": null,
+              "providerExerciseSourceId": null,
+              "weightValue": null,
+              "weightUnit": null
+            },
+            {
+              "type": "ExecutableStepDTO",
+              "stepId": 13416777804,
+              "stepOrder": 2,
+              "stepType": {
+                "stepTypeId": 3,
+                "stepTypeKey": "interval",
+                "displayOrder": 3
+              },
+              "childStepId": null,
+              "description": "50 min Z2 comoda continua, dejando subir el pulso si va fluido",
+              "endCondition": {
+                "conditionTypeId": 2,
+                "conditionTypeKey": "time",
+                "displayOrder": 2,
+                "displayable": true
+              },
+              "endConditionValue": 3000.0,
+              "preferredEndConditionUnit": null,
+              "endConditionCompare": null,
+              "targetType": {
+                "workoutTargetTypeId": 4,
+                "workoutTargetTypeKey": "heart.rate.zone",
+                "displayOrder": 4
+              },
+              "targetValueOne": 128.0,
+              "targetValueTwo": 150.0,
+              "targetValueUnit": null,
+              "zoneNumber": null,
+              "secondaryTargetType": null,
+              "secondaryTargetValueOne": null,
+              "secondaryTargetValueTwo": null,
+              "secondaryTargetValueUnit": null,
+              "secondaryZoneNumber": null,
+              "endConditionZone": null,
+              "strokeType": {
+                "strokeTypeId": 0,
+                "strokeTypeKey": null,
+                "displayOrder": 0
+              },
+              "equipmentType": {
+                "equipmentTypeId": 0,
+                "equipmentTypeKey": null,
+                "displayOrder": 0
+              },
+              "category": null,
+              "exerciseName": null,
+              "workoutProvider": null,
+              "providerExerciseSourceId": null,
+              "weightValue": null,
+              "weightUnit": null
+            },
+            {
+              "type": "ExecutableStepDTO",
+              "stepId": 13416777805,
+              "stepOrder": 3,
+              "stepType": {
+                "stepTypeId": 2,
+                "stepTypeKey": "cooldown",
+                "displayOrder": 2
+              },
+              "childStepId": null,
+              "description": "10 min muy suaves para soltar",
+              "endCondition": {
+                "conditionTypeId": 2,
+                "conditionTypeKey": "time",
+                "displayOrder": 2,
+                "displayable": true
+              },
+              "endConditionValue": 600.0,
+              "preferredEndConditionUnit": null,
+              "endConditionCompare": null,
+              "targetType": {
+                "workoutTargetTypeId": 4,
+                "workoutTargetTypeKey": "heart.rate.zone",
+                "displayOrder": 4
+              },
+              "targetValueOne": 110.0,
               "targetValueTwo": 135.0,
               "targetValueUnit": null,
               "zoneNumber": null,
@@ -238,12 +446,12 @@
         "unitKey": null,
         "factor": null
       },
-      "workoutThumbnailUrl": "https://connect.garmin.com/chart-service/workout?data=125,35,ch",
+      "workoutThumbnailUrl": "https://connect.garmin.com/chart-service/workout?data=127.5,10,ch-139,50,ch-122.5,10,ch",
       "isSessionTransitionEnabled": null,
       "shared": false
     },
     "calendarDate": "2026-05-20",
-    "createdDate": "2026-05-16",
+    "createdDate": "2026-05-19",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,

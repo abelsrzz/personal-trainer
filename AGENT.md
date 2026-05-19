@@ -164,6 +164,8 @@ python scripts/garmin/coach_engine.py --as-of YYYY-MM-DD --days 28
 - `athlete/shin_tracker.yaml` can now be auto-promoted from subjective feedback; update it manually only when the automatic promotion is missing context or needs correction.
 - When a next week is prepared, do not overwrite it silently; report that it already exists unless the user explicitly forces regeneration.
 - After weekly planning changes create or update dated workouts, attempt Garmin scheduling automatically for changed files and record the result.
+- When changing any future session, update all operative layers, not just the weekly markdown: `planning/weeks/semana_actual.md` or prepared week, the dated file in `training/planned/workouts/`, and Garmin scheduling when that dated workout exists or should exist.
+- For user requests such as "change tomorrow session" or "replace this workout", assume the expected done state includes: weekly plan updated, dated workout updated, and Garmin/calendar sync attempted unless the user explicitly says local-only.
 - Automatic reality today is: post-workout refresh, weekly prepare/activate pipeline, PDF generation + Telegram send on activation, Garmin scheduling retries and web-triggered weekly planning.
 - Desired-but-not-implicit behavior should not be assumed; if a timer or bot is not configured, the user-facing buttons and scripts remain the explicit trigger.
 

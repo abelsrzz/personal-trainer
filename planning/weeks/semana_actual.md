@@ -48,7 +48,7 @@
 | Domingo 17 | Bicicleta suave de continuidad | `75-90 min` | Z1-Z2, cadencia comoda | - |
 | Lunes 18 | Fuerza de rehabilitacion + movilidad, sin carrera | 0 km | - | - |
 | Martes 19 | Eliptica aerobica | `50-60 min` | Z2 estable | - |
-| Miercoles 20 | Descanso activo o bicicleta muy suave | `30-45 min` | Z1 | - |
+| Miercoles 20 | Bicicleta aerobica de continuidad | `60-75 min` | Z2 comoda, deja subir hasta `150 ppm` si va suelto | - |
 | Jueves 21 | Descanso + movilidad y descarga ligera | 0 km | - | - |
 | Viernes 22 | Activacion especifica corta: calentamiento + 3 bloques a ritmo objetivo de carrera | 6 km | 2 km faciles `135-150 ppm` + `3 x 2 min` a `4:10-4:20/km` con `2 min` suaves + vuelta a la calma | Adidas Adizero EVO SL |
 | Sabado 23 | Bicicleta muy suave o shakeout opcional segun tibia | `30-40 min` bici o `15-20 min` trote | Muy facil, sin rectas | - |

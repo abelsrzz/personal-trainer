@@ -1,16 +1,32 @@
 workout:
-  name: Bicicleta muy suave 35 min
+  name: Bicicleta aerobica de continuidad 70 min
   schedule_date: 2026-05-20
   sport: cycling
-  description: Descarga aerobica muy suave para mantener movimiento sin sumar impacto.
-  estimated_duration_s: 2100
+  description: Continuidad aerobica sin impacto para sumar carga util manteniendo la tibia protegida.
+  estimated_duration_s: 4200
   steps:
   - order: 1
-    step_type: interval
-    description: 35 min muy faciles con cadencia suelta
-    duration_s: 2100
+    step_type: warmup
+    description: 10 min muy suaves con cadencia comoda
+    duration_s: 600
     target:
       type: heart_rate_range
       min_bpm: 115
+      max_bpm: 140
+  - order: 2
+    step_type: interval
+    description: 50 min Z2 comoda continua, dejando subir el pulso si va fluido
+    duration_s: 3000
+    target:
+      type: heart_rate_range
+      min_bpm: 128
+      max_bpm: 150
+  - order: 3
+    step_type: cooldown
+    description: 10 min muy suaves para soltar
+    duration_s: 600
+    target:
+      type: heart_rate_range
+      min_bpm: 110
       max_bpm: 135
-  primary_goal: Recuperacion
+  primary_goal: Base aerobica

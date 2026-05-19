@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-16T14:44:40.205527+00:00",
+  "generated_at": "2026-05-19T16:24:28.970826+00:00",
   "source_of_truth": "system/state/athlete_state.json",
   "identity": {
     "id": "main",
@@ -35,13 +35,13 @@
           "Work schedule 07:30-15:00"
         ],
         "garmin_training_days": [
-          "THURSDAY",
           "SUNDAY",
-          "WEDNESDAY",
-          "SATURDAY",
+          "TUESDAY",
           "FRIDAY",
+          "THURSDAY",
+          "SATURDAY",
           "MONDAY",
-          "TUESDAY"
+          "WEDNESDAY"
         ],
         "garmin_preferred_long_training_days": [
           "SUNDAY"
@@ -52,7 +52,7 @@
       },
       "data_sources": {
         "garmin": {
-          "last_sync": "2026-05-16T14:44:40.024323Z",
+          "last_sync": "2026-05-19T16:24:27.342557Z",
           "profile_snapshot": "training/completed/imports/garmin/profile/athlete_profile_snapshot.json"
         }
       }
@@ -69,15 +69,16 @@
       "stress_notes": null,
       "recovery_notes": "General sensations recently poor",
       "garmin_metrics": {
-        "last_sync": "2026-05-16T14:44:40.024323Z",
-        "resting_hr": 53,
+        "last_sync": "2026-05-19T16:24:27.342557Z",
+        "resting_hr": 54,
         "max_hr": 196,
-        "vo2max": 46.0
+        "vo2max": 46.0,
+        "lactate_threshold_hr": 189
       }
     },
     "zones": {
       "heart_rate": {
-        "resting_hr": 53,
+        "resting_hr": 54,
         "max_hr": 196,
         "threshold_hr": null,
         "z0": "<130",
@@ -122,7 +123,7 @@
       },
       "data_sources": {
         "garmin": {
-          "last_sync": "2026-05-16T14:44:40.024323Z",
+          "last_sync": "2026-05-19T16:24:27.342557Z",
           "profile_snapshot": "training/completed/imports/garmin/profile/athlete_profile_snapshot.json"
         }
       }
@@ -141,7 +142,7 @@
     }
   },
   "coach": {
-    "as_of": "2026-05-16",
+    "as_of": "2026-05-19",
     "status": "red",
     "action": "reduce_or_replace_quality",
     "recommendation": "Reducir carga inmediata: cambiar la proxima calidad por rodaje muy facil o descanso, y mantener FC capada.",
@@ -165,9 +166,9 @@
         "ten_k_specific_reps",
         "ten_k_specific_continuous",
         "long_run_quality",
-        "hills_strength",
         "short_hills_power",
         "short_intervals_economy",
+        "hills_strength",
         "five_k_specific_reps",
         "marathon_specific_blocks"
       ],
@@ -189,18 +190,19 @@
     }
   },
   "garmin": {
-    "profile_synced_at": "2026-05-16T14:44:40.024323Z",
-    "latest_activity_import_at": "2026-05-16T11:43:30.347390Z",
-    "latest_daily_import_at": "2026-05-16T11:43:52.278967Z",
+    "profile_synced_at": "2026-05-19T16:24:27.342557Z",
+    "latest_activity_import_at": "2026-05-19T16:24:05.570993Z",
+    "latest_daily_import_at": "2026-05-19T16:24:25.632805Z",
     "latest_activity_ids": [
       22900018441,
       22889384200,
-      22870230448
+      22870230448,
+      22823255797,
+      22822541135,
+      22798592588,
+      22776053069
     ],
     "latest_daily_days": [
-      "2026-05-02",
-      "2026-05-03",
-      "2026-05-04",
       "2026-05-05",
       "2026-05-06",
       "2026-05-07",
@@ -212,18 +214,119 @@
       "2026-05-13",
       "2026-05-14",
       "2026-05-15",
-      "2026-05-16"
+      "2026-05-16",
+      "2026-05-17",
+      "2026-05-18",
+      "2026-05-19"
     ],
     "daily_metrics": {
-      "latest_date": "2026-05-16",
+      "latest_date": "2026-05-19",
       "latest_hrv": 137864769.0,
-      "latest_training_readiness": null,
-      "latest_resting_heart_rate": 53.0,
+      "latest_training_readiness": 137864769.0,
+      "latest_resting_heart_rate": 54.0,
       "latest_training_status": {
         "userId": 137864769,
-        "mostRecentVO2Max": null,
-        "mostRecentTrainingLoadBalance": null,
-        "mostRecentTrainingStatus": null,
+        "mostRecentVO2Max": {
+          "userId": 137864769,
+          "generic": {
+            "calendarDate": "2026-05-16",
+            "vo2MaxPreciseValue": 45.9,
+            "vo2MaxValue": 46.0,
+            "fitnessAge": null,
+            "fitnessAgeDescription": null,
+            "maxMetCategory": 0
+          },
+          "cycling": null,
+          "heatAltitudeAcclimation": {
+            "calendarDate": "2026-05-19",
+            "altitudeAcclimationDate": "2026-05-19",
+            "previousAltitudeAcclimationDate": "2026-05-19",
+            "heatAcclimationDate": "2026-05-19",
+            "previousHeatAcclimationDate": "2026-05-19",
+            "altitudeAcclimation": 0,
+            "previousAltitudeAcclimation": 0,
+            "heatAcclimationPercentage": 0,
+            "previousHeatAcclimationPercentage": 0,
+            "heatTrend": null,
+            "altitudeTrend": null,
+            "currentAltitude": 0,
+            "previousAltitude": 0,
+            "acclimationPercentage": 0,
+            "previousAcclimationPercentage": 0,
+            "altitudeAcclimationLocalTimestamp": "2026-05-19T18:21:35.0"
+          }
+        },
+        "mostRecentTrainingLoadBalance": {
+          "userId": 137864769,
+          "metricsTrainingLoadBalanceDTOMap": {
+            "3621896103": {
+              "calendarDate": "2026-05-19",
+              "deviceId": 3621896103,
+              "monthlyLoadAerobicLow": 880.3996,
+              "monthlyLoadAerobicHigh": 935.847,
+              "monthlyLoadAnaerobic": 336.0453,
+              "monthlyLoadAerobicLowTargetMin": 393,
+              "monthlyLoadAerobicLowTargetMax": 1046,
+              "monthlyLoadAerobicHighTargetMin": 802,
+              "monthlyLoadAerobicHighTargetMax": 1455,
+              "monthlyLoadAnaerobicTargetMin": 217,
+              "monthlyLoadAnaerobicTargetMax": 652,
+              "trainingBalanceFeedbackPhrase": "BALANCED",
+              "primaryTrainingDevice": true
+            }
+          },
+          "recordedDevices": [
+            {
+              "deviceId": 3621896103,
+              "imageURL": "https://res.garmin.com/en/products/010-02969-10/v/cf-sm-2x3.png",
+              "deviceName": "Forerunner 970",
+              "category": 0
+            }
+          ]
+        },
+        "mostRecentTrainingStatus": {
+          "userId": 137864769,
+          "latestTrainingStatusData": {
+            "3621896103": {
+              "calendarDate": "2026-05-19",
+              "sinceDate": "2026-05-19",
+              "weeklyTrainingLoad": null,
+              "trainingStatus": 5,
+              "timestamp": 1779207695000,
+              "deviceId": 3621896103,
+              "loadTunnelMin": null,
+              "loadTunnelMax": null,
+              "loadLevelTrend": null,
+              "sport": "RUNNING",
+              "subSport": "GENERIC",
+              "fitnessTrendSport": "RUNNING",
+              "fitnessTrend": 2,
+              "trainingStatusFeedbackPhrase": "RECOVERY_2",
+              "trainingPaused": false,
+              "acuteTrainingLoadDTO": {
+                "acwrPercent": 25,
+                "acwrStatus": "LOW",
+                "acwrStatusFeedback": "FEEDBACK_1",
+                "dailyTrainingLoadAcute": 347,
+                "maxTrainingLoadChronic": 844.5,
+                "minTrainingLoadChronic": 450.40000000000003,
+                "dailyTrainingLoadChronic": 563,
+                "dailyAcuteChronicWorkloadRatio": 0.6
+              },
+              "primaryTrainingDevice": true
+            }
+          },
+          "recordedDevices": [
+            {
+              "deviceId": 3621896103,
+              "imageURL": "https://res.garmin.com/en/products/010-02969-10/v/cf-sm-2x3.png",
+              "deviceName": "Forerunner 970",
+              "category": 0
+            }
+          ],
+          "showSelector": false,
+          "lastPrimarySyncDate": "2026-05-19"
+        },
         "heatAltitudeAcclimationDTO": null
       }
     },
@@ -231,7 +334,7 @@
       "activities": true,
       "daily_metrics": true,
       "hrv": true,
-      "training_readiness": false,
+      "training_readiness": true,
       "resting_heart_rate": true,
       "training_status": true,
       "sleep": false,

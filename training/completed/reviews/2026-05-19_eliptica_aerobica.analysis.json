@@ -1,0 +1,104 @@
+{
+  "planned": {
+    "name": "Eliptica aerobica",
+    "date": "2026-05-19",
+    "sport": "cross_training",
+    "goal_category": "easy_aerobic",
+    "template_id": null,
+    "knowledge_id": null,
+    "knowledge_label": null,
+    "primary_goal": "Base aerobica sin impacto",
+    "description": "Mantener continuidad aerobica con cero impacto mientras se protege la tibia antes de Ordes.",
+    "estimated_duration_s": null,
+    "distance_m": null,
+    "primary_hr_min": null,
+    "primary_hr_max": null
+  },
+  "summary": {
+    "activity_id": null,
+    "activity_name": "Eliptica aerobica",
+    "start_time_local": "2026-05-19",
+    "distance_m": null,
+    "duration_s": null,
+    "elapsed_s": null,
+    "moving_s": null,
+    "pace_s_per_km": null,
+    "moving_pace_s_per_km": null,
+    "avg_hr": null,
+    "max_hr": null,
+    "avg_cadence_spm": null,
+    "max_cadence_spm": null,
+    "avg_power_w": null,
+    "max_power_w": null,
+    "elevation_gain_m": null,
+    "elevation_loss_m": null,
+    "avg_stride_cm": null,
+    "avg_gct_ms": null,
+    "avg_vo_cm": null,
+    "avg_vr": null,
+    "calories": null,
+    "water_estimated_ml": null,
+    "aerobic_training_effect": null,
+    "anaerobic_training_effect": null,
+    "training_effect_label": null,
+    "min_temp_c": null,
+    "max_temp_c": null,
+    "gap_pace_s_per_km": null
+  },
+  "compliance": {
+    "distance_diff_m": null,
+    "duration_diff_s_vs_est": null,
+    "hr_evaluable_time_s": null,
+    "time_in_hr_zone_s": null,
+    "time_below_hr_zone_s": null,
+    "time_above_hr_zone_s": null,
+    "pct_in_hr_zone": null,
+    "pct_below_hr_zone": null,
+    "pct_above_hr_zone": null,
+    "time_to_enter_zone_s": null,
+    "distance_to_enter_zone_m": null
+  },
+  "stability": {
+    "pace_std_s_per_km": null,
+    "hr_std_bpm": null,
+    "cadence_std_spm": null,
+    "power_std_w": null
+  },
+  "halves": {
+    "first_half_pace_s_per_km": null,
+    "second_half_pace_s_per_km": null,
+    "first_half_hr": null,
+    "second_half_hr": null,
+    "first_half_power_w": null,
+    "second_half_power_w": null,
+    "efficiency_first": null,
+    "efficiency_second": null,
+    "efficiency_change_pct": null,
+    "decoupling_pct": null
+  },
+  "splits": [],
+  "score": 9,
+  "traffic_light": "verde",
+  "risk_level": "medio",
+  "analysis": "Sesion manual completada segun lo previsto para mantener continuidad aerobica sin impacto.",
+  "stimulus_alignment": {
+    "planned_knowledge": null,
+    "actual_goals": [
+      "base_aerobica",
+      "descarga_sin_impacto"
+    ],
+    "overlap": [
+      "base_aerobica"
+    ],
+    "alignment": "aligned",
+    "summary": "La sesion encaja con el objetivo previsto: sumar base aerobica sin impacto dentro de una fase de descarga protectora."
+  },
+  "progression": {
+    "comparable_count": 0,
+    "matches": [],
+    "baseline": null,
+    "delta_vs_baseline": null,
+    "trend": "maintenance",
+    "summary": "Sesion util para sostener continuidad aerobica sin aumentar el riesgo mecanico actual."
+  }
+}

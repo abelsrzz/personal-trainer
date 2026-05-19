@@ -1,0 +1,16 @@
+activity:
+  id: manual-2026-05-19-eliptica-aerobica
+  source: manual
+  garmin_activity_id: null
+  date: 2026-05-19
+  title: Eliptica aerobica
+  type: cross_training
+  planned_session_reference: planning/weeks/semana_actual.md
+  distance_km: null
+  duration: null
+  elevation_gain_m: null
+  avg_pace: null
+  avg_hr: null
+  max_hr: null
+  shoes: null
+  notes: Sesion marcada como completada manualmente por el atleta. Sin metricas detalladas reportadas.

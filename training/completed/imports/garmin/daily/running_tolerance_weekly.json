@@ -1,1 +1,22 @@
-[]
+[
+  {
+    "userProfilePK": 137864769,
+    "calendarDate": "2026-05-15",
+    "totalImpactLoad": 17820,
+    "totalDistance": 14858.0,
+    "tolerance": 45745,
+    "startOfWeek": "2026-05-15",
+    "endOfWeek": "2026-05-15",
+    "weekIndex": 1897
+  },
+  {
+    "userProfilePK": 137864769,
+    "calendarDate": "2026-05-19",
+    "totalImpactLoad": 0,
+    "totalDistance": 0.0,
+    "tolerance": 44253,
+    "startOfWeek": "2026-05-19",
+    "endOfWeek": "2026-05-19",
+    "weekIndex": 1898
+  }
+]

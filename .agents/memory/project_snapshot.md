@@ -74,6 +74,9 @@
 - `athlete/shin_tracker.yaml` now receives automatic promotions from subjective feedback when tibial/periosteum pain is detected; manual updates remain valid for corrections or added context.
 - Read `athlete/supplements.yaml` and `planning/fueling_operational.md` when race execution or hard-session fueling matters.
 - In the planning web view, prefer preparing the next week first; activating it archives the outgoing active week, updates `semana_actual.md`, sends the PDF by Telegram and attempts Garmin scheduling for changed workouts.
+- When changing any future session, treat the task as incomplete unless all operative layers are handled: weekly plan (`planning/weeks/semana_actual.md` or prepared week), dated workout file in `training/planned/workouts/`, and Garmin scheduling/calendar sync when applicable.
+- If a future session is replaced and Garmin already had an older scheduled version for that date, always attempt to remove the older duplicate from Garmin/calendar and record the result explicitly.
+- Unless the user explicitly says local-only, requests like "change tomorrow", "replace this workout" or similar imply full update across plan, dated workout and Garmin calendar.
 
 ## Remote Telegram Operating Model
 

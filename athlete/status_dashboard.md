@@ -1,6 +1,6 @@
 # Athlete Status Dashboard
 
-- Fecha de analisis: `2026-05-16`
+- Fecha de analisis: `2026-05-19`
 - Estado: `red`
 - Accion recomendada: `reduce_or_replace_quality`
 - Recomendacion: Reducir carga inmediata: cambiar la proxima calidad por rodaje muy facil o descanso, y mantener FC capada.
@@ -8,10 +8,10 @@
 ## Carga Reciente
 
 - Ultimos 7 dias: `19.9 km`, `3` carreras, `1` exigentes, tirada larga `7.6 km`.
-- Ultima semana completa: `26.2 km` vs semana previa `14.7 km` (`79%`).
-- Ultimos 28 dias: `83.3 km`, `12` carreras, media `20.8 km/sem`.
+- Ultima semana completa: `19.9 km` vs semana previa `26.2 km` (`-24%`).
+- Ultimos 28 dias: `73.3 km`, `11` carreras, media `18.3 km/sem`.
 - Ritmo medio 7d: `6:42/km`, FC media `152.7`.
-- Ventana movil 7d vs 7d previos: `-24%`.
+- Ventana movil 7d vs 7d previos: `-6%`.
 
 ## Predictor De Marca
 
@@ -23,7 +23,7 @@
 ## Riesgos Detectados
 
 - Periostio con dolor maximo 7/10 en el ultimo registro.
-- Subida de volumen semanal de 79% (14.7 -> 26.2 km entre semanas completas).
+- Training status de Garmin sugiere prudencia en la carga actual.
 - Feedback subjetivo reciente con dolor 7/10; conviene proteger carga.
 - El bloque activo prioriza reconstruccion, consistencia y tolerancia tisular antes de ritmos agresivos.
 - El limitador principal declarado sigue siendo la durabilidad aerobica; la construccion debe respetarlo.
@@ -35,14 +35,13 @@
 - Resumen: Con la evidencia actual, 35:00 sigue siendo aspiracional y no prescribe ritmos.
 - Gates cumplidos: `0/4`
 
-- `NO` Base estable: Media 4 semanas 20.8 km/sem, tirada larga 10.8 km, alertas 2, periostio 7.
+- `NO` Base estable: Media 4 semanas 18.3 km/sem, tirada larga 10.8 km, alertas 3, periostio 7.
 - `NO` Umbral competitivo: Mejor 5k reciente: 22:16.
-- `NO` Precondicion 35:00: Media 20.8 km/sem, tirada 10.8 km, 5k 22:16, alertas 2.
+- `NO` Precondicion 35:00: Media 18.3 km/sem, tirada 10.8 km, 5k 22:16, alertas 3.
 - `NO` Seleccion 35:00: 5k 22:16, 10k 44:23.
 
 ## Volumen Semanal
 
-- `2026-W16`: `10.0 km`, `1` carreras, `0` exigentes, tirada `10.0 km`.
 - `2026-W17`: `12.6 km`, `2` carreras, `1` exigentes, tirada `7.0 km`.
 - `2026-W18`: `14.7 km`, `2` carreras, `1` exigentes, tirada `8.0 km`.
 - `2026-W19`: `26.2 km`, `4` carreras, `2` exigentes, tirada `10.8 km`.
@@ -50,5 +49,5 @@
 
 ## Datos Garmin Daily
 
-- Dias disponibles en ventana: `23`.
-- Ultimo dia diario importado: `2026-05-16`.
+- Dias disponibles en ventana: `26`.
+- Ultimo dia diario importado: `2026-05-19`.

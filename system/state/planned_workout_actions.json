@@ -9,9 +9,9 @@
       "updated_by": "change-me"
     },
     "2026-05-16_rodaje_5km_facil": {
-      "action": "done",
-      "label": "Marcada como hecha",
-      "updated_at": "2026-05-16T13:40:45.108269",
+      "action": "replanned",
+      "label": "Replanificacion aplicada",
+      "updated_at": "2026-05-16T15:58:58.195171",
       "date": "2026-05-16",
       "name": "Rodaje 5 km facil",
       "updated_by": "change-me"

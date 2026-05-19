@@ -88,6 +88,9 @@
       {% endif %}
     </div>
     <p class="muted">Primero refleja si la sesión sigue en pie, ya está hecha o necesita una alternativa.</p>
+    {% if workout.is_completed %}
+    <p class="muted">Ya resuelto. Esta sesion queda en solo lectura para evitar cambios inconsistentes.</p>
+    {% else %}
     <div class="action-grid emphasis-grid">
       <form method="post" action="/planned-workouts/{{ workout.slug }}/action">
         <input type="hidden" name="action" value="done">
@@ -116,10 +119,11 @@
       </form>
       {% endif %}
     </div>
+    {% endif %}
   </article>
 </section>
 
-{% if workout.targets and workout.targets.step_targets %}
+{% if workout.targets and workout.targets.step_targets and not workout.is_completed %}
 <section class="panel compact-panel">
   <div class="panel-head">
     <div>

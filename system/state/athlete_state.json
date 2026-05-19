@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-16T11:56:15.348398+00:00",
+  "generated_at": "2026-05-16T14:44:40.205527+00:00",
   "source_of_truth": "system/state/athlete_state.json",
   "identity": {
     "id": "main",
@@ -35,13 +35,13 @@
           "Work schedule 07:30-15:00"
         ],
         "garmin_training_days": [
-          "TUESDAY",
-          "SUNDAY",
-          "MONDAY",
-          "WEDNESDAY",
-          "FRIDAY",
           "THURSDAY",
-          "SATURDAY"
+          "SUNDAY",
+          "WEDNESDAY",
+          "SATURDAY",
+          "FRIDAY",
+          "MONDAY",
+          "TUESDAY"
         ],
         "garmin_preferred_long_training_days": [
           "SUNDAY"
@@ -52,7 +52,7 @@
       },
       "data_sources": {
         "garmin": {
-          "last_sync": "2026-05-16T11:43:54.113704Z",
+          "last_sync": "2026-05-16T14:44:40.024323Z",
           "profile_snapshot": "training/completed/imports/garmin/profile/athlete_profile_snapshot.json"
         }
       }
@@ -69,7 +69,7 @@
       "stress_notes": null,
       "recovery_notes": "General sensations recently poor",
       "garmin_metrics": {
-        "last_sync": "2026-05-16T11:43:54.113704Z",
+        "last_sync": "2026-05-16T14:44:40.024323Z",
         "resting_hr": 53,
         "max_hr": 196,
         "vo2max": 46.0
@@ -122,7 +122,7 @@
       },
       "data_sources": {
         "garmin": {
-          "last_sync": "2026-05-16T11:43:54.113704Z",
+          "last_sync": "2026-05-16T14:44:40.024323Z",
           "profile_snapshot": "training/completed/imports/garmin/profile/athlete_profile_snapshot.json"
         }
       }
@@ -189,7 +189,7 @@
     }
   },
   "garmin": {
-    "profile_synced_at": "2026-05-16T11:43:54.113704Z",
+    "profile_synced_at": "2026-05-16T14:44:40.024323Z",
     "latest_activity_import_at": "2026-05-16T11:43:30.347390Z",
     "latest_daily_import_at": "2026-05-16T11:43:52.278967Z",
     "latest_activity_ids": [
@@ -255,34 +255,34 @@
         "status": "prepared",
         "target_start": "2026-05-25",
         "target_end": "2026-05-31",
-        "updated_at": "2026-05-12T09:45:07.367256",
+        "updated_at": "2026-05-16T14:43:04+02:00",
         "source": "manual",
         "garmin_sync": {
           "items": [
             {
               "file": "training/planned/workouts/2026-05-26_rodaje_6km_recuperacion_post_ordes.yaml",
               "status": "ok",
-              "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1565770425,\n  \"schedule_date\": \"2026-05-26\",\n  \"workout_name\": \"Rodaje 6 km recuperacion post-Ordes\",\n  \"sport\": \"running\"\n}"
+              "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569255550,\n  \"schedule_date\": \"2026-05-26\",\n  \"workout_name\": \"Bicicleta recuperacion post-Ordes 50 min\",\n  \"sport\": \"cycling\"\n}"
             },
             {
               "file": "training/planned/workouts/2026-05-27_fuerza_movilidad_tolerancia_35min.yaml",
               "status": "ok",
-              "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1565770442,\n  \"schedule_date\": \"2026-05-27\",\n  \"workout_name\": \"Fuerza movilidad tolerancia 35 min\",\n  \"sport\": \"strength\"\n}"
+              "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569240267,\n  \"schedule_date\": \"2026-05-27\",\n  \"workout_name\": \"Fuerza rehabilitadora A 35 min\",\n  \"sport\": \"strength\"\n}"
             },
             {
               "file": "training/planned/workouts/2026-05-28_rodaje_7km_controlado.yaml",
               "status": "ok",
-              "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1565770459,\n  \"schedule_date\": \"2026-05-28\",\n  \"workout_name\": \"Rodaje 7 km controlado\",\n  \"sport\": \"running\"\n}"
+              "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569255554,\n  \"schedule_date\": \"2026-05-28\",\n  \"workout_name\": \"Bicicleta aerobica continua 65 min\",\n  \"sport\": \"cycling\"\n}"
             },
             {
               "file": "training/planned/workouts/2026-05-30_rodaje_6km_progresivo_suave.yaml",
               "status": "ok",
-              "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1565770478,\n  \"schedule_date\": \"2026-05-30\",\n  \"workout_name\": \"Rodaje 6 km progresivo suave\",\n  \"sport\": \"running\"\n}"
+              "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569255563,\n  \"schedule_date\": \"2026-05-30\",\n  \"workout_name\": \"Bicicleta base aerobica 85 min\",\n  \"sport\": \"cycling\"\n}"
             },
             {
               "file": "training/planned/workouts/2026-05-31_rodaje_10km_z2_continuidad.yaml",
               "status": "ok",
-              "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1565770507,\n  \"schedule_date\": \"2026-05-31\",\n  \"workout_name\": \"Rodaje 10 km Z2 continuidad\",\n  \"sport\": \"running\"\n}"
+              "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569255569,\n  \"schedule_date\": \"2026-05-31\",\n  \"workout_name\": \"Bicicleta larga comoda 100 min\",\n  \"sport\": \"cycling\"\n}"
             }
           ],
           "synced": 5,

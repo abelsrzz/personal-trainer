@@ -92,7 +92,7 @@
       <h4><a href="{{ today_plan.links.feedback_url }}">{{ today_plan.completed_review.activity_name }}</a></h4>
       <p class="muted">{{ today_plan.completed_review.distance_km }} km · {{ today_plan.completed_review.duration }} · {{ today_plan.completed_review.pace }}</p>
       <p>{{ today_plan.completed_review.compliance_note }}</p>
-      <p><a class="action-link" href="{{ today_plan.links.feedback_url }}">{{ 'Editar feedback' if today_plan.feedback_present else 'Añadir feedback' }}</a></p>
+      <p><a class="action-link" href="{{ today_plan.links.feedback_url }}">{{ 'Ver feedback' if today_plan.feedback_present else 'Añadir feedback' }}</a></p>
       {% elif today_plan.planned_workout %}
       <div class="today-plan-title-row">
         <h4><a href="{{ today_plan.links.detail_url }}">{{ today_plan.planned_workout.name }}</a></h4>
@@ -122,6 +122,7 @@
         <span class="mini-badge">{{ item }}</span>
         {% endfor %}
       </div>
+      {% if today_plan.daily_checkin_visible %}
       <section class="panel inset-panel">
         <div class="panel-head">
           <div>
@@ -133,7 +134,7 @@
           {% endif %}
         </div>
         <p class="muted">Formulario rapido de 20 segundos para ajustar el plan del dia.</p>
-        {% if today_plan.daily_checkin.decision %}
+        {% if today_plan.daily_checkin.decision and today_plan.daily_checkin_visible %}
         <p><strong>{{ today_plan.daily_checkin.decision.headline }}</strong></p>
         <p>{{ today_plan.daily_checkin.decision.summary }}</p>
         <p class="muted">Score {{ today_plan.daily_checkin.decision.score }}/100{% if today_plan.daily_checkin.updated_at %} · Actualizado {{ today_plan.daily_checkin.updated_at }}{% endif %}</p>
@@ -143,6 +144,7 @@
           {% endfor %}
         </div>
         {% endif %}
+        {% if today_plan.daily_checkin_visible %}
         <form class="form" method="post" action="/daily-checkin">
           <input type="hidden" name="day" value="{{ today_plan.date }}">
           <input type="hidden" name="next_url" value="/">
@@ -186,24 +188,9 @@
             <button class="cta-button" type="submit">Guardar check-in</button>
           </div>
         </form>
-        {% if today_plan.recommended_replan and today_plan.planned_workout %}
-        <div class="panel inset-panel auto-replan-panel">
-          <div class="panel-head">
-            <div>
-              <p class="eyebrow">Propuesta automatica</p>
-              <h4>{{ today_plan.recommended_replan.label }}</h4>
-            </div>
-            <span class="badge {{ today_plan.recommended_replan.tone }}">Check-in</span>
-          </div>
-          <p>{{ today_plan.recommended_replan.summary }}</p>
-          <form method="post" action="/planned-workouts/{{ today_plan.planned_workout.slug }}/replan">
-            <input type="hidden" name="strategy" value="{{ today_plan.recommended_replan.strategy }}">
-            <input type="hidden" name="next_url" value="/">
-            <button class="cta-button cta-warn" type="submit">Aplicar esta propuesta</button>
-          </form>
-        </div>
         {% endif %}
       </section>
+      {% endif %}
     </div>
 
     <div class="today-plan-side">

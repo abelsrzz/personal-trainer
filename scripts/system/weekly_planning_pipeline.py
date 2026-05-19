@@ -151,7 +151,7 @@ def build_planning_prompt(target_start: date, target_end: date, output_path: Pat
         "2. Usa tambien athlete/profile.yaml, athlete/preferences.yaml, athlete/zones.yaml, athlete/shoes.yaml, athlete/health.yaml, athlete/shin_tracker.yaml, planning/goal_gates.yaml y carreras relevantes.\n"
         "3. Genera la semana objetivo en el archivo indicado con el mismo formato operativo habitual del proyecto: titulo, fechas, contexto si hace falta, tabla diaria con dia, descripcion, distancia, ritmo o FC y zapatillas.\n"
         "4. No modifiques planning/weeks/semana_actual.md. Solo prepara la siguiente semana en el archivo de salida.\n"
-        "5. Crea o actualiza los YAML necesarios en training/planned/workouts/ para las sesiones fechadas de esa semana. Siempre que puedas, incluye `template_id`, `knowledge_id`, `knowledge_label` y `primary_goal` alineados con training/planned/workouts/library_run_templates.yaml, planning/workout_template_knowledge_map.yaml y planning/workout_knowledge.yaml. Si la sesion es de bicicleta, usa `sport: cycling`, no `fitness_equipment`.\n"
+        "5. Crea o actualiza los YAML necesarios en training/planned/workouts/ para las sesiones fechadas de esa semana. Siempre que puedas, incluye `template_id`, `knowledge_id`, `knowledge_label` y `primary_goal` alineados con training/planned/workouts/library_run_templates.yaml, planning/workout_template_knowledge_map.yaml y planning/workout_knowledge.yaml. Si la sesion es de bicicleta, usa `sport: cycling`, no `fitness_equipment`. Si la sesion es de natacion, usa `sport: swimming`.\n"
         "6. Mantente conservador con la tibia, la decision del coach y las reglas del ciclo.\n"
         "7. Al terminar, deja los archivos escritos en el repositorio.\n"
     )

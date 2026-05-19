@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
@@ -20,6 +21,19 @@ def load_optional_yaml(path: Path) -> dict[str, Any]:
         return {}
     with path.open("r", encoding="utf-8") as handle:
         payload = yaml.safe_load(handle) or {}
+    return payload if isinstance(payload, dict) else {}
+
+
+def workout_knowledge_signature() -> tuple[int, int]:
+    if not WORKOUT_KNOWLEDGE_PATH.exists():
+        return (0, 0)
+    stat = WORKOUT_KNOWLEDGE_PATH.stat()
+    return (stat.st_mtime_ns, stat.st_size)
+
+
+@lru_cache(maxsize=4)
+def _cached_workout_knowledge(_signature: tuple[int, int]) -> dict[str, Any]:
+    payload = load_optional_yaml(WORKOUT_KNOWLEDGE_PATH).get("workout_knowledge", {})
     return payload if isinstance(payload, dict) else {}
 
 
@@ -56,8 +70,7 @@ def stable_slug(value: str) -> str:
 
 
 def load_workout_knowledge() -> dict[str, Any]:
-    payload = load_optional_yaml(WORKOUT_KNOWLEDGE_PATH).get("workout_knowledge", {})
-    return payload if isinstance(payload, dict) else {}
+    return _cached_workout_knowledge(workout_knowledge_signature())
 
 
 def goal_label(goal: str) -> str:
@@ -143,7 +156,8 @@ def knowledge_entry_id(entry: dict[str, Any]) -> str | None:
     return stable_slug(label) if label else None
 
 
-def iter_knowledge_entries() -> list[dict[str, Any]]:
+@lru_cache(maxsize=4)
+def _cached_knowledge_entries(_signature: tuple[int, int]) -> tuple[dict[str, Any], ...]:
     knowledge = load_workout_knowledge()
     categories = knowledge.get("categories") if isinstance(knowledge.get("categories"), dict) else {}
     entries: list[dict[str, Any]] = []
@@ -159,17 +173,32 @@ def iter_knowledge_entries() -> list[dict[str, Any]]:
             if not entry_id:
                 continue
             entries.append({**entry, "id": entry_id, "category": category_key})
-    return entries
+    return tuple(entries)
+
+
+def iter_knowledge_entries() -> list[dict[str, Any]]:
+    return list(_cached_knowledge_entries(workout_knowledge_signature()))
+
+
+@lru_cache(maxsize=4)
+def _cached_knowledge_entry_maps(_signature: tuple[int, int]) -> tuple[dict[str, dict[str, Any]], dict[str, dict[str, Any]]]:
+    by_id: dict[str, dict[str, Any]] = {}
+    by_label: dict[str, dict[str, Any]] = {}
+    for entry in _cached_knowledge_entries(_signature):
+        entry_id = str(entry.get("id") or "").strip()
+        if entry_id:
+            by_id[entry_id] = entry
+        normalized_label = normalize_text(entry.get("label"))
+        if normalized_label:
+            by_label[normalized_label] = entry
+    return by_id, by_label
 
 
 def knowledge_entry_by_id(entry_id: str) -> dict[str, Any] | None:
     target = str(entry_id or "").strip()
     if not target:
         return None
-    for entry in iter_knowledge_entries():
-        if entry.get("id") == target:
-            return entry
-    return None
+    return _cached_knowledge_entry_maps(workout_knowledge_signature())[0].get(target)
 
 
 def knowledge_entry_by_label(label: str) -> dict[str, Any] | None:
@@ -177,10 +206,7 @@ def knowledge_entry_by_label(label: str) -> dict[str, Any] | None:
     if not target:
         return None
     normalized_target = normalize_text(target)
-    for entry in iter_knowledge_entries():
-        if normalize_text(entry.get("label")) == normalized_target:
-            return entry
-    return None
+    return _cached_knowledge_entry_maps(workout_knowledge_signature())[1].get(normalized_target)
 
 
 def summarized_entry(entry: dict[str, Any]) -> dict[str, Any]:

@@ -12,7 +12,7 @@ from typing import Any
 
 import yaml
 from garminconnect import Garmin
-from garminconnect.workout import CyclingWorkout, ExecutableStep, FitnessEquipmentWorkout, RepeatGroup, RunningWorkout, WorkoutSegment
+from garminconnect.workout import CyclingWorkout, ExecutableStep, FitnessEquipmentWorkout, RepeatGroup, RunningWorkout, SwimmingWorkout, WorkoutSegment
 
 try:
     from scripts.system.athlete_state import write_athlete_state
@@ -448,6 +448,8 @@ def infer_workout_sport(workout: dict[str, Any]) -> str:
     raw_sport = str(workout.get("sport", "running")).strip().lower()
     if raw_sport in {"cycling", "bike", "biking"}:
         return "cycling"
+    if raw_sport in {"swimming", "swim", "pool_swimming", "lap_swimming"}:
+        return "swimming"
 
     text = " ".join(
         str(value or "")
@@ -458,6 +460,8 @@ def infer_workout_sport(workout: dict[str, Any]) -> str:
     ).lower()
     if raw_sport == "fitness_equipment" and any(marker in text for marker in {"bicicleta", "bike", "cycling", "rodillo", "ciclismo"}):
         return "cycling"
+    if any(marker in text for marker in {"natacion", "natación", "swim", "swimming", "piscina", "nadar"}):
+        return "swimming"
     return raw_sport
 
 
@@ -466,10 +470,12 @@ def sport_type_payload(sport: str) -> dict[str, Any]:
         return {"sportTypeId": 1, "sportTypeKey": "running", "displayOrder": 1}
     if sport == "cycling":
         return {"sportTypeId": 2, "sportTypeKey": "cycling", "displayOrder": 2}
+    if sport == "swimming":
+        return {"sportTypeId": 5, "sportTypeKey": "swimming", "displayOrder": 5}
     return {"sportTypeId": 6, "sportTypeKey": "fitness_equipment", "displayOrder": 6}
 
 
-def build_workout_payload(spec: dict[str, Any], include_targets: bool) -> RunningWorkout | CyclingWorkout | FitnessEquipmentWorkout:
+def build_workout_payload(spec: dict[str, Any], include_targets: bool) -> RunningWorkout | CyclingWorkout | SwimmingWorkout | FitnessEquipmentWorkout:
     workout = spec["workout"]
     sport = infer_workout_sport(workout)
     steps = [build_workout_step(step, include_targets) for step in workout["steps"]]
@@ -489,6 +495,8 @@ def build_workout_payload(spec: dict[str, Any], include_targets: bool) -> Runnin
         return RunningWorkout(**common_kwargs)
     if sport == "cycling":
         return CyclingWorkout(**common_kwargs)
+    if sport == "swimming":
+        return SwimmingWorkout(**common_kwargs)
     if sport in {"fitness_equipment", "strength", "mobility", "stretching", "other"}:
         return FitnessEquipmentWorkout(**common_kwargs)
     raise ValueError(f"Unsupported workout sport: {sport}")
@@ -543,6 +551,8 @@ def schedule_workout_file(client: Garmin, workout_file: Path) -> None:
         logger.info("Uploading Garmin workout mode=%s payload_preview=%s", upload_mode, preview_json(payload.to_dict()))
         if normalized_sport == "cycling":
             response = client.upload_cycling_workout(payload)
+        elif normalized_sport == "swimming":
+            response = client.upload_swimming_workout(payload)
         else:
             response = client.upload_workout(payload.to_dict())
     except Exception as exc:
@@ -568,6 +578,8 @@ def schedule_workout_file(client: Garmin, workout_file: Path) -> None:
             logger.info("Uploading Garmin workout mode=%s payload_preview=%s", upload_mode, preview_json(payload.to_dict()))
             if normalized_sport == "cycling":
                 response = client.upload_cycling_workout(payload)
+            elif normalized_sport == "swimming":
+                response = client.upload_swimming_workout(payload)
             else:
                 response = client.upload_workout(payload.to_dict())
 

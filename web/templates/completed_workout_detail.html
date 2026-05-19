@@ -40,7 +40,7 @@
     <div class="panel-head">
       <div>
         <p class="eyebrow">Tu feedback</p>
-        <h3>{{ 'Editar feedback' if review.athlete_feedback else 'Añadir feedback' }}</h3>
+        <h3>{{ 'Solo lectura' if review.feedback_locked else 'Añadir feedback' }}</h3>
       </div>
       {% if review.athlete_feedback %}
       <span class="badge ok">Guardado</span>
@@ -53,6 +53,17 @@
     {% if review.athlete_feedback and review.athlete_feedback.athlete_feedback.note %}
     <p class="muted">{{ review.athlete_feedback.athlete_feedback.note }}</p>
     {% endif %}
+    {% if review.feedback_locked %}
+    <p class="muted">Guardado. El formulario queda en solo lectura.</p>
+    <ul class="plain-list">
+      <li>RPE: {{ review.feedback_form.rpe }}</li>
+      <li>Dolor: {{ review.feedback_form.pain_level }}</li>
+      <li>Cumplimiento: {{ review.feedback_form.compliance_options.get(review.feedback_form.compliance, review.feedback_form.compliance) }}</li>
+      <li>Tiempo: {{ review.feedback_form.time_feeling_options.get(review.feedback_form.time_feeling, review.feedback_form.time_feeling or '-') }}</li>
+      <li>Zona: {{ review.feedback_form.pain_location or '-' }}</li>
+      <li>Nota: {{ review.feedback_form.note or '-' }}</li>
+    </ul>
+    {% else %}
     <form class="form" method="post" action="/completed-workouts/{{ review.slug }}/feedback">
       <input type="hidden" name="next_url" value="/completed-workouts/{{ review.slug }}">
       <label>
@@ -91,6 +102,7 @@
       </label>
       <button type="submit">{{ 'Actualizar feedback' if review.athlete_feedback else 'Guardar feedback' }}</button>
     </form>
+    {% endif %}
   </article>
   <article class="panel">
     <div class="panel-head">

@@ -31,6 +31,43 @@
       "updated_by": "change-me",
       "slug": "2026-05-12_rodaje_6km_recuperacion",
       "name": "Alternativa: Alternativa: Eliptica 42 min recuperacion"
+    },
+    "2026-05-16_rodaje_5km_facil": {
+      "status": "applied",
+      "strategy": "auto_today",
+      "label": "Alternativa para hoy",
+      "summary": "Se ha aplicado una alternativa automatica para hoy.",
+      "cause": "Reducir carga inmediata: cambiar la proxima calidad por rodaje muy facil o descanso, y mantener FC capada. Objetivo original protegido: recuperacion.",
+      "variant": "rodaje muy facil",
+      "original_date": "2026-05-16",
+      "effective_date": "2026-05-16",
+      "effective_name": "Alternativa: Rodaje 5 km facil",
+      "effective_description": "Cambio automatico para hoy: sustituir la sesion exigente por una version muy facil y de bajo coste. Referencia protectora: rodaje suave .",
+      "effective_duration_s": 1500,
+      "effective_steps": [
+        {
+          "order": 1,
+          "step_type": "warmup",
+          "description": "Rodaje muy facil y conversacional"
+        },
+        {
+          "order": 2,
+          "step_type": "cooldown",
+          "description": "Cortar antes si no acompana el dia"
+        }
+      ],
+      "effective_session_kind": "recovery",
+      "knowledge_label": "30' suave",
+      "knowledge_goal": "Recuperacion",
+      "updated_at": "2026-05-16T15:58:58.194974",
+      "updated_by": "change-me",
+      "slug": "2026-05-16_rodaje_5km_facil",
+      "name": "Rodaje 5 km facil",
+      "garmin_sync": {
+        "ok": false,
+        "message": "No se pudo reenviar a Garmin: ValueError: Executable workout step must define distance_m or duration_s",
+        "updated_at": "2026-05-16T15:58:59.086642"
+      }
     }
   }
 }

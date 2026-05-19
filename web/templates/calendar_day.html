@@ -40,6 +40,7 @@
     <span class="mini-badge">{{ item }}</span>
     {% endfor %}
   </div>
+  {% if calendar_day.today_plan.daily_checkin_visible %}
   <section class="panel">
     <div class="panel-head">
       <div>
@@ -99,6 +100,7 @@
       </div>
     </form>
   </section>
+  {% endif %}
   {% if calendar_day.today_plan.cta_enabled %}
   <div class="action-grid today-plan-actions">
     <form method="post" action="/planned-workouts/{{ calendar_day.today_plan.planned_workout.slug }}/garmin-retry">
@@ -166,11 +168,12 @@
           <p class="muted"><strong>Version sugerida:</strong> {{ workout.replan.variant }}</p>
           {% endif %}
           {% endif %}
+          {% if not workout.is_completed %}
           <div class="inline-actions">
             <form method="post" action="/planned-workouts/{{ workout.slug }}/action">
               <input type="hidden" name="action" value="done">
               <input type="hidden" name="next_url" value="/calendar/day/{{ calendar_day.date }}">
-              <button class="mini-action mini-action-ok" type="submit">Hecha</button>
+              <button class="mini-action mini-action-ok" type="submit">Resolver</button>
             </form>
             <form method="post" action="/planned-workouts/{{ workout.slug }}/action">
               <input type="hidden" name="action" value="skipped">
@@ -188,6 +191,9 @@
               <button class="mini-action" type="submit">Mover</button>
             </form>
           </div>
+          {% else %}
+          <p class="muted">Ya resuelto. Esta sesion queda en solo lectura.</p>
+          {% endif %}
         </div>
         <div class="item-meta">
           <span class="badge kind-badge">{{ workout.session_kind_label }}</span>
@@ -223,7 +229,7 @@
           {% if review.feedback_summary %}
           <p class="muted">{{ review.feedback_summary }}</p>
           {% endif %}
-          <p><a class="action-link" href="/completed-workouts/{{ review.slug }}">{{ 'Editar feedback' if review.athlete_feedback else 'Añadir feedback' }}</a></p>
+          <p><a class="action-link" href="/completed-workouts/{{ review.slug }}">{{ 'Ver feedback' if review.athlete_feedback else 'Añadir feedback' }}</a></p>
         </div>
         <div class="item-meta">
           <span class="badge kind-badge">{{ review.session_kind_label }}</span>

@@ -1,11 +1,51 @@
 from __future__ import annotations
 
 import json
+import sys
 import tempfile
+import types
 import unittest
 from datetime import date
 from pathlib import Path
 from unittest.mock import patch
+
+
+def _install_garmin_stubs() -> None:
+    garmin_module = types.ModuleType("garminconnect")
+    garmin_module.Garmin = object
+
+    workout_module = types.ModuleType("garminconnect.workout")
+
+    class DummyWorkoutObject:
+        def __init__(self, **kwargs) -> None:
+            self.payload = kwargs
+
+        def to_dict(self) -> dict:
+            def convert(value):
+                if isinstance(value, list):
+                    return [convert(item) for item in value]
+                if hasattr(value, "to_dict"):
+                    return value.to_dict()
+                return value
+
+            return {key: convert(value) for key, value in self.payload.items()}
+
+    for name in [
+        "CyclingWorkout",
+        "ExecutableStep",
+        "FitnessEquipmentWorkout",
+        "RepeatGroup",
+        "RunningWorkout",
+        "SwimmingWorkout",
+        "WorkoutSegment",
+    ]:
+        setattr(workout_module, name, DummyWorkoutObject)
+
+    sys.modules.setdefault("garminconnect", garmin_module)
+    sys.modules.setdefault("garminconnect.workout", workout_module)
+
+
+_install_garmin_stubs()
 
 from scripts.garmin import sync_garmin
 
@@ -73,6 +113,9 @@ class FakeWorkoutClient:
 
 
 class GarminSyncTests(unittest.TestCase):
+    def test_infer_workout_sport_keeps_elliptical_distinct(self) -> None:
+        self.assertEqual(sync_garmin.infer_workout_sport({"sport": "elliptical", "name": "Eliptica aerobica"}), "elliptical")
+
     def test_import_activities_writes_manifest_and_files(self) -> None:
         client = FakeImportClient()
         with tempfile.TemporaryDirectory() as tmp_dir:
@@ -136,6 +179,38 @@ workout:
                 )
                 self.assertEqual(record["status"], "scheduled")
                 self.assertEqual(client.scheduled, (777, "2026-05-26"))
+            finally:
+                sync_garmin.DEFAULT_WORKOUTS_ROOT = original_workouts_root
+
+    def test_schedule_workout_file_accepts_elliptical_sport(self) -> None:
+        client = FakeWorkoutClient()
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            tmp_path = Path(tmp_dir)
+            workout_file = tmp_path / "2026-05-26_elliptical.yaml"
+            workout_file.write_text(
+                """
+workout:
+  name: Eliptica aerobica
+  description: Sesion sin impacto
+  sport: elliptical
+  schedule_date: 2026-05-26
+  estimated_duration_s: 1800
+  steps:
+    - order: 1
+      step_type: warmup
+      duration_s: 1800
+      description: 30 min suaves
+""".strip()
+                + "\n",
+                encoding="utf-8",
+            )
+            original_workouts_root = sync_garmin.DEFAULT_WORKOUTS_ROOT
+            sync_garmin.DEFAULT_WORKOUTS_ROOT = tmp_path / "planned"
+            try:
+                sync_garmin.schedule_workout_file(client, workout_file)
+                self.assertEqual(client.scheduled, (777, "2026-05-26"))
+                self.assertEqual(client.uploaded_payload["sportType"]["sportTypeKey"], "other")
+                self.assertEqual(client.uploaded_payload["workoutSegments"][0]["sportType"]["sportTypeKey"], "other")
             finally:
                 sync_garmin.DEFAULT_WORKOUTS_ROOT = original_workouts_root
 

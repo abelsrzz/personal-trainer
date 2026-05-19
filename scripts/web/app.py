@@ -639,7 +639,9 @@ def session_kind_label(value: str) -> str:
         "recovery": "Recuperación",
         "quality": "Calidad",
         "long_run": "Tirada larga",
+        "elliptical": "Eliptica",
         "strength": "Fuerza",
+        "mobility": "Movilidad",
         "race": "Competición",
         "rest": "Descanso",
         "other": "Otra sesión",
@@ -651,6 +653,17 @@ def session_color_class(value: str) -> str:
 
 
 def classify_planned_workout(payload: dict[str, Any]) -> tuple[str, str, str]:
+    sport = str(payload.get("sport") or "").strip().lower()
+    if sport == "strength":
+        kind = "strength"
+        return kind, session_kind_label(kind), session_color_class(kind)
+    if sport in {"mobility", "stretching"}:
+        kind = "mobility"
+        return kind, session_kind_label(kind), session_color_class(kind)
+    if sport == "elliptical":
+        kind = "elliptical"
+        return kind, session_kind_label(kind), session_color_class(kind)
+
     steps = payload.get("steps") or []
     distance_m = payload.get("distance_m")
     if not distance_m:
@@ -3581,12 +3594,12 @@ def decision_center_page_data() -> dict[str, Any]:
         changes_this_week.append(f"Check-in de hoy: {today_plan['daily_checkin']['decision'].get('headline')}")
     changes_this_week = list(dict.fromkeys([item for item in changes_this_week if item]))[:5]
 
-    prioritize_kinds = {"easy", "recovery", "strength"}
+    prioritize_kinds = {"easy", "recovery", "elliptical", "strength", "mobility"}
     avoid_kinds = set()
     if status == "green":
         prioritize_kinds = {"quality", "long_run", "easy"}
     elif status == "yellow":
-        prioritize_kinds = {"easy", "recovery", "strength", "long_run"}
+        prioritize_kinds = {"easy", "recovery", "elliptical", "strength", "mobility", "long_run"}
         avoid_kinds = {"quality"}
     else:
         avoid_kinds = {"quality", "long_run"}

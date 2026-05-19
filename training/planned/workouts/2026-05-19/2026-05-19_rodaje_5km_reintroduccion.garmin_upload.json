@@ -1,19 +1,19 @@
 {
-  "generated_at": "2026-05-16T13:06:40.914429Z",
+  "generated_at": "2026-05-19T15:02:22.918685Z",
   "status": "scheduled",
-  "upload_mode": "structured_targets",
+  "upload_mode": "other_workout_direct",
   "workout_file": "training/planned/workouts/2026-05-19_rodaje_5km_reintroduccion.yaml",
   "uploaded_response": {
-    "workoutId": 1569255542,
+    "workoutId": 1573464546,
     "ownerId": 137864769,
-    "workoutName": "Bicicleta aerobica estable 65 min",
-    "description": "Carga aerobica equivalente al rodaje previsto, sin impacto y con trabajo continuo de base.",
-    "updatedDate": "2026-05-16T13:06:41.0",
-    "createdDate": "2026-05-16T13:06:41.0",
+    "workoutName": "Eliptica aerobica estable 55 min",
+    "description": "Carga aerobica equivalente a la bici prevista, sin impacto y con un coste interno parecido en menos tiempo.",
+    "updatedDate": "2026-05-19T15:02:23.0",
+    "createdDate": "2026-05-19T15:02:23.0",
     "sportType": {
-      "sportTypeId": 2,
-      "sportTypeKey": "cycling",
-      "displayOrder": 2
+      "sportTypeId": 3,
+      "sportTypeKey": "other",
+      "displayOrder": 13
     },
     "subSportType": null,
     "trainingPlanId": null,
@@ -28,15 +28,15 @@
       "vivokidUser": false
     },
     "sharedWithUsers": null,
-    "estimatedDurationInSecs": 3900,
+    "estimatedDurationInSecs": 3300,
     "estimatedDistanceInMeters": null,
     "workoutSegments": [
       {
         "segmentOrder": 1,
         "sportType": {
-          "sportTypeId": 2,
-          "sportTypeKey": "cycling",
-          "displayOrder": 2
+          "sportTypeId": 3,
+          "sportTypeKey": "other",
+          "displayOrder": 13
         },
         "poolLengthUnit": null,
         "poolLength": null,
@@ -49,7 +49,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13376476201,
+            "stepId": 13414281075,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 1,
@@ -57,14 +57,14 @@
               "displayOrder": 1
             },
             "childStepId": null,
-            "description": "10 min suaves",
+            "description": "8 min suaves en eliptica",
             "endCondition": {
               "conditionTypeId": 2,
               "conditionTypeKey": "time",
               "displayOrder": 2,
               "displayable": true
             },
-            "endConditionValue": 600.0,
+            "endConditionValue": 480.0,
             "preferredEndConditionUnit": null,
             "endConditionCompare": null,
             "targetType": {
@@ -72,8 +72,8 @@
               "workoutTargetTypeKey": "heart.rate.zone",
               "displayOrder": 4
             },
-            "targetValueOne": 120.0,
-            "targetValueTwo": 138.0,
+            "targetValueOne": 118.0,
+            "targetValueTwo": 136.0,
             "targetValueUnit": null,
             "zoneNumber": null,
             "secondaryTargetType": null,
@@ -101,7 +101,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13376476202,
+            "stepId": 13414281076,
             "stepOrder": 2,
             "stepType": {
               "stepTypeId": 3,
@@ -109,14 +109,14 @@
               "displayOrder": 3
             },
             "childStepId": null,
-            "description": "45 min Z2 estable",
+            "description": "40 min Z2 estable y fluida",
             "endCondition": {
               "conditionTypeId": 2,
               "conditionTypeKey": "time",
               "displayOrder": 2,
               "displayable": true
             },
-            "endConditionValue": 2700.0,
+            "endConditionValue": 2400.0,
             "preferredEndConditionUnit": null,
             "endConditionCompare": null,
             "targetType": {
@@ -153,7 +153,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13376476203,
+            "stepId": 13414281077,
             "stepOrder": 3,
             "stepType": {
               "stepTypeId": 2,
@@ -161,14 +161,14 @@
               "displayOrder": 2
             },
             "childStepId": null,
-            "description": "10 min suaves",
+            "description": "7 min suaves para soltar",
             "endCondition": {
               "conditionTypeId": 2,
               "conditionTypeKey": "time",
               "displayOrder": 2,
               "displayable": true
             },
-            "endConditionValue": 600.0,
+            "endConditionValue": 420.0,
             "preferredEndConditionUnit": null,
             "endConditionCompare": null,
             "targetType": {
@@ -177,7 +177,7 @@
               "displayOrder": 4
             },
             "targetValueOne": 115.0,
-            "targetValueTwo": 135.0,
+            "targetValueTwo": 132.0,
             "targetValueUnit": null,
             "zoneNumber": null,
             "secondaryTargetType": null,
@@ -226,37 +226,37 @@
       "unitKey": null,
       "factor": null
     },
-    "workoutThumbnailUrl": "https://connect.garmin.com/chart-service/workout?data=129,10,ch-139,45,ch-125,10,ch",
+    "workoutThumbnailUrl": null,
     "isSessionTransitionEnabled": null,
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1650784598,
+    "workoutScheduleId": 1654981075,
     "workout": {
-      "workoutId": 1569255542,
+      "workoutId": 1573464546,
       "ownerId": 137864769,
-      "workoutName": "Bicicleta aerobica estable 65 min",
-      "description": "Carga aerobica equivalente al rodaje previsto, sin impacto y con trabajo continuo de base.",
-      "updatedDate": "2026-05-16T13:06:41.0",
-      "createdDate": "2026-05-16T13:06:41.0",
+      "workoutName": "Eliptica aerobica estable 55 min",
+      "description": "Carga aerobica equivalente a la bici prevista, sin impacto y con un coste interno parecido en menos tiempo.",
+      "updatedDate": "2026-05-19T15:02:23.0",
+      "createdDate": "2026-05-19T15:02:23.0",
       "sportType": {
-        "sportTypeId": 2,
-        "sportTypeKey": "cycling",
-        "displayOrder": 2
+        "sportTypeId": 3,
+        "sportTypeKey": "other",
+        "displayOrder": 13
       },
       "subSportType": null,
       "trainingPlanId": null,
       "author": null,
       "sharedWithUsers": null,
-      "estimatedDurationInSecs": 3900,
+      "estimatedDurationInSecs": 3300,
       "estimatedDistanceInMeters": null,
       "workoutSegments": [
         {
           "segmentOrder": 1,
           "sportType": {
-            "sportTypeId": 2,
-            "sportTypeKey": "cycling",
-            "displayOrder": 2
+            "sportTypeId": 3,
+            "sportTypeKey": "other",
+            "displayOrder": 13
           },
           "poolLengthUnit": null,
           "poolLength": null,
@@ -269,7 +269,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13376476201,
+              "stepId": 13414281075,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 1,
@@ -277,14 +277,14 @@
                 "displayOrder": 1
               },
               "childStepId": null,
-              "description": "10 min suaves",
+              "description": "8 min suaves en eliptica",
               "endCondition": {
                 "conditionTypeId": 2,
                 "conditionTypeKey": "time",
                 "displayOrder": 2,
                 "displayable": true
               },
-              "endConditionValue": 600.0,
+              "endConditionValue": 480.0,
               "preferredEndConditionUnit": null,
               "endConditionCompare": null,
               "targetType": {
@@ -292,8 +292,8 @@
                 "workoutTargetTypeKey": "heart.rate.zone",
                 "displayOrder": 4
               },
-              "targetValueOne": 120.0,
-              "targetValueTwo": 138.0,
+              "targetValueOne": 118.0,
+              "targetValueTwo": 136.0,
               "targetValueUnit": null,
               "zoneNumber": null,
               "secondaryTargetType": null,
@@ -321,7 +321,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13376476202,
+              "stepId": 13414281076,
               "stepOrder": 2,
               "stepType": {
                 "stepTypeId": 3,
@@ -329,14 +329,14 @@
                 "displayOrder": 3
               },
               "childStepId": null,
-              "description": "45 min Z2 estable",
+              "description": "40 min Z2 estable y fluida",
               "endCondition": {
                 "conditionTypeId": 2,
                 "conditionTypeKey": "time",
                 "displayOrder": 2,
                 "displayable": true
               },
-              "endConditionValue": 2700.0,
+              "endConditionValue": 2400.0,
               "preferredEndConditionUnit": null,
               "endConditionCompare": null,
               "targetType": {
@@ -373,7 +373,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13376476203,
+              "stepId": 13414281077,
               "stepOrder": 3,
               "stepType": {
                 "stepTypeId": 2,
@@ -381,14 +381,14 @@
                 "displayOrder": 2
               },
               "childStepId": null,
-              "description": "10 min suaves",
+              "description": "7 min suaves para soltar",
               "endCondition": {
                 "conditionTypeId": 2,
                 "conditionTypeKey": "time",
                 "displayOrder": 2,
                 "displayable": true
               },
-              "endConditionValue": 600.0,
+              "endConditionValue": 420.0,
               "preferredEndConditionUnit": null,
               "endConditionCompare": null,
               "targetType": {
@@ -397,7 +397,7 @@
                 "displayOrder": 4
               },
               "targetValueOne": 115.0,
-              "targetValueTwo": 135.0,
+              "targetValueTwo": 132.0,
               "targetValueUnit": null,
               "zoneNumber": null,
               "secondaryTargetType": null,
@@ -446,12 +446,12 @@
         "unitKey": null,
         "factor": null
       },
-      "workoutThumbnailUrl": "https://connect.garmin.com/chart-service/workout?data=129,10,ch-139,45,ch-125,10,ch",
+      "workoutThumbnailUrl": null,
       "isSessionTransitionEnabled": null,
       "shared": false
     },
     "calendarDate": "2026-05-19",
-    "createdDate": "2026-05-16",
+    "createdDate": "2026-05-19",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -460,9 +460,9 @@
     "priority": null,
     "associatedActivityDateTime": null,
     "tpType": null,
-    "nameChanged": false,
-    "protected": false,
     "race": false,
-    "itp": false
+    "itp": false,
+    "nameChanged": false,
+    "protected": false
   }
 }

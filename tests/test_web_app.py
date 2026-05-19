@@ -108,7 +108,7 @@ class WebAppTests(unittest.TestCase):
                         "workouts": {
                             "quality_session": {
                             "effective_date": "2026-05-13",
-                            "effective_sport": "fitness_equipment",
+                            "effective_sport": "elliptical",
                             "effective_name": "Series adaptadas",
                             "effective_description": "Version protectora",
                             "effective_steps": [{"order": 1, "description": "Suave"}],
@@ -149,7 +149,7 @@ class WebAppTests(unittest.TestCase):
             self.assertFalse(stale_upload.exists())
             synced_payload = yaml.safe_load(Path(seen_command["workout_file"]).read_text(encoding="utf-8"))
             self.assertEqual(synced_payload["workout"]["schedule_date"], "2026-05-13")
-            self.assertEqual(synced_payload["workout"]["sport"], "fitness_equipment")
+            self.assertEqual(synced_payload["workout"]["sport"], "elliptical")
             self.assertEqual(synced_payload["workout"]["name"], "Series adaptadas")
 
     def test_apply_planned_workout_replan_triggers_garmin_sync(self) -> None:

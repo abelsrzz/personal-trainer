@@ -34,6 +34,12 @@ python scripts/garmin/sync_garmin.py import-athlete-profile
 python scripts/garmin/athlete_sync.py
 ```
 
+## Regla Operativa
+
+1. Si cambias un archivo en `training/planned/workouts/*.yaml` y esa sesion debe existir en Garmin, el cambio no esta terminado hasta subir y programar esa version en Garmin.
+2. Tras la subida, debe quedar actualizado el fichero `training/planned/workouts/<fecha>/<slug>.garmin_upload.json`.
+3. Si Garmin falla, no basta con dejar el YAML local cambiado: hay que dejar el error explicitado como bloqueo.
+
 ## Salida
 
 - `training/completed/imports/garmin/activities/`

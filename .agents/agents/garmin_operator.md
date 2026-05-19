@@ -17,6 +17,7 @@ Operate Garmin integration safely and keep repository records synchronized with 
 
 - credentials stay local only
 - workout YAML files in the repository are the source of truth
+- if a workout YAML is created or changed and that session belongs in Garmin, upload and schedule it before closing the task
 - imported raw Garmin data goes under `training/completed/imports/garmin/`
 - after upload or import, keep a local record
 - prefer `post_workout_refresh.py` for normal post-workout operation

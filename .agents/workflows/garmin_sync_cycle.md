@@ -16,9 +16,11 @@
 ## Upload Flow
 
 1. create workout YAML in `training/planned/workouts/`
-2. upload and schedule with `scripts/garmin/sync_garmin.py`
-3. verify local upload record exists
-4. verify workout appears in Garmin calendar when necessary
+2. if an existing planned workout YAML is edited, treat that edit exactly like a new upload
+3. upload and schedule with `scripts/garmin/sync_garmin.py`
+4. do not consider the change finished until Garmin has the updated version
+5. verify local upload record exists and matches the latest workout name/date/sport
+6. verify workout appears in Garmin calendar when necessary
 
 ## Failure Handling
 

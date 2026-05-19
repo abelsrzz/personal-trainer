@@ -39,3 +39,7 @@ When adding a feature:
 ## Garmin-First Rule
 
 Before requesting athlete input for HRV, readiness, resting heart rate, shoe mileage or similar operational metrics, the system must attempt to refresh Garmin data first.
+
+## Planned Workout Sync Rule
+
+If a task creates or edits a planned workout YAML that is meant to exist in Garmin calendar, the task is not complete until the updated workout has been uploaded and scheduled in Garmin and the local Garmin upload record has been refreshed.

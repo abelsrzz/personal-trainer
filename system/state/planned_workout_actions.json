@@ -1,0 +1,36 @@
+{
+  "workouts": {
+    "2026-05-12_rodaje_6km_recuperacion": {
+      "action": "replanned",
+      "label": "Replanificacion aplicada",
+      "updated_at": "2026-05-12T18:34:08.232485",
+      "date": "2026-05-12",
+      "name": "Alternativa: Alternativa: Eliptica 42 min recuperacion",
+      "updated_by": "change-me"
+    },
+    "2026-05-16_rodaje_5km_facil": {
+      "action": "replanned",
+      "label": "Replanificacion aplicada",
+      "updated_at": "2026-05-16T15:58:58.195171",
+      "date": "2026-05-16",
+      "name": "Rodaje 5 km facil",
+      "updated_by": "change-me"
+    },
+    "2026-05-19_rodaje_5km_reintroduccion": {
+      "action": "done",
+      "label": "Marcada como hecha",
+      "updated_at": "2026-05-19T18:24:44.075999",
+      "date": "2026-05-19",
+      "name": "Eliptica aerobica estable 55 min",
+      "updated_by": "change-me"
+    },
+    "2026-05-20_rodaje_6km_rectas_suaves": {
+      "action": "done",
+      "label": "Marcada como hecha",
+      "updated_at": "2026-05-20T18:07:39.000996",
+      "date": "2026-05-20",
+      "name": "Bicicleta aerobica de continuidad 70 min",
+      "updated_by": "change-me"
+    }
+  }
+}

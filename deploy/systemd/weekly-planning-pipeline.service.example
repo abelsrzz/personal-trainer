@@ -1,0 +1,12 @@
+[Unit]
+Description=RunPilot weekly planning preparation pipeline
+After=network.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/abel/Documentos/Proyectos/personal-trainer
+ExecStart=/home/abel/Documentos/Proyectos/personal-trainer/.venv/bin/python scripts/system/weekly_planning_pipeline.py plan-next --source timer
+Environment=PATH=/home/abel/Documentos/Proyectos/personal-trainer/.venv/bin:/usr/local/bin:/usr/bin:/bin
+
+[Install]
+WantedBy=multi-user.target

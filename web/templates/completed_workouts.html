@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Completados | RunPilot{% endblock %}
+{% block content %}
+<section class="panel compact-panel">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Historial</p>
+      <h2>Entrenamientos completados</h2>
+    </div>
+    <span class="badge">{{ reviews|length }} revisiones</span>
+  </div>
+  <p class="muted">Usa esta vista para cerrar el loop: qué se hizo, cómo salió y qué feedback queda pendiente.</p>
+  <div class="list">
+    {% for review in reviews %}
+    <div class="list-item static {{ review.session_color_class }} {{ 'status-' + review.payload.traffic_light if review.payload.traffic_light else '' }}">
+      <div>
+        <strong><a href="/calendar/day/{{ review.date }}">{{ review.date }}</a></strong>
+        <p><a href="/completed-workouts/{{ review.slug }}">{{ review.name }}</a></p>
+        <p class="muted">{{ review.distance_km }} km · {{ review.duration }} · {{ review.pace }}</p>
+        {% if review.feedback_summary %}
+        <p>{{ review.feedback_summary }}</p>
+        {% endif %}
+      </div>
+      <div class="item-meta">
+        <span class="badge kind-badge">{{ review.session_kind_label }}</span>
+        {% if review.feedback_badge %}
+        <span class="badge {{ review.feedback_badge.tone }}">{{ review.feedback_badge.label }}</span>
+        {% endif %}
+        {% if review.garmin_activity_url %}
+        <a class="link-pill" href="{{ review.garmin_activity_url }}" target="_blank" rel="noreferrer">Garmin</a>
+        {% endif %}
+        <span class="badge">{{ review.traffic_light }}</span>
+        <span>{{ review.score }}/10</span>
+      </div>
+    </div>
+    {% else %}
+    <p class="muted">Todavía no hay revisiones generadas.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

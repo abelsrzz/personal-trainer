@@ -1,0 +1,10 @@
+id: xxix_carreira_popular_concello_de_ordes_2026
+name: XXIX CARREIRA POPULAR CONCELLO DE ORDES
+date: 2026-05-24
+distance: 8.5k
+elevation_gain_m: 125
+priority: B
+goal:
+  type: pace_range
+  value: 4:10-4:20/km
+notes: Tune-up race immediately before the start of the main S-race build.

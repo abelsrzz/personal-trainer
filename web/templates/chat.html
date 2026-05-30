@@ -1,0 +1,300 @@
+{% extends "base.html" %}
+{% block title %}Chat | RunPilot{% endblock %}
+{% block content %}
+<section class="hero compact">
+  <div>
+    <p class="eyebrow">OpenCode remoto</p>
+    <h2>Chat operativo</h2>
+    <p class="muted">Misma base remota de OpenCode que el canal actual, con sesion propia para la web.</p>
+  </div>
+  <div class="hero-meta">
+    <span>Modelo: <strong id="chat-active-model">{{ chat_state.active_model }}</strong></span>
+    <span>Sesion: <strong id="chat-session-id">{{ chat_state.session_id or '-' }}</strong></span>
+  </div>
+</section>
+
+<section class="split chat-layout">
+  <section class="panel chat-panel">
+    <div class="panel-head">
+      <div>
+        <p class="eyebrow">Conversacion</p>
+        <h3>Contexto persistente</h3>
+      </div>
+      <span class="badge" id="chat-status-pill">Listo</span>
+    </div>
+
+    <div class="chat-runtime-note{% if chat_state.available %} hidden{% endif %}" id="chat-runtime-note">
+      {{ chat_state.error or 'El chat no esta disponible ahora mismo.' }}
+    </div>
+
+    <div class="chat-confirmation hidden" id="chat-confirmation">
+      <div>
+        <strong>Confirmacion requerida</strong>
+        <p class="muted" id="chat-confirmation-reason"></p>
+        <p class="muted" id="chat-confirmation-preview"></p>
+      </div>
+      <div class="inline-actions">
+        <form id="chat-confirm-form">
+          <button class="mini-action mini-action-warn" type="submit">Confirmar</button>
+        </form>
+        <form id="chat-cancel-confirm-form">
+          <button class="mini-action" type="submit">Cancelar</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="chat-thread" id="chat-thread"></div>
+
+    <form class="form chat-composer" id="chat-form">
+      <label>Mensaje
+        <textarea name="message" id="chat-message" placeholder="Escribe una peticion para OpenCode" required></textarea>
+      </label>
+      <div class="chat-composer-actions">
+        <p class="muted" id="chat-status-text">Las respuestas largas se mantienen en historial y las acciones sensibles piden confirmacion.</p>
+        <button type="submit" id="chat-send-button"{% if not chat_state.available %} disabled{% endif %}>Enviar</button>
+      </div>
+    </form>
+  </section>
+
+  <aside class="panel chat-side-panel">
+    <p class="eyebrow">Sesion</p>
+    <h3>Controles</h3>
+    <p class="muted">La sesion web es independiente de Telegram y reutiliza el mismo `session_store` remoto.</p>
+    <form class="form" id="chat-model-form">
+      <label>Modelo activo
+        <input type="text" name="model" id="chat-model-input" value="{{ chat_state.active_model }}" list="chat-model-suggestions"{% if not chat_state.available %} disabled{% endif %}>
+      </label>
+      <datalist id="chat-model-suggestions">
+        <option value="{{ chat_state.default_model }}"></option>
+        <option value="openai/gpt-5.4"></option>
+        <option value="openai/gpt-5.5"></option>
+        <option value="gpt-5.4"></option>
+      </datalist>
+      <div class="inline-actions">
+        <button type="submit" class="mini-action"{% if not chat_state.available %} disabled{% endif %}>Guardar modelo</button>
+        <button type="button" class="mini-action" id="chat-model-reset"{% if not chat_state.available %} disabled{% endif %}>Reset modelo</button>
+      </div>
+    </form>
+    <form id="chat-reset-form">
+      <button class="cta-button cta-subtle" type="submit"{% if not chat_state.available %} disabled{% endif %}>Nueva sesion</button>
+    </form>
+    <p class="muted small">Config: {{ chat_state.config_path }}</p>
+  </aside>
+</section>
+
+<script>
+  const initialChatState = {{ chat_state | tojson }};
+
+  const state = {
+    data: initialChatState,
+    busy: false,
+  };
+
+  const threadEl = document.getElementById("chat-thread");
+  const statusTextEl = document.getElementById("chat-status-text");
+  const statusPillEl = document.getElementById("chat-status-pill");
+  const activeModelEl = document.getElementById("chat-active-model");
+  const sessionIdEl = document.getElementById("chat-session-id");
+  const runtimeNoteEl = document.getElementById("chat-runtime-note");
+  const confirmationEl = document.getElementById("chat-confirmation");
+  const confirmationReasonEl = document.getElementById("chat-confirmation-reason");
+  const confirmationPreviewEl = document.getElementById("chat-confirmation-preview");
+  const messageEl = document.getElementById("chat-message");
+  const sendButtonEl = document.getElementById("chat-send-button");
+  const modelInputEl = document.getElementById("chat-model-input");
+
+  function formatTimestamp(value) {
+    if (!value) return "";
+    const parsed = new Date(value);
+    return Number.isNaN(parsed.getTime()) ? value : parsed.toLocaleString();
+  }
+
+  function escapeHtml(value) {
+    return String(value || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/\"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  function setBusy(nextBusy, text) {
+    state.busy = nextBusy;
+    sendButtonEl.disabled = nextBusy || !state.data.available;
+    messageEl.disabled = nextBusy || !state.data.available;
+    modelInputEl.disabled = nextBusy || !state.data.available;
+    statusPillEl.textContent = nextBusy ? "Procesando" : "Listo";
+    if (text) {
+      statusTextEl.textContent = text;
+    } else if (nextBusy) {
+      statusTextEl.textContent = "OpenCode esta procesando la peticion.";
+    }
+  }
+
+  function renderThread() {
+    const history = Array.isArray(state.data.history) ? state.data.history : [];
+    if (!history.length) {
+      threadEl.innerHTML = '<div class="empty-state-inline">Todavia no hay mensajes en esta sesion.</div>';
+      return;
+    }
+
+    threadEl.innerHTML = history.map((item) => {
+      const roleLabel = item.role === "assistant" ? "OpenCode" : "Tu";
+      const toneClass = item.role === "assistant" ? "assistant" : "user";
+      const errorBadge = item.error ? '<span class="badge warn">Incidencia</span>' : "";
+      const modelBadge = item.model ? `<span class="badge">${escapeHtml(item.model)}</span>` : "";
+      return `
+        <article class="chat-bubble ${toneClass}">
+          <div class="chat-bubble-head">
+            <strong>${escapeHtml(roleLabel)}</strong>
+            <div class="chat-bubble-meta">
+              ${modelBadge}
+              ${errorBadge}
+              <span class="meta-kicker">${escapeHtml(formatTimestamp(item.created_at))}</span>
+            </div>
+          </div>
+          <div class="raw chat-bubble-body">${escapeHtml(item.text || "")}</div>
+        </article>
+      `;
+    }).join("");
+    threadEl.scrollTop = threadEl.scrollHeight;
+  }
+
+  function renderConfirmation() {
+    const pending = state.data.pending_confirmation;
+    if (!pending || !pending.id) {
+      confirmationEl.classList.add("hidden");
+      return;
+    }
+    confirmationEl.classList.remove("hidden");
+    confirmationReasonEl.textContent = pending.reason || "Accion sensible detectada.";
+    confirmationPreviewEl.textContent = pending.preview || "";
+  }
+
+  function renderRuntime() {
+    activeModelEl.textContent = state.data.active_model || "-";
+    sessionIdEl.textContent = state.data.session_id || "-";
+    modelInputEl.value = state.data.active_model || state.data.default_model || "";
+    if (state.data.available) {
+      runtimeNoteEl.classList.add("hidden");
+    } else {
+      runtimeNoteEl.classList.remove("hidden");
+      runtimeNoteEl.textContent = state.data.error || "El chat no esta disponible ahora mismo.";
+    }
+    renderConfirmation();
+    renderThread();
+  }
+
+  async function postJson(url, payload) {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload || {}),
+    });
+    const data = await response.json();
+    if (data && data.state) {
+      state.data = data.state;
+      renderRuntime();
+    }
+    if (!response.ok || data.ok === false) {
+      throw new Error(data.error || data.message || "No se pudo completar la accion.");
+    }
+    return data;
+  }
+
+  async function refreshState() {
+    const response = await fetch("/chat/state");
+    const data = await response.json();
+    if (data && data.state) {
+      state.data = data.state;
+      renderRuntime();
+    }
+    return data;
+  }
+
+  document.getElementById("chat-form").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const message = messageEl.value.trim();
+    if (!message) return;
+    setBusy(true, "OpenCode esta procesando la peticion.");
+    try {
+      const data = await postJson("/chat", { message });
+      messageEl.value = "";
+      statusTextEl.textContent = data.message || (data.needs_confirmation ? "Confirma la accion sensible para continuar." : "Respuesta recibida.");
+    } catch (error) {
+      statusTextEl.textContent = error.message;
+    } finally {
+      setBusy(false);
+    }
+  });
+
+  document.getElementById("chat-confirm-form").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const pending = state.data.pending_confirmation;
+    if (!pending || !pending.id) return;
+    setBusy(true, "Confirmando accion sensible.");
+    try {
+      await postJson("/chat/confirm", { confirmation_id: pending.id });
+      statusTextEl.textContent = "Accion confirmada y enviada a OpenCode.";
+    } catch (error) {
+      statusTextEl.textContent = error.message;
+    } finally {
+      setBusy(false);
+    }
+  });
+
+  document.getElementById("chat-cancel-confirm-form").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    setBusy(true, "Cancelando confirmacion.");
+    try {
+      await postJson("/chat/cancel", {});
+      statusTextEl.textContent = "Confirmacion cancelada.";
+    } catch (error) {
+      statusTextEl.textContent = error.message;
+    } finally {
+      setBusy(false);
+    }
+  });
+
+  document.getElementById("chat-model-form").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    setBusy(true, "Guardando modelo activo.");
+    try {
+      await postJson("/chat/model", { model: modelInputEl.value.trim() });
+      statusTextEl.textContent = "Modelo actualizado.";
+    } catch (error) {
+      statusTextEl.textContent = error.message;
+    } finally {
+      setBusy(false);
+    }
+  });
+
+  document.getElementById("chat-model-reset").addEventListener("click", async () => {
+    setBusy(true, "Reseteando modelo.");
+    try {
+      await postJson("/chat/model", { action: "reset" });
+      statusTextEl.textContent = "Modelo reseteado al valor por defecto.";
+    } catch (error) {
+      statusTextEl.textContent = error.message;
+    } finally {
+      setBusy(false);
+    }
+  });
+
+  document.getElementById("chat-reset-form").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    setBusy(true, "Reiniciando sesion.");
+    try {
+      await postJson("/chat/reset", {});
+      statusTextEl.textContent = "Sesion reiniciada.";
+    } catch (error) {
+      statusTextEl.textContent = error.message;
+    } finally {
+      setBusy(false);
+    }
+  });
+
+  renderRuntime();
+  refreshState().catch(() => {});
+</script>
+{% endblock %}

@@ -1,0 +1,32 @@
+workout:
+  name: Bicicleta larga 115 min
+  schedule_date: 2026-06-07
+  sport: cycling
+  description: Trabajo largo, comodo y en Z2 de base aerobica para seguir mejorando eficiencia sin impacto.
+  estimated_duration_s: 6900
+  steps:
+  - order: 1
+    step_type: warmup
+    description: 10 min suaves
+    duration_s: 600
+    target:
+      type: heart_rate_range
+      min_bpm: 120
+      max_bpm: 138
+  - order: 2
+    step_type: interval
+    description: 95 min Z2 baja y continua
+    duration_s: 5700
+    target:
+      type: heart_rate_range
+      min_bpm: 145
+      max_bpm: 155
+  - order: 3
+    step_type: cooldown
+    description: 10 min suaves
+    duration_s: 600
+    target:
+      type: heart_rate_range
+      min_bpm: 115
+      max_bpm: 135
+  primary_goal: Base aerobica

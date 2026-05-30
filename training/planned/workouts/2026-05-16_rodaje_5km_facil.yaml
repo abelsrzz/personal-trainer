@@ -1,0 +1,21 @@
+workout:
+  name: Rodaje 5 km facil
+  schedule_date: 2026-05-16
+  sport: running
+  description: Rodaje corto para consolidar sin fatiga tras la sesion controlada del
+    viernes.
+  estimated_duration_s: 2100
+  steps:
+  - order: 1
+    step_type: interval
+    description: 5 km faciles
+    distance_m: 5000
+    target:
+      type: heart_rate_range
+      min_bpm: 135
+      max_bpm: 150
+  template_id: easy_recovery
+  template_id_source: inferred
+  knowledge_id: 30_suave
+  knowledge_label: 30' suave
+  primary_goal: Recuperacion

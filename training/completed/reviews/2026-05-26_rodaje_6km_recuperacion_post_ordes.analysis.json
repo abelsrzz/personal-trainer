@@ -1,0 +1,649 @@
+{
+  "planned": {
+    "name": "Bicicleta recuperacion post-Ordes 50 min",
+    "date": "2026-05-26",
+    "sport": "cycling",
+    "goal_category": "recovery_easy",
+    "template_id": null,
+    "knowledge_id": "40_regenerativo_muy_suave",
+    "knowledge_label": null,
+    "primary_goal": "Recuperacion",
+    "description": "Carga muy controlada para absorber Ordes, mover sangre y recuperar sin impacto.",
+    "estimated_duration_s": 3000,
+    "distance_m": null,
+    "primary_hr_min": 115.0,
+    "primary_hr_max": 150.0
+  },
+  "summary": {
+    "activity_id": 23017054300,
+    "activity_name": "Ordes - Bicicleta recuperacion post-Ordes 50 min",
+    "start_time_local": "2026-05-26 11:16:48",
+    "distance_m": 17286.259765625,
+    "duration_s": 3241.177001953125,
+    "elapsed_s": 3378.118896484375,
+    "moving_s": 3226.0,
+    "pace_s_per_km": 187.50019066579364,
+    "moving_pace_s_per_km": 186.62220999450315,
+    "avg_hr": 137.0,
+    "max_hr": 169.0,
+    "avg_cadence_spm": null,
+    "max_cadence_spm": null,
+    "avg_power_w": null,
+    "max_power_w": null,
+    "elevation_gain_m": 252.0,
+    "elevation_loss_m": 286.0,
+    "avg_stride_cm": null,
+    "avg_gct_ms": null,
+    "avg_vo_cm": null,
+    "avg_vr": null,
+    "calories": 375.0,
+    "water_estimated_ml": 565.0,
+    "aerobic_training_effect": 2.5999999046325684,
+    "anaerobic_training_effect": 0.4000000059604645,
+    "training_effect_label": "AEROBIC_BASE",
+    "min_temp_c": 20.0,
+    "max_temp_c": 27.0,
+    "gap_pace_s_per_km": null
+  },
+  "compliance": {
+    "distance_diff_m": null,
+    "duration_diff_s_vs_est": 241.177001953125,
+    "hr_evaluable_time_s": 3241.177001953125,
+    "time_in_hr_zone_s": 2362.4708007812496,
+    "time_below_hr_zone_s": 310.70620117187514,
+    "time_above_hr_zone_s": 568.0,
+    "pct_in_hr_zone": 72.88928680407243,
+    "pct_below_hr_zone": 9.58621516148746,
+    "pct_above_hr_zone": 17.5244980344401,
+    "time_to_enter_zone_s": 26.0,
+    "distance_to_enter_zone_m": 77.68000030517578
+  },
+  "stability": {
+    "pace_std_s_per_km": 52.41140641253014,
+    "hr_std_bpm": 11.82491635498527,
+    "cadence_std_spm": null,
+    "power_std_w": null
+  },
+  "halves": {
+    "first_half_pace_s_per_km": 184.61984201827573,
+    "second_half_pace_s_per_km": 190.47475299624537,
+    "first_half_hr": 139.29273362199913,
+    "second_half_hr": 135.01805236467922,
+    "first_half_power_w": null,
+    "second_half_power_w": null,
+    "efficiency_first": 0.03888599029927977,
+    "efficiency_second": 0.03888398276298503,
+    "efficiency_change_pct": -0.005162620983267807,
+    "decoupling_pct": -6.048366927395154
+  },
+  "splits": [
+    {
+      "label": "1",
+      "distance_m": 1000.0,
+      "duration_s": 191.3733542807523,
+      "pace_s_per_km": 191.3733542807523,
+      "avg_hr": 124.45617718011866,
+      "avg_cadence_spm": null,
+      "avg_power_w": null,
+      "avg_gct_ms": null,
+      "avg_vo_cm": null,
+      "avg_vr": null,
+      "avg_stride_cm": null,
+      "avg_temp_c": 22.70870182648457,
+      "avg_elevation_m": 259.35234853637536,
+      "avg_gap_pace_s_per_km": null
+    },
+    {
+      "label": "2",
+      "distance_m": 1000.0,
+      "duration_s": 193.7375385400247,
+      "pace_s_per_km": 193.7375385400247,
+      "avg_hr": 133.04189917197098,
+      "avg_cadence_spm": null,
+      "avg_power_w": null,
+      "avg_gct_ms": null,
+      "avg_vo_cm": null,
+      "avg_vr": null,
+      "avg_stride_cm": null,
+      "avg_temp_c": 20.36712888093473,
+      "avg_elevation_m": 303.58147292495266,
+      "avg_gap_pace_s_per_km": null
+    },
+    {
+      "label": "3",
+      "distance_m": 1000.0,
+      "duration_s": 201.8797328937265,
+      "pace_s_per_km": 201.8797328937265,
+      "avg_hr": 125.94645215297177,
+      "avg_cadence_spm": null,
+      "avg_power_w": null,
+      "avg_gct_ms": null,
+      "avg_vo_cm": null,
+      "avg_vr": null,
+      "avg_stride_cm": null,
+      "avg_temp_c": 20.822225308777696,
+      "avg_elevation_m": 282.90124843303727,
+      "avg_gap_pace_s_per_km": null
+    },
+    {
+      "label": "4",
+      "distance_m": 1000.0,
+      "duration_s": 193.73695089691773,
+      "pace_s_per_km": 193.73695089691773,
+      "avg_hr": 127.00336327786115,
+      "avg_cadence_spm": null,
+      "avg_power_w": null,
+      "avg_gct_ms": null,
+      "avg_vo_cm": null,
+      "avg_vr": null,
+      "avg_stride_cm": null,
+      "avg_temp_c": 21.5302425589741,
+      "avg_elevation_m": 274.40353218666735,
+      "avg_gap_pace_s_per_km": null
+    },
+    {
+      "label": "5",
+      "distance_m": 1000.0,
+      "duration_s": 168.34363877574503,
+      "pace_s_per_km": 168.34363877574503,
+      "avg_hr": 142.1678997547717,
+      "avg_cadence_spm": null,
+      "avg_power_w": null,
+      "avg_gct_ms": null,
+      "avg_vo_cm": null,
+      "avg_vr": null,
+      "avg_stride_cm": null,
+      "avg_temp_c": 22.671669070536083,
+      "avg_elevation_m": 239.12835241050144,
+      "avg_gap_pace_s_per_km": null
+    },
+    {
+      "label": "6",
+      "distance_m": 1000.0,
+      "duration_s": 179.25145276593673,
+      "pace_s_per_km": 179.25145276593673,
+      "avg_hr": 152.87972812222804,
+      "avg_cadence_spm": null,
+      "avg_power_w": null,
+      "avg_gct_ms": null,
+      "avg_vo_cm": null,
+      "avg_vr": null,
+      "avg_stride_cm": null,
+      "avg_temp_c": 23.961346005815187,
+      "avg_elevation_m": 206.59747616239193,
+      "avg_gap_pace_s_per_km": null
+    },
+    {
+      "label": "7",
+      "distance_m": 1000.0,
+      "duration_s": 209.08000528923026,
+      "pace_s_per_km": 209.08000528923026,
+      "avg_hr": 150.8970731237674,
+      "avg_cadence_spm": null,
+      "avg_power_w": null,
+      "avg_gct_ms": null,
+      "avg_vo_cm": null,
+      "avg_vr": null,
+      "avg_stride_cm": null,
+      "avg_temp_c": 24.93458326238333,
+      "avg_elevation_m": 182.99925874082805,
+      "avg_gap_pace_s_per_km": null
+    },
+    {
+      "label": "8",
+      "distance_m": 1000.0,
+      "duration_s": 135.31701698482402,
+      "pace_s_per_km": 135.31701698482402,
+      "avg_hr": 159.6970530381421,
+      "avg_cadence_spm": null,
+      "avg_power_w": null,
+      "avg_gct_ms": null,
+      "avg_vo_cm": null,
+      "avg_vr": null,
+      "avg_stride_cm": null,
+      "avg_temp_c": 25.177361284890665,
+      "avg_elevation_m": 178.96898492747513,
+      "avg_gap_pace_s_per_km": null
+    },
+    {
+      "label": "9",
+      "distance_m": 1000.0,
+      "duration_s": 181.89209884364254,
+      "pace_s_per_km": 181.89209884364254,
+      "avg_hr": 145.33751922584887,
+      "avg_cadence_spm": null,
+      "avg_power_w": null,
+      "avg_gct_ms": null,
+      "avg_vo_cm": null,
+      "avg_vr": null,
+      "avg_stride_cm": null,
+      "avg_temp_c": 25.762055032362642,
+      "avg_elevation_m": 178.85668032793146,
+      "avg_gap_pace_s_per_km": null
+    },
+    {
+      "label": "10",
+      "distance_m": 1000.0,
+      "duration_s": 197.58208291294704,
+      "pace_s_per_km": 197.58208291294704,
+      "avg_hr": 146.36437538954496,
+      "avg_cadence_spm": null,
+      "avg_power_w": null,
+      "avg_gct_ms": null,
+      "avg_vo_cm": null,
+      "avg_vr": null,
+      "avg_stride_cm": null,
+      "avg_temp_c": 25.999999999999996,
+      "avg_elevation_m": 166.24798450793048,
+      "avg_gap_pace_s_per_km": null
+    },
+    {
+      "label": "11",
+      "distance_m": 1000.0,
+      "duration_s": 171.23973599284,
+      "pace_s_per_km": 171.23973599284,
+      "avg_hr": 132.18189763612318,
+      "avg_cadence_spm": null,
+      "avg_power_w": null,
+      "avg_gct_ms": null,
+      "avg_vo_cm": null,
+      "avg_vr": null,
+      "avg_stride_cm": null,
+      "avg_temp_c": 26.04671812855594,
+      "avg_elevation_m": 160.52725262721674,
+      "avg_gap_pace_s_per_km": null
+    },
+    {
+      "label": "12",
+      "distance_m": 1000.0,
+      "duration_s": 234.48970581906224,
+      "pace_s_per_km": 234.48970581906224,
+      "avg_hr": 141.87441438925825,
+      "avg_cadence_spm": null,
+      "avg_power_w": null,
+      "avg_gct_ms": null,
+      "avg_vo_cm": null,
+      "avg_vr": null,
+      "avg_stride_cm": null,
+      "avg_temp_c": 25.69688781963335,
+      "avg_elevation_m": 169.53537308067226,
+      "avg_gap_pace_s_per_km": null
+    },
+    {
+      "label": "13",
+      "distance_m": 1000.0,
+      "duration_s": 144.20273249307365,
+      "pace_s_per_km": 144.20273249307365,
+      "avg_hr": 148.43515508489665,
+      "avg_cadence_spm": null,
+      "avg_power_w": null,
+      "avg_gct_ms": null,
+      "avg_vo_cm": null,
+      "avg_vr": null,
+      "avg_stride_cm": null,
+      "avg_temp_c": 27.000000000000004,
+      "avg_elevation_m": 151.84472910988268,
+      "avg_gap_pace_s_per_km": null
+    },
+    {
+      "label": "14",
+      "distance_m": 1000.0,
+      "duration_s": 185.81328051569517,
+      "pace_s_per_km": 185.81328051569517,
+      "avg_hr": 134.6795983592713,
+      "avg_cadence_spm": null,
+      "avg_power_w": null,
+      "avg_gct_ms": null,
+      "avg_vo_cm": null,
+      "avg_vr": null,
+      "avg_stride_cm": null,
+      "avg_temp_c": 25.830994945490417,
+      "avg_elevation_m": 177.9783952703325,
+      "avg_gap_pace_s_per_km": null
+    },
+    {
+      "label": "15",
+      "distance_m": 1000.0,
+      "duration_s": 214.4752122506966,
+      "pace_s_per_km": 214.4752122506966,
+      "avg_hr": 127.07897603197894,
+      "avg_cadence_spm": null,
+      "avg_power_w": null,
+      "avg_gct_ms": null,
+      "avg_vo_cm": null,
+      "avg_vr": null,
+      "avg_stride_cm": null,
+      "avg_temp_c": 24.14015919452941,
+      "avg_elevation_m": 204.7838115747314,
+      "avg_gap_pace_s_per_km": null
+    },
+    {
+      "label": "16",
+      "distance_m": 1000.0,
+      "duration_s": 193.77071568287374,
+      "pace_s_per_km": 193.77071568287374,
+      "avg_hr": 126.48668314966926,
+      "avg_cadence_spm": null,
+      "avg_power_w": null,
+      "avg_gct_ms": null,
+      "avg_vo_cm": null,
+      "avg_vr": null,
+      "avg_stride_cm": null,
+      "avg_temp_c": 22.92224669251535,
+      "avg_elevation_m": 236.28925445027087,
+      "avg_gap_pace_s_per_km": null
+    },
+    {
+      "label": "17",
+      "distance_m": 1000.0,
+      "duration_s": 176.57055788898333,
+      "pace_s_per_km": 176.57055788898333,
+      "avg_hr": 126.2729789642694,
+      "avg_cadence_spm": null,
+      "avg_power_w": null,
+      "avg_gct_ms": null,
+      "avg_vo_cm": null,
+      "avg_vr": null,
+      "avg_stride_cm": null,
+      "avg_temp_c": 21.999999999999996,
+      "avg_elevation_m": 247.69899638370143,
+      "avg_gap_pace_s_per_km": null
+    },
+    {
+      "label": "0.29",
+      "distance_m": 286.259765625,
+      "duration_s": 68.42118912615342,
+      "pace_s_per_km": 239.01783394801316,
+      "avg_hr": 125.0218095402365,
+      "avg_cadence_spm": null,
+      "avg_power_w": null,
+      "avg_gct_ms": null,
+      "avg_vo_cm": null,
+      "avg_vr": null,
+      "avg_stride_cm": null,
+      "avg_temp_c": 22.688703345251,
+      "avg_elevation_m": 228.7804571220971,
+      "avg_gap_pace_s_per_km": null
+    }
+  ],
+  "score": 10,
+  "traffic_light": "verde",
+  "risk_level": "bajo",
+  "stimulus_alignment": {
+    "planned_knowledge": {
+      "label": "40' regenerativo muy suave",
+      "goals": [
+        "recuperacion"
+      ],
+      "id": "40_regenerativo_muy_suave",
+      "category": "base_aerobica_y_recuperacion",
+      "goal_labels": [
+        "Recuperacion"
+      ],
+      "primary_goal": "Recuperacion",
+      "summary": "Esta sesion se usa sobre todo para recuperacion."
+    },
+    "actual_goals": [
+      "fondo_largo",
+      "base_aerobica",
+      "ritmo_5k"
+    ],
+    "overlap": [],
+    "alignment": "drifted",
+    "summary": "El estimulo real se desvia del objetivo previsto. Previsto: recuperacion. Real observado: fondo_largo, base_aerobica, ritmo_5k."
+  },
+  "progression": {
+    "comparable_count": 0,
+    "matches": [],
+    "trend": "insufficient_data",
+    "summary": "Aun no hay sesiones comparables previas para medir progresion o regresion."
+  },
+  "coaching_summary": "Objetivo: Carga muy controlada para absorber Ordes, mover sangre y recuperar sin impacto.. Bien: Se completo la sesion con estabilidad mecanica y una deriva cardiaca baja (-6.0%). A mejorar: Hubo algunos tramos por encima del techo de FC (17.5% del tiempo), aunque dentro de un desvio relativamente normal para un rodaje al aire libre. Impacto: duracion 54:01, ritmo medio 3:08/km, FC 137.0 / 169.0 bpm, temperatura 20.0-27.0 C, desnivel +252.0 m. Sesion bien alineada con el objetivo del dia y sin senales relevantes de exceso. Si las sensaciones posteriores son normales, no deberia condicionar la planificacion inmediata.",
+  "recovery_analysis": {
+    "status": "complete",
+    "resting_hr_bpm": 53,
+    "normal_hr_bpm": 128,
+    "finish_hr_bpm": 128,
+    "finish_timestamp_gmt": "2026-05-26T10:13:07+00:00",
+    "time_to_normal_s": 53.0,
+    "time_to_140_s": 53.0,
+    "hrr_1min_bpm": 5,
+    "hrr_3min_bpm": 11,
+    "hrr_5min_bpm": 9,
+    "marks": [
+      {
+        "minute": 1,
+        "timestamp_gmt": "2026-05-26T10:14:00+00:00",
+        "hr": 123,
+        "drop": 5
+      },
+      {
+        "minute": 2,
+        "timestamp_gmt": "2026-05-26T10:16:00+00:00",
+        "hr": 117,
+        "drop": 11
+      },
+      {
+        "minute": 3,
+        "timestamp_gmt": "2026-05-26T10:16:00+00:00",
+        "hr": 117,
+        "drop": 11
+      },
+      {
+        "minute": 5,
+        "timestamp_gmt": "2026-05-26T10:18:00+00:00",
+        "hr": 119,
+        "drop": 9
+      },
+      {
+        "minute": 10,
+        "timestamp_gmt": "2026-05-26T10:24:00+00:00",
+        "hr": 90,
+        "drop": 38
+      },
+      {
+        "minute": 15,
+        "timestamp_gmt": "2026-05-26T10:28:00+00:00",
+        "hr": 90,
+        "drop": 38
+      },
+      {
+        "minute": 20,
+        "timestamp_gmt": "2026-05-26T10:34:00+00:00",
+        "hr": 101,
+        "drop": 27
+      },
+      {
+        "minute": 30,
+        "timestamp_gmt": "2026-05-26T10:44:00+00:00",
+        "hr": 87,
+        "drop": 41
+      }
+    ],
+    "chart": {
+      "points": [
+        {
+          "minute": 0.0,
+          "hr": 128,
+          "label": "0m"
+        },
+        {
+          "minute": 0.88,
+          "hr": 123,
+          "label": "1m"
+        },
+        {
+          "minute": 2.88,
+          "hr": 117,
+          "label": "3m"
+        },
+        {
+          "minute": 4.88,
+          "hr": 119,
+          "label": "5m"
+        },
+        {
+          "minute": 6.88,
+          "hr": 113,
+          "label": "7m"
+        },
+        {
+          "minute": 8.88,
+          "hr": 93,
+          "label": "9m"
+        },
+        {
+          "minute": 10.88,
+          "hr": 90,
+          "label": "11m"
+        },
+        {
+          "minute": 12.88,
+          "hr": 92,
+          "label": "13m"
+        },
+        {
+          "minute": 14.88,
+          "hr": 90,
+          "label": "15m"
+        },
+        {
+          "minute": 16.88,
+          "hr": 97,
+          "label": "17m"
+        },
+        {
+          "minute": 18.88,
+          "hr": 94,
+          "label": "19m"
+        },
+        {
+          "minute": 20.88,
+          "hr": 101,
+          "label": "21m"
+        },
+        {
+          "minute": 22.88,
+          "hr": 109,
+          "label": "23m"
+        },
+        {
+          "minute": 24.88,
+          "hr": 104,
+          "label": "25m"
+        },
+        {
+          "minute": 26.88,
+          "hr": 95,
+          "label": "27m"
+        },
+        {
+          "minute": 28.88,
+          "hr": 101,
+          "label": "29m"
+        }
+      ],
+      "bars": [
+        {
+          "minute": 0.0,
+          "label": "0m",
+          "hr": 128,
+          "height_pct": 100.0
+        },
+        {
+          "minute": 0.88,
+          "label": "1m",
+          "hr": 123,
+          "height_pct": 89.2
+        },
+        {
+          "minute": 2.88,
+          "label": "3m",
+          "hr": 117,
+          "height_pct": 76.3
+        },
+        {
+          "minute": 4.88,
+          "label": "5m",
+          "hr": 119,
+          "height_pct": 80.6
+        },
+        {
+          "minute": 6.88,
+          "label": "7m",
+          "hr": 113,
+          "height_pct": 67.6
+        },
+        {
+          "minute": 8.88,
+          "label": "9m",
+          "hr": 93,
+          "height_pct": 24.5
+        },
+        {
+          "minute": 10.88,
+          "label": "11m",
+          "hr": 90,
+          "height_pct": 18.0
+        },
+        {
+          "minute": 12.88,
+          "label": "13m",
+          "hr": 92,
+          "height_pct": 22.3
+        },
+        {
+          "minute": 14.88,
+          "label": "15m",
+          "hr": 90,
+          "height_pct": 18.0
+        },
+        {
+          "minute": 16.88,
+          "label": "17m",
+          "hr": 97,
+          "height_pct": 33.1
+        },
+        {
+          "minute": 18.88,
+          "label": "19m",
+          "hr": 94,
+          "height_pct": 26.6
+        },
+        {
+          "minute": 20.88,
+          "label": "21m",
+          "hr": 101,
+          "height_pct": 41.7
+        },
+        {
+          "minute": 22.88,
+          "label": "23m",
+          "hr": 109,
+          "height_pct": 59.0
+        },
+        {
+          "minute": 24.88,
+          "label": "25m",
+          "hr": 104,
+          "height_pct": 48.2
+        },
+        {
+          "minute": 26.88,
+          "label": "27m",
+          "hr": 95,
+          "height_pct": 28.8
+        },
+        {
+          "minute": 28.88,
+          "label": "29m",
+          "hr": 101,
+          "height_pct": 41.7
+        }
+      ],
+      "min_hr": 90,
+      "max_hr": 128
+    },
+    "summary": "Recuperaci\u00f3n inicial lenta. Volviste a una FC normal personalizada (<= 128 ppm) en 0.9 min. La curva posterior oscila, se\u00f1al de que seguiste caminando o movi\u00e9ndote tras meta m\u00e1s que quedarte en reposo pasivo."
+  }
+}

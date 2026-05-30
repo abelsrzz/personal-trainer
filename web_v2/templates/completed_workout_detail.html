@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% block title %}{{ page.review.name }} | RunPilot Next{% endblock %}
+{% block content %}
+{% set compliance = page.review.payload.get('compliance', {}) if page.review.payload else {} %}
+{% set progression = page.review.payload.get('progression', {}) if page.review.payload else {} %}
+{% set recovery = page.review.recovery_analysis if page.review.recovery_analysis else {} %}
+<section class="hero-card">
+  <div>
+    <p class="eyebrow">Completado</p>
+    <h1>{{ page.review.name }}</h1>
+    <p class="lede">{{ page.review.feedback_summary or page.review.compliance_note }}</p>
+  </div>
+  <div class="hero-badges">
+    <span class="badge">{{ page.review.date }}</span>
+    <span class="badge">{{ page.review.distance_km }} km</span>
+    <span class="badge">{{ page.review.duration }}</span>
+    <span class="badge">{{ page.review.pace }}</span>
+  </div>
+</section>
+
+<section class="grid grid-4">
+  <article class="panel"><p class="eyebrow">Score</p><h2>{{ page.review.score }}/10</h2></article>
+  <article class="panel"><p class="eyebrow">Riesgo</p><h2>{{ page.review.risk_level }}</h2></article>
+  <article class="panel"><p class="eyebrow">FC media</p><h2>{{ page.review.avg_hr }}</h2></article>
+  <article class="panel"><p class="eyebrow">Garmin</p>{% if page.review.garmin_activity_url %}<a class="text-link" href="{{ page.review.garmin_activity_url }}" target="_blank" rel="noreferrer">Abrir actividad</a>{% else %}<p class="muted">Sin enlace</p>{% endif %}</article>
+</section>
+
+<section class="recovery-section">
+  {% if recovery.get('status') == 'complete' %}
+  <div class="recovery-hero-card">
+    <div class="recovery-copy">
+      <p class="eyebrow">Recovery Pulse</p>
+      <h2>Recuperación de pulso</h2>
+      <p class="recovery-summary">{{ recovery.get('summary') }}</p>
+    </div>
+    <div class="recovery-kpis">
+      <article class="recovery-kpi-card is-primary">
+        <span class="recovery-kpi-label">FC final</span>
+        <strong class="recovery-kpi-value">{{ recovery.get('finish_hr_bpm') }}</strong>
+        <span class="recovery-kpi-unit">ppm</span>
+      </article>
+      <article class="recovery-kpi-card">
+        <span class="recovery-kpi-label">HRR 1'</span>
+        <strong class="recovery-kpi-value">{{ recovery.get('hrr_1min_bpm') if recovery.get('hrr_1min_bpm') is not none else '-' }}</strong>
+        <span class="recovery-kpi-unit">ppm</span>
+      </article>
+      <article class="recovery-kpi-card">
+        <span class="recovery-kpi-label">HRR 3'</span>
+        <strong class="recovery-kpi-value">{{ recovery.get('hrr_3min_bpm') if recovery.get('hrr_3min_bpm') is not none else '-' }}</strong>
+        <span class="recovery-kpi-unit">ppm</span>
+      </article>
+      <article class="recovery-kpi-card">
+        <span class="recovery-kpi-label">HRR 5'</span>
+        <strong class="recovery-kpi-value">{{ recovery.get('hrr_5min_bpm') if recovery.get('hrr_5min_bpm') is not none else '-' }}</strong>
+        <span class="recovery-kpi-unit">ppm</span>
+      </article>
+      <article class="recovery-kpi-card">
+        <span class="recovery-kpi-label">FC normal</span>
+        <strong class="recovery-kpi-value">{{ recovery.get('normal_hr_bpm') if recovery.get('normal_hr_bpm') is not none else '-' }}</strong>
+        <span class="recovery-kpi-unit">ppm</span>
+      </article>
+      <article class="recovery-kpi-card">
+        <span class="recovery-kpi-label">Tiempo a normal</span>
+        <strong class="recovery-kpi-value">{% if recovery.get('time_to_normal_s') is not none %}{{ (recovery.get('time_to_normal_s') / 60)|round(1) }}{% else %}-{% endif %}</strong>
+        <span class="recovery-kpi-unit">min</span>
+      </article>
+      <article class="recovery-kpi-card">
+        <span class="recovery-kpi-label">Tiempo a 140</span>
+        <strong class="recovery-kpi-value">{% if recovery.get('time_to_140_s') is not none %}{{ (recovery.get('time_to_140_s') / 60)|round(1) }}{% else %}-{% endif %}</strong>
+        <span class="recovery-kpi-unit">min</span>
+      </article>
+      <article class="recovery-kpi-card">
+        <span class="recovery-kpi-label">Muestras</span>
+        <strong class="recovery-kpi-value">{{ recovery.get('marks')|length if recovery.get('marks') else '-' }}</strong>
+        <span class="recovery-kpi-unit">hitos</span>
+      </article>
+    </div>
+  </div>
+  {% elif recovery.get('summary') %}
+  <p class="muted">{{ recovery.get('summary') }}</p>
+  {% else %}
+  <p class="muted">Todavía no hay datos suficientes para analizar la recuperación de pulso.</p>
+  {% endif %}
+</section>
+
+<section class="grid grid-2 detail-grid">
+  <article class="panel">
+    <p class="eyebrow">Revisión automática</p>
+    <h2>Qué salió bien, qué no y cómo afecta</h2>
+    <p class="review-paragraph">{{ page.review.automated_review_summary or page.review.compliance_note }}</p>
+  </article>
+
+  <article class="panel">
+    <p class="eyebrow">Datos Garmin</p>
+    <h2>Métricas rescatadas de la actividad</h2>
+    <div class="stack-list">
+      {% for item in page.review.garmin_feedback %}
+      <div class="detail-row-card static-row"><strong>{{ item.label }}</strong><span class="calendar-metric">{{ item.value }}</span></div>
+      {% else %}
+      <div class="detail-row-card static-row"><strong>Garmin</strong><span class="calendar-metric">Sin métricas adicionales disponibles</span></div>
+      {% endfor %}
+    </div>
+  </article>
+
+  <article class="panel">
+    <p class="eyebrow">Lectura rápida</p>
+    <h2>Resumen y cumplimiento</h2>
+    <div class="stack-list">
+      <div class="detail-row-card static-row"><strong>Semáforo</strong><span class="calendar-metric">{{ page.review.traffic_light }}</span></div>
+      <div class="detail-row-card static-row"><strong>Dentro de zona</strong><span class="calendar-metric">{{ ("%.1f"|format(compliance.get('pct_in_hr_zone')) ~ "%") if compliance.get('pct_in_hr_zone') is not none else "-" }}</span></div>
+      <div class="detail-row-card static-row"><strong>Por encima</strong><span class="calendar-metric">{{ ("%.1f"|format(compliance.get('pct_above_hr_zone')) ~ "%") if compliance.get('pct_above_hr_zone') is not none else "-" }}</span></div>
+      <div class="detail-row-card static-row"><strong>Diff distancia</strong><span class="calendar-metric">{{ (compliance.get('distance_diff_m') ~ " m") if compliance.get('distance_diff_m') is not none else "-" }}</span></div>
+      <div class="detail-row-card static-row"><strong>Diff duración</strong><span class="calendar-metric">{{ (compliance.get('duration_diff_s_vs_est')|round(1) ~ " s") if compliance.get('duration_diff_s_vs_est') is not none else "-" }}</span></div>
+    </div>
+  </article>
+</section>
+
+<section class="panel">
+  <p class="eyebrow">Análisis</p>
+  <h2>Progresión detectada</h2>
+  <p>{{ progression.get('summary') or 'Sin comparación suficiente.' }}</p>
+  <div class="tag-row">
+    <span class="mini-tag">Tendencia {{ progression.get('trend') or '-' }}</span>
+    <span class="mini-tag">Comparables {{ progression.get('comparable_count') if progression.get('comparable_count') is not none else '-' }}</span>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,283 @@
+{
+  "planned": {
+    "name": "Fuerza rehabilitadora A 35 min",
+    "date": "2026-05-27",
+    "sport": "strength",
+    "goal_category": "general_run",
+    "template_id": null,
+    "knowledge_id": null,
+    "knowledge_label": null,
+    "primary_goal": null,
+    "description": "Sesion A de rehabilitacion para fortalecer pie, soleo, gemelo, gluteo medio y core sin agujetas.",
+    "estimated_duration_s": 2100,
+    "distance_m": null,
+    "primary_hr_min": null,
+    "primary_hr_max": null
+  },
+  "summary": {
+    "activity_id": 23032805565,
+    "activity_name": "Fuerza",
+    "start_time_local": "2026-05-27 16:54:06",
+    "distance_m": 0.0,
+    "duration_s": 1830.5550537109375,
+    "elapsed_s": 1830.5550537109375,
+    "moving_s": 1830.5550537109375,
+    "pace_s_per_km": null,
+    "moving_pace_s_per_km": null,
+    "avg_hr": 91.0,
+    "max_hr": 118.0,
+    "avg_cadence_spm": null,
+    "max_cadence_spm": null,
+    "avg_power_w": null,
+    "max_power_w": null,
+    "elevation_gain_m": null,
+    "elevation_loss_m": null,
+    "avg_stride_cm": null,
+    "avg_gct_ms": null,
+    "avg_vo_cm": null,
+    "avg_vr": null,
+    "calories": 93.0,
+    "water_estimated_ml": 279.0,
+    "aerobic_training_effect": 0.20000000298023224,
+    "anaerobic_training_effect": 0.0,
+    "training_effect_label": "AEROBIC_BASE",
+    "min_temp_c": 30.0,
+    "max_temp_c": 32.0,
+    "gap_pace_s_per_km": null
+  },
+  "compliance": {
+    "distance_diff_m": null,
+    "duration_diff_s_vs_est": -269.4449462890625,
+    "hr_evaluable_time_s": 0.0,
+    "time_in_hr_zone_s": 0.0,
+    "time_below_hr_zone_s": 0.0,
+    "time_above_hr_zone_s": 0.0,
+    "pct_in_hr_zone": null,
+    "pct_below_hr_zone": null,
+    "pct_above_hr_zone": null,
+    "time_to_enter_zone_s": null,
+    "distance_to_enter_zone_m": null
+  },
+  "stability": {
+    "pace_std_s_per_km": null,
+    "hr_std_bpm": 10.485365277681904,
+    "cadence_std_spm": null,
+    "power_std_w": null
+  },
+  "halves": {
+    "first_half_pace_s_per_km": null,
+    "second_half_pace_s_per_km": null,
+    "first_half_hr": 91.25286728563627,
+    "second_half_hr": null,
+    "first_half_power_w": null,
+    "second_half_power_w": null,
+    "efficiency_first": null,
+    "efficiency_second": null,
+    "efficiency_change_pct": null,
+    "decoupling_pct": null
+  },
+  "splits": [],
+  "score": 10,
+  "traffic_light": "verde",
+  "risk_level": "bajo",
+  "stimulus_alignment": {
+    "planned_knowledge": null,
+    "actual_goals": [],
+    "overlap": [],
+    "alignment": "unknown",
+    "summary": "No hay suficientes datos para comparar el estimulo real con el objetivo previsto."
+  },
+  "progression": {
+    "comparable_count": 0,
+    "matches": [],
+    "trend": "insufficient_data",
+    "summary": "Aun no hay sesiones comparables previas para medir progresion o regresion."
+  },
+  "coaching_summary": "Objetivo: Sesion A de rehabilitacion para fortalecer pie, soleo, gemelo, gluteo medio y core sin agujetas.. Bien: Se completo la distancia prevista con estabilidad mecanica y sin senales de fatiga clara. A mejorar: La intensidad se mantuvo razonablemente alineada con el objetivo previsto. Impacto: duracion 30:31, FC 91.0 / 118.0 bpm, temperatura 30.0-32.0 C. Sesion bien alineada con el objetivo del dia y sin senales relevantes de exceso. Si las sensaciones posteriores son normales, no deberia condicionar la planificacion inmediata.",
+  "recovery_analysis": {
+    "status": "complete",
+    "resting_hr_bpm": 52,
+    "normal_hr_bpm": 127,
+    "finish_hr_bpm": 96,
+    "finish_timestamp_gmt": "2026-05-27T15:24:37+00:00",
+    "time_to_normal_s": 83.0,
+    "time_to_140_s": 83.0,
+    "hrr_1min_bpm": 13,
+    "hrr_3min_bpm": 22,
+    "hrr_5min_bpm": 5,
+    "marks": [
+      {
+        "minute": 1,
+        "timestamp_gmt": "2026-05-27T15:26:00+00:00",
+        "hr": 83,
+        "drop": 13
+      },
+      {
+        "minute": 2,
+        "timestamp_gmt": "2026-05-27T15:26:00+00:00",
+        "hr": 83,
+        "drop": 13
+      },
+      {
+        "minute": 3,
+        "timestamp_gmt": "2026-05-27T15:28:00+00:00",
+        "hr": 74,
+        "drop": 22
+      },
+      {
+        "minute": 5,
+        "timestamp_gmt": "2026-05-27T15:30:00+00:00",
+        "hr": 91,
+        "drop": 5
+      },
+      {
+        "minute": 10,
+        "timestamp_gmt": "2026-05-27T15:34:00+00:00",
+        "hr": 93,
+        "drop": 3
+      },
+      {
+        "minute": 15,
+        "timestamp_gmt": "2026-05-27T15:40:00+00:00",
+        "hr": 94,
+        "drop": 2
+      },
+      {
+        "minute": 20,
+        "timestamp_gmt": "2026-05-27T15:44:00+00:00",
+        "hr": 88,
+        "drop": 8
+      }
+    ],
+    "chart": {
+      "points": [
+        {
+          "minute": 0.0,
+          "hr": 96,
+          "label": "0m"
+        },
+        {
+          "minute": 1.38,
+          "hr": 83,
+          "label": "1m"
+        },
+        {
+          "minute": 3.38,
+          "hr": 74,
+          "label": "3m"
+        },
+        {
+          "minute": 5.38,
+          "hr": 91,
+          "label": "5m"
+        },
+        {
+          "minute": 7.38,
+          "hr": 87,
+          "label": "7m"
+        },
+        {
+          "minute": 9.38,
+          "hr": 93,
+          "label": "9m"
+        },
+        {
+          "minute": 11.38,
+          "hr": 92,
+          "label": "11m"
+        },
+        {
+          "minute": 13.38,
+          "hr": 91,
+          "label": "13m"
+        },
+        {
+          "minute": 15.38,
+          "hr": 94,
+          "label": "15m"
+        },
+        {
+          "minute": 17.38,
+          "hr": 91,
+          "label": "17m"
+        },
+        {
+          "minute": 19.38,
+          "hr": 88,
+          "label": "19m"
+        }
+      ],
+      "bars": [
+        {
+          "minute": 0.0,
+          "label": "0m",
+          "hr": 96,
+          "height_pct": 100.0
+        },
+        {
+          "minute": 1.38,
+          "label": "1m",
+          "hr": 83,
+          "height_pct": 51.5
+        },
+        {
+          "minute": 3.38,
+          "label": "3m",
+          "hr": 74,
+          "height_pct": 18.0
+        },
+        {
+          "minute": 5.38,
+          "label": "5m",
+          "hr": 91,
+          "height_pct": 81.4
+        },
+        {
+          "minute": 7.38,
+          "label": "7m",
+          "hr": 87,
+          "height_pct": 66.5
+        },
+        {
+          "minute": 9.38,
+          "label": "9m",
+          "hr": 93,
+          "height_pct": 88.8
+        },
+        {
+          "minute": 11.38,
+          "label": "11m",
+          "hr": 92,
+          "height_pct": 85.1
+        },
+        {
+          "minute": 13.38,
+          "label": "13m",
+          "hr": 91,
+          "height_pct": 81.4
+        },
+        {
+          "minute": 15.38,
+          "label": "15m",
+          "hr": 94,
+          "height_pct": 92.5
+        },
+        {
+          "minute": 17.38,
+          "label": "17m",
+          "hr": 91,
+          "height_pct": 81.4
+        },
+        {
+          "minute": 19.38,
+          "label": "19m",
+          "hr": 88,
+          "height_pct": 70.2
+        }
+      ],
+      "min_hr": 74,
+      "max_hr": 96
+    },
+    "summary": "Recuperaci\u00f3n inicial lenta. Volviste a una FC normal personalizada (<= 127 ppm) en 1.4 min. La curva posterior oscila, se\u00f1al de que seguiste caminando o movi\u00e9ndote tras meta m\u00e1s que quedarte en reposo pasivo."
+  }
+}

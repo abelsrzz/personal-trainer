@@ -1,0 +1,35 @@
+workout:
+  name: Bicicleta base aerobica 85 min
+  schedule_date: 2026-05-30
+  sport: cycling
+  description: Sesion suave y continua en Z2 para construir base aerobica sin impacto,
+    con cadencia estable y sin apretar desarrollo.
+  estimated_duration_s: 5100
+  steps:
+  - order: 1
+    step_type: warmup
+    description: 10 min suaves
+    duration_s: 600
+    target:
+      type: heart_rate_range
+      min_bpm: 120
+      max_bpm: 138
+  - order: 2
+    step_type: interval
+    description: 65 min Z2 continua
+    duration_s: 3900
+    target:
+      type: heart_rate_range
+      min_bpm: 145
+      max_bpm: 160
+  - order: 3
+    step_type: cooldown
+    description: 10 min suaves
+    duration_s: 600
+    target:
+      type: heart_rate_range
+      min_bpm: 115
+      max_bpm: 135
+  primary_goal: Resistencia aerobica
+  knowledge_id: 90_en_z2_estable
+  knowledge_label: 90' en Z2 estable

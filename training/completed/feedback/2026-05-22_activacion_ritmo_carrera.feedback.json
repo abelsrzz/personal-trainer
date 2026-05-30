@@ -1,0 +1,18 @@
+{
+  "source": "web_manual_feedback",
+  "created_at": "2026-05-22T15:08:35.092246",
+  "updated_at": "2026-05-22T15:08:35.092246",
+  "updated_by": "change-me",
+  "date": "2026-05-22",
+  "planned_workout_slug": "2026-05-22_activacion_ritmo_carrera",
+  "completed_review_slug": "2026-05-22_activacion_ritmo_carrera",
+  "garmin_activity_id": 22970190097,
+  "athlete_feedback": {
+    "rpe": 3,
+    "pain_level": 0,
+    "pain_location": null,
+    "compliance": "full",
+    "time_feeling": "spare",
+    "note": null
+  }
+}

@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+{% block title %}Hoy | RunPilot Next{% endblock %}
+{% block content %}
+{% set progression = page.get('progression', {}) %}
+{% set training_paces = page.get('training_paces', {}) %}
+{% set training_pace_labels = training_paces.get('labels', {}) if training_paces else {} %}
+<section class="hero-card">
+  <div>
+    <p class="eyebrow">Hoy</p>
+    <h1>{{ page.today_plan.date_label }}</h1>
+    <p class="lede">{{ page.today_plan.why_today or page.dashboard.decision.recommendation }}</p>
+  </div>
+  <div class="hero-badges">
+    <span class="badge">{{ page.today_plan.status_label }}</span>
+    <span class="badge">{{ page.dashboard.readiness_card.label }}</span>
+    <span class="badge">Ciclo {{ page.active_cycle.id or '-' }}</span>
+  </div>
+</section>
+
+<section class="grid grid-4">
+  <article class="panel">
+    <p class="eyebrow">Progresión</p>
+    <h2>{{ progression.get('status') or '-' }}</h2>
+    <p class="muted">Base absorbida {{ progression.get('baseline_running_km') or 0 }} km</p>
+  </article>
+  <article class="panel">
+    <p class="eyebrow">Objetivo run</p>
+    <h2>{{ progression.get('next_running_target_range_km', {}).get('min', '-') }}-{{ progression.get('next_running_target_range_km', {}).get('max', '-') }}</h2>
+    <p class="muted">km sobre la última semana absorbida</p>
+  </article>
+  <article class="panel">
+    <p class="eyebrow">Bici soporte</p>
+    <h2>{{ 'Sí' if progression.get('keep_bike_support_session') else 'No' }}</h2>
+    <p class="muted">Mantener una sesión sin impacto</p>
+  </article>
+  <article class="panel">
+    <p class="eyebrow">Bandas</p>
+    <h2>{{ training_pace_labels.get('tempo', {}).get('min', '-') }}</h2>
+    <p class="muted">Tempo hasta {{ training_pace_labels.get('tempo', {}).get('max', '-') }}</p>
+  </article>
+</section>
+
+<section class="grid grid-2">
+  <article class="panel emphasis-panel">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">Entrenos de hoy</p>
+        <h2>{{ page.today_workouts|length }} plan{{ 'es' if page.today_workouts|length != 1 else '' }}</h2>
+      </div>
+      <span class="status-dot {{ 'is-done' if page.today_reviews else '' }}"></span>
+    </div>
+    {% if page.today_workouts %}
+    <div class="stack-list">
+      {% for item in page.today_workouts %}
+      <a class="list-row" href="{{ item.detail_url }}">
+        <div>
+          <strong>{{ item.name }}</strong>
+          <p>{{ item.session_kind_label }} · {{ item.estimated_duration }}</p>
+        </div>
+        <span>Plan</span>
+      </a>
+      {% endfor %}
+    </div>
+    <div class="tag-row">
+      {% for item in page.today_plan.watchouts %}
+      <span class="mini-tag warn">{{ item }}</span>
+      {% endfor %}
+      {% for item in page.today_plan.priorities %}
+      <span class="mini-tag">{{ item }}</span>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p>{{ page.today_plan.why_today }}</p>
+    {% endif %}
+  </article>
+
+  <article class="panel">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">Ejecuciones de hoy</p>
+        <h2>{{ page.today_reviews|length }} ejecucion{{ 'es' if page.today_reviews|length != 1 else '' }}</h2>
+      </div>
+      {% if page.today_reviews %}
+      <span class="badge">{{ page.today_reviews[0].traffic_light }}</span>
+      {% endif %}
+    </div>
+    {% if page.today_reviews %}
+    <div class="stack-list">
+      {% for item in page.today_reviews %}
+      <a class="list-row" href="{{ item.detail_url }}">
+        <div>
+          <strong>{{ item.activity_name }}</strong>
+          <p>{{ item.distance_km }} km · {{ item.duration }} · {{ item.pace }}</p>
+        </div>
+        <span>{{ item.traffic_light }}</span>
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="muted">Cuando haya actividad completada aparecerá aquí con acceso directo a la revisión agentica.</p>
+    {% endif %}
+  </article>
+</section>
+
+<section class="panel">
+  <div class="section-head">
+    <div>
+      <p class="eyebrow">Fueling</p>
+      <h2>Qué tomar hoy</h2>
+    </div>
+  </div>
+  <div class="grid grid-3">
+    {% for entry in page.today_fueling %}
+    <article class="subcard fueling-block">
+      <span class="mini-tag">{{ entry.phase }}</span>
+      <strong>{{ entry.time_label }}</strong>
+      <p>{{ entry.recommendation }}</p>
+      <p class="muted">{{ entry.quantity }}</p>
+      <p class="muted">{{ entry.products_label }}</p>
+    </article>
+    {% else %}
+    <article class="subcard empty-state grid-span-3">
+      <p class="muted">No hay pauta especial de fueling para hoy.</p>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="grid grid-2">
+  <article class="panel">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">Próximo bloque</p>
+        <h2>Lo que viene</h2>
+      </div>
+      <a class="text-link" href="/calendar">Abrir calendario</a>
+    </div>
+    <div class="stack-list">
+      {% for item in page.upcoming %}
+      <a class="list-row" href="{{ item.detail_url }}">
+        <div>
+          <strong>{{ item.name }}</strong>
+          <p>{{ item.date }} · {{ item.session_kind_label }}</p>
+        </div>
+        <span>{{ item.estimated_duration }}</span>
+      </a>
+      {% endfor %}
+    </div>
+  </article>
+  <article class="panel">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">Revisiones recientes</p>
+        <h2>Cierre de sesiones</h2>
+      </div>
+    </div>
+    <div class="stack-list">
+      {% for item in page.recent_reviews %}
+      <a class="list-row" href="{{ item.detail_url }}">
+        <div>
+          <strong>{{ item.activity_name }}</strong>
+          <p>{{ item.date }} · {{ item.score }}/10</p>
+        </div>
+        <span>{{ item.traffic_light }}</span>
+      </a>
+      {% else %}
+      <div class="list-row static-row"><p class="muted">Aún no hay revisiones cerradas.</p></div>
+      {% endfor %}
+    </div>
+  </article>
+</section>
+{% endblock %}

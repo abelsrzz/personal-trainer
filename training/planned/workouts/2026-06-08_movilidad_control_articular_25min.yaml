@@ -1,0 +1,51 @@
+workout:
+  name: Movilidad control articular 25 min
+  schedule_date: 2026-06-08
+  sport: mobility
+  description: Sesion de movilidad para consolidar control articular de tobillo, pie, cadera y tronco antes del retorno progresivo al impacto.
+  estimated_duration_s: 1500
+  steps:
+  - order: 1
+    step_type: warmup
+    description: Respiracion, movilidad suave y circulos de tobillo
+    duration_s: 180
+  - order: 2
+    type: repeat_group
+    iterations: 2
+    steps:
+    - order: 3
+      step_type: interval
+      description: Circulos de tobillo y movilidad de tobillo · 45 s por lado
+      duration_s: 90
+    - order: 4
+      step_type: interval
+      description: Short-foot controlado · 25 s por pie
+      duration_s: 25
+  - order: 3
+    type: repeat_group
+    iterations: 2
+    steps:
+    - order: 5
+      step_type: interval
+      description: Sentadilla asistida profunda · 8 repeticiones controladas
+      repetitions: 8
+    - order: 6
+      step_type: interval
+      description: Movilidad activa de cadera y gluteo · 8 repeticiones por lado
+      repetitions: 8
+  - order: 4
+    type: repeat_group
+    iterations: 2
+    steps:
+    - order: 7
+      step_type: interval
+      description: Dead bug suave · 8 repeticiones por lado
+      repetitions: 8
+    - order: 8
+      step_type: interval
+      description: Side plank suave · 25 s por lado
+      duration_s: 25
+  - order: 5
+    step_type: cooldown
+    description: Estiramientos finales y descarga respiratoria
+    duration_s: 240

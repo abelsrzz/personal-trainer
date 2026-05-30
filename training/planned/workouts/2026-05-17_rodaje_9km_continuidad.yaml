@@ -1,0 +1,33 @@
+workout:
+  name: Bicicleta Z2 continuidad 80 min
+  schedule_date: 2026-05-17
+  sport: cycling
+  description: Sustituye el rodaje continuo por bici aerobica para mantener base sin
+    impacto sobre la tibia.
+  estimated_duration_s: 4800
+  steps:
+  - order: 1
+    step_type: warmup
+    description: 10 min muy suaves para activar cadencia
+    duration_s: 600
+    target:
+      type: heart_rate_range
+      min_bpm: 120
+      max_bpm: 138
+  - order: 2
+    step_type: interval
+    description: 60 min Z2 estable con cadencia fluida
+    duration_s: 3600
+    target:
+      type: heart_rate_range
+      min_bpm: 130
+      max_bpm: 148
+  - order: 3
+    step_type: cooldown
+    description: 10 min suaves para soltar piernas
+    duration_s: 600
+    target:
+      type: heart_rate_range
+      min_bpm: 115
+      max_bpm: 135
+  primary_goal: Base aerobica

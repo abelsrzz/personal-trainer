@@ -1,0 +1,78 @@
+{
+  "sessions": {
+    "local-test": {
+      "session_id": "ses_1fc52778cffe5JVTbfoImm1vsD",
+      "title": "telegram-local-test-20260507182242",
+      "updated_at": "2026-05-07T18:22:48.822276+00:00"
+    },
+    "local-fallback": {
+      "session_id": "ses_1f1c97c3effeF8b16IEtU7sV1V",
+      "title": "telegram-local-fallback-20260509192829",
+      "updated_at": "2026-05-09T19:28:40.145268+00:00"
+    },
+    "local-after-restart": {
+      "session_id": "ses_1f1c91bdbffeHn6tjt55QT8Etl",
+      "title": "telegram-local-after-restart-20260509192856",
+      "updated_at": "2026-05-09T19:29:04.003829+00:00"
+    },
+    "local-store-backend": {
+      "session_id": "ses_1f1c80793ffekToDHT4QiDhK4P",
+      "title": "telegram-local-store-backend-20260509193008",
+      "backend": "attach",
+      "updated_at": "2026-05-09T19:30:15.006585+00:00"
+    },
+    "json-test": {
+      "session_id": "ses_1f1c71a8effei5jj6SGX4u0yJJ",
+      "title": "telegram-json-test-20260509193108",
+      "backend": "attach",
+      "updated_at": "2026-05-09T19:31:15.586490+00:00"
+    },
+    "attach-test": {
+      "session_id": "ses_1f1c63d2fffe35kvh1VVdGyEZi",
+      "title": "telegram-attach-test-20260509193204",
+      "backend": "attach",
+      "updated_at": "2026-05-09T19:32:14.293856+00:00"
+    },
+    "local-fallback2": {
+      "session_id": "ses_1f1c63e05ffenZkWvSZWMjAcBw",
+      "title": "telegram-local-fallback2-20260509193204",
+      "backend": "attach",
+      "updated_at": "2026-05-09T19:32:14.402566+00:00"
+    },
+    "attach-extract": {
+      "session_id": "ses_1f1c528ffffe9WJ9ncZMPFVpnJ",
+      "title": "telegram-attach-extract-20260509193316",
+      "backend": "attach",
+      "updated_at": "2026-05-09T19:33:22.356101+00:00"
+    },
+    "fallback-extract": {
+      "session_id": "ses_1f1c528e4ffecUFqAw8dv6cOeo",
+      "title": "telegram-fallback-extract-20260509193316",
+      "backend": "attach",
+      "updated_at": "2026-05-09T19:33:20.824566+00:00"
+    },
+    "attach-now": {
+      "session_id": "ses_1f1c453d8ffeosFvT1pWp41juq",
+      "title": "telegram-attach-now-20260509193407",
+      "backend": "attach",
+      "updated_at": "2026-05-09T19:34:16.398547+00:00"
+    },
+    "local-only": {
+      "session_id": "ses_1f1c4538dffecx8BhJYqciqCPq",
+      "title": "telegram-local-only-20260509193407",
+      "backend": "attach",
+      "updated_at": "2026-05-09T19:34:16.334306+00:00"
+    },
+    "6174679483": {
+      "session_id": "ses_1ed8ae55effereyggNFrgJqxZX",
+      "title": "telegram-6174679483-20260510151523",
+      "backend": "local",
+      "updated_at": "2026-05-10T15:15:29.173398+00:00"
+    },
+    "web:change-me": {
+      "model": "openai/gpt-5.4",
+      "model_updated_at": "2026-05-11T21:06:26.008131+00:00"
+    }
+  },
+  "confirmations": {}
+}

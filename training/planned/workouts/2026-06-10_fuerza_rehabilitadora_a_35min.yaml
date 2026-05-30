@@ -1,0 +1,71 @@
+workout:
+  name: Fuerza rehabilitadora A 35 min
+  schedule_date: 2026-06-10
+  sport: strength
+  description: Sesion A de rehabilitacion para pie, soleo, gemelo y control lateral.
+  estimated_duration_s: 2100
+  steps:
+  - order: 1
+    step_type: warmup
+    description: Activacion y movilidad articular
+    duration_s: 300
+  - order: 2
+    type: repeat_group
+    iterations: 3
+    steps:
+    - order: 3
+      step_type: interval
+      description: Seated soleus raise · 15-20 repeticiones
+      repetitions: 15
+  - order: 3
+    type: repeat_group
+    iterations: 3
+    steps:
+    - order: 4
+      step_type: interval
+      description: Standing calf raise · 12-15 repeticiones
+      repetitions: 12
+  - order: 4
+    type: repeat_group
+    iterations: 3
+    steps:
+    - order: 5
+      step_type: interval
+      description: Tibialis raises en pared · 15-20 repeticiones
+      repetitions: 15
+  - order: 5
+    type: repeat_group
+    iterations: 3
+    steps:
+    - order: 6
+      step_type: interval
+      description: Short-foot hold · 30-40 s por pie
+      duration_s: 35
+  - order: 6
+    type: repeat_group
+    iterations: 3
+    steps:
+    - order: 7
+      step_type: interval
+      description: Split squat · 8 repeticiones por lado
+      repetitions: 8
+  - order: 7
+    type: repeat_group
+    iterations: 3
+    steps:
+    - order: 8
+      step_type: interval
+      description: Glute bridge · 10-12 repeticiones
+      repetitions: 10
+  - order: 8
+    type: repeat_group
+    iterations: 3
+    steps:
+    - order: 9
+      step_type: interval
+      description: Side plank · 30-40 s por lado
+      duration_s: 35
+  - order: 9
+    step_type: cooldown
+    description: Movilidad final y descarga suave
+    duration_s: 300

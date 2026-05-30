@@ -1,0 +1,98 @@
+supplements:
+  - id: creatine_monohydrate
+    name: Creatina
+    category: creatine
+    format: powder
+    serving_size: 5
+    serving_unit: g
+    reference_weight_g: 3.4
+    reference_volume_ml: 20
+    energy_kcal: 0
+    fat_g: 0
+    carbs_per_serving_g: 0
+    sodium_mg: 0
+    caffeine_mg: 0
+    protein_g: 0
+    enabled: true
+    notes: "Dosis habitual diaria de mantenimiento. Referencia de mezcla: 20 ml = 3.4 g."
+  - id: whey_protein
+    name: Evowhey Protein
+    category: protein
+    format: powder
+    serving_size: 30
+    serving_unit: g
+    reference_weight_g: 30
+    reference_volume_ml: 70
+    energy_kcal: 109
+    fat_g: 1.1
+    carbs_per_serving_g: 2.0
+    sodium_mg: 96
+    caffeine_mg: 0
+    protein_g: 22.2
+    salt_g: 0.24
+    enabled: true
+    notes: "Tomar sobre todo tras sesiones duras o cuando no haya comida cercana. Referencia de mezcla: 70 ml = 30 g."
+  - id: maltodextrin
+    name: Maltodextrina
+    category: carbs
+    format: powder
+    serving_size: 30
+    serving_unit: g
+    reference_weight_g: 50
+    reference_volume_ml: 60
+    energy_kcal: 114
+    fat_g: 0
+    carbs_per_serving_g: 28.5
+    sodium_mg: 5
+    caffeine_mg: 0
+    protein_g: 0
+    salt_g: 0.01
+    enabled: true
+    notes: "Base principal para pre, durante y post en mezcla con fructosa. Referencia de mezcla: 2 x 30 ml = 50 g."
+  - id: fructose
+    name: Fructosa
+    category: carbs
+    format: powder
+    serving_size: 15
+    serving_unit: g
+    reference_weight_g: 35
+    reference_volume_ml: 30
+    energy_kcal: 60
+    fat_g: 0
+    carbs_per_serving_g: 15
+    sodium_mg: 0
+    caffeine_mg: 0
+    protein_g: 0
+    enabled: true
+    notes: "Complemento de la maltodextrina para aumentar tolerancia de absorcion. Referencia de mezcla: 30 ml = 35 g."
+  - id: evolytes
+    name: Evolytes Powder
+    category: electrolytes
+    format: powder
+    serving_size: 5
+    serving_unit: g
+    reference_weight_g: 5
+    reference_volume_ml: 5
+    energy_kcal: 0
+    fat_g: 0
+    carbs_per_serving_g: 0
+    sodium_mg: 356
+    caffeine_mg: 0
+    protein_g: 0
+    chloride_mg: 640
+    calcium_mg: 120
+    magnesium_mg: 65
+    enabled: true
+    notes: "Opcion principal para hidratacion con sodio sin cafeina. Referencia de mezcla: 5 ml = 5 g."
+  - id: sub9_pro_salts
+    name: SUB9 PRO SALTS ELECTROLYTES
+    category: electrolytes_caffeine
+    format: capsule
+    serving_size: 1
+    serving_unit: cap
+    carbs_per_serving_g: 0
+    sodium_mg: 250
+    caffeine_mg: 40
+    protein_g: 0
+    enabled: true
+    notes: Opcion con cafeina para sesiones/carreras clave si se tolera bien.

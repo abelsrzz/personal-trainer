@@ -1,0 +1,15 @@
+health:
+  current_issues:
+  - Left shin periosteum discomfort
+  past_injuries:
+  - Tibial periostitis
+  medical_constraints: []
+  sleep_notes: null
+  stress_notes: null
+  recovery_notes: General sensations recently poor
+  garmin_metrics:
+    last_sync: '2026-05-30T23:01:15.568307Z'
+    resting_hr: 52
+    max_hr: 199
+    vo2max: 46.0
+    lactate_threshold_hr: 191

@@ -1,0 +1,360 @@
+{
+  "planned": {
+    "name": "Eliptica aerobica estable 55 min",
+    "date": "2026-05-19",
+    "sport": "elliptical",
+    "goal_category": "general_run",
+    "template_id": null,
+    "knowledge_id": "50_en_z2_estable",
+    "knowledge_label": null,
+    "primary_goal": "Base aerobica",
+    "description": "Carga aerobica equivalente a la bici prevista, sin impacto y con un coste interno parecido en menos tiempo.",
+    "estimated_duration_s": 3300,
+    "distance_m": null,
+    "primary_hr_min": 115.0,
+    "primary_hr_max": 148.0
+  },
+  "summary": {
+    "activity_id": 22937591625,
+    "activity_name": "Eliptica aerobica estable 55 min",
+    "start_time_local": "2026-05-19 17:26:24",
+    "distance_m": 0.0,
+    "duration_s": 3306.10205078125,
+    "elapsed_s": 3306.10205078125,
+    "moving_s": 0.0,
+    "pace_s_per_km": null,
+    "moving_pace_s_per_km": null,
+    "avg_hr": 135.0,
+    "max_hr": 149.0,
+    "avg_cadence_spm": 36.734375,
+    "max_cadence_spm": 150.0,
+    "avg_power_w": null,
+    "max_power_w": null,
+    "elevation_gain_m": null,
+    "elevation_loss_m": null,
+    "avg_stride_cm": 0.0,
+    "avg_gct_ms": null,
+    "avg_vo_cm": null,
+    "avg_vr": null,
+    "calories": 397.0,
+    "water_estimated_ml": 744.0,
+    "aerobic_training_effect": 2.4000000953674316,
+    "anaerobic_training_effect": 0.0,
+    "training_effect_label": "AEROBIC_BASE",
+    "min_temp_c": null,
+    "max_temp_c": null,
+    "gap_pace_s_per_km": null
+  },
+  "compliance": {
+    "distance_diff_m": null,
+    "duration_diff_s_vs_est": 6.10205078125,
+    "hr_evaluable_time_s": 3296.0,
+    "time_in_hr_zone_s": 3170.212997159091,
+    "time_below_hr_zone_s": 57.112428977272714,
+    "time_above_hr_zone_s": 68.6745738636364,
+    "pct_in_hr_zone": 96.18364675846756,
+    "pct_below_hr_zone": 1.7327800053784197,
+    "pct_above_hr_zone": 2.0835732361540167,
+    "time_to_enter_zone_s": 62.0,
+    "distance_to_enter_zone_m": 0.0
+  },
+  "stability": {
+    "pace_std_s_per_km": null,
+    "hr_std_bpm": 7.2522758884275875,
+    "cadence_std_spm": null,
+    "power_std_w": null
+  },
+  "halves": {
+    "first_half_pace_s_per_km": null,
+    "second_half_pace_s_per_km": null,
+    "first_half_hr": 134.76471480582524,
+    "second_half_hr": null,
+    "first_half_power_w": null,
+    "second_half_power_w": null,
+    "efficiency_first": null,
+    "efficiency_second": null,
+    "efficiency_change_pct": null,
+    "decoupling_pct": null
+  },
+  "splits": [],
+  "score": 10,
+  "traffic_light": "verde",
+  "risk_level": "bajo",
+  "stimulus_alignment": {
+    "planned_knowledge": {
+      "label": "50' en Z2 estable",
+      "goals": [
+        "eficiencia_aerobica"
+      ],
+      "id": "50_en_z2_estable",
+      "category": "base_aerobica_y_recuperacion",
+      "goal_labels": [
+        "Eficiencia aerobica"
+      ],
+      "primary_goal": "Eficiencia aerobica",
+      "summary": "Esta sesion se usa sobre todo para eficiencia aerobica."
+    },
+    "actual_goals": [
+      "base_aerobica"
+    ],
+    "overlap": [
+      "base_aerobica"
+    ],
+    "alignment": "aligned",
+    "summary": "El estimulo real parece alineado con el objetivo previsto: base_aerobica."
+  },
+  "progression": {
+    "comparable_count": 0,
+    "matches": [],
+    "trend": "insufficient_data",
+    "summary": "Aun no hay sesiones comparables previas para medir progresion o regresion."
+  },
+  "coaching_summary": "Objetivo: Carga aerobica equivalente a la bici prevista, sin impacto y con un coste interno parecido en menos tiempo.. Bien: Se completo la distancia prevista con estabilidad mecanica y sin senales de fatiga clara. A mejorar: La intensidad se mantuvo razonablemente alineada con el objetivo previsto. Impacto: duracion 55:06, FC 135.0 / 149.0 bpm, cadencia 36.7 spm. Sesion bien alineada con el objetivo del dia y sin senales relevantes de exceso. Si las sensaciones posteriores son normales, no deberia condicionar la planificacion inmediata.",
+  "recovery_analysis": {
+    "status": "complete",
+    "resting_hr_bpm": 54,
+    "normal_hr_bpm": 129,
+    "finish_hr_bpm": 127,
+    "finish_timestamp_gmt": "2026-05-19T16:21:30+00:00",
+    "time_to_normal_s": 30.0,
+    "time_to_140_s": 30.0,
+    "hrr_1min_bpm": 0,
+    "hrr_3min_bpm": 39,
+    "hrr_5min_bpm": 28,
+    "marks": [
+      {
+        "minute": 1,
+        "timestamp_gmt": "2026-05-19T16:22:00+00:00",
+        "hr": 127,
+        "drop": 0
+      },
+      {
+        "minute": 2,
+        "timestamp_gmt": "2026-05-19T16:24:00+00:00",
+        "hr": 88,
+        "drop": 39
+      },
+      {
+        "minute": 3,
+        "timestamp_gmt": "2026-05-19T16:24:00+00:00",
+        "hr": 88,
+        "drop": 39
+      },
+      {
+        "minute": 5,
+        "timestamp_gmt": "2026-05-19T16:26:00+00:00",
+        "hr": 99,
+        "drop": 28
+      },
+      {
+        "minute": 10,
+        "timestamp_gmt": "2026-05-19T16:32:00+00:00",
+        "hr": 89,
+        "drop": 38
+      },
+      {
+        "minute": 15,
+        "timestamp_gmt": "2026-05-19T16:36:00+00:00",
+        "hr": 97,
+        "drop": 30
+      },
+      {
+        "minute": 20,
+        "timestamp_gmt": "2026-05-19T16:42:00+00:00",
+        "hr": 96,
+        "drop": 31
+      },
+      {
+        "minute": 30,
+        "timestamp_gmt": "2026-05-19T16:52:00+00:00",
+        "hr": 95,
+        "drop": 32
+      }
+    ],
+    "chart": {
+      "points": [
+        {
+          "minute": 0.0,
+          "hr": 127,
+          "label": "0m"
+        },
+        {
+          "minute": 0.5,
+          "hr": 127,
+          "label": "0m"
+        },
+        {
+          "minute": 2.5,
+          "hr": 88,
+          "label": "2m"
+        },
+        {
+          "minute": 4.5,
+          "hr": 99,
+          "label": "4m"
+        },
+        {
+          "minute": 6.5,
+          "hr": 92,
+          "label": "6m"
+        },
+        {
+          "minute": 8.5,
+          "hr": 98,
+          "label": "8m"
+        },
+        {
+          "minute": 10.5,
+          "hr": 89,
+          "label": "10m"
+        },
+        {
+          "minute": 12.5,
+          "hr": 97,
+          "label": "12m"
+        },
+        {
+          "minute": 14.5,
+          "hr": 97,
+          "label": "14m"
+        },
+        {
+          "minute": 16.5,
+          "hr": 100,
+          "label": "16m"
+        },
+        {
+          "minute": 18.5,
+          "hr": 90,
+          "label": "18m"
+        },
+        {
+          "minute": 20.5,
+          "hr": 96,
+          "label": "20m"
+        },
+        {
+          "minute": 22.5,
+          "hr": 90,
+          "label": "22m"
+        },
+        {
+          "minute": 24.5,
+          "hr": 86,
+          "label": "24m"
+        },
+        {
+          "minute": 26.5,
+          "hr": 88,
+          "label": "26m"
+        },
+        {
+          "minute": 28.5,
+          "hr": 89,
+          "label": "28m"
+        }
+      ],
+      "bars": [
+        {
+          "minute": 0.0,
+          "label": "0m",
+          "hr": 127,
+          "height_pct": 100.0
+        },
+        {
+          "minute": 0.5,
+          "label": "0m",
+          "hr": 127,
+          "height_pct": 100.0
+        },
+        {
+          "minute": 2.5,
+          "label": "2m",
+          "hr": 88,
+          "height_pct": 22.0
+        },
+        {
+          "minute": 4.5,
+          "label": "4m",
+          "hr": 99,
+          "height_pct": 44.0
+        },
+        {
+          "minute": 6.5,
+          "label": "6m",
+          "hr": 92,
+          "height_pct": 30.0
+        },
+        {
+          "minute": 8.5,
+          "label": "8m",
+          "hr": 98,
+          "height_pct": 42.0
+        },
+        {
+          "minute": 10.5,
+          "label": "10m",
+          "hr": 89,
+          "height_pct": 24.0
+        },
+        {
+          "minute": 12.5,
+          "label": "12m",
+          "hr": 97,
+          "height_pct": 40.0
+        },
+        {
+          "minute": 14.5,
+          "label": "14m",
+          "hr": 97,
+          "height_pct": 40.0
+        },
+        {
+          "minute": 16.5,
+          "label": "16m",
+          "hr": 100,
+          "height_pct": 46.0
+        },
+        {
+          "minute": 18.5,
+          "label": "18m",
+          "hr": 90,
+          "height_pct": 26.0
+        },
+        {
+          "minute": 20.5,
+          "label": "20m",
+          "hr": 96,
+          "height_pct": 38.0
+        },
+        {
+          "minute": 22.5,
+          "label": "22m",
+          "hr": 90,
+          "height_pct": 26.0
+        },
+        {
+          "minute": 24.5,
+          "label": "24m",
+          "hr": 86,
+          "height_pct": 18.0
+        },
+        {
+          "minute": 26.5,
+          "label": "26m",
+          "hr": 88,
+          "height_pct": 22.0
+        },
+        {
+          "minute": 28.5,
+          "label": "28m",
+          "hr": 89,
+          "height_pct": 24.0
+        }
+      ],
+      "min_hr": 86,
+      "max_hr": 127
+    },
+    "summary": "Recuperaci\u00f3n inicial buena. Volviste a una FC normal personalizada (<= 129 ppm) en 0.5 min. La curva posterior oscila, se\u00f1al de que seguiste caminando o movi\u00e9ndote tras meta m\u00e1s que quedarte en reposo pasivo."
+  }
+}

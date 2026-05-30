@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+{% block title %}Carreras | RunPilot{% endblock %}
+{% block content %}
+<section class="hero compact">
+  <div>
+    <p class="eyebrow">Preparacion de carrera</p>
+    <h2>{{ races.next_race.name if races.next_race else 'Sin carrera próxima' }}</h2>
+    <p>
+      {% if races.next_race %}
+      {{ races.next_race.countdown }} · {{ races.next_race.date }} · {{ races.next_race.strategy.note }}
+      {% else %}
+      No hay carreras futuras cargadas ahora mismo.
+      {% endif %}
+    </p>
+  </div>
+  <div class="hero-meta">
+    <span>{{ races.upcoming|length }} futuras</span>
+    <span>{{ races.completed|length }} cerradas</span>
+    <span>{{ races.comparison_4w.state|capitalize if races.comparison_4w else 'Sin lectura' }}</span>
+  </div>
+</section>
+
+{% if races.next_race %}
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Carrera destacada</p>
+      <h3>{{ races.next_race.name }}</h3>
+    </div>
+    <span class="badge {{ races.next_race.taper.tone }}">{{ races.next_race.taper.label }}</span>
+  </div>
+  <div class="cards four">
+    <article class="card">
+      <h3>Countdown</h3>
+      <p class="metric">{{ races.next_race.countdown }}</p>
+      <p class="muted">{{ races.next_race.date }} · prioridad {{ races.next_race.priority }}</p>
+    </article>
+    <article class="card">
+      <h3>Prediccion</h3>
+      <p class="metric">{{ races.next_race.predicted_time }}</p>
+      <p class="muted">Ritmo estimado {{ races.next_race.predicted_pace }}</p>
+    </article>
+    <article class="card">
+      <h3>Estrategia</h3>
+      <p class="metric">{{ races.next_race.strategy.anchor }}</p>
+      <p class="muted">Ancla operativa de ritmo para la parte central.</p>
+    </article>
+    <article class="card">
+      <h3>Taper</h3>
+      <p class="metric">{{ races.next_race.taper.label }}</p>
+      <p class="muted">{{ races.next_race.taper.summary }}</p>
+    </article>
+  </div>
+  <div class="split">
+    <article class="panel">
+      <h3>Estrategia de ritmo</h3>
+      <div class="list compact-list">
+        <div class="list-item static">
+          <div>
+            <strong>Salida</strong>
+            <p>{{ races.next_race.strategy.opening }}</p>
+          </div>
+        </div>
+        <div class="list-item static">
+          <div>
+            <strong>Bloque central</strong>
+            <p>{{ races.next_race.strategy.middle }}</p>
+          </div>
+        </div>
+        <div class="list-item static">
+          <div>
+            <strong>Cierre</strong>
+            <p>{{ races.next_race.strategy.closing }}</p>
+          </div>
+        </div>
+      </div>
+    </article>
+    <article class="panel">
+      <h3>Checklist pre-carrera</h3>
+      <div class="list compact-list">
+        {% for item in races.next_race.checklist %}
+        <div class="list-item static">
+          <div>
+            <strong>{{ item.when }}</strong>
+            <p>{{ item.label }}</p>
+            <p class="muted">{{ item.detail }}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </article>
+  </div>
+  {% if races.next_race.fueling and races.next_race.fueling.entries %}
+  <section class="panel compact-panel">
+    <div class="panel-head">
+      <div>
+        <p class="eyebrow">Fueling</p>
+        <h3>Plan de hidratación e hidratos</h3>
+      </div>
+      <a href="/fueling">Abrir biblioteca completa</a>
+    </div>
+    <div class="cards three fueling-grid">
+      {% for entry in races.next_race.fueling.entries %}
+      <article class="card fueling-card">
+        <div class="fueling-card-head">
+          <span class="mini-badge">{{ entry.time_label }}</span>
+          <span class="mini-badge mini-badge-warn">{{ entry.phase }}</span>
+        </div>
+        <div class="fueling-card-body">
+          <strong>{{ entry.date }}</strong>
+          <p>{{ entry.recommendation }}</p>
+          <p class="muted"><strong>Cantidad:</strong> {{ entry.quantity }}</p>
+          <p class="muted"><strong>Producto:</strong> {{ entry.products_label }}</p>
+          <p class="muted">{{ entry.reason }}</p>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    <p class="muted">El detalle completo de suplementos y planes automáticos queda en la vista secundaria de fueling.</p>
+  </section>
+  {% endif %}
+</section>
+{% endif %}
+
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Calendario operativo</p>
+      <h3>Próximas carreras</h3>
+    </div>
+    <span class="badge">{{ races.upcoming|length }} activas</span>
+  </div>
+  <div class="list compact-list">
+    {% for race in races.upcoming %}
+    <div class="list-item static session-race">
+      <div>
+        <strong>{{ race.name }}</strong>
+        <p>{{ race.date }} · {{ race.distance_km }} · prioridad {{ race.priority }}</p>
+        <p class="muted">{{ race.notes or race.coaching_note or 'Sin nota operativa adicional.' }}</p>
+        <div class="today-plan-tags">
+          <span class="mini-badge">{{ race.countdown }}</span>
+          <span class="mini-badge">Predicción {{ race.predicted_time }}</span>
+          <span class="mini-badge">Ritmo {{ race.predicted_pace }}</span>
+          <span class="mini-badge mini-badge-warn">{{ race.taper.label }}</span>
+        </div>
+      </div>
+      <div class="item-meta">
+        {% if race.goal and race.goal != '-' %}
+        <span class="badge">{{ race.goal }}</span>
+        {% endif %}
+        {% if race.goal_target_pace %}
+        <span class="badge">{{ race.goal_target_pace }}</span>
+        {% endif %}
+      </div>
+    </div>
+    {% else %}
+    <p class="muted">No hay carreras futuras registradas.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Histórico</p>
+      <h3>Carreras cerradas</h3>
+    </div>
+    <span class="badge">{{ races.completed|length }} cerradas</span>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Nombre</th>
+          <th>Prioridad</th>
+          <th>Distancia</th>
+          <th>Goal</th>
+          <th>Resultado</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for race in races.completed %}
+        <tr>
+          <td>{{ race.date }}</td>
+          <td>{{ race.name }}</td>
+          <td>{{ race.priority }}</td>
+          <td>{{ race.distance_km }}</td>
+          <td>{{ race.goal }}</td>
+          <td>
+            {% if race.completed_review_slug %}
+            <a href="/completed-workouts/{{ race.completed_review_slug }}">Revisada</a>
+            {% if race.completed_review_pace %}<span> · {{ race.completed_review_pace }}</span>{% endif %}
+            {% if race.completed_review_score %}<span> · {{ race.completed_review_score }}/10</span>{% endif %}
+            {% else %}
+            Pendiente
+            {% endif %}
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6">No hay carreras cerradas aún.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

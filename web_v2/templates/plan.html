@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+{% block title %}Plan | RunPilot Next{% endblock %}
+{% block content %}
+{% set progression = page.get('progression', {}) %}
+{% set training_paces = page.get('training_paces', {}) %}
+{% set training_pace_labels = training_paces.get('labels', {}) if training_paces else {} %}
+{% set bike_paces = training_paces.get('bike', {}) if training_paces else {} %}
+{% set goal_gates = page.get('goal_gates', {}) %}
+{% set replanning = page.get('replanning', {}) %}
+<section class="hero-card">
+  <div>
+    <p class="eyebrow">Plan</p>
+    <h1>{{ page.current_block.title if page.current_block else 'Sin bloque activo' }}</h1>
+    <p class="lede">{{ page.current_block.focus if page.current_block else 'Todavía no hay un bloque activo claro.' }}</p>
+  </div>
+  <div class="hero-badges">
+    <span class="badge">{{ page.cycle.dashboard.decision.status_label }}</span>
+    <span class="badge">{{ page.cycle.session_guidance.quality_volume_cap or '-' }}</span>
+    <span class="badge">{{ page.cycle.days_to_goal_race if page.cycle.days_to_goal_race is not none else '-' }} días</span>
+  </div>
+</section>
+
+<section class="grid grid-3">
+  <article class="panel">
+    <p class="eyebrow">Fase actual</p>
+    <h2>{{ page.current_block.title if page.current_block else '-' }}</h2>
+    <p class="muted">{{ page.current_block.dates if page.current_block else '-' }}</p>
+    <p>{{ page.current_block.focus if page.current_block else 'Sin foco disponible.' }}</p>
+  </article>
+  <article class="panel">
+    <p class="eyebrow">Objetivos</p>
+    <div class="tag-row">
+      {% for item in page.cycle.session_guidance.primary_labels %}
+      <span class="mini-tag">{{ item }}</span>
+      {% else %}
+      <span class="mini-tag">Sin guía principal</span>
+      {% endfor %}
+    </div>
+  </article>
+  <article class="panel">
+    <p class="eyebrow">Evitar</p>
+    <div class="tag-row">
+      {% for item in page.cycle.session_guidance.avoid_labels %}
+      <span class="mini-tag warn">{{ item }}</span>
+      {% else %}
+      <span class="mini-tag">Sin restricciones fuertes</span>
+      {% endfor %}
+    </div>
+  </article>
+</section>
+
+<section class="grid grid-4">
+  <article class="panel">
+    <p class="eyebrow">Semana absorbida</p>
+    <h2>{{ progression.get('last_absorbed_week', {}).get('week', '-') }}</h2>
+    <p class="muted">Estado {{ progression.get('status') or '-' }}</p>
+  </article>
+  <article class="panel">
+    <p class="eyebrow">Objetivo running</p>
+    <h2>{{ progression.get('next_running_target_range_km', {}).get('min', '-') }}-{{ progression.get('next_running_target_range_km', {}).get('max', '-') }}</h2>
+    <p class="muted">km por defecto si la semana está absorbida</p>
+  </article>
+  <article class="panel">
+    <p class="eyebrow">Bici soporte</p>
+    <h2>{{ 'Sí' if progression.get('keep_bike_support_session') else 'No' }}</h2>
+    <p class="muted">Mantener una sesión híbrida</p>
+  </article>
+  <article class="panel">
+    <p class="eyebrow">Fartlek</p>
+    <h2>{{ progression.get('fartlek_frequency') or '-' }}</h2>
+    <p class="muted">Puente de calidad en retorno/base</p>
+  </article>
+</section>
+
+<section class="grid grid-2">
+  <article class="panel">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">Bandas actuales</p>
+        <h2>Ritmos por familia</h2>
+      </div>
+    </div>
+    <div class="stack-list">
+      <div class="list-row static-row"><div><strong>Fartlek</strong><p>{{ training_pace_labels.get('fartlek', {}).get('min', '-') }} a {{ training_pace_labels.get('fartlek', {}).get('max', '-') }}</p></div><span>Run</span></div>
+      <div class="list-row static-row"><div><strong>Tempo</strong><p>{{ training_pace_labels.get('tempo', {}).get('min', '-') }} a {{ training_pace_labels.get('tempo', {}).get('max', '-') }}</p></div><span>Run</span></div>
+      <div class="list-row static-row"><div><strong>10k</strong><p>{{ training_pace_labels.get('ten_k_specific', {}).get('min', '-') }} a {{ training_pace_labels.get('ten_k_specific', {}).get('max', '-') }}</p></div><span>Run</span></div>
+      <div class="list-row static-row"><div><strong>Bici tempo</strong><p>{{ bike_paces.get('tempo', {}).get('min_bpm', '-') }}-{{ bike_paces.get('tempo', {}).get('max_bpm', '-') }} ppm</p></div><span>Bike</span></div>
+    </div>
+  </article>
+  <article class="panel">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">Replan operativo</p>
+        <h2>{{ replanning.get('summary') or 'Sin acción' }}</h2>
+      </div>
+    </div>
+    <p class="muted">{{ replanning.get('reason') or 'Sin motivo registrado.' }}</p>
+    <div class="tag-row">
+      {% for item in replanning.get('actions', []) %}
+      <span class="mini-tag warn">{{ item.type }}</span>
+      {% else %}
+      <span class="mini-tag">Sin acciones</span>
+      {% endfor %}
+    </div>
+  </article>
+</section>
+
+{% if goal_gates.get('block_checkpoints') %}
+<section class="panel">
+  <div class="section-head">
+    <div>
+      <p class="eyebrow">Checkpoints</p>
+      <h2>Puertas intermedias del ciclo</h2>
+    </div>
+    <span class="badge">{{ goal_gates.get('passed_count', '-') }}/{{ goal_gates.get('total_gates', '-') }}</span>
+  </div>
+  <div class="stack-list">
+    {% for item in goal_gates.get('block_checkpoints', []) %}
+    <div class="list-row static-row">
+      <div>
+        <strong>{{ item.name }}</strong>
+        <p>{{ item.evidence }}</p>
+      </div>
+      <span>{{ item.phase }}</span>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<section class="panel">
+  <div class="section-head">
+    <div>
+      <p class="eyebrow">Secuencia</p>
+      <h2>Fases del ciclo</h2>
+    </div>
+  </div>
+  <div class="timeline-grid">
+    {% for block in page.completed_blocks %}
+    <article class="timeline-card is-complete">
+      <span class="timeline-state">Completada</span>
+      <h3>{{ block.title }}</h3>
+      <p class="muted">{{ block.dates }}</p>
+      <p>{{ block.focus }}</p>
+    </article>
+    {% endfor %}
+    {% if page.current_block %}
+    <article class="timeline-card is-current">
+      <span class="timeline-state">Actual</span>
+      <h3>{{ page.current_block.title }}</h3>
+      <p class="muted">{{ page.current_block.dates }}</p>
+      <p>{{ page.current_block.focus }}</p>
+    </article>
+    {% endif %}
+    {% for block in page.future_blocks %}
+    <article class="timeline-card">
+      <span class="timeline-state">Futura</span>
+      <h3>{{ block.title }}</h3>
+      <p class="muted">{{ block.dates }}</p>
+      <p>{{ block.focus }}</p>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="panel">
+  <div class="section-head">
+    <div>
+      <p class="eyebrow">Semana activa</p>
+      <h2>{{ page.week.executive_summary.goal_sentence if page.week.executive_summary else 'Resumen semanal' }}</h2>
+    </div>
+    <a class="text-link" href="{{ legacy_base_url }}/planned-workouts?view=week">Abrir semana operativa</a>
+  </div>
+  <div class="stack-list">
+    {% for row in page.week.rows[:7] %}
+    <div class="list-row static-row">
+      <div>
+        <strong>{{ row.day }}</strong>
+        <p>{{ row.description }}</p>
+      </div>
+      <span>{{ row.distance or '-' }}</span>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

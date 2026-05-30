@@ -1,0 +1,141 @@
+garmin_strength_mobility_knowledge:
+  version: 1
+  intent: >-
+    Base local para decidir cuando una sesion de fuerza o movilidad puede llevar un
+    ejercicio Garmin seleccionado sin que el titulo del paso contradiga la descripcion.
+  policy:
+    description_is_source_of_truth: true
+    default_upload_strategy: description_only_unless_visible_title_is_acceptable
+    selection_rule: >-
+      Solo usar una categoria Garmin cuando el titulo visible que Garmin ensena al usuario
+      siga representando el ejercicio de forma aceptable. Si Garmin degrada el paso a una
+      familia generica que cambia el significado visible, dejar el paso sin seleccion.
+    do_not_guess_nearest_match_outside_curated_list: true
+    rationale:
+      - Garmin muestra el ejercicio seleccionado como titulo principal del paso.
+      - Una coincidencia aproximada crea sesiones confusas aunque la descripcion sea correcta.
+      - Las pruebas reales con la API muestran que Garmin ignora exerciseName en estos uploads y conserva solo category.
+      - Por tanto, Ankle Circles, Glute Bridge o Side Plank terminan viendose como titulos genericos si se fuerza una familia.
+      - Garmin si preserva exerciseName cuando se usa el enum exacto del catalogo publico `Exercises.json` junto con su category exacta.
+    discovery_process:
+      - Crea el ejercicio manualmente en Garmin Connect si quieres validar una correspondencia exacta.
+      - Recupera el workout con la API o revisa el .garmin_upload.json generado.
+      - Copia el exerciseName, category y providerExerciseSourceId exactos a este archivo.
+      - Si Garmin no conserva el nombre exacto y solo muestra una familia generica, tratarlo como `description_only`.
+      - Si existe enum exacto en `Exercises.json`, usar ese enum aunque providerExerciseSourceId siga siendo desconocido.
+    provider_exercise_source_id_status: >-
+      No se ha encontrado un endpoint publico fiable que exponga providerExerciseSourceId.
+      Los probes reales indican que no es necesario para varios ejercicios exactos si se usa
+      el enum correcto en exercise_name y la category exacta.
+  confirmed_exact_examples:
+    - canonical_label: Squat
+      exercise_name: Squat
+      category: SQUAT
+      status: available
+    - canonical_label: Lunge
+      exercise_name: Lunge
+      category: LUNGE
+      status: available
+    - canonical_label: Deadlift
+      exercise_name: Deadlift
+      category: DEADLIFT
+      status: available
+    - canonical_label: Plank
+      exercise_name: Plank
+      category: PLANK
+      status: available
+    - canonical_label: Hip Raise
+      exercise_name: Hip Raise
+      category: HIP_RAISE
+      status: available
+    - canonical_label: Calf Raise
+      exercise_name: Calf Raise
+      category: CALF_RAISE
+      status: available
+  repo_specific_movements:
+    - label: Circulos de tobillo
+      sport: mobility
+      garmin_status: exact_catalog_enum_confirmed_by_api_probe
+      upload_strategy: exact_catalog_enum
+      garmin_selection:
+        exercise_name: ANKLE_CIRCLES
+        category: WARM_UP
+    - label: Movilidad de tobillo en pared
+      sport: mobility
+      garmin_status: no_acceptable_visible_garmin_title
+      upload_strategy: description_only
+    - label: Tibial anterior en pared
+      sport: mobility
+      garmin_status: no_acceptable_visible_garmin_title
+      upload_strategy: description_only
+    - label: Sentadilla asistida profunda
+      sport: mobility
+      garmin_status: generic_squat_title_changes_meaning
+      upload_strategy: description_only
+    - label: Movilidad activa de cadera y gluteo
+      sport: mobility
+      garmin_status: no_acceptable_visible_garmin_title
+      upload_strategy: description_only
+    - label: Movilidad activa de isquios
+      sport: mobility
+      garmin_status: no_acceptable_visible_garmin_title
+      upload_strategy: description_only
+    - label: Seated soleus raise
+      sport: strength
+      garmin_status: visible_title_too_generic
+      upload_strategy: description_only
+    - label: Standing calf raise
+      sport: strength
+      garmin_status: exact_catalog_enum_confirmed
+      upload_strategy: exact_catalog_enum
+      garmin_selection:
+        exercise_name: STANDING_CALF_RAISE
+        category: CALF_RAISE
+    - label: Tibialis raises en pared
+      sport: strength
+      garmin_status: no_acceptable_visible_garmin_title
+      upload_strategy: description_only
+    - label: Short-foot hold
+      sport: strength
+      garmin_status: no_acceptable_visible_garmin_title
+      upload_strategy: description_only
+    - label: Split squat
+      sport: strength
+      garmin_status: generic_lunge_title_changes_meaning
+      upload_strategy: description_only
+    - label: Glute bridge
+      sport: strength
+      garmin_status: exact_catalog_enum_confirmed_by_api_probe
+      upload_strategy: exact_catalog_enum
+      garmin_selection:
+        exercise_name: GLUTE_BRIDGE
+        category: BANDED_EXERCISES
+    - label: Side plank
+      sport: strength_or_mobility
+      garmin_status: exact_catalog_enum_confirmed_by_api_probe
+      upload_strategy: exact_catalog_enum
+      garmin_selection:
+        exercise_name: SIDE_PLANK
+        category: PLANK
+    - label: Romanian deadlift
+      sport: strength
+      garmin_status: exact_catalog_enum_confirmed_by_api_probe
+      upload_strategy: exact_catalog_enum
+      garmin_selection:
+        exercise_name: ROMANIAN_DEADLIFT
+        category: DEADLIFT
+    - label: Hamstring bridge on heels
+      sport: strength
+      garmin_status: no_acceptable_visible_garmin_title
+      upload_strategy: description_only
+    - label: Pallof press
+      sport: strength
+      garmin_status: no_acceptable_visible_garmin_title
+      upload_strategy: description_only
+    - label: Dead bug
+      sport: strength_or_mobility
+      garmin_status: exact_catalog_enum_confirmed_by_api_probe
+      upload_strategy: exact_catalog_enum
+      garmin_selection:
+        exercise_name: DEAD_BUG
+        category: HIP_STABILITY

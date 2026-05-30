@@ -1,0 +1,71 @@
+template_knowledge_map:
+  easy_recovery:
+    preferred_knowledge_ids: [30_regenerativo_muy_suave, 30_suave]
+  recovery_plus_mobility:
+    preferred_knowledge_ids: [30_regenerativo_muy_suave, 40_regenerativo_muy_suave]
+  easy_z2:
+    preferred_knowledge_ids: [50_en_z2_estable, 70_en_z2_estable, 90_en_z2_estable]
+  walk_run_return:
+    preferred_knowledge_ids: [10x1_correr_1_caminar, 8x2_correr_1_caminar, 6x3_correr_1_caminar]
+  continuous_easy_return:
+    preferred_knowledge_ids: [20_retorno_continuo_muy_facil, 30_retorno_continuo_facil, 40_retorno_continuo_facil]
+  intro_fartlek_time_based:
+    preferred_knowledge_ids: [10x1_alegre_1_suave, 8x2_alegre_1_suave, 6x3_alegre_90_suave]
+  easy_plus_strides:
+    preferred_knowledge_ids: [45_suave_6x100_progresivos, 60_suave_8x100_progresivos]
+  technique_drills_strides:
+    preferred_knowledge_ids: [8x80m_progresivos_rec_caminando, 10x100m_progresivos_rec_caminando, 12x100m_en_recta_rec_60_90]
+  aerobic_steady:
+    preferred_knowledge_ids: [50_en_z2_estable, 70_en_z2_estable, 45_progresivo_de_suave_a_ritmo_m]
+  cruise_intervals:
+    preferred_knowledge_ids: [4x5_ritmo_21k_rec_1, 5x5_ritmo_21k_rec_1, 6x5_ritmo_21k_rec_1, 3x10_ritmo_21k_rec_2]
+  tempo_continuous:
+    preferred_knowledge_ids: [20_ritmo_umbral_21k, 25_ritmo_umbral_21k, 30_ritmo_umbral_21k, 35_ritmo_21k_controlado]
+  tempo_broken:
+    preferred_knowledge_ids: [2x20_ritmo_21k_rec_3, 2x25_ritmo_21k_rec_4, 3x10_ritmo_21k_rec_2, 4x8_ritmo_21k_rec_90]
+  short_intervals_economy:
+    preferred_knowledge_ids: [10x200m_ritmo_1500_3k_rec_200m_trote, 8x200m_ritmo_3k_rec_200m_trote, 6x200m_rapido_pero_relajado_rec_2]
+  short_intervals_vo2:
+    preferred_knowledge_ids: [12x1_ritmo_5k_1_suave, 10x400_ritmo_5k_rec_200m_trote, 8x500_ritmo_5k_rec_90, 4x3_ritmo_5k_rec_2]
+  medium_intervals_vo2:
+    preferred_knowledge_ids: [5x800_ritmo_5k_rec_2, 6x800_ritmo_5k_rec_2, 4x1000_ritmo_5k_rec_2_3, 5x1000_ritmo_5k_rec_2_3]
+  ten_k_specific_reps:
+    preferred_knowledge_ids: [6x1000_ritmo_10k_rec_2, 8x1000_ritmo_10k_rec_2, 4x2000_ritmo_10k_rec_3, 8x1000m_con_2_rec_a_ritmo_objetivo_10k]
+  ten_k_specific_continuous:
+    preferred_knowledge_ids: [3x3000_ritmo_10k_rec_4, 2x3000_ritmo_10k_rec_4, 16x400_ritmo_10k_rec_45_60]
+  five_k_specific_reps:
+    preferred_knowledge_ids: [6x800_ritmo_5k_rec_2, 5x1000_ritmo_5k_rec_2_3, 3x1600_ritmo_5k_rec_3]
+  half_marathon_specific_blocks:
+    preferred_knowledge_ids: [3x4k_ritmo_21k_rec_3, 2x5k_ritmo_21k_rec_3, 12k_ritmo_21k]
+  marathon_specific_blocks:
+    preferred_knowledge_ids: [3x20_ritmo_m_rec_3, 2x30_ritmo_m_rec_5, 16k_continuos_ritmo_m]
+  fartlek_structured:
+    preferred_knowledge_ids: [10x1_alegre_1_suave, 15x1_alegre_1_suave, 8x3_ritmo_5k_2_suave]
+  bike_easy_aerobic:
+    preferred_knowledge_ids: [50_en_z2_estable, 70_en_z2_estable, 90_en_z2_estable]
+  bike_tempo_support:
+    preferred_knowledge_ids: [3x8_ritmo_21k_rec_90, 3x10_ritmo_21k_rec_2, 2x20_ritmo_21k_rec_3]
+  bike_vo2_support:
+    preferred_knowledge_ids: [4x3_ritmo_5k_rec_2, 5x3_ritmo_5k_rec_2, 4x4_ritmo_5k_rec_3]
+  progression_finish_fast:
+    preferred_knowledge_ids: [70_progresivo_30_e_25_m_15_21k, 80_suave_ultimos_20_ritmo_m, 90_suave_ultimos_20_ritmo_21k_m]
+  long_run:
+    preferred_knowledge_ids: [90_suave, 90_en_z2_estable, 24k_suave]
+  long_run_quality:
+    preferred_knowledge_ids: [24k_con_ultimos_6k_ritmo_m, 18_20_km_progresive_finishing_at_half_marathon_effort, 20k_con_ultimos_8k_ritmo_21k_m]
+  hills_strength:
+    preferred_knowledge_ids: [8x45_cuesta_fuerte_rec_bajando, 6x2_cuesta_esfuerzo_10k_rec_bajando, 5x3_cuesta_esfuerzo_10k_rec_bajando]
+  short_hills_power:
+    preferred_knowledge_ids: [8x10_cuesta_muy_fuerte_rec_bajando_andando, 10x10_cuesta_muy_fuerte_rec_completa, 8x15_cuesta_fuerte_rec_completa]
+  mixed_tempo_plus_fast:
+    preferred_knowledge_ids: [3x2k_ritmo_10k_rec_2_4x400_ritmo_5k, 20_ritmo_umbral_21k, 5x1000_ritmo_5k_4x200_rapido]
+  mixed_aerobic_plus_fast:
+    preferred_knowledge_ids: [45_suave_6x100_progresivos, 60_suave_8x100_progresivos, 30_suave_4x100_progresivos]
+  polarized_aerobic_with_spikes:
+    preferred_knowledge_ids: [60_suave_8x100_progresivos, 8x80m_progresivos_rec_caminando]
+  test_sessions:
+    preferred_knowledge_ids: [test_3k_maximo, test_5k_maximo, test_10k_maximo, test_20_maximo_controlado]
+  race_activation:
+    preferred_knowledge_ids: [30_suave_4x100_progresivos, 25_suave_4x200_ritmo_5k_rec_completa, 20_suave_5x100_rectas]
+  ten_k_specific_sharpener:
+    preferred_knowledge_ids: [4x2k_ritmo_10k_rec_2_4x200_rapido, 6k_ritmo_10k_controlado_6x300_rapido, 12x600_ritmo_10k_rec_60_75]

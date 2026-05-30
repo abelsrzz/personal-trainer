@@ -1,0 +1,32 @@
+[
+  {
+    "userProfilePK": 137864769,
+    "calendarDate": "2026-05-24",
+    "totalImpactLoad": 24740,
+    "totalDistance": 17323.0,
+    "tolerance": 44253,
+    "startOfWeek": "2026-05-19",
+    "endOfWeek": "2026-05-24",
+    "weekIndex": 1898
+  },
+  {
+    "userProfilePK": 137864769,
+    "calendarDate": "2026-05-30",
+    "totalImpactLoad": 16600,
+    "totalDistance": 10874.0,
+    "tolerance": 44253,
+    "startOfWeek": "2026-05-25",
+    "endOfWeek": "2026-05-30",
+    "weekIndex": 1899
+  },
+  {
+    "userProfilePK": 137864769,
+    "calendarDate": "2026-05-31",
+    "totalImpactLoad": 16600,
+    "totalDistance": 10874.0,
+    "tolerance": 44253,
+    "startOfWeek": "2026-05-31",
+    "endOfWeek": "2026-05-31",
+    "weekIndex": 1900
+  }
+]

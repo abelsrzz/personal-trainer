@@ -1,0 +1,35 @@
+workout:
+  name: Bicicleta larga comoda 100 min
+  schedule_date: 2026-05-31
+  sport: cycling
+  description: Sesion larga, comoda y en Z2 para sostener la base aerobica de la semana
+    sin impacto sobre la tibia.
+  estimated_duration_s: 6000
+  steps:
+  - order: 1
+    step_type: warmup
+    description: 10 min suaves
+    duration_s: 600
+    target:
+      type: heart_rate_range
+      min_bpm: 120
+      max_bpm: 138
+  - order: 2
+    step_type: interval
+    description: 80 min Z2 baja y conversacional
+    duration_s: 4800
+    target:
+      type: heart_rate_range
+      min_bpm: 145
+      max_bpm: 155
+  - order: 3
+    step_type: cooldown
+    description: 10 min suaves
+    duration_s: 600
+    target:
+      type: heart_rate_range
+      min_bpm: 115
+      max_bpm: 135
+  primary_goal: Resistencia aerobica
+  knowledge_id: 90_en_z2_estable
+  knowledge_label: 90' en Z2 estable

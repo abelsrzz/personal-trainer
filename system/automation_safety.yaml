@@ -1,0 +1,28 @@
+automation_safety:
+  allow_auto:
+    - persist_observability_state
+    - import_garmin_activities
+    - import_garmin_daily_metrics
+    - refresh_athlete_profile_cache
+    - apply_today_protective_variant
+    - reduce_non_race_workout
+    - move_non_race_workout_to_rest_slot
+    - recompose_skipped_non_race_session
+  require_confirmation:
+    - activate_prepared_week
+    - regenerate_prepared_week
+    - replace_race_workout
+    - move_workout_outside_current_week
+    - resend_modified_workout_to_garmin
+  never_auto:
+    - delete_completed_activity_data
+    - cancel_race_day_session
+    - overwrite_active_week
+    - delete_goal_race
+    - lower_goal_without_user_request
+  replan:
+    race_horizon_days: 4
+    never_auto_session_kinds:
+      - race
+    fatigue_requires_protective_variant: true
+    pain_red_prefers_skip: true

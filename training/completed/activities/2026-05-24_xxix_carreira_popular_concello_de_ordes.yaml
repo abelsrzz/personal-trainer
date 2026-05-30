@@ -1,0 +1,16 @@
+activity:
+  id: garmin-22992941690
+  source: garmin
+  garmin_activity_id: 22992941690
+  date: 2026-05-24
+  title: Ordes - XXIX CARREIRA POPULAR CONCELLO DE ORDES
+  type: race
+  planned_session_reference: races/2026/2026-05-24_xxix_carreira_popular_concello_de_ordes.yaml
+  distance_km: 8.447
+  duration: '39:37'
+  elevation_gain_m: 143.0
+  avg_pace: 4:41/km
+  avg_hr: 191.0
+  max_hr: 199.0
+  shoes: null
+  notes: Autoimported from Garmin race result. Warmup was tracked separately and reviewed as part of the double session context.

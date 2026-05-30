@@ -1,0 +1,16 @@
+activity:
+  id: garmin-22900018441
+  source: garmin
+  garmin_activity_id: 22900018441
+  date: 2026-05-16
+  title: Ordes - Rodaje 5 km facil
+  type: run
+  planned_session_reference: training/planned/workouts/2026-05-16_rodaje_5km_facil.yaml
+  distance_km: 5.002
+  duration: '34:37'
+  elevation_gain_m: 35.0
+  avg_pace: 6:55/km
+  avg_hr: 148.0
+  max_hr: 159.0
+  shoes: null
+  notes: Autoimported from Garmin on 2026-05-23T19:12:06

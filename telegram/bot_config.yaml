@@ -1,0 +1,8 @@
+telegram:
+  bot_token: 7962588953:AAH19hZmrostRBmAz6-8OWIzg9dUwklIX8U
+  chat_id: 6174679483
+  caption_prefix: Running Coach
+
+opencode_remote:
+  timeout_s: 3600
+  model: openai/gpt-5.4

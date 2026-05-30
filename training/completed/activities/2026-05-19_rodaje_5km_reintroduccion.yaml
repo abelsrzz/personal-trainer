@@ -1,0 +1,16 @@
+activity:
+  id: garmin-22937591625
+  source: garmin
+  garmin_activity_id: 22937591625
+  date: 2026-05-19
+  title: Eliptica aerobica estable 55 min
+  type: run
+  planned_session_reference: training/planned/workouts/2026-05-19_rodaje_5km_reintroduccion.yaml
+  distance_km: 0.0
+  duration: '55:06'
+  elevation_gain_m: null
+  avg_pace: null
+  avg_hr: 135.0
+  max_hr: 149.0
+  shoes: null
+  notes: Autoimported from Garmin on 2026-05-27T20:45:19

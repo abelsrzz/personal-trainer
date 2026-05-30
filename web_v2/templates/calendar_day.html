@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+{% block title %}{{ page.date_label }} | RunPilot Next{% endblock %}
+{% block content %}
+<section class="hero-card compact-hero">
+  <div>
+    <p class="eyebrow">Día</p>
+    <h1>{{ page.date_label }}</h1>
+    <p class="lede">{{ page.daily_summary.status_label }} · {{ page.links.planned_count }} plan · {{ page.links.completed_count }} hecho · {{ page.links.race_count }} carrera</p>
+  </div>
+  <div class="hero-badges">
+    <a class="link-button subtle" href="/calendar?month={{ page.date[:7] }}">Volver al calendar</a>
+  </div>
+</section>
+
+{% if page.today_plan %}
+<section class="panel emphasis-panel">
+  <p class="eyebrow">Lectura del día</p>
+  <h2>{{ page.today_plan.status_label }}</h2>
+  <p>{{ page.today_plan.why_today }}</p>
+  <div class="tag-row">
+    {% for item in page.today_plan.watchouts %}
+    <span class="mini-tag warn">{{ item }}</span>
+    {% endfor %}
+    {% for item in page.today_plan.priorities %}
+    <span class="mini-tag">{{ item }}</span>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<section class="grid grid-2 detail-grid">
+  <article class="panel">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">Plan del día</p>
+        <h2>Sesiones prescritas</h2>
+      </div>
+    </div>
+      <div class="stack-list">
+      {% for workout in page.planned_items %}
+      <a class="detail-row-card {{ workout.calendar_color_class }} calendar-detail-card" href="{{ workout.detail_url }}" style="{{ workout.calendar_inline_style }}">
+        <div>
+          <p class="calendar-entry-topline">
+            <span class="calendar-entry-icons">
+              <span class="calendar-sport-icon is-small">{{ workout.primary_icon|safe }}</span>
+            </span>
+            <span class="calendar-check {{ 'is-done' if workout.is_completed else '' }}">{{ '✓' if workout.is_completed else '' }}</span>
+          </p>
+          <strong>{{ workout.name }}</strong>
+          <p>{{ workout.description or 'Sin descripción.' }}</p>
+          {% if workout.replan and workout.replan.is_changed %}
+          <p class="muted">{{ workout.replan.summary }}</p>
+          {% endif %}
+        </div>
+        <div class="detail-row-meta">
+          <span class="calendar-metric">{{ workout.sport_label }}</span>
+          <span class="calendar-metric">{{ workout.intensity_label }}</span>
+          <span class="calendar-metric">{{ workout.estimated_duration }}</span>
+        </div>
+      </a>
+      {% else %}
+      <div class="detail-row-card static-row"><p class="muted">No había sesión planificada.</p></div>
+      {% endfor %}
+    </div>
+  </article>
+
+  <article class="panel">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">Ejecución</p>
+        <h2>Lo que realmente se hizo</h2>
+      </div>
+    </div>
+    <div class="stack-list">
+      {% for review in page.completed_items %}
+      <a class="detail-row-card {{ review.calendar_color_class }} calendar-detail-card" href="{{ review.detail_url }}" style="{{ review.calendar_inline_style }}">
+        <div>
+          <p class="calendar-entry-topline">
+            <span class="calendar-entry-icons">
+              <span class="calendar-sport-icon is-small">{{ review.primary_icon|safe }}</span>
+            </span>
+            <span class="calendar-check is-done">✓</span>
+          </p>
+          <strong>{{ review.activity_name }}</strong>
+          <p>{{ review.distance_km }} km · {{ review.duration }} · {{ review.pace }}</p>
+          <p class="muted">{{ review.feedback_summary or review.compliance_note }}</p>
+        </div>
+        <div class="detail-row-meta">
+          <span class="calendar-metric">{{ review.sport_label }}</span>
+          <span class="calendar-metric">{{ review.intensity_label }}</span>
+          <span class="calendar-metric">FC {{ review.avg_hr }}</span>
+        </div>
+      </a>
+      {% else %}
+      <div class="detail-row-card static-row"><p class="muted">No hay actividad completada enlazada para este día.</p></div>
+      {% endfor %}
+    </div>
+  </article>
+</section>
+
+<section class="panel">
+  <div class="section-head">
+    <div>
+      <p class="eyebrow">Comparación</p>
+      <h2>Plan vs ejecución</h2>
+    </div>
+  </div>
+  <div class="stack-list">
+    {% for item in page.comparison %}
+    <div class="detail-row-card {{ 'status-green' if item.status == 'matched' else 'status-yellow' }} static-row">
+      <div>
+        <strong>{{ item.planned_name }}</strong>
+        <p>Plan: {{ item.planned_kind_label }} · {{ item.planned_distance }} · {{ item.planned_duration }}</p>
+        <p><strong>Real:</strong> {{ item.actual_name }}</p>
+        <p class="muted">{{ item.result_note }}</p>
+        {% if item.deltas %}
+        <div class="tag-row">
+          {% for delta in item.deltas %}
+          <span class="mini-tag">{{ delta }}</span>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+      <div class="detail-row-meta">
+        <span class="calendar-metric">{{ item.badge.label }}</span>
+        <span class="calendar-metric">{{ item.result }}</span>
+      </div>
+    </div>
+    {% else %}
+    <div class="detail-row-card static-row"><p class="muted">Todavía no hay suficiente información para comparar plan y ejecución en este día.</p></div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="grid grid-2 detail-grid">
+  <article class="panel">
+    <p class="eyebrow">Análisis</p>
+    <h2>Revisiones del sistema</h2>
+    <div class="stack-list">
+      {% for review in page.reviews %}
+      <div class="detail-row-card static-row">
+        <div>
+          <strong>{{ review.score }}/10 · {{ review.traffic_light }}</strong>
+          <p>Riesgo {{ review.risk_level }}</p>
+          <p class="muted">{{ review.compliance_note }}</p>
+        </div>
+      </div>
+      {% else %}
+      <div class="detail-row-card static-row"><p class="muted">Todavía no hay revisión generada.</p></div>
+      {% endfor %}
+    </div>
+  </article>
+
+  <article class="panel">
+    <p class="eyebrow">Contexto</p>
+    <h2>Evento competitivo</h2>
+    <div class="stack-list">
+      {% for race in page.races %}
+      <div class="detail-row-card {{ race.calendar_color_class }} calendar-detail-card static-row" style="{{ race.calendar_inline_style }}">
+        <div>
+          <p class="calendar-entry-topline">
+            <span class="calendar-entry-icons">
+              <span class="calendar-sport-icon is-small">{{ race.primary_icon|safe }}</span>
+            </span>
+            <span class="calendar-check {{ 'is-done' if race.is_completed else '' }}">{{ '✓' if race.is_completed else '' }}</span>
+          </p>
+          <strong>{{ race.name }}</strong>
+          <p>{{ race.distance_km }} km · {{ race.location }}</p>
+          <p class="muted">{{ race.goal }}</p>
+        </div>
+      </div>
+      {% else %}
+      <div class="detail-row-card static-row"><p class="muted">No hay evento competitivo registrado para esta fecha.</p></div>
+      {% endfor %}
+    </div>
+  </article>
+</section>
+{% endblock %}

@@ -1,0 +1,366 @@
+{
+  "planned": {
+    "name": "Calentamiento pre-carrera Ordes",
+    "date": "2026-05-24",
+    "sport": "running",
+    "goal_category": "easy_plus_strides",
+    "template_id": null,
+    "knowledge_id": null,
+    "knowledge_label": null,
+    "primary_goal": null,
+    "description": "Calentamiento corto y conservador antes de Ordes para activar sin fatigar ni irritar el periostio. Trote suave, rectas cortas controladas y cierre facil hasta la salida.",
+    "estimated_duration_s": 1020,
+    "distance_m": null,
+    "primary_hr_min": 135.0,
+    "primary_hr_max": 150.0
+  },
+  "summary": {
+    "activity_id": 22992915868,
+    "activity_name": "Ordes - Calentamiento pre-carrera Ordes",
+    "start_time_local": "2026-05-24 10:33:07",
+    "distance_m": 2427.340087890625,
+    "duration_s": 1058.35205078125,
+    "elapsed_s": 1078.2440185546875,
+    "moving_s": 999.0,
+    "pace_s_per_km": 435.95900458333335,
+    "moving_pace_s_per_km": 411.55346327793694,
+    "avg_hr": 169.0,
+    "max_hr": 187.0,
+    "avg_cadence_spm": 154.171875,
+    "max_cadence_spm": 200.0,
+    "avg_power_w": 221.0,
+    "max_power_w": 507.0,
+    "elevation_gain_m": 29.0,
+    "elevation_loss_m": 19.0,
+    "avg_stride_cm": 89.74000244140626,
+    "avg_gct_ms": 277.5,
+    "avg_vo_cm": 8.290000152587892,
+    "avg_vr": 9.529999732971191,
+    "calories": 182.0,
+    "water_estimated_ml": 293.0,
+    "aerobic_training_effect": 2.799999952316284,
+    "anaerobic_training_effect": 2.299999952316284,
+    "training_effect_label": "TEMPO",
+    "min_temp_c": 27.0,
+    "max_temp_c": 29.0,
+    "gap_pace_s_per_km": 427.3504273504273
+  },
+  "compliance": {
+    "distance_diff_m": null,
+    "duration_diff_s_vs_est": 38.35205078125,
+    "hr_evaluable_time_s": 0.0,
+    "time_in_hr_zone_s": 0.0,
+    "time_below_hr_zone_s": 0.0,
+    "time_above_hr_zone_s": 0.0,
+    "pct_in_hr_zone": 0.0,
+    "pct_below_hr_zone": 0.0,
+    "pct_above_hr_zone": 0.0,
+    "time_to_enter_zone_s": 0.0,
+    "distance_to_enter_zone_m": 0.0
+  },
+  "stability": {
+    "pace_std_s_per_km": 0.0,
+    "hr_std_bpm": 0.0,
+    "cadence_std_spm": 0.0,
+    "power_std_w": 0.0
+  },
+  "halves": {
+    "first_half_pace_s_per_km": 435.95900458333335,
+    "second_half_pace_s_per_km": 435.95900458333335,
+    "first_half_hr": 169.0,
+    "second_half_hr": 169.0,
+    "first_half_power_w": 221.0,
+    "second_half_power_w": 221.0,
+    "efficiency_first": 0.0,
+    "efficiency_second": 0.0,
+    "efficiency_change_pct": 0.0,
+    "decoupling_pct": 0.0
+  },
+  "splits": [
+    {
+      "label": "2.43",
+      "distance_m": 2427.340087890625,
+      "duration_s": 1058.35205078125,
+      "pace_s_per_km": 435.95900458333335,
+      "avg_hr": 169.0,
+      "avg_cadence_spm": 154.171875,
+      "avg_power_w": 221.0,
+      "avg_gct_ms": 277.5,
+      "avg_vo_cm": 8.290000152587892,
+      "avg_vr": 9.529999732971191,
+      "avg_stride_cm": 89.74000244140626,
+      "avg_temp_c": 28.0,
+      "avg_elevation_m": 285.5435323598139,
+      "avg_gap_pace_s_per_km": 427.3504273504273
+    }
+  ],
+  "score": 6,
+  "traffic_light": "amarillo",
+  "risk_level": "medio",
+  "stimulus_alignment": {
+    "planned_knowledge": null,
+    "actual_goals": [
+      "activacion_neuromuscular",
+      "base_aerobica"
+    ],
+    "overlap": [
+      "activacion_precompetitiva"
+    ],
+    "alignment": "drifted",
+    "summary": "La sesion activo antes de competir, pero con mas coste cardiaco del previsto para un calentamiento conservador."
+  },
+  "progression": {
+    "comparable_count": 0,
+    "matches": [],
+    "trend": "neutral",
+    "summary": "Activacion valida pero algo agresiva para tratarla como simple calentamiento. Debe contarse dentro de la carga global del dia."
+  },
+  "coaching_summary": "Objetivo: Calentamiento corto y conservador antes de Ordes para activar sin fatigar ni irritar el periostio. Bien: hubo activacion suficiente y la sesion no se alargo demasiado. A mejorar: la FC y el coste fisiologico fueron altos para un calentamiento que debia ser conservador. Impacto: 2.43 km en 17:38, ritmo 7:16/km, FC 169.0/187.0 bpm, potencia 221.0 W y +29.0 m. Debe contarse como parte real de la carga de la doble sesion, no como mero tramite previo.",
+  "recovery_analysis": {
+    "status": "complete",
+    "resting_hr_bpm": 55,
+    "normal_hr_bpm": 130,
+    "finish_hr_bpm": 170,
+    "finish_timestamp_gmt": "2026-05-24T08:51:05+00:00",
+    "time_to_normal_s": 4615.0,
+    "time_to_140_s": 3415.0,
+    "hrr_1min_bpm": 5,
+    "hrr_3min_bpm": 29,
+    "hrr_5min_bpm": 29,
+    "marks": [
+      {
+        "minute": 1,
+        "timestamp_gmt": "2026-05-24T08:52:00+00:00",
+        "hr": 165,
+        "drop": 5
+      },
+      {
+        "minute": 2,
+        "timestamp_gmt": "2026-05-24T08:54:00+00:00",
+        "hr": 141,
+        "drop": 29
+      },
+      {
+        "minute": 3,
+        "timestamp_gmt": "2026-05-24T08:54:00+00:00",
+        "hr": 141,
+        "drop": 29
+      },
+      {
+        "minute": 5,
+        "timestamp_gmt": "2026-05-24T08:56:00+00:00",
+        "hr": 141,
+        "drop": 29
+      },
+      {
+        "minute": 10,
+        "timestamp_gmt": "2026-05-24T09:02:00+00:00",
+        "hr": 149,
+        "drop": 21
+      },
+      {
+        "minute": 15,
+        "timestamp_gmt": "2026-05-24T09:06:00+00:00",
+        "hr": 156,
+        "drop": 14
+      },
+      {
+        "minute": 20,
+        "timestamp_gmt": "2026-05-24T09:12:00+00:00",
+        "hr": 194,
+        "drop": -24
+      },
+      {
+        "minute": 30,
+        "timestamp_gmt": "2026-05-24T09:22:00+00:00",
+        "hr": 193,
+        "drop": -23
+      }
+    ],
+    "chart": {
+      "points": [
+        {
+          "minute": 0.0,
+          "hr": 170,
+          "label": "0m"
+        },
+        {
+          "minute": 0.92,
+          "hr": 165,
+          "label": "1m"
+        },
+        {
+          "minute": 2.92,
+          "hr": 141,
+          "label": "3m"
+        },
+        {
+          "minute": 4.92,
+          "hr": 141,
+          "label": "5m"
+        },
+        {
+          "minute": 6.92,
+          "hr": 144,
+          "label": "7m"
+        },
+        {
+          "minute": 8.92,
+          "hr": 145,
+          "label": "9m"
+        },
+        {
+          "minute": 10.92,
+          "hr": 149,
+          "label": "11m"
+        },
+        {
+          "minute": 12.92,
+          "hr": 144,
+          "label": "13m"
+        },
+        {
+          "minute": 14.92,
+          "hr": 156,
+          "label": "15m"
+        },
+        {
+          "minute": 16.92,
+          "hr": 187,
+          "label": "17m"
+        },
+        {
+          "minute": 18.92,
+          "hr": 190,
+          "label": "19m"
+        },
+        {
+          "minute": 20.92,
+          "hr": 194,
+          "label": "21m"
+        },
+        {
+          "minute": 22.92,
+          "hr": 193,
+          "label": "23m"
+        },
+        {
+          "minute": 24.92,
+          "hr": 192,
+          "label": "25m"
+        },
+        {
+          "minute": 26.92,
+          "hr": 192,
+          "label": "27m"
+        },
+        {
+          "minute": 28.92,
+          "hr": 192,
+          "label": "29m"
+        }
+      ],
+      "bars": [
+        {
+          "minute": 0.0,
+          "label": "0m",
+          "hr": 170,
+          "height_pct": 62.9
+        },
+        {
+          "minute": 0.92,
+          "label": "1m",
+          "hr": 165,
+          "height_pct": 55.1
+        },
+        {
+          "minute": 2.92,
+          "label": "3m",
+          "hr": 141,
+          "height_pct": 18.0
+        },
+        {
+          "minute": 4.92,
+          "label": "5m",
+          "hr": 141,
+          "height_pct": 18.0
+        },
+        {
+          "minute": 6.92,
+          "label": "7m",
+          "hr": 144,
+          "height_pct": 22.6
+        },
+        {
+          "minute": 8.92,
+          "label": "9m",
+          "hr": 145,
+          "height_pct": 24.2
+        },
+        {
+          "minute": 10.92,
+          "label": "11m",
+          "hr": 149,
+          "height_pct": 30.4
+        },
+        {
+          "minute": 12.92,
+          "label": "13m",
+          "hr": 144,
+          "height_pct": 22.6
+        },
+        {
+          "minute": 14.92,
+          "label": "15m",
+          "hr": 156,
+          "height_pct": 41.2
+        },
+        {
+          "minute": 16.92,
+          "label": "17m",
+          "hr": 187,
+          "height_pct": 89.2
+        },
+        {
+          "minute": 18.92,
+          "label": "19m",
+          "hr": 190,
+          "height_pct": 93.8
+        },
+        {
+          "minute": 20.92,
+          "label": "21m",
+          "hr": 194,
+          "height_pct": 100.0
+        },
+        {
+          "minute": 22.92,
+          "label": "23m",
+          "hr": 193,
+          "height_pct": 98.5
+        },
+        {
+          "minute": 24.92,
+          "label": "25m",
+          "hr": 192,
+          "height_pct": 96.9
+        },
+        {
+          "minute": 26.92,
+          "label": "27m",
+          "hr": 192,
+          "height_pct": 96.9
+        },
+        {
+          "minute": 28.92,
+          "label": "29m",
+          "hr": 192,
+          "height_pct": 96.9
+        }
+      ],
+      "min_hr": 141,
+      "max_hr": 194
+    },
+    "summary": "Recuperaci\u00f3n inicial aceptable. Volviste a una FC normal personalizada (<= 130 ppm) en 76.9 min; la bajada inicial fue buena pero el retorno completo fue m\u00e1s gradual. La curva posterior oscila, se\u00f1al de que seguiste caminando o movi\u00e9ndote tras meta m\u00e1s que quedarte en reposo pasivo."
+  }
+}

@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block title %}{{ page.workout.name }} | RunPilot Next{% endblock %}
+{% block content %}
+<section class="hero-card">
+  <div>
+    <p class="eyebrow">Sesión planificada</p>
+    <h1>{{ page.workout.name }}</h1>
+    <p class="lede">{{ page.workout.description }}</p>
+  </div>
+  <div class="hero-badges">
+    <span class="badge">{{ page.workout.date }}</span>
+    <span class="badge">{{ page.workout.session_kind_label }}</span>
+    <span class="badge">{{ page.workout.estimated_duration }}</span>
+    <span class="badge">{{ page.workout.step_count }} pasos</span>
+  </div>
+</section>
+
+<section class="grid grid-4">
+  <article class="panel"><p class="eyebrow">Fecha</p><h2>{{ page.workout.date }}</h2></article>
+  <article class="panel"><p class="eyebrow">Duración</p><h2>{{ page.workout.estimated_duration }}</h2></article>
+  <article class="panel"><p class="eyebrow">Tipo</p><h2>{{ page.workout.session_kind_label }}</h2></article>
+  <article class="panel"><p class="eyebrow">Garmin</p>{% if page.workout.garmin_workout_url %}<a class="text-link" href="{{ page.workout.garmin_workout_url }}" target="_blank" rel="noreferrer">Abrir en Garmin</a>{% else %}<p class="muted">Sin enlace</p>{% endif %}</article>
+</section>
+
+<section class="grid grid-2 detail-grid">
+  <article class="panel">
+    <p class="eyebrow">Objetivo</p>
+    <h2>Qué busca esta sesión</h2>
+    {% if page.workout.knowledge %}
+    <p>{{ page.workout.knowledge.summary }}</p>
+    <div class="tag-row">
+      {% for item in page.workout.knowledge.goal_labels[:4] %}
+      <span class="mini-tag">{{ item }}</span>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="muted">No hay resumen de conocimiento disponible.</p>
+    {% endif %}
+    {% if page.workout.targets and (page.workout.targets.primary_pace or page.workout.targets.primary_hr) %}
+    <div class="grid grid-2 compact-grid">
+      <article class="subcard"><p class="eyebrow">Ritmo</p><h3>{{ page.workout.targets.primary_pace or '-' }}</h3></article>
+      <article class="subcard"><p class="eyebrow">FC</p><h3>{{ page.workout.targets.primary_hr or '-' }}</h3></article>
+    </div>
+    {% endif %}
+    {% if page.linked_review_url %}
+    <p><a class="text-link" href="{{ page.linked_review_url }}">Ver ejecución enlazada</a></p>
+    {% endif %}
+  </article>
+
+  <article class="panel">
+    <p class="eyebrow">Despiece</p>
+    <h2>Pasos de la sesión</h2>
+    <div class="stack-list">
+      {% for step in page.workout.payload.steps %}
+      <div class="detail-row-card static-row">
+        <div>
+          <strong>{{ step.step_type or step.type or 'step' }}</strong>
+          <p>{{ step.description or '-' }}</p>
+        </div>
+        <div class="detail-row-meta">
+          <span class="calendar-metric">{% if step.distance_m %}{{ (step.distance_m / 1000.0)|round(2) }} km{% elif step.duration_s %}{{ step.duration_s }} s{% else %}-{% endif %}</span>
+        </div>
+      </div>
+      {% else %}
+      <div class="detail-row-card static-row"><p class="muted">Sin pasos definidos.</p></div>
+      {% endfor %}
+    </div>
+  </article>
+</section>
+
+{% if page.workout.targets and page.workout.targets.step_targets %}
+<section class="panel">
+  <p class="eyebrow">Targets</p>
+  <h2>Ritmo y FC por bloque</h2>
+  <div class="stack-list">
+    {% for target in page.workout.targets.step_targets %}
+    <div class="detail-row-card static-row">
+      <div>
+        <strong>{{ target.label }}</strong>
+      </div>
+      <div class="detail-row-meta">
+        <span class="calendar-metric">{{ 'Ritmo' if target.tone == 'pace' else 'FC' if target.tone == 'hr' else 'Objetivo' }}</span>
+        <span class="calendar-metric">{{ target.target_value }}</span>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{% if page.workout.fueling and page.workout.fueling.entries %}
+<section class="panel">
+  <p class="eyebrow">Fueling</p>
+  <h2>Recomendación operativa</h2>
+  <div class="grid grid-3 compact-grid">
+    {% for entry in page.workout.fueling.entries %}
+    <article class="subcard fueling-block">
+      <span class="mini-tag">{{ entry.phase }}</span>
+      <strong>{{ entry.time_label }}</strong>
+      <p>{{ entry.recommendation }}</p>
+      <p class="muted">{{ entry.quantity }} · {{ entry.products_label }}</p>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+{% endblock %}

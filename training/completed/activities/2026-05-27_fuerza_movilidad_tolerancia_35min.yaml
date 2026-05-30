@@ -1,0 +1,16 @@
+activity:
+  id: garmin-23032805565
+  source: garmin
+  garmin_activity_id: 23032805565
+  date: 2026-05-27
+  title: Fuerza
+  type: run
+  planned_session_reference: training/planned/workouts/2026-05-27_fuerza_movilidad_tolerancia_35min.yaml
+  distance_km: 0.0
+  duration: '30:31'
+  elevation_gain_m: null
+  avg_pace: null
+  avg_hr: 91.0
+  max_hr: 118.0
+  shoes: null
+  notes: Autoimported from Garmin on 2026-05-27T20:38:54

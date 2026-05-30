@@ -1,0 +1,16 @@
+activity:
+  id: garmin-22823255797
+  source: garmin
+  garmin_activity_id: 22823255797
+  date: 2026-05-09
+  title: Cerceda - IV EDICION OS 11 DAS VIAS - CONCELLO DE CERCEDA
+  type: race
+  planned_session_reference: races/2026/2026-05-09_11_das_vias.yaml
+  distance_km: 10.819
+  duration: 51:27
+  elevation_gain_m: 194.0
+  avg_pace: 4:45/km
+  avg_hr: 183.0
+  max_hr: 193.0
+  shoes: null
+  notes: Autoimported from Garmin and linked to race result.

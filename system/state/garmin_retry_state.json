@@ -1,0 +1,25 @@
+{
+  "workouts": {
+    "2026-05-12_rodaje_6km_recuperacion": {
+      "status": "success",
+      "label": "Reenvio OK",
+      "message": "}",
+      "updated_at": "2026-05-12T18:31:43.455884",
+      "updated_by": "opencode"
+    },
+    "2026-05-15_especifica_controlada_ordes": {
+      "status": "error",
+      "label": "Error Garmin",
+      "message": "ValueError: Executable workout step must define distance_m or duration_s",
+      "updated_at": "2026-05-15T16:36:47.926438",
+      "updated_by": "change-me"
+    },
+    "2026-05-16_rodaje_5km_facil": {
+      "status": "error",
+      "label": "Error Garmin",
+      "message": "ValueError: Executable workout step must define distance_m or duration_s",
+      "updated_at": "2026-05-16T15:58:58.195298",
+      "updated_by": "change-me"
+    }
+  }
+}

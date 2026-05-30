@@ -1,0 +1,37 @@
+workout:
+  name: Calentamiento pre-carrera Ordes
+  schedule_date: 2026-05-24
+  sport: running
+  description: Calentamiento corto y conservador antes de Ordes para activar sin
+    fatigar ni irritar el periostio. Trote suave, rectas cortas controladas y
+    cierre facil hasta la salida.
+  estimated_duration_s: 1020
+  steps:
+  - order: 1
+    step_type: warmup
+    description: 10 min trote suave
+    duration_s: 600
+    target:
+      type: heart_rate_range
+      min_bpm: 135
+      max_bpm: 150
+  - order: 2
+    type: repeat_group
+    iterations: 4
+    steps:
+    - order: 3
+      step_type: interval
+      description: Recta 20 s controlada
+      duration_s: 20
+    - order: 4
+      step_type: recovery
+      description: 40 s muy suave caminando o trotando
+      duration_s: 40
+  - order: 5
+    step_type: cooldown
+    description: 3 min trote suave hasta quedar listo para la salida
+    duration_s: 180
+    target:
+      type: heart_rate_range
+      min_bpm: 135
+      max_bpm: 150

@@ -1,0 +1,353 @@
+{
+  "planned": {
+    "name": "11 Das Vias",
+    "date": "2026-05-09",
+    "sport": "running",
+    "goal_category": "race",
+    "description": "Carrera por vias prevista como esfuerzo controlado, pero resuelta finalmente en formato competitivo.",
+    "estimated_duration_s": 3300,
+    "distance_m": 11000.0,
+    "primary_hr_min": 0.0,
+    "primary_hr_max": 0.0,
+    "planned_session_reference": "races/2026/2026-05-09_11_das_vias.yaml"
+  },
+  "summary": {
+    "activity_id": 22823255797,
+    "activity_name": "Cerceda - IV EDICION OS 11 DAS VIAS - CONCELLO DE CERCEDA",
+    "start_time_local": "2026-05-09 18:00:26",
+    "distance_m": 10819.2099609375,
+    "duration_s": 3086.9599609375,
+    "elapsed_s": 3086.9599609375,
+    "moving_s": 3080.408004760742,
+    "pace_s_per_km": 285.3260310128119,
+    "moving_pace_s_per_km": 284.7204963729184,
+    "avg_hr": 183.0,
+    "max_hr": 193.0,
+    "avg_cadence_spm": 173.90625,
+    "max_cadence_spm": 196.0,
+    "avg_power_w": 337.0,
+    "max_power_w": 515.0,
+    "elevation_gain_m": 194.0,
+    "elevation_loss_m": 181.0,
+    "avg_stride_cm": 120.14000244140625,
+    "avg_gct_ms": 242.5,
+    "avg_vo_cm": 9.280000305175781,
+    "avg_vr": 7.809999942779541,
+    "calories": 628.0,
+    "water_estimated_ml": 855.0,
+    "aerobic_training_effect": 5.0,
+    "anaerobic_training_effect": 2.299999952316284,
+    "training_effect_label": "VO2MAX",
+    "min_temp_c": 14.0,
+    "max_temp_c": 25.0,
+    "gap_pace_s_per_km": 277.3925108702425,
+    "event_type": "race",
+    "category_position": 3
+  },
+  "compliance": {
+    "distance_diff_m": -180.7900390625,
+    "duration_diff_s_vs_est": -213.0400390625,
+    "time_in_hr_zone_s": 0.0,
+    "time_below_hr_zone_s": 0.0,
+    "time_above_hr_zone_s": 0.0,
+    "pct_in_hr_zone": 0.0,
+    "pct_below_hr_zone": 0.0,
+    "pct_above_hr_zone": 0.0,
+    "time_to_enter_zone_s": 0.0,
+    "distance_to_enter_zone_m": 0.0
+  },
+  "stability": {
+    "pace_std_s_per_km": 0.0,
+    "hr_std_bpm": 0.0,
+    "cadence_std_spm": 0.0,
+    "power_std_w": 0.0
+  },
+  "halves": {
+    "first_half_pace_s_per_km": 285.3260310128119,
+    "second_half_pace_s_per_km": 285.3260310128119,
+    "first_half_hr": 183.0,
+    "second_half_hr": 183.0,
+    "first_half_power_w": 337.0,
+    "second_half_power_w": 337.0,
+    "efficiency_first": 0.0,
+    "efficiency_second": 0.0,
+    "efficiency_change_pct": 0.0,
+    "decoupling_pct": 0.0
+  },
+  "splits": [
+    {
+      "label": "10.82",
+      "distance_m": 10819.2099609375,
+      "duration_s": 3086.9599609375,
+      "pace_s_per_km": 285.3260310128119,
+      "avg_hr": 183.0,
+      "avg_cadence_spm": 173.90625,
+      "avg_power_w": 337.0,
+      "avg_gct_ms": 242.5,
+      "avg_vo_cm": 9.280000305175781,
+      "avg_vr": 7.809999942779541,
+      "avg_stride_cm": 120.14000244140625,
+      "avg_temp_c": 19.5,
+      "avg_elevation_m": 314.9182761804824,
+      "avg_gap_pace_s_per_km": 277.3925108702425
+    }
+  ],
+  "score": 8,
+  "traffic_light": "amarillo",
+  "risk_level": "medio",
+  "progression": {
+    "comparable_count": 0,
+    "matches": [],
+    "baseline": {},
+    "delta_vs_baseline": {},
+    "trend": "positive",
+    "summary": "Carrera resuelta claramente por encima del planteamiento conservador, con buen rendimiento competitivo y coste de fatiga superior al previsto. Debe contarse como estimulo fuerte de calidad y no como simple rodaje con dorsal."
+  },
+  "recovery_analysis": {
+    "status": "complete",
+    "resting_hr_bpm": 53,
+    "normal_hr_bpm": 128,
+    "finish_hr_bpm": 187,
+    "finish_timestamp_gmt": "2026-05-09T16:51:52+00:00",
+    "time_to_normal_s": 968.0,
+    "time_to_140_s": 8.0,
+    "hrr_1min_bpm": 48,
+    "hrr_3min_bpm": 48,
+    "hrr_5min_bpm": 48,
+    "marks": [
+      {
+        "minute": 1,
+        "timestamp_gmt": "2026-05-09T16:52:00+00:00",
+        "hr": 139,
+        "drop": 48
+      },
+      {
+        "minute": 2,
+        "timestamp_gmt": "2026-05-09T16:54:00+00:00",
+        "hr": 139,
+        "drop": 48
+      },
+      {
+        "minute": 3,
+        "timestamp_gmt": "2026-05-09T16:54:00+00:00",
+        "hr": 139,
+        "drop": 48
+      },
+      {
+        "minute": 5,
+        "timestamp_gmt": "2026-05-09T16:56:00+00:00",
+        "hr": 139,
+        "drop": 48
+      },
+      {
+        "minute": 10,
+        "timestamp_gmt": "2026-05-09T17:02:00+00:00",
+        "hr": 139,
+        "drop": 48
+      },
+      {
+        "minute": 15,
+        "timestamp_gmt": "2026-05-09T17:06:00+00:00",
+        "hr": 139,
+        "drop": 48
+      },
+      {
+        "minute": 20,
+        "timestamp_gmt": "2026-05-09T17:12:00+00:00",
+        "hr": 102,
+        "drop": 85
+      },
+      {
+        "minute": 30,
+        "timestamp_gmt": "2026-05-09T17:22:00+00:00",
+        "hr": 123,
+        "drop": 64
+      }
+    ],
+    "chart": {
+      "points": [
+        {
+          "minute": 0.0,
+          "hr": 187,
+          "label": "0m"
+        },
+        {
+          "minute": 0.13,
+          "hr": 139,
+          "label": "0m"
+        },
+        {
+          "minute": 2.13,
+          "hr": 139,
+          "label": "2m"
+        },
+        {
+          "minute": 4.13,
+          "hr": 139,
+          "label": "4m"
+        },
+        {
+          "minute": 6.13,
+          "hr": 139,
+          "label": "6m"
+        },
+        {
+          "minute": 8.13,
+          "hr": 139,
+          "label": "8m"
+        },
+        {
+          "minute": 10.13,
+          "hr": 139,
+          "label": "10m"
+        },
+        {
+          "minute": 12.13,
+          "hr": 139,
+          "label": "12m"
+        },
+        {
+          "minute": 14.13,
+          "hr": 139,
+          "label": "14m"
+        },
+        {
+          "minute": 16.13,
+          "hr": 123,
+          "label": "16m"
+        },
+        {
+          "minute": 18.13,
+          "hr": 105,
+          "label": "18m"
+        },
+        {
+          "minute": 20.13,
+          "hr": 102,
+          "label": "20m"
+        },
+        {
+          "minute": 22.13,
+          "hr": 97,
+          "label": "22m"
+        },
+        {
+          "minute": 24.13,
+          "hr": 96,
+          "label": "24m"
+        },
+        {
+          "minute": 26.13,
+          "hr": 91,
+          "label": "26m"
+        },
+        {
+          "minute": 28.13,
+          "hr": 95,
+          "label": "28m"
+        }
+      ],
+      "bars": [
+        {
+          "minute": 0.0,
+          "label": "0m",
+          "hr": 187,
+          "height_pct": 100.0
+        },
+        {
+          "minute": 0.13,
+          "label": "0m",
+          "hr": 139,
+          "height_pct": 59.0
+        },
+        {
+          "minute": 2.13,
+          "label": "2m",
+          "hr": 139,
+          "height_pct": 59.0
+        },
+        {
+          "minute": 4.13,
+          "label": "4m",
+          "hr": 139,
+          "height_pct": 59.0
+        },
+        {
+          "minute": 6.13,
+          "label": "6m",
+          "hr": 139,
+          "height_pct": 59.0
+        },
+        {
+          "minute": 8.13,
+          "label": "8m",
+          "hr": 139,
+          "height_pct": 59.0
+        },
+        {
+          "minute": 10.13,
+          "label": "10m",
+          "hr": 139,
+          "height_pct": 59.0
+        },
+        {
+          "minute": 12.13,
+          "label": "12m",
+          "hr": 139,
+          "height_pct": 59.0
+        },
+        {
+          "minute": 14.13,
+          "label": "14m",
+          "hr": 139,
+          "height_pct": 59.0
+        },
+        {
+          "minute": 16.13,
+          "label": "16m",
+          "hr": 123,
+          "height_pct": 45.3
+        },
+        {
+          "minute": 18.13,
+          "label": "18m",
+          "hr": 105,
+          "height_pct": 30.0
+        },
+        {
+          "minute": 20.13,
+          "label": "20m",
+          "hr": 102,
+          "height_pct": 27.4
+        },
+        {
+          "minute": 22.13,
+          "label": "22m",
+          "hr": 97,
+          "height_pct": 23.1
+        },
+        {
+          "minute": 24.13,
+          "label": "24m",
+          "hr": 96,
+          "height_pct": 22.3
+        },
+        {
+          "minute": 26.13,
+          "label": "26m",
+          "hr": 91,
+          "height_pct": 18.0
+        },
+        {
+          "minute": 28.13,
+          "label": "28m",
+          "hr": 95,
+          "height_pct": 21.4
+        }
+      ],
+      "min_hr": 91,
+      "max_hr": 187
+    },
+    "summary": "Recuperaci\u00f3n inicial buena. Volviste a una FC normal personalizada (<= 128 ppm) en 16.1 min; la bajada inicial fue buena pero el retorno completo fue m\u00e1s gradual."
+  }
+}

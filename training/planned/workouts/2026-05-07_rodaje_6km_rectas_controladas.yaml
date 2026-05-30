@@ -1,0 +1,41 @@
+workout:
+  name: Rodaje 6 km + 4 rectas controladas
+  schedule_date: 2026-05-07
+  sport: running
+  description: Rodaje facil de continuidad con 4 rectas suaves para despertar piernas,
+    sin sprintar.
+  estimated_duration_s: 2460
+  steps:
+  - order: 1
+    step_type: interval
+    description: 5 km faciles
+    distance_m: 5000
+    target:
+      type: heart_rate_range
+      min_bpm: 135
+      max_bpm: 150
+  - order: 2
+    type: repeat_group
+    iterations: 4
+    steps:
+    - order: 3
+      step_type: interval
+      description: Recta 20 s
+      duration_s: 20
+    - order: 4
+      step_type: recovery
+      description: Recuperacion 40 s
+      duration_s: 40
+  - order: 5
+    step_type: cooldown
+    description: 1 km facil
+    distance_m: 1000
+    target:
+      type: heart_rate_range
+      min_bpm: 135
+      max_bpm: 150
+  template_id: recovery_plus_mobility
+  template_id_source: inferred
+  knowledge_id: 40_regenerativo_muy_suave
+  knowledge_label: 40' regenerativo muy suave
+  primary_goal: Recuperacion

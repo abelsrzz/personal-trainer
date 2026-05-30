@@ -1,0 +1,12 @@
+garmin:
+  athlete_id: main
+  enabled: false
+  has_2fa: false
+  connector_script: scripts/garmin/sync_garmin.py
+  credentials_file: garmin/local_credentials.yaml
+  imports_root: training/completed/imports/garmin
+  intended_capabilities:
+    - import_activities
+    - publish_workouts
+  device_notes: null
+  workout_mapping: {}

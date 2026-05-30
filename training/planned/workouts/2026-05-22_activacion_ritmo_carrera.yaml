@@ -1,0 +1,44 @@
+workout:
+  name: Activacion running ritmo carrera
+  schedule_date: 2026-05-22
+  sport: running
+  description: Unica activacion de calidad de running antes de Ordes. Debe recordar
+    ritmo de carrera sin dejar fatiga residual.
+  estimated_duration_s: 2160
+  steps:
+  - order: 1
+    step_type: warmup
+    description: 2 km faciles
+    distance_m: 2000
+    target:
+      type: heart_rate_range
+      min_bpm: 135
+      max_bpm: 150
+  - order: 2
+    type: repeat_group
+    iterations: 3
+    steps:
+    - order: 3
+      step_type: interval
+      description: 2 min a ritmo objetivo
+      duration_s: 120
+      target:
+        type: pace_range
+        min_pace: 4:20/km
+        max_pace: 4:10/km
+    - order: 4
+      step_type: recovery
+      description: 2 min suaves
+      duration_s: 120
+      target:
+        type: heart_rate_range
+        min_bpm: 131
+        max_bpm: 150
+  - order: 5
+    step_type: cooldown
+    description: 2 km faciles
+    distance_m: 2000
+    target:
+      type: heart_rate_range
+      min_bpm: 135
+      max_bpm: 150

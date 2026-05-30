@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}Calendar | RunPilot Next{% endblock %}
+{% block content %}
+<section class="hero-card compact-hero">
+  <div>
+    <p class="eyebrow">Calendar</p>
+    <h1>{{ page.selected_label }}</h1>
+    <p class="lede">Un mes resumido por estado de día: qué importa, qué está resuelto y dónde hay conflicto.</p>
+  </div>
+  <div class="hero-badges">
+    <a class="link-button subtle" href="/calendar?month={{ page.prev_month }}&focus={{ page.focus }}">Mes anterior</a>
+    <a class="link-button subtle" href="/calendar?month={{ page.next_month }}&focus={{ page.focus }}">Mes siguiente</a>
+  </div>
+</section>
+
+<section class="panel calendar-toolbar-panel">
+  <div class="section-head">
+    <div>
+      <p class="eyebrow">Filtro visual</p>
+      <h2>Qué quieres leer primero</h2>
+    </div>
+  </div>
+  <div class="calendar-focus-tabs">
+    {% for item in page.focus_options %}
+    <a class="focus-tab {{ 'active' if page.focus == item.key else '' }}" href="/calendar?month={{ page.selected }}&focus={{ item.key }}">{{ item.label }}</a>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="calendar-board calendar-board-v2">
+  <div class="calendar-weekdays">
+    <span>Lun</span>
+    <span>Mar</span>
+    <span>Mié</span>
+    <span>Jue</span>
+    <span>Vie</span>
+    <span>Sáb</span>
+    <span>Dom</span>
+  </div>
+  {% for week in page.weeks %}
+  <div class="calendar-week">
+    {% for day in week %}
+    <a class="calendar-day calendar-day-v2 {{ day.summary.dominant_class }} {{ 'is-muted' if not day.in_month else '' }} {{ 'is-today' if day.is_today else '' }} {{ 'is-dimmed' if day.is_dimmed else '' }}" href="{{ day.v2_detail_url }}" style="{{ day.summary.day_inline_style }}">
+      <div class="calendar-day-head">
+        <div class="calendar-day-head-main">
+          <strong>{{ day.day }}</strong>
+          {% if day.is_today %}
+          <span class="calendar-today-pill">Hoy</span>
+          {% endif %}
+        </div>
+      </div>
+      <div class="calendar-day-summary">
+        <p class="calendar-day-kicker">{{ day.summary.subline }}</p>
+        <h3 class="calendar-day-title">{{ day.summary.headline }}</h3>
+      </div>
+      <div class="calendar-day-metrics">
+        {% for metric in day.summary.metric_items %}
+        <span class="calendar-metric">{{ metric }}</span>
+        {% endfor %}
+        {% if not day.summary.metric_items %}
+        <span class="calendar-metric is-empty">Libre</span>
+        {% endif %}
+      </div>
+      {% if day.summary.sessions %}
+      <div class="calendar-session-checks" aria-label="Estado por sesión">
+        {% for session in day.summary.sessions %}
+        <span class="calendar-session-pill {{ session.calendar_color_class }}" title="{{ session.title }} · {{ session.sport_label }} · {{ session.intensity_label }}" style="{{ session.calendar_inline_style }}">
+          <span class="calendar-session-pill-icons">
+            <span class="calendar-sport-icon is-small">{{ session.primary_icon|safe }}</span>
+          </span>
+          <span class="calendar-check {{ 'is-done' if session.is_completed else '' }}">{{ '✓' if session.is_completed else '' }}</span>
+        </span>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div class="calendar-primary-strip is-empty-strip">
+        <span>Sin carga</span>
+      </div>
+      {% endif %}
+    </a>
+    {% endfor %}
+  </div>
+  {% endfor %}
+</section>
+
+{% endblock %}

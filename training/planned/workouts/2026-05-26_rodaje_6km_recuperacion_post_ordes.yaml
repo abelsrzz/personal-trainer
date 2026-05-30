@@ -1,0 +1,37 @@
+workout:
+  name: Bicicleta recuperacion post-Ordes 50 min
+  schedule_date: 2026-05-26
+  sport: cycling
+  description: Carga muy controlada para absorber Ordes, mover sangre y recuperar
+    sin impacto.
+  estimated_duration_s: 3000
+  steps:
+  - order: 1
+    step_type: warmup
+    description: 10 min muy suaves
+    duration_s: 600
+    target:
+      type: heart_rate_range
+      min_bpm: 115
+      max_bpm: 135
+  - order: 2
+    step_type: interval
+    description: 30 min Z1-Z2 baja
+    duration_s: 1800
+    target:
+      type: heart_rate_range
+      min_bpm: 132
+      max_bpm: 150
+  - order: 3
+    step_type: cooldown
+    description: 10 min suaves
+    duration_s: 600
+    target:
+      type: heart_rate_range
+      min_bpm: 115
+      max_bpm: 132
+  primary_goal: Recuperacion
+  template_id: recovery_plus_mobility
+  template_id_source: inferred
+  knowledge_id: 40_regenerativo_muy_suave
+  knowledge_label: 40' regenerativo muy suave

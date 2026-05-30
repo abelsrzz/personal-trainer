@@ -1,0 +1,110 @@
+{
+  "planned": {
+    "name": "Eliptica soltura pre-Ordes 30 min",
+    "date": "2026-05-23",
+    "sport": "elliptical",
+    "goal_category": "activation",
+    "template_id": null,
+    "knowledge_id": null,
+    "knowledge_label": null,
+    "primary_goal": "Recuperacion",
+    "description": "Sesion muy suave de eliptica para llegar con piernas activas a Ordes sin sumar impacto ni fatiga residual.",
+    "estimated_duration_s": 1800,
+    "distance_m": null,
+    "primary_hr_min": 115.0,
+    "primary_hr_max": 138.0
+  },
+  "summary": {
+    "activity_id": null,
+    "activity_name": "Paseo reconocimiento Ordes",
+    "start_time_local": "2026-05-23",
+    "distance_m": null,
+    "duration_s": null,
+    "elapsed_s": null,
+    "moving_s": null,
+    "pace_s_per_km": null,
+    "moving_pace_s_per_km": null,
+    "avg_hr": null,
+    "max_hr": null,
+    "avg_cadence_spm": null,
+    "max_cadence_spm": null,
+    "avg_power_w": null,
+    "max_power_w": null,
+    "elevation_gain_m": null,
+    "elevation_loss_m": null,
+    "avg_stride_cm": null,
+    "avg_gct_ms": null,
+    "avg_vo_cm": null,
+    "avg_vr": null,
+    "calories": null,
+    "water_estimated_ml": null,
+    "aerobic_training_effect": null,
+    "anaerobic_training_effect": null,
+    "training_effect_label": null,
+    "min_temp_c": null,
+    "max_temp_c": null,
+    "gap_pace_s_per_km": null
+  },
+  "compliance": {
+    "distance_diff_m": null,
+    "duration_diff_s_vs_est": null,
+    "hr_evaluable_time_s": null,
+    "time_in_hr_zone_s": null,
+    "time_below_hr_zone_s": null,
+    "time_above_hr_zone_s": null,
+    "pct_in_hr_zone": null,
+    "pct_below_hr_zone": null,
+    "pct_above_hr_zone": null,
+    "time_to_enter_zone_s": null,
+    "distance_to_enter_zone_m": null
+  },
+  "stability": {
+    "pace_std_s_per_km": null,
+    "hr_std_bpm": null,
+    "cadence_std_spm": null,
+    "power_std_w": null
+  },
+  "halves": {
+    "first_half_pace_s_per_km": null,
+    "second_half_pace_s_per_km": null,
+    "first_half_hr": null,
+    "second_half_hr": null,
+    "first_half_power_w": null,
+    "second_half_power_w": null,
+    "efficiency_first": null,
+    "efficiency_second": null,
+    "efficiency_change_pct": null,
+    "decoupling_pct": null
+  },
+  "splits": [],
+  "score": 8,
+  "traffic_light": "verde",
+  "risk_level": "bajo",
+  "analysis": "Cambio manual valido en vispera de carrera: paseo suave de reconocimiento en lugar de eliptica prevista, con menor activacion fisiologica pero sin coste de fatiga.",
+  "stimulus_alignment": {
+    "planned_knowledge": null,
+    "actual_goals": [
+      "activacion_suave",
+      "reconocimiento_recorrido",
+      "descarga_precompetitiva"
+    ],
+    "overlap": [
+      "activacion_suave",
+      "descarga_precompetitiva"
+    ],
+    "alignment": "partially_aligned",
+    "summary": "La sesion conserva bien la intencion de no generar fatiga antes de competir, aunque sustituye parte de la activacion aerobica continua por reconocimiento del recorrido."
+  },
+  "progression": {
+    "comparable_count": 0,
+    "matches": [],
+    "baseline": null,
+    "delta_vs_baseline": null,
+    "trend": "maintenance",
+    "summary": "Cambio conservador y coherente con una vispera de carrera donde importa mas llegar fresco que sumar estimulo."
+  },
+  "recovery_analysis": {
+    "status": "missing_data",
+    "summary": "Faltan identificador de actividad o fecha para calcular la recuperaci\u00f3n."
+  }
+}

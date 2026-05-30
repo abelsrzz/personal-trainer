@@ -1,0 +1,11 @@
+cycle:
+  id: 2026-05-25_padron_10k
+  status: active
+  start_date: 2026-05-25
+  end_date: 2027-02-06
+  goal_race_slug: XXIV_padron_10k
+  master_plan_path: planning/master_plan.md
+  blocks_path: planning/blocks
+  weeks_path: planning/weeks
+  goal_gates_path: planning/goal_gates.yaml
+  notes: Current compatibility layer while the project migrates from single-cycle mode to versioned cycles.

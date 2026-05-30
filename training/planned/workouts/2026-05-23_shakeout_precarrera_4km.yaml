@@ -1,0 +1,33 @@
+workout:
+  name: Eliptica soltura pre-Ordes 30 min
+  schedule_date: 2026-05-23
+  sport: elliptical
+  description: Sesion muy suave de eliptica para llegar con piernas activas a Ordes
+    sin sumar impacto ni fatiga residual.
+  estimated_duration_s: 1800
+  steps:
+  - order: 1
+    step_type: warmup
+    description: 5 min muy suaves en eliptica
+    duration_s: 300
+    target:
+      type: heart_rate_range
+      min_bpm: 115
+      max_bpm: 132
+  - order: 2
+    step_type: interval
+    description: 20 min fluidos y muy faciles
+    duration_s: 1200
+    target:
+      type: heart_rate_range
+      min_bpm: 120
+      max_bpm: 138
+  - order: 3
+    step_type: cooldown
+    description: 5 min muy suaves para soltar
+    duration_s: 300
+    target:
+      type: heart_rate_range
+      min_bpm: 115
+      max_bpm: 130
+  primary_goal: Recuperacion

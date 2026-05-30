@@ -1,0 +1,73 @@
+{
+  "date": "2026-05-31",
+  "heart_rates": {
+    "userProfilePK": 137864769,
+    "calendarDate": "2026-05-31",
+    "startTimestampGMT": null,
+    "endTimestampGMT": null,
+    "startTimestampLocal": null,
+    "endTimestampLocal": null,
+    "maxHeartRate": null,
+    "minHeartRate": null,
+    "restingHeartRate": null,
+    "lastSevenDaysAvgRestingHeartRate": null,
+    "heartRateValueDescriptors": null,
+    "heartRateValues": null
+  },
+  "hrv": {},
+  "training_readiness": [],
+  "training_status": {
+    "userId": 137864769,
+    "mostRecentVO2Max": null,
+    "mostRecentTrainingLoadBalance": null,
+    "mostRecentTrainingStatus": null,
+    "heatAltitudeAcclimationDTO": null
+  },
+  "max_metrics": [],
+  "sleep": {
+    "dailySleepDTO": {
+      "id": null,
+      "userProfilePK": 137864769,
+      "calendarDate": "2026-05-31",
+      "sleepTimeSeconds": null,
+      "napTimeSeconds": null,
+      "sleepWindowConfirmed": null,
+      "sleepWindowConfirmationType": null,
+      "sleepStartTimestampGMT": null,
+      "sleepEndTimestampGMT": null,
+      "sleepStartTimestampLocal": null,
+      "sleepEndTimestampLocal": null,
+      "autoSleepStartTimestampGMT": null,
+      "autoSleepEndTimestampGMT": null,
+      "sleepQualityTypePK": null,
+      "sleepResultTypePK": null,
+      "unmeasurableSleepSeconds": null,
+      "deepSleepSeconds": null,
+      "lightSleepSeconds": null,
+      "remSleepSeconds": null,
+      "awakeSleepSeconds": null,
+      "deviceRemCapable": false,
+      "retro": false,
+      "sleepNeed": {
+        "userProfilePk": 137864769,
+        "calendarDate": "2026-05-31",
+        "deviceId": 3621896103,
+        "timestampGmt": "2026-05-30T17:42:09",
+        "baseline": 480,
+        "actual": 480,
+        "feedback": "NO_CHANGE_BALANCED",
+        "trainingFeedback": "CHRONIC",
+        "sleepHistoryAdjustment": "DECREASING_HIGH_QUALITY",
+        "hrvAdjustment": "NO_CHANGE",
+        "napAdjustment": "NO_CHANGE",
+        "displayedForTheDay": false,
+        "recommendedBedtimeStartMins": 0,
+        "recommendedBedtimeEndMins": 20,
+        "preferredActivityTracker": true
+      }
+    },
+    "sleepMovement": null,
+    "remSleepData": null,
+    "sleepLevels": null
+  }
+}

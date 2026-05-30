@@ -1,0 +1,1326 @@
+{
+  "generated_at": "2026-05-30T23:01:16.353734+00:00",
+  "as_of": "2026-05-26",
+  "lookback_days": 28,
+  "activity_count_total": 67,
+  "review_count_total": 17,
+  "decision": {
+    "as_of": "2026-05-26",
+    "status": "red",
+    "action": "reduce_or_replace_quality",
+    "recommendation": "Reducir carga inmediata: cambiar la proxima calidad por rodaje muy facil o descanso, y mantener FC capada.",
+    "progression": {
+      "current_week": {
+        "week_start": "2026-05-25",
+        "week_end": "2026-05-31",
+        "week": "2026-W22",
+        "running_km": 0.0,
+        "cycling_minutes": 54.01961669921875,
+        "elliptical_minutes": 0.0,
+        "strength_minutes": 0.0,
+        "hybrid_equivalent_km": 15.434176199776786,
+        "review_count": 1,
+        "high_risk_reviews": 0,
+        "low_score_reviews": 0,
+        "sports": {
+          "cycling": 1
+        }
+      },
+      "last_absorbed_week": {
+        "week_start": "2026-05-25",
+        "week_end": "2026-05-31",
+        "week": "2026-W22",
+        "running_km": 0.0,
+        "cycling_minutes": 54.01961669921875,
+        "elliptical_minutes": 0.0,
+        "strength_minutes": 0.0,
+        "hybrid_equivalent_km": 15.434176199776786,
+        "review_count": 1,
+        "high_risk_reviews": 0,
+        "low_score_reviews": 0,
+        "sports": {
+          "cycling": 1
+        }
+      },
+      "shin_status": {
+        "entry": {
+          "date": "2026-05-16",
+          "pain_during": 7,
+          "pain_after": 7,
+          "pain_next_morning": 7,
+          "location": "left_shin",
+          "surface": null,
+          "shoes": null,
+          "notes": "Actualizacion manual. Dolor actual en el periostio 6,5/10; redondeado a 7/10 para las reglas automaticas. Localizacion reportada: tibial posterior izquierdo. Auto-promoted from feedback 2026-05-16_rodaje_5km_facil (2026-05-16T13:55:44+02:00): dolor 7/10. Localizacion: Tibial posterior izquierdo. Nota: Actualizacion manual: dolor actual en periostio 6,5/10; redondeado a 7/10 para las reglas automaticas.",
+          "source": "manual",
+          "updated_by": "auto_feedback"
+        },
+        "max_pain": 7,
+        "band": "red"
+      },
+      "baseline_running_km": 0.0,
+      "default_running_growth_pct": 5.0,
+      "next_running_target_km": 0.0,
+      "next_running_target_range_km": {
+        "min": 0.0,
+        "max": 0.0
+      },
+      "blocked_dimensions": [
+        "running_intensity",
+        "running_progression",
+        "running_volume"
+      ],
+      "keep_bike_support_session": true,
+      "fartlek_frequency": "every_7_to_14_days_when_tolerated",
+      "status": "hold_or_reduce"
+    },
+    "replanning": {
+      "summary": "Reducir o sustituir calidad inmediata.",
+      "reason": "Riesgo alto, dolor o proteccion del coach.",
+      "actions": [
+        {
+          "type": "replace_quality",
+          "with": "bike_support_or_recovery"
+        },
+        {
+          "type": "hold_running_progression"
+        },
+        {
+          "type": "keep_bike_support"
+        }
+      ],
+      "next_workouts": []
+    },
+    "reasons": [
+      "Revision reciente de alto riesgo: 2026-05-24 XXIX CARREIRA POPULAR CONCELLO DE ORDES.",
+      "Periostio con dolor maximo 7/10 en el ultimo registro.",
+      "Demasiada densidad de calidad: 3 sesiones exigentes en 7 dias.",
+      "El bloque activo prioriza reconstruccion, consistencia y tolerancia tisular antes de ritmos agresivos.",
+      "El limitador principal declarado sigue siendo la durabilidad aerobica; la construccion debe respetarlo.",
+      "La automatizacion prioriza como backbone de calidad: fartlek_structured, cruise_intervals, tempo_broken."
+    ],
+    "windows": {
+      "last_7_days": {
+        "start": "2026-05-20",
+        "end": "2026-05-26",
+        "runs": 3,
+        "km": 17.323730224609374,
+        "duration_s": 5816.906982421875,
+        "avg_pace_s_per_km": 335.7768163671019,
+        "avg_hr": 174.71549653780227,
+        "quality_runs": 3,
+        "long_run_km": 8.4472802734375
+      },
+      "previous_7_days": {
+        "start": "2026-05-13",
+        "end": "2026-05-19",
+        "runs": 3,
+        "km": 19.860090332031252,
+        "duration_s": 7984.258056640625,
+        "avg_pace_s_per_km": 402.0252638913355,
+        "avg_hr": 152.72633848814016,
+        "quality_runs": 1,
+        "long_run_km": 7.58818017578125
+      },
+      "last_28_days": {
+        "start": "2026-04-29",
+        "end": "2026-05-26",
+        "runs": 10,
+        "km": 63.36501049804687,
+        "duration_s": 23342.511840820312,
+        "avg_pace_s_per_km": 368.3817245092985,
+        "avg_hr": 161.6879656283225,
+        "quality_runs": 6,
+        "long_run_km": 10.8192099609375
+      },
+      "last_complete_week": {
+        "start": "2026-05-18",
+        "end": "2026-05-24",
+        "runs": 3,
+        "km": 17.323730224609374,
+        "duration_s": 5816.906982421875,
+        "avg_pace_s_per_km": 335.7768163671019,
+        "avg_hr": 174.71549653780227,
+        "quality_runs": 3,
+        "long_run_km": 8.4472802734375
+      },
+      "previous_complete_week": {
+        "start": "2026-05-11",
+        "end": "2026-05-17",
+        "runs": 3,
+        "km": 19.860090332031252,
+        "duration_s": 7984.258056640625,
+        "avg_pace_s_per_km": 402.0252638913355,
+        "avg_hr": 152.72633848814016,
+        "quality_runs": 1,
+        "long_run_km": 7.58818017578125
+      }
+    },
+    "volume_spike_pct": -12.771140840840594,
+    "weekly_spike_pct": -12.771140840840594,
+    "latest_shin_entry": {
+      "date": "2026-05-16",
+      "pain_during": 7,
+      "pain_after": 7,
+      "pain_next_morning": 7,
+      "location": "left_shin",
+      "surface": null,
+      "shoes": null,
+      "notes": "Actualizacion manual. Dolor actual en el periostio 6,5/10; redondeado a 7/10 para las reglas automaticas. Localizacion reportada: tibial posterior izquierdo. Auto-promoted from feedback 2026-05-16_rodaje_5km_facil (2026-05-16T13:55:44+02:00): dolor 7/10. Localizacion: Tibial posterior izquierdo. Nota: Actualizacion manual: dolor actual en periostio 6,5/10; redondeado a 7/10 para las reglas automaticas.",
+      "source": "manual",
+      "updated_by": "auto_feedback"
+    },
+    "latest_high_risk_review": {
+      "planned": {
+        "name": "XXIX CARREIRA POPULAR CONCELLO DE ORDES",
+        "date": "2026-05-24",
+        "sport": "running",
+        "goal_category": "race",
+        "description": "Tune-up race sobre 8.5 km con objetivo de 4:10-4:20/km antes del bloque principal.",
+        "distance_m": 8500.0,
+        "pace_target": "4:10-4:20/km",
+        "planned_session_reference": "races/2026/2026-05-24_xxix_carreira_popular_concello_de_ordes.yaml"
+      },
+      "summary": {
+        "activity_id": 22992941690,
+        "activity_name": "Ordes - XXIX CARREIRA POPULAR CONCELLO DE ORDES",
+        "start_time_local": "2026-05-24 11:05:22",
+        "distance_m": 8447.2802734375,
+        "duration_s": 2377.1650390625,
+        "elapsed_s": 2377.1650390625,
+        "moving_s": 2371.094024658203,
+        "pace_s_per_km": 281.4118819447134,
+        "moving_pace_s_per_km": 280.693187381756,
+        "avg_hr": 191.0,
+        "max_hr": 199.0,
+        "avg_cadence_spm": 171.078125,
+        "max_cadence_spm": 188.0,
+        "avg_power_w": 338.0,
+        "max_power_w": 528.0,
+        "elevation_gain_m": 143.0,
+        "elevation_loss_m": 145.0,
+        "avg_stride_cm": 123.84000244140626,
+        "avg_gct_ms": 246.1999969482422,
+        "avg_vo_cm": 9.70999984741211,
+        "avg_vr": 7.889999866485596,
+        "calories": 513.0,
+        "water_estimated_ml": 660.0,
+        "aerobic_training_effect": 5.0,
+        "anaerobic_training_effect": 3.200000047683716,
+        "training_effect_label": "VO2MAX",
+        "min_temp_c": 28.0,
+        "max_temp_c": 35.0,
+        "gap_pace_s_per_km": 275.8620689655172,
+        "event_type": "race"
+      },
+      "double_session_context": {
+        "warmup_activity_id": 22992915868,
+        "warmup_distance_m": 2427.340087890625,
+        "warmup_duration_s": 1058.35205078125,
+        "warmup_avg_hr": 169.0,
+        "warmup_max_hr": 187.0,
+        "warmup_elevation_gain_m": 29.0,
+        "gap_between_sessions_s": 857,
+        "combined_distance_m": 10874.620361328125,
+        "combined_duration_s": 3435.51708984375,
+        "combined_pace_s_per_km": 315.9206460265035,
+        "combined_avg_hr": 184.22263737647526,
+        "combined_elevation_gain_m": 172.0
+      },
+      "compliance": {
+        "distance_diff_m": -52.7197265625,
+        "time_in_hr_zone_s": 0.0,
+        "time_below_hr_zone_s": 0.0,
+        "time_above_hr_zone_s": 0.0,
+        "pct_in_hr_zone": 0.0,
+        "pct_below_hr_zone": 0.0,
+        "pct_above_hr_zone": 0.0,
+        "time_to_enter_zone_s": 0.0,
+        "distance_to_enter_zone_m": 0.0
+      },
+      "stability": {
+        "pace_std_s_per_km": 32.32440442487855,
+        "hr_std_bpm": 4.456865601429712,
+        "cadence_std_spm": 3.883812312943065,
+        "power_std_w": 50.461601638129984
+      },
+      "halves": {
+        "first_half_pace_s_per_km": 279.0805301696104,
+        "second_half_pace_s_per_km": 287.1351463017826,
+        "first_half_hr": 191.4121979371376,
+        "second_half_hr": 191.07670795233275,
+        "first_half_power_w": 354.85225155483954,
+        "second_half_power_w": 322.3091139750016,
+        "efficiency_first": 0.018719784741334438,
+        "efficiency_second": 0.018226609746277347,
+        "efficiency_change_pct": -2.6345121050891707,
+        "decoupling_pct": -2.9755198376119396
+      },
+      "splits": [
+        {
+          "label": "1",
+          "distance_m": 1000.0,
+          "duration_s": 253.11292836586728,
+          "pace_s_per_km": 253.11292836586728,
+          "avg_hr": 184.99630458160829,
+          "avg_cadence_spm": 171.03995421502626,
+          "avg_power_w": 349.04528504019737
+        },
+        {
+          "label": "2",
+          "distance_m": 1000.0,
+          "duration_s": 288.0344003831927,
+          "pace_s_per_km": 288.0344003831927,
+          "avg_hr": 193.52934810224787,
+          "avg_cadence_spm": 171.9067726937643,
+          "avg_power_w": 364.3567958223491
+        },
+        {
+          "label": "3",
+          "distance_m": 1000.0,
+          "duration_s": 285.70479387164823,
+          "pace_s_per_km": 285.70479387164823,
+          "avg_hr": 191.90251145180792,
+          "avg_cadence_spm": 171.29492578413598,
+          "avg_power_w": 351.92672147479965
+        },
+        {
+          "label": "4",
+          "distance_m": 1000.0,
+          "duration_s": 275.14453241931767,
+          "pace_s_per_km": 275.14453241931767,
+          "avg_hr": 193.57576175516726,
+          "avg_cadence_spm": 171.84845217546277,
+          "avg_power_w": 351.9383292496556
+        },
+        {
+          "label": "5",
+          "distance_m": 1000.0,
+          "duration_s": 297.1255917542039,
+          "pace_s_per_km": 297.12559175420387,
+          "avg_hr": 191.2675772188704,
+          "avg_cadence_spm": 169.95961303794417,
+          "avg_power_w": 339.11240624798967
+        },
+        {
+          "label": "6",
+          "distance_m": 1000.0,
+          "duration_s": 281.34448829937287,
+          "pace_s_per_km": 281.34448829937287,
+          "avg_hr": 191.36447942644733,
+          "avg_cadence_spm": 170.26634063684756,
+          "avg_power_w": 313.43552744408987
+        },
+        {
+          "label": "7",
+          "distance_m": 1000.0,
+          "duration_s": 285.05084343225644,
+          "pace_s_per_km": 285.05084343225644,
+          "avg_hr": 190.1964561806789,
+          "avg_cadence_spm": 170.158099970062,
+          "avg_power_w": 316.6360306724273
+        },
+        {
+          "label": "8",
+          "distance_m": 1000.0,
+          "duration_s": 303.2947814711408,
+          "pace_s_per_km": 303.2947814711408,
+          "avg_hr": 191.5663368742472,
+          "avg_cadence_spm": 169.30368851393146,
+          "avg_power_w": 323.10200327349816
+        },
+        {
+          "label": "0.45",
+          "distance_m": 447.2802734375,
+          "duration_s": 108.35267906550007,
+          "pace_s_per_km": 242.247837653946,
+          "avg_hr": 193.53495279132068,
+          "avg_cadence_spm": 173.5418800150588,
+          "avg_power_w": 335.51359989048154
+        }
+      ],
+      "score": 7,
+      "traffic_light": "amarillo",
+      "risk_level": "alto",
+      "progression": {
+        "trend": "informative",
+        "summary": "La carrera confirma un esfuerzo competitivo muy alto y es coherente con la subida de FCMAX a 199 y FC umbral a 191. El dato mas util es la capacidad de sostener una carrera dura alrededor del umbral en calor y con desnivel."
+      },
+      "coaching_summary": "Objetivo: tune-up race sobre 8.5 km antes del bloque principal. Bien: se compitio de verdad y se sostuvo la carrera alrededor del umbral de lactato actualizado. A mejorar: el ritmo bruto quedo por debajo del rango objetivo y el calentamiento previo tambien sumo carga. Impacto: 8.45 km en 39:37, ritmo 4:41/km, FC 191.0/199.0 bpm, +143.0 m y 28.0-35.0 C. Lectura correcta: estimulo competitivo muy valido, pero con coste alto y dentro de una doble sesion real.",
+      "recovery_analysis": {
+        "status": "complete",
+        "resting_hr_bpm": 55,
+        "normal_hr_bpm": 130,
+        "finish_hr_bpm": 194,
+        "finish_timestamp_gmt": "2026-05-24T09:44:59+00:00",
+        "time_to_normal_s": 1381.0,
+        "time_to_140_s": 181.0,
+        "hrr_1min_bpm": 14,
+        "hrr_3min_bpm": 58,
+        "hrr_5min_bpm": 60,
+        "marks": [
+          {
+            "minute": 1,
+            "timestamp_gmt": "2026-05-24T09:46:00+00:00",
+            "hr": 180,
+            "drop": 14
+          },
+          {
+            "minute": 2,
+            "timestamp_gmt": "2026-05-24T09:46:00+00:00",
+            "hr": 180,
+            "drop": 14
+          },
+          {
+            "minute": 3,
+            "timestamp_gmt": "2026-05-24T09:48:00+00:00",
+            "hr": 136,
+            "drop": 58
+          },
+          {
+            "minute": 5,
+            "timestamp_gmt": "2026-05-24T09:50:00+00:00",
+            "hr": 134,
+            "drop": 60
+          },
+          {
+            "minute": 10,
+            "timestamp_gmt": "2026-05-24T09:54:00+00:00",
+            "hr": 140,
+            "drop": 54
+          },
+          {
+            "minute": 15,
+            "timestamp_gmt": "2026-05-24T10:00:00+00:00",
+            "hr": 152,
+            "drop": 42
+          },
+          {
+            "minute": 20,
+            "timestamp_gmt": "2026-05-24T10:04:00+00:00",
+            "hr": 140,
+            "drop": 54
+          },
+          {
+            "minute": 30,
+            "timestamp_gmt": "2026-05-24T10:14:00+00:00",
+            "hr": 136,
+            "drop": 58
+          }
+        ],
+        "chart": {
+          "points": [
+            {
+              "minute": 0.0,
+              "hr": 194,
+              "label": "0m"
+            },
+            {
+              "minute": 1.02,
+              "hr": 180,
+              "label": "1m"
+            },
+            {
+              "minute": 3.02,
+              "hr": 136,
+              "label": "3m"
+            },
+            {
+              "minute": 5.02,
+              "hr": 134,
+              "label": "5m"
+            },
+            {
+              "minute": 7.02,
+              "hr": 142,
+              "label": "7m"
+            },
+            {
+              "minute": 9.02,
+              "hr": 140,
+              "label": "9m"
+            },
+            {
+              "minute": 11.02,
+              "hr": 138,
+              "label": "11m"
+            },
+            {
+              "minute": 13.02,
+              "hr": 139,
+              "label": "13m"
+            },
+            {
+              "minute": 15.02,
+              "hr": 152,
+              "label": "15m"
+            },
+            {
+              "minute": 17.02,
+              "hr": 154,
+              "label": "17m"
+            },
+            {
+              "minute": 19.02,
+              "hr": 140,
+              "label": "19m"
+            },
+            {
+              "minute": 21.02,
+              "hr": 136,
+              "label": "21m"
+            },
+            {
+              "minute": 23.02,
+              "hr": 130,
+              "label": "23m"
+            },
+            {
+              "minute": 25.02,
+              "hr": 125,
+              "label": "25m"
+            },
+            {
+              "minute": 27.02,
+              "hr": 126,
+              "label": "27m"
+            },
+            {
+              "minute": 29.02,
+              "hr": 136,
+              "label": "29m"
+            }
+          ],
+          "bars": [
+            {
+              "minute": 0.0,
+              "label": "0m",
+              "hr": 194,
+              "height_pct": 100.0
+            },
+            {
+              "minute": 1.02,
+              "label": "1m",
+              "hr": 180,
+              "height_pct": 83.4
+            },
+            {
+              "minute": 3.02,
+              "label": "3m",
+              "hr": 136,
+              "height_pct": 31.1
+            },
+            {
+              "minute": 5.02,
+              "label": "5m",
+              "hr": 134,
+              "height_pct": 28.7
+            },
+            {
+              "minute": 7.02,
+              "label": "7m",
+              "hr": 142,
+              "height_pct": 38.2
+            },
+            {
+              "minute": 9.02,
+              "label": "9m",
+              "hr": 140,
+              "height_pct": 35.8
+            },
+            {
+              "minute": 11.02,
+              "label": "11m",
+              "hr": 138,
+              "height_pct": 33.4
+            },
+            {
+              "minute": 13.02,
+              "label": "13m",
+              "hr": 139,
+              "height_pct": 34.6
+            },
+            {
+              "minute": 15.02,
+              "label": "15m",
+              "hr": 152,
+              "height_pct": 50.1
+            },
+            {
+              "minute": 17.02,
+              "label": "17m",
+              "hr": 154,
+              "height_pct": 52.5
+            },
+            {
+              "minute": 19.02,
+              "label": "19m",
+              "hr": 140,
+              "height_pct": 35.8
+            },
+            {
+              "minute": 21.02,
+              "label": "21m",
+              "hr": 136,
+              "height_pct": 31.1
+            },
+            {
+              "minute": 23.02,
+              "label": "23m",
+              "hr": 130,
+              "height_pct": 23.9
+            },
+            {
+              "minute": 25.02,
+              "label": "25m",
+              "hr": 125,
+              "height_pct": 18.0
+            },
+            {
+              "minute": 27.02,
+              "label": "27m",
+              "hr": 126,
+              "height_pct": 19.2
+            },
+            {
+              "minute": 29.02,
+              "label": "29m",
+              "hr": 136,
+              "height_pct": 31.1
+            }
+          ],
+          "min_hr": 125,
+          "max_hr": 194
+        },
+        "summary": "Recuperaci\u00f3n inicial muy buena. Volviste a una FC normal personalizada (<= 130 ppm) en 23.0 min; la bajada inicial fue buena pero el retorno completo fue m\u00e1s gradual. La curva posterior oscila, se\u00f1al de que seguiste caminando o movi\u00e9ndote tras meta m\u00e1s que quedarte en reposo pasivo."
+      },
+      "review_date": "2026-05-24",
+      "source_path": "training/completed/reviews/2026-05-24_xxix_carreira_popular_concello_de_ordes.analysis.json"
+    },
+    "latest_feedback": {
+      "source": "web_manual_feedback",
+      "created_at": "2026-05-22T15:08:35.092246",
+      "updated_at": "2026-05-22T15:08:35.092246",
+      "updated_by": "change-me",
+      "date": "2026-05-22",
+      "planned_workout_slug": "2026-05-22_activacion_ritmo_carrera",
+      "completed_review_slug": "2026-05-22_activacion_ritmo_carrera",
+      "garmin_activity_id": 22970190097,
+      "athlete_feedback": {
+        "rpe": 3,
+        "pain_level": 0,
+        "pain_location": null,
+        "compliance": "full",
+        "time_feeling": "spare",
+        "note": null
+      },
+      "feedback_date": "2026-05-22",
+      "slug": "2026-05-22_activacion_ritmo_carrera",
+      "source_path": "training/completed/feedback/2026-05-22_activacion_ritmo_carrera.feedback.json"
+    },
+    "daily_signals": {
+      "snapshot": {
+        "hrv": 137864769.0,
+        "training_readiness": 137864769.0,
+        "resting_heart_rate": 53.0,
+        "training_status": {
+          "userId": 137864769,
+          "mostRecentVO2Max": {
+            "userId": 137864769,
+            "generic": {
+              "calendarDate": "2026-05-24",
+              "vo2MaxPreciseValue": 45.9,
+              "vo2MaxValue": 46.0,
+              "fitnessAge": null,
+              "fitnessAgeDescription": null,
+              "maxMetCategory": 0
+            },
+            "cycling": null,
+            "heatAltitudeAcclimation": {
+              "calendarDate": "2026-05-26",
+              "altitudeAcclimationDate": "2026-05-26",
+              "previousAltitudeAcclimationDate": "2026-05-26",
+              "heatAcclimationDate": "2026-05-26",
+              "previousHeatAcclimationDate": "2026-05-25",
+              "altitudeAcclimation": 0,
+              "previousAltitudeAcclimation": 0,
+              "heatAcclimationPercentage": 30,
+              "previousHeatAcclimationPercentage": 29,
+              "heatTrend": "ACCLIMATIZING",
+              "altitudeTrend": null,
+              "currentAltitude": 287,
+              "previousAltitude": 0,
+              "acclimationPercentage": 0,
+              "previousAcclimationPercentage": 0,
+              "altitudeAcclimationLocalTimestamp": "2026-05-26T23:57:37.0"
+            }
+          },
+          "mostRecentTrainingLoadBalance": {
+            "userId": 137864769,
+            "metricsTrainingLoadBalanceDTOMap": {
+              "3621896103": {
+                "calendarDate": "2026-05-26",
+                "deviceId": 3621896103,
+                "monthlyLoadAerobicLow": 905.32666,
+                "monthlyLoadAerobicHigh": 1164.1838,
+                "monthlyLoadAnaerobic": 373.77026,
+                "monthlyLoadAerobicLowTargetMin": 393,
+                "monthlyLoadAerobicLowTargetMax": 1046,
+                "monthlyLoadAerobicHighTargetMin": 802,
+                "monthlyLoadAerobicHighTargetMax": 1455,
+                "monthlyLoadAnaerobicTargetMin": 217,
+                "monthlyLoadAnaerobicTargetMax": 652,
+                "trainingBalanceFeedbackPhrase": "BALANCED",
+                "primaryTrainingDevice": true
+              }
+            },
+            "recordedDevices": [
+              {
+                "deviceId": 3621896103,
+                "imageURL": "https://res.garmin.com/en/products/010-02969-10/v/cf-sm-2x3.png",
+                "deviceName": "Forerunner 970",
+                "category": 0
+              }
+            ]
+          },
+          "mostRecentTrainingStatus": {
+            "userId": 137864769,
+            "latestTrainingStatusData": {
+              "3621896103": {
+                "calendarDate": "2026-05-26",
+                "sinceDate": "2026-05-24",
+                "weeklyTrainingLoad": null,
+                "trainingStatus": 7,
+                "timestamp": 1779826443000,
+                "deviceId": 3621896103,
+                "loadTunnelMin": null,
+                "loadTunnelMax": null,
+                "loadLevelTrend": null,
+                "sport": "RUNNING",
+                "subSport": "GENERIC",
+                "fitnessTrendSport": "RUNNING",
+                "fitnessTrend": 2,
+                "trainingStatusFeedbackPhrase": "PRODUCTIVE_6",
+                "trainingPaused": false,
+                "acuteTrainingLoadDTO": {
+                  "acwrPercent": 61,
+                  "acwrStatus": "OPTIMAL",
+                  "acwrStatusFeedback": "FEEDBACK_3",
+                  "dailyTrainingLoadAcute": 977,
+                  "maxTrainingLoadChronic": 979.5,
+                  "minTrainingLoadChronic": 522.4,
+                  "dailyTrainingLoadChronic": 653,
+                  "dailyAcuteChronicWorkloadRatio": 1.4
+                },
+                "primaryTrainingDevice": true
+              }
+            },
+            "recordedDevices": [
+              {
+                "deviceId": 3621896103,
+                "imageURL": "https://res.garmin.com/en/products/010-02969-10/v/cf-sm-2x3.png",
+                "deviceName": "Forerunner 970",
+                "category": 0
+              }
+            ],
+            "showSelector": false,
+            "lastPrimarySyncDate": "2026-05-26"
+          },
+          "heatAltitudeAcclimationDTO": null
+        },
+        "sleep_score": null,
+        "sleep_duration_s": null
+      },
+      "baseline_hrv": 137864769.0,
+      "hrv_flag": "stable",
+      "readiness_flag": "good",
+      "resting_hr_flag": "normal",
+      "training_status_flag": "positive",
+      "sleep_flag": null,
+      "acute_load": null,
+      "chronic_load": null,
+      "load_ratio": null,
+      "running_tolerance_flag": null
+    },
+    "session_guidance": {
+      "coach_state": "red",
+      "shin_band": "red",
+      "block": "block_1",
+      "target_distance": "10k",
+      "primary": [
+        "easy_recovery",
+        "recovery_plus_mobility"
+      ],
+      "optional": [
+        "bike_easy_aerobic",
+        "easy_z2"
+      ],
+      "avoid": [
+        "cruise_intervals",
+        "tempo_continuous",
+        "short_intervals_vo2",
+        "medium_intervals_vo2",
+        "ten_k_specific_reps",
+        "ten_k_specific_continuous",
+        "long_run_quality",
+        "short_hills_power",
+        "short_intervals_economy",
+        "hills_strength",
+        "five_k_specific_reps",
+        "marathon_specific_blocks"
+      ],
+      "quality_volume_cap": "none",
+      "selection_order": [
+        "coach_state",
+        "shin_band",
+        "active_block",
+        "target_distance",
+        "recent_completed_stimulus",
+        "desired_fatigue_cost"
+      ]
+    },
+    "active_context": {
+      "cycle_id": "2026-05-25_padron_10k",
+      "active_block": "Block 1: Rehabilitation, consistency and impact return",
+      "goal_race_name": "XXIV Padron 10k",
+      "goal_race_priority": "S",
+      "days_to_goal_race": 256,
+      "preferred_plan_columns": [
+        "day",
+        "description",
+        "distance",
+        "pace_or_hr",
+        "shoes"
+      ],
+      "primary_limiter": "aerobic_durability",
+      "default_quality_backbone": [
+        "fartlek_structured",
+        "cruise_intervals",
+        "tempo_broken",
+        "tempo_continuous"
+      ],
+      "available_race_count": 3
+    }
+  },
+  "goal_gates": {
+    "status": "unsupported_now",
+    "summary": "Con la evidencia actual, 35:00 sigue siendo aspiracional y no prescribe ritmos.",
+    "passed_count": 0,
+    "total_gates": 4,
+    "metrics": {
+      "avg_weekly_km_28d": 15.841252624511718,
+      "long_run_km_28d": 10.8192099609375,
+      "best_5k_s_90d": 1335.8609619140625,
+      "best_10k_s_180d": 2663.23095703125,
+      "high_risk_reviews_28d": 4,
+      "subjective_alerts_28d": 2,
+      "latest_shin_pain": 7
+    },
+    "gates": [
+      {
+        "name": "Base estable",
+        "passed": false,
+        "evidence": "Media 4 semanas 15.8 km/sem, tirada larga 10.8 km, alertas 4, periostio 7."
+      },
+      {
+        "name": "Umbral competitivo",
+        "passed": false,
+        "evidence": "Mejor 5k reciente: 22:16."
+      },
+      {
+        "name": "Precondicion 35:00",
+        "passed": false,
+        "evidence": "Media 15.8 km/sem, tirada 10.8 km, 5k 22:16, alertas 4."
+      },
+      {
+        "name": "Seleccion 35:00",
+        "passed": false,
+        "evidence": "5k 22:16, 10k 44:23."
+      }
+    ],
+    "block_checkpoints": [
+      {
+        "name": "Fin rehabilitacion sin impacto",
+        "phase": "rehab_support",
+        "passed": false,
+        "evidence": "Volumen 15.8 km/sem, periostio 7, 5k 22:16."
+      },
+      {
+        "name": "Vuelta al impacto estable",
+        "phase": "return_to_run",
+        "passed": false,
+        "evidence": "Volumen 15.8 km/sem, periostio 7, 5k 22:16."
+      },
+      {
+        "name": "Base inicial repetible",
+        "phase": "base_rebuild",
+        "passed": false,
+        "evidence": "Volumen 15.8 km/sem, periostio 7, 5k 22:16."
+      },
+      {
+        "name": "Umbral ya entrenable",
+        "phase": "threshold_build",
+        "passed": false,
+        "evidence": "Volumen 15.8 km/sem, periostio 7, 5k 22:16."
+      },
+      {
+        "name": "35:00 todavia vivo",
+        "phase": "ten_k_specific",
+        "passed": false,
+        "evidence": "Volumen 15.8 km/sem, periostio 7, 5k 22:16."
+      }
+    ]
+  },
+  "performance_estimate": {
+    "best_5k_s_90d": 1335.8609619140625,
+    "best_10k_s_180d": 2663.23095703125,
+    "estimate_10k_from_5k_s": 2785.178628079391,
+    "estimate_5k_from_10k_s": 1277.3709492781816,
+    "current_10k_estimate_s": 2663.23095703125,
+    "method": "Mejores splits recientes de Garmin y conversion Riegel; usar como tendencia, no como garantia de carrera."
+  },
+  "weekly_volume": [
+    {
+      "week": "2026-W19",
+      "km": 26.18118994140625,
+      "runs": 4,
+      "quality_runs": 2,
+      "long_run_km": 10.8192099609375
+    },
+    {
+      "week": "2026-W20",
+      "km": 19.860090332031252,
+      "runs": 3,
+      "quality_runs": 1,
+      "long_run_km": 7.58818017578125
+    },
+    {
+      "week": "2026-W21",
+      "km": 17.323730224609374,
+      "runs": 3,
+      "quality_runs": 3,
+      "long_run_km": 8.4472802734375
+    }
+  ],
+  "daily_metrics": {
+    "available_days": 28,
+    "latest_date": "2026-05-26",
+    "source": "garmin_daily",
+    "latest_hrv": 137864769.0,
+    "latest_training_readiness": 137864769.0,
+    "latest_resting_heart_rate": 53.0,
+    "latest_training_status": {
+      "userId": 137864769,
+      "mostRecentVO2Max": {
+        "userId": 137864769,
+        "generic": {
+          "calendarDate": "2026-05-24",
+          "vo2MaxPreciseValue": 45.9,
+          "vo2MaxValue": 46.0,
+          "fitnessAge": null,
+          "fitnessAgeDescription": null,
+          "maxMetCategory": 0
+        },
+        "cycling": null,
+        "heatAltitudeAcclimation": {
+          "calendarDate": "2026-05-26",
+          "altitudeAcclimationDate": "2026-05-26",
+          "previousAltitudeAcclimationDate": "2026-05-26",
+          "heatAcclimationDate": "2026-05-26",
+          "previousHeatAcclimationDate": "2026-05-25",
+          "altitudeAcclimation": 0,
+          "previousAltitudeAcclimation": 0,
+          "heatAcclimationPercentage": 30,
+          "previousHeatAcclimationPercentage": 29,
+          "heatTrend": "ACCLIMATIZING",
+          "altitudeTrend": null,
+          "currentAltitude": 287,
+          "previousAltitude": 0,
+          "acclimationPercentage": 0,
+          "previousAcclimationPercentage": 0,
+          "altitudeAcclimationLocalTimestamp": "2026-05-26T23:57:37.0"
+        }
+      },
+      "mostRecentTrainingLoadBalance": {
+        "userId": 137864769,
+        "metricsTrainingLoadBalanceDTOMap": {
+          "3621896103": {
+            "calendarDate": "2026-05-26",
+            "deviceId": 3621896103,
+            "monthlyLoadAerobicLow": 905.32666,
+            "monthlyLoadAerobicHigh": 1164.1838,
+            "monthlyLoadAnaerobic": 373.77026,
+            "monthlyLoadAerobicLowTargetMin": 393,
+            "monthlyLoadAerobicLowTargetMax": 1046,
+            "monthlyLoadAerobicHighTargetMin": 802,
+            "monthlyLoadAerobicHighTargetMax": 1455,
+            "monthlyLoadAnaerobicTargetMin": 217,
+            "monthlyLoadAnaerobicTargetMax": 652,
+            "trainingBalanceFeedbackPhrase": "BALANCED",
+            "primaryTrainingDevice": true
+          }
+        },
+        "recordedDevices": [
+          {
+            "deviceId": 3621896103,
+            "imageURL": "https://res.garmin.com/en/products/010-02969-10/v/cf-sm-2x3.png",
+            "deviceName": "Forerunner 970",
+            "category": 0
+          }
+        ]
+      },
+      "mostRecentTrainingStatus": {
+        "userId": 137864769,
+        "latestTrainingStatusData": {
+          "3621896103": {
+            "calendarDate": "2026-05-26",
+            "sinceDate": "2026-05-24",
+            "weeklyTrainingLoad": null,
+            "trainingStatus": 7,
+            "timestamp": 1779826443000,
+            "deviceId": 3621896103,
+            "loadTunnelMin": null,
+            "loadTunnelMax": null,
+            "loadLevelTrend": null,
+            "sport": "RUNNING",
+            "subSport": "GENERIC",
+            "fitnessTrendSport": "RUNNING",
+            "fitnessTrend": 2,
+            "trainingStatusFeedbackPhrase": "PRODUCTIVE_6",
+            "trainingPaused": false,
+            "acuteTrainingLoadDTO": {
+              "acwrPercent": 61,
+              "acwrStatus": "OPTIMAL",
+              "acwrStatusFeedback": "FEEDBACK_3",
+              "dailyTrainingLoadAcute": 977,
+              "maxTrainingLoadChronic": 979.5,
+              "minTrainingLoadChronic": 522.4,
+              "dailyTrainingLoadChronic": 653,
+              "dailyAcuteChronicWorkloadRatio": 1.4
+            },
+            "primaryTrainingDevice": true
+          }
+        },
+        "recordedDevices": [
+          {
+            "deviceId": 3621896103,
+            "imageURL": "https://res.garmin.com/en/products/010-02969-10/v/cf-sm-2x3.png",
+            "deviceName": "Forerunner 970",
+            "category": 0
+          }
+        ],
+        "showSelector": false,
+        "lastPrimarySyncDate": "2026-05-26"
+      },
+      "heatAltitudeAcclimationDTO": null
+    },
+    "latest_sleep_score": null,
+    "latest_sleep_duration_s": null
+  },
+  "data_quality": {
+    "available": {
+      "activities": true,
+      "daily_metrics": true,
+      "hrv": true,
+      "training_readiness": true,
+      "resting_heart_rate": true,
+      "training_status": true,
+      "sleep": false,
+      "running_tolerance": false
+    },
+    "missing": [
+      "sleep",
+      "running_tolerance"
+    ],
+    "latest_daily_date": "2026-05-31",
+    "latest_activity_date": "2026-05-24",
+    "daily_snapshot": {
+      "hrv": 137864769.0,
+      "training_readiness": 137864769.0,
+      "resting_heart_rate": 53.0,
+      "training_status": {
+        "userId": 137864769,
+        "mostRecentVO2Max": {
+          "userId": 137864769,
+          "generic": {
+            "calendarDate": "2026-05-24",
+            "vo2MaxPreciseValue": 45.9,
+            "vo2MaxValue": 46.0,
+            "fitnessAge": null,
+            "fitnessAgeDescription": null,
+            "maxMetCategory": 0
+          },
+          "cycling": null,
+          "heatAltitudeAcclimation": {
+            "calendarDate": "2026-05-26",
+            "altitudeAcclimationDate": "2026-05-26",
+            "previousAltitudeAcclimationDate": "2026-05-26",
+            "heatAcclimationDate": "2026-05-26",
+            "previousHeatAcclimationDate": "2026-05-25",
+            "altitudeAcclimation": 0,
+            "previousAltitudeAcclimation": 0,
+            "heatAcclimationPercentage": 30,
+            "previousHeatAcclimationPercentage": 29,
+            "heatTrend": "ACCLIMATIZING",
+            "altitudeTrend": null,
+            "currentAltitude": 287,
+            "previousAltitude": 0,
+            "acclimationPercentage": 0,
+            "previousAcclimationPercentage": 0,
+            "altitudeAcclimationLocalTimestamp": "2026-05-26T23:57:37.0"
+          }
+        },
+        "mostRecentTrainingLoadBalance": {
+          "userId": 137864769,
+          "metricsTrainingLoadBalanceDTOMap": {
+            "3621896103": {
+              "calendarDate": "2026-05-26",
+              "deviceId": 3621896103,
+              "monthlyLoadAerobicLow": 905.32666,
+              "monthlyLoadAerobicHigh": 1164.1838,
+              "monthlyLoadAnaerobic": 373.77026,
+              "monthlyLoadAerobicLowTargetMin": 393,
+              "monthlyLoadAerobicLowTargetMax": 1046,
+              "monthlyLoadAerobicHighTargetMin": 802,
+              "monthlyLoadAerobicHighTargetMax": 1455,
+              "monthlyLoadAnaerobicTargetMin": 217,
+              "monthlyLoadAnaerobicTargetMax": 652,
+              "trainingBalanceFeedbackPhrase": "BALANCED",
+              "primaryTrainingDevice": true
+            }
+          },
+          "recordedDevices": [
+            {
+              "deviceId": 3621896103,
+              "imageURL": "https://res.garmin.com/en/products/010-02969-10/v/cf-sm-2x3.png",
+              "deviceName": "Forerunner 970",
+              "category": 0
+            }
+          ]
+        },
+        "mostRecentTrainingStatus": {
+          "userId": 137864769,
+          "latestTrainingStatusData": {
+            "3621896103": {
+              "calendarDate": "2026-05-26",
+              "sinceDate": "2026-05-24",
+              "weeklyTrainingLoad": null,
+              "trainingStatus": 7,
+              "timestamp": 1779826443000,
+              "deviceId": 3621896103,
+              "loadTunnelMin": null,
+              "loadTunnelMax": null,
+              "loadLevelTrend": null,
+              "sport": "RUNNING",
+              "subSport": "GENERIC",
+              "fitnessTrendSport": "RUNNING",
+              "fitnessTrend": 2,
+              "trainingStatusFeedbackPhrase": "PRODUCTIVE_6",
+              "trainingPaused": false,
+              "acuteTrainingLoadDTO": {
+                "acwrPercent": 61,
+                "acwrStatus": "OPTIMAL",
+                "acwrStatusFeedback": "FEEDBACK_3",
+                "dailyTrainingLoadAcute": 977,
+                "maxTrainingLoadChronic": 979.5,
+                "minTrainingLoadChronic": 522.4,
+                "dailyTrainingLoadChronic": 653,
+                "dailyAcuteChronicWorkloadRatio": 1.4
+              },
+              "primaryTrainingDevice": true
+            }
+          },
+          "recordedDevices": [
+            {
+              "deviceId": 3621896103,
+              "imageURL": "https://res.garmin.com/en/products/010-02969-10/v/cf-sm-2x3.png",
+              "deviceName": "Forerunner 970",
+              "category": 0
+            }
+          ],
+          "showSelector": false,
+          "lastPrimarySyncDate": "2026-05-26"
+        },
+        "heatAltitudeAcclimationDTO": null
+      },
+      "sleep_score": null,
+      "sleep_duration_s": null
+    },
+    "improvements": [
+      "Integrar HRV reciente en la decision de carga y en el dashboard.",
+      "Usar training readiness para bloquear progresiones cuando Garmin marque baja preparacion.",
+      "Comparar resting HR reciente con baseline para detectar fatiga o deriva.",
+      "Traducir training status a una se\u00f1al visible de forma y tolerancia de carga."
+    ]
+  },
+  "running_tolerance": {},
+  "training_paces": {
+    "strategy": "progress_from_recent_evidence",
+    "running": {
+      "evidence": {
+        "best_5k_s_120d": 1324.156005859375,
+        "best_10k_s_180d": 2663.23095703125
+      },
+      "bands": {
+        "easy": {
+          "min_s_per_km": 361.323095703125,
+          "max_s_per_km": 450.0
+        },
+        "fartlek": {
+          "min_s_per_km": 264.323095703125,
+          "max_s_per_km": 280.323095703125
+        },
+        "tempo": {
+          "min_s_per_km": 273.323095703125,
+          "max_s_per_km": 283.323095703125
+        },
+        "ten_k_specific": {
+          "min_s_per_km": 263.323095703125,
+          "max_s_per_km": 269.323095703125
+        },
+        "vo2": {
+          "min_s_per_km": 260.831201171875,
+          "max_s_per_km": 268.831201171875
+        }
+      }
+    },
+    "bike": {
+      "easy": {
+        "min_bpm": 130,
+        "max_bpm": 144
+      },
+      "aerobic": {
+        "min_bpm": 145,
+        "max_bpm": 160
+      },
+      "tempo": {
+        "min_bpm": 160,
+        "max_bpm": 170
+      },
+      "vo2": {
+        "min_bpm": 176,
+        "max_bpm": 186
+      }
+    },
+    "labels": {
+      "easy": {
+        "min": "6:01/km",
+        "max": "7:30/km"
+      },
+      "fartlek": {
+        "min": "4:24/km",
+        "max": "4:40/km"
+      },
+      "tempo": {
+        "min": "4:33/km",
+        "max": "4:43/km"
+      },
+      "ten_k_specific": {
+        "min": "4:23/km",
+        "max": "4:29/km"
+      },
+      "vo2": {
+        "min": "4:21/km",
+        "max": "4:29/km"
+      }
+    },
+    "updated_from": {
+      "best_5k_s_120d": 1324.156005859375,
+      "best_10k_s_180d": 2663.23095703125
+    }
+  },
+  "hybrid_training": {
+    "weeks": [
+      {
+        "week_start": "2026-05-04",
+        "week_end": "2026-05-10",
+        "week": "2026-W19",
+        "running_km": 22.53531005859375,
+        "cycling_minutes": 0.0,
+        "elliptical_minutes": 0.0,
+        "strength_minutes": 0.0,
+        "hybrid_equivalent_km": 22.53531005859375,
+        "review_count": 3,
+        "high_risk_reviews": 1,
+        "low_score_reviews": 1,
+        "sports": {
+          "running": 3
+        }
+      },
+      {
+        "week_start": "2026-05-11",
+        "week_end": "2026-05-17",
+        "week": "2026-W20",
+        "running_km": 19.860090332031252,
+        "cycling_minutes": 0.0,
+        "elliptical_minutes": 0.0,
+        "strength_minutes": 0.0,
+        "hybrid_equivalent_km": 19.860090332031252,
+        "review_count": 3,
+        "high_risk_reviews": 0,
+        "low_score_reviews": 0,
+        "sports": {
+          "running": 3
+        }
+      },
+      {
+        "week_start": "2026-05-18",
+        "week_end": "2026-05-24",
+        "week": "2026-W21",
+        "running_km": 17.323730224609374,
+        "cycling_minutes": 70.05543619791666,
+        "elliptical_minutes": 55.10170084635417,
+        "strength_minutes": 0.0,
+        "hybrid_equivalent_km": 48.35990930757069,
+        "review_count": 7,
+        "high_risk_reviews": 1,
+        "low_score_reviews": 0,
+        "sports": {
+          "cross_training": 1,
+          "elliptical": 2,
+          "cycling": 1,
+          "running": 3
+        }
+      },
+      {
+        "week_start": "2026-05-25",
+        "week_end": "2026-05-31",
+        "week": "2026-W22",
+        "running_km": 0.0,
+        "cycling_minutes": 54.01961669921875,
+        "elliptical_minutes": 0.0,
+        "strength_minutes": 0.0,
+        "hybrid_equivalent_km": 15.434176199776786,
+        "review_count": 1,
+        "high_risk_reviews": 0,
+        "low_score_reviews": 0,
+        "sports": {
+          "cycling": 1
+        }
+      }
+    ]
+  },
+  "feedback_summary": {
+    "available_count": 5,
+    "latest_date": "2026-05-22"
+  },
+  "active_context": {
+    "cycle_id": "2026-05-25_padron_10k",
+    "active_block": "Block 1: Rehabilitation, consistency and impact return",
+    "goal_race": {
+      "id": "xxiv_padron_10k_2027",
+      "name": "XXIV Padron 10k",
+      "date": "2027-02-06",
+      "priority": "S",
+      "distance": "10k",
+      "goal": {
+        "type": "time_and_pace",
+        "value": 2100,
+        "target_pace": "3:30/km"
+      },
+      "coaching_note": "35:00 is aspirational and must be unlocked by checkpoint evidence before being used as training pace."
+    },
+    "days_to_goal_race": 256,
+    "available_race_count": 3
+  }
+}

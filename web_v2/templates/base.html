@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}RunPilot Next{% endblock %}</title>
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', path='/logo-mark.svg') }}">
+  <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="/">
+        <img src="{{ url_for('static', path='/logo-mark.svg') }}" alt="RunPilot Next">
+        <div>
+          <strong>RunPilot Next</strong>
+          <span>Operativa diaria, más limpia.</span>
+        </div>
+      </a>
+      {% if authenticated %}
+      <nav class="topnav">
+        <a class="{{ 'active' if active_nav == 'hoy' else '' }}" href="/">Hoy</a>
+        <a class="{{ 'active' if active_nav == 'calendar' else '' }}" href="/calendar">Calendar</a>
+        <a class="{{ 'active' if active_nav == 'plan' else '' }}" href="/plan">Plan</a>
+        <a class="{{ 'active' if active_nav == 'eventos' else '' }}" href="/eventos">Eventos</a>
+        <a class="{{ 'active' if active_nav == 'atleta' else '' }}" href="/atleta">Atleta</a>
+      </nav>
+      <div class="topbar-actions">
+        <a class="ghost-button" href="{{ legacy_base_url }}" target="_blank" rel="noreferrer">Abrir UI v1 deprecada</a>
+        <a class="ghost-button" href="/logout">Salir</a>
+      </div>
+      {% endif %}
+    </header>
+    <main class="page-wrap">
+      {% if flash %}
+      <section class="banner">{{ flash.message }}</section>
+      {% endif %}
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+zones:
+  heart_rate:
+    resting_hr: 52
+    max_hr: 199
+    threshold_hr: 191
+    z0: <132
+    z1: 132-145
+    z2: 145-160
+    z3: 160-176
+    z4: 176-191
+    z5: '>191'
+  pace:
+    easy: 6:00-7:30/km
+    marathon: null
+    half_marathon: null
+    ten_k: 4:22/km
+    five_k: 4:15/km
+    threshold: null
+  guidance_priority:
+    primary: both
+    secondary: null
+  reference_marks:
+    recent_key_session: 4x1000@4:05/km
+    current_10k_pb:
+      date: 2026-02-07
+      pace: 4:22/km
+      note: Project reference; Garmin race activity shows 10.08 km around 4:26/km.
+    current_10k_garmin_reference:
+      date: 2026-02-07
+      distance: 10.08km
+      pace: 4:26/km
+      fastest_10k_split: 2663
+      average_hr: 186
+    current_5k_pace: 4:15/km
+    current_interval_capability:
+      date: 2026-04-16
+      session: 4x1000@3:56-4:01/km
+      note: High-cost interval ability, not current 10k pace.
+  data_sources:
+    garmin:
+      last_sync: '2026-05-30T23:01:15.568307Z'
+      profile_snapshot: training/completed/imports/garmin/profile/athlete_profile_snapshot.json

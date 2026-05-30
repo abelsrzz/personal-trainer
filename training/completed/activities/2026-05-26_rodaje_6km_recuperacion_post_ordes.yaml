@@ -1,0 +1,16 @@
+activity:
+  id: garmin-23017054300
+  source: garmin
+  garmin_activity_id: 23017054300
+  date: 2026-05-26
+  title: Ordes - Bicicleta recuperacion post-Ordes 50 min
+  type: run
+  planned_session_reference: training/planned/workouts/2026-05-26_rodaje_6km_recuperacion_post_ordes.yaml
+  distance_km: 17.286
+  duration: '54:01'
+  elevation_gain_m: 252.0
+  avg_pace: 3:08/km
+  avg_hr: 137.0
+  max_hr: 169.0
+  shoes: null
+  notes: Autoimported from Garmin on 2026-05-27T20:45:33

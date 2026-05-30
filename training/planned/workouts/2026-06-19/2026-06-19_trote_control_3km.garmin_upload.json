@@ -1,0 +1,278 @@
+{
+  "generated_at": "2026-05-24T14:09:03.993698Z",
+  "status": "scheduled",
+  "upload_mode": "structured_targets",
+  "workout_file": "training/planned/workouts/2026-06-19_trote_control_3km.yaml",
+  "uploaded_response": {
+    "workoutId": 1577549733,
+    "ownerId": 137864769,
+    "workoutName": "Trote facil control 3 km",
+    "description": "Segundo trote facil de control. Mantener tecnica relajada y parar si la tibia avisa.",
+    "updatedDate": "2026-05-24T14:09:01.0",
+    "createdDate": "2026-05-24T14:09:01.0",
+    "sportType": {
+      "sportTypeId": 1,
+      "sportTypeKey": "running",
+      "displayOrder": 1
+    },
+    "subSportType": null,
+    "trainingPlanId": null,
+    "author": {
+      "userProfilePk": 137864769,
+      "displayName": "4001188d-ed09-4b5d-86d2-ef751217099e",
+      "fullName": "Abel",
+      "profileImgNameLarge": null,
+      "profileImgNameMedium": "3f638055-fd65-4de8-a95a-ba40fab94e10-prfr.png",
+      "profileImgNameSmall": "3f638055-fd65-4de8-a95a-ba40fab94e10-prth.png",
+      "userPro": false,
+      "vivokidUser": false
+    },
+    "sharedWithUsers": null,
+    "estimatedDurationInSecs": 1260,
+    "estimatedDistanceInMeters": 3000.0,
+    "workoutSegments": [
+      {
+        "segmentOrder": 1,
+        "sportType": {
+          "sportTypeId": 1,
+          "sportTypeKey": "running",
+          "displayOrder": 1
+        },
+        "poolLengthUnit": null,
+        "poolLength": null,
+        "avgTrainingSpeed": null,
+        "estimatedDurationInSecs": null,
+        "estimatedDistanceInMeters": null,
+        "estimatedDistanceUnit": null,
+        "estimateType": null,
+        "description": null,
+        "workoutSteps": [
+          {
+            "type": "ExecutableStepDTO",
+            "stepId": 13457238563,
+            "stepOrder": 1,
+            "stepType": {
+              "stepTypeId": 3,
+              "stepTypeKey": "interval",
+              "displayOrder": 3
+            },
+            "childStepId": null,
+            "description": "3 km muy faciles",
+            "endCondition": {
+              "conditionTypeId": 3,
+              "conditionTypeKey": "distance",
+              "displayOrder": 3,
+              "displayable": true
+            },
+            "endConditionValue": 3000.0,
+            "preferredEndConditionUnit": {
+              "unitId": 1,
+              "unitKey": "meter",
+              "factor": 100.0
+            },
+            "endConditionCompare": null,
+            "targetType": {
+              "workoutTargetTypeId": 4,
+              "workoutTargetTypeKey": "heart.rate.zone",
+              "displayOrder": 4
+            },
+            "targetValueOne": 132.0,
+            "targetValueTwo": 145.0,
+            "targetValueUnit": null,
+            "zoneNumber": null,
+            "secondaryTargetType": null,
+            "secondaryTargetValueOne": null,
+            "secondaryTargetValueTwo": null,
+            "secondaryTargetValueUnit": null,
+            "secondaryZoneNumber": null,
+            "endConditionZone": null,
+            "strokeType": {
+              "strokeTypeId": 0,
+              "strokeTypeKey": null,
+              "displayOrder": 0
+            },
+            "equipmentType": {
+              "equipmentTypeId": 0,
+              "equipmentTypeKey": null,
+              "displayOrder": 0
+            },
+            "category": null,
+            "exerciseName": null,
+            "workoutProvider": null,
+            "providerExerciseSourceId": null,
+            "weightValue": null,
+            "weightUnit": null
+          }
+        ]
+      }
+    ],
+    "poolLength": null,
+    "poolLengthUnit": null,
+    "locale": null,
+    "workoutProvider": null,
+    "workoutSourceId": null,
+    "uploadTimestamp": null,
+    "atpPlanId": null,
+    "consumer": null,
+    "consumerName": null,
+    "consumerImageURL": null,
+    "consumerWebsiteURL": null,
+    "workoutNameI18nKey": null,
+    "descriptionI18nKey": null,
+    "avgTrainingSpeed": 0.0,
+    "estimateType": null,
+    "estimatedDistanceUnit": {
+      "unitId": null,
+      "unitKey": null,
+      "factor": null
+    },
+    "workoutThumbnailUrl": null,
+    "isSessionTransitionEnabled": null,
+    "shared": false
+  },
+  "scheduled_response": {
+    "workoutScheduleId": 1659010533,
+    "workout": {
+      "workoutId": 1577549733,
+      "ownerId": 137864769,
+      "workoutName": "Trote facil control 3 km",
+      "description": "Segundo trote facil de control. Mantener tecnica relajada y parar si la tibia avisa.",
+      "updatedDate": "2026-05-24T14:09:01.0",
+      "createdDate": "2026-05-24T14:09:01.0",
+      "sportType": {
+        "sportTypeId": 1,
+        "sportTypeKey": "running",
+        "displayOrder": 1
+      },
+      "subSportType": null,
+      "trainingPlanId": null,
+      "author": null,
+      "sharedWithUsers": null,
+      "estimatedDurationInSecs": 1260,
+      "estimatedDistanceInMeters": 3000.0,
+      "workoutSegments": [
+        {
+          "segmentOrder": 1,
+          "sportType": {
+            "sportTypeId": 1,
+            "sportTypeKey": "running",
+            "displayOrder": 1
+          },
+          "poolLengthUnit": null,
+          "poolLength": null,
+          "avgTrainingSpeed": null,
+          "estimatedDurationInSecs": null,
+          "estimatedDistanceInMeters": null,
+          "estimatedDistanceUnit": null,
+          "estimateType": null,
+          "description": null,
+          "workoutSteps": [
+            {
+              "type": "ExecutableStepDTO",
+              "stepId": 13457238563,
+              "stepOrder": 1,
+              "stepType": {
+                "stepTypeId": 3,
+                "stepTypeKey": "interval",
+                "displayOrder": 3
+              },
+              "childStepId": null,
+              "description": "3 km muy faciles",
+              "endCondition": {
+                "conditionTypeId": 3,
+                "conditionTypeKey": "distance",
+                "displayOrder": 3,
+                "displayable": true
+              },
+              "endConditionValue": 3000.0,
+              "preferredEndConditionUnit": {
+                "unitId": 1,
+                "unitKey": "meter",
+                "factor": 100.0
+              },
+              "endConditionCompare": null,
+              "targetType": {
+                "workoutTargetTypeId": 4,
+                "workoutTargetTypeKey": "heart.rate.zone",
+                "displayOrder": 4
+              },
+              "targetValueOne": 132.0,
+              "targetValueTwo": 145.0,
+              "targetValueUnit": null,
+              "zoneNumber": null,
+              "secondaryTargetType": null,
+              "secondaryTargetValueOne": null,
+              "secondaryTargetValueTwo": null,
+              "secondaryTargetValueUnit": null,
+              "secondaryZoneNumber": null,
+              "endConditionZone": null,
+              "strokeType": {
+                "strokeTypeId": 0,
+                "strokeTypeKey": null,
+                "displayOrder": 0
+              },
+              "equipmentType": {
+                "equipmentTypeId": 0,
+                "equipmentTypeKey": null,
+                "displayOrder": 0
+              },
+              "category": null,
+              "exerciseName": null,
+              "workoutProvider": null,
+              "providerExerciseSourceId": null,
+              "weightValue": null,
+              "weightUnit": null
+            }
+          ]
+        }
+      ],
+      "poolLength": null,
+      "poolLengthUnit": null,
+      "locale": null,
+      "workoutProvider": null,
+      "workoutSourceId": null,
+      "uploadTimestamp": null,
+      "atpPlanId": null,
+      "consumer": null,
+      "consumerName": null,
+      "consumerImageURL": null,
+      "consumerWebsiteURL": null,
+      "workoutNameI18nKey": null,
+      "descriptionI18nKey": null,
+      "avgTrainingSpeed": 0.0,
+      "estimateType": null,
+      "estimatedDistanceUnit": {
+        "unitId": null,
+        "unitKey": null,
+        "factor": null
+      },
+      "workoutThumbnailUrl": null,
+      "isSessionTransitionEnabled": null,
+      "shared": false
+    },
+    "calendarDate": "2026-06-19",
+    "createdDate": "2026-05-24",
+    "ownerId": 137864769,
+    "newName": null,
+    "consumer": null,
+    "atpPlanTypeId": null,
+    "associatedActivityId": null,
+    "priority": null,
+    "associatedActivityDateTime": null,
+    "tpType": null,
+    "itp": false,
+    "race": false,
+    "nameChanged": false,
+    "protected": false
+  },
+  "warning": null,
+  "replaced_uploads": [
+    {
+      "record": "training/planned/workouts/2026-06-19/2026-06-19_trote_control_3km.garmin_upload.json",
+      "scheduled_workout_id": 1650771895,
+      "unscheduled": true,
+      "workout_id": 1569242745,
+      "deleted": true
+    }
+  ]
+}

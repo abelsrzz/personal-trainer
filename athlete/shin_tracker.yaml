@@ -1,0 +1,79 @@
+shin_tracker:
+  scale: 0=no pain, 10=stop-level pain
+  rules:
+    green: 0-2/10 and not worse next morning
+    yellow: 3/10 or mild next-morning reaction; do not increase load
+    red: 4/10 or more, pain changing gait, or worsening trend; reduce running load
+  entries:
+  - date: '2026-05-05'
+    pain_during: 6
+    pain_after: 6
+    pain_next_morning: 6
+    location: left_shin
+    surface: null
+    shoes: null
+    notes: 'Auto-promoted from feedback 2026-05-05_rodaje_5km_reintroduccion (2026-05-16T15:05:33.535586):
+      dolor 6/10. Localizacion: Tibial posterior izquierdo.'
+    source: auto_feedback
+  - date: 2026-05-08
+    pain_during: 1
+    pain_after: 1
+    pain_next_morning: 1
+    location: left_shin
+    surface: null
+    shoes: null
+    notes: Reevaluacion manual. Dolor tibial actual 1/10 y cansancio subjetivo 0/10;
+      sin empeoramiento relevante reportado.
+  - date: '2026-05-13'
+    pain_during: 2
+    pain_after: 2
+    pain_next_morning: 2
+    location: left_shin
+    surface: null
+    shoes: null
+    notes: 'Auto-promoted from feedback 2026-05-13_rodaje_7km_rectas_controladas (2026-05-13T20:54:27.779508):
+      dolor 2/10. Localizacion: Tibial posterior izquierdo. Nota: Mejores sensaciones
+      que en sesiones similares anteriores'
+    source: auto_feedback
+  - date: '2026-05-15'
+    pain_during: 1
+    pain_after: 1
+    pain_next_morning: 1
+    location: left_shin
+    surface: null
+    shoes: null
+    notes: 'Auto-promoted from feedback 2026-05-15_especifica_controlada_ordes (2026-05-15T16:33:38.619698):
+      dolor 1/10. Localizacion: Tibial posterior izquierdo.'
+    source: auto_feedback
+  - date: 2026-05-16
+    pain_during: 7
+    pain_after: 7
+    pain_next_morning: 7
+    location: left_shin
+    surface: null
+    shoes: null
+    notes: 'Actualizacion manual. Dolor actual en el periostio 6,5/10; redondeado
+      a 7/10 para las reglas automaticas. Localizacion reportada: tibial posterior
+      izquierdo. Auto-promoted from feedback 2026-05-16_rodaje_5km_facil (2026-05-16T13:55:44+02:00):
+      dolor 7/10. Localizacion: Tibial posterior izquierdo. Nota: Actualizacion manual:
+      dolor actual en periostio 6,5/10; redondeado a 7/10 para las reglas automaticas.'
+    source: manual
+    updated_by: auto_feedback
+  - date: 2026-05-31
+    pain_during: 2
+    pain_after: 0
+    pain_next_morning: 0
+    location: left_shin
+    surface: null
+    shoes: null
+    notes: Actualizacion manual. Primera semana de recuperacion cerrada con 0/10 en reposo; 1.5/10 si se intenta forzar a proposito y 2/10 al hacer presion fuerte en la zona lesionada del periostio.
+    source: manual
+  entry_template:
+    date: YYYY-MM-DD
+    pain_during: 0
+    pain_after: 0
+    pain_next_morning: 0
+    location: left_shin
+    surface: null
+    shoes: null
+    notes: null

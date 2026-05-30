@@ -1,0 +1,1370 @@
+#!/usr/bin/env python3
+
+from __future__ import annotations
+
+import argparse
+import json
+import math
+from datetime import date, datetime
+from pathlib import Path
+from typing import Any
+
+import yaml
+
+ROOT = Path(__file__).resolve().parents[2]
+DEFAULT_WORKOUTS_ROOT = ROOT / "training" / "planned" / "workouts"
+
+
+def save_json(path: Path, payload: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, indent=2, ensure_ascii=True, default=str) + "\n", encoding="utf-8")
+
+
+def load_garmin_sync_helpers() -> tuple[Any, Any]:
+    try:
+        from scripts.garmin.sync_garmin import load_credentials, login
+    except ModuleNotFoundError:  # pragma: no cover - direct script execution path fix
+        import sys
+
+        sys.path.append(str(ROOT))
+        from scripts.garmin.sync_garmin import load_credentials, login
+    return load_credentials, login
+
+try:
+    from scripts.system.workout_knowledge import match_workout_knowledge
+except ModuleNotFoundError:  # pragma: no cover - direct script execution path fix
+    import sys
+
+    sys.path.append(str(Path(__file__).resolve().parents[2]))
+    from scripts.system.workout_knowledge import match_workout_knowledge
+
+try:
+    from scripts.garmin.recovery_analysis import build_recovery_analysis
+except ModuleNotFoundError:  # pragma: no cover - direct script execution path fix
+    import sys
+
+    sys.path.append(str(Path(__file__).resolve().parents[2]))
+    from scripts.garmin.recovery_analysis import build_recovery_analysis
+
+
+DEFAULT_IMPORT_ROOT = ROOT / "training" / "completed" / "imports" / "garmin"
+DEFAULT_ACTIVITY_ROOT = ROOT / "training" / "completed" / "activities"
+DEFAULT_REVIEW_ROOT = ROOT / "training" / "completed" / "reviews"
+PREFERENCES_PATH = ROOT / "athlete" / "preferences.yaml"
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Import Garmin workout and generate planned-vs-completed review")
+    parser.add_argument("--date", default=date.today().isoformat(), help="Workout date to review, YYYY-MM-DD")
+    parser.add_argument("--days", type=int, default=3, help="How many days back to inspect in Garmin")
+    parser.add_argument("--limit", type=int, default=10, help="Maximum Garmin activities to inspect")
+    parser.add_argument(
+        "--credentials",
+        type=Path,
+        default=ROOT / "garmin" / "local_credentials.yaml",
+        help="Path to local Garmin credentials YAML",
+    )
+    parser.add_argument("--activity-id", type=int, default=None, help="Specific Garmin activity ID to review")
+    parser.add_argument("--use-local-imports-only", action="store_true", help="Do not contact Garmin; use already imported local activity files only")
+    parser.add_argument("--force", action="store_true", help="Regenerate outputs even if review already exists")
+    return parser.parse_args()
+
+
+def load_yaml(path: Path) -> dict[str, Any]:
+    with path.open("r", encoding="utf-8") as handle:
+        return yaml.safe_load(handle) or {}
+
+
+def save_yaml(path: Path, payload: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8") as handle:
+        yaml.safe_dump(payload, handle, sort_keys=False, allow_unicode=False)
+
+
+def save_text(path: Path, content: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(content.rstrip() + "\n", encoding="utf-8")
+
+
+def load_preferences() -> dict[str, Any]:
+    return load_yaml(PREFERENCES_PATH).get("preferences", {}) if PREFERENCES_PATH.exists() else {}
+
+
+def find_planned_workout(day: str) -> Path:
+    matches = sorted(DEFAULT_WORKOUTS_ROOT.glob(f"{day}_*.yaml"))
+    if not matches:
+        raise FileNotFoundError(f"No planned workout found for {day} in {DEFAULT_WORKOUTS_ROOT}")
+    if len(matches) > 1:
+        running_matches = [path for path in matches if load_yaml(path).get("workout", {}).get("sport") == "running"]
+        if len(running_matches) == 1:
+            return running_matches[0]
+        raise ValueError(f"Multiple planned workouts found for {day}; disambiguation not implemented")
+    return matches[0]
+
+
+def planned_activity_types(planned: dict[str, Any]) -> set[str]:
+    workout = planned.get("workout", {}) if isinstance(planned.get("workout"), dict) else {}
+    sport = str(workout.get("sport") or "running").strip().lower()
+    if sport == "strength":
+        return {"strength_training"}
+    if sport == "elliptical":
+        return {"elliptical", "fitness_equipment"}
+    if sport in {"mobility", "stretching"}:
+        return {"mobility", "stretching"}
+    if sport in {"cycling", "bike", "biking"}:
+        return {"cycling", "road_biking", "indoor_cycling"}
+    return {"running", "trail_running"}
+
+
+def import_recent_matching_activities(day: str, planned: dict[str, Any], credentials_path: Path, days: int, limit: int) -> list[dict[str, Any]]:
+    load_credentials, login = load_garmin_sync_helpers()
+    credentials = load_credentials(credentials_path)
+    client = login(credentials)
+    activities = client.get_activities(0, limit)
+    allowed_types = planned_activity_types(planned)
+    imported: list[dict[str, Any]] = []
+    for activity in activities:
+        activity_type = activity.get("activityType", {}).get("typeKey")
+        start_local = str(activity.get("startTimeLocal", "")).split(" ")[0]
+        if activity_type not in allowed_types or start_local < day:
+            continue
+        activity_id = activity.get("activityId")
+        activity_dir = DEFAULT_IMPORT_ROOT / "activities" / f"{start_local}_{activity_id}"
+        activity_dir.mkdir(parents=True, exist_ok=True)
+        save_json(activity_dir / "summary.json", activity)
+        save_json(activity_dir / "details.json", client.get_activity_details(activity_id))
+        imported.append(activity)
+    if not imported:
+        raise FileNotFoundError(f"No Garmin matching activities found for {day}")
+    return imported
+
+
+def select_activity(activities: list[dict[str, Any]], planned: dict[str, Any], day: str) -> dict[str, Any]:
+    same_day = [a for a in activities if str(a.get("startTimeLocal", "")).split(" ")[0] == day]
+    if not same_day:
+        raise FileNotFoundError(f"No Garmin activity on {day}")
+    planned_distance = planned_distance_m(planned)
+    if planned_distance is None:
+        return sorted(same_day, key=lambda item: item.get("startTimeLocal", ""))[0]
+    return min(same_day, key=lambda item: abs(float(item.get("distance") or 0.0) - planned_distance))
+
+
+def load_local_matching_activities(day: str, planned: dict[str, Any]) -> list[dict[str, Any]]:
+    allowed_types = planned_activity_types(planned)
+    imported: list[dict[str, Any]] = []
+    for path in sorted(DEFAULT_IMPORT_ROOT.glob(f"activities/{day}_*/summary.json")):
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            continue
+        if not isinstance(payload, dict):
+            continue
+        if payload.get("activityType", {}).get("typeKey") not in allowed_types:
+            continue
+        imported.append(payload)
+    if not imported:
+        raise FileNotFoundError(f"No local Garmin matching activities found for {day}")
+    return imported
+
+
+def select_activity_by_id(activities: list[dict[str, Any]], activity_id: int) -> dict[str, Any]:
+    match = next((item for item in activities if int(item.get("activityId") or 0) == activity_id), None)
+    if match is None:
+        raise FileNotFoundError(f"No Garmin activity with id {activity_id} available for review")
+    return match
+
+
+def flatten_steps(steps: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    flat: list[dict[str, Any]] = []
+    for step in steps:
+        if step.get("type") == "repeat_group":
+            nested = flatten_steps(step.get("steps", []))
+            for _ in range(int(step.get("iterations", 0) or 0)):
+                flat.extend(nested)
+            continue
+        flat.append(step)
+    return flat
+
+
+def step_duration_s(step: dict[str, Any]) -> float | None:
+    if step.get("duration_s") is not None:
+        return float(step["duration_s"])
+    if step.get("duration") is not None:
+        return parse_duration_text(str(step.get("duration")))
+    return None
+
+
+def pace_text_to_seconds(value: Any) -> float | None:
+    if value is None:
+        return None
+    text = str(value).strip()
+    if text.endswith("/km"):
+        text = text[:-3]
+    return parse_duration_text(text)
+
+
+def easy_run_floor_policy() -> dict[str, float | None]:
+    preferences = load_preferences()
+    constraints = preferences.get("easy_run_constraints", {}) if isinstance(preferences, dict) else {}
+    floor_pace_s = pace_text_to_seconds(constraints.get("mechanical_floor_pace"))
+    tolerance_bpm = float(constraints.get("max_hr_tolerance_bpm_at_floor") or 0.0)
+    activation_text = str(constraints.get("floor_activation_band") or "").strip()
+    activation_min = None
+    activation_max = None
+    if "-" in activation_text:
+        left, right = [part.strip() for part in activation_text.split("-", 1)]
+        activation_min = pace_text_to_seconds(left)
+        activation_max = pace_text_to_seconds(right)
+    return {
+        "floor_pace_s": floor_pace_s,
+        "tolerance_bpm": tolerance_bpm,
+        "activation_min_s": activation_min,
+        "activation_max_s": activation_max,
+    }
+
+
+def within_easy_floor_tolerance(speed_mps: float | None, heart_rate: float, max_bpm: float) -> bool:
+    policy = easy_run_floor_policy()
+    floor_pace_s = policy.get("floor_pace_s")
+    tolerance_bpm = policy.get("tolerance_bpm")
+    activation_min_s = policy.get("activation_min_s")
+    activation_max_s = policy.get("activation_max_s")
+    if speed_mps is None or floor_pace_s is None or tolerance_bpm is None or tolerance_bpm <= 0:
+        return False
+    pace_s = pace_from_speed(speed_mps)
+    if pace_s is None:
+        return False
+    if activation_min_s is not None and pace_s < activation_min_s:
+        return False
+    if activation_max_s is not None and pace_s > activation_max_s:
+        return False
+    return heart_rate <= max_bpm + tolerance_bpm
+
+
+def step_target_distance_m(step: dict[str, Any]) -> float | None:
+    if step.get("distance_m") is not None:
+        return float(step["distance_m"])
+    target = step.get("target") or {}
+    duration_s = step_duration_s(step)
+    if duration_s is None or target.get("type") != "pace_range":
+        return None
+    min_pace_s = pace_text_to_seconds(target.get("min_pace"))
+    max_pace_s = pace_text_to_seconds(target.get("max_pace"))
+    pace_candidates = [value for value in [min_pace_s, max_pace_s] if value and value > 0]
+    if not pace_candidates:
+        return None
+    target_pace_s = sum(pace_candidates) / len(pace_candidates)
+    return duration_s * 1000.0 / target_pace_s if target_pace_s > 0 else None
+
+
+def planned_steps_with_timing(workout: dict[str, Any]) -> list[dict[str, Any]]:
+    steps = flatten_steps(workout.get("workout", {}).get("steps", []))
+    if not steps:
+        return []
+    estimated_duration_s = float(workout.get("workout", {}).get("estimated_duration_s") or 0.0)
+    fixed_duration_s = 0.0
+    distance_without_duration_total_m = 0.0
+    for step in steps:
+        duration_s = step_duration_s(step)
+        if duration_s is not None:
+            fixed_duration_s += duration_s
+            continue
+        if step.get("distance_m") is not None:
+            distance_without_duration_total_m += float(step["distance_m"])
+    remaining_duration_s = max(0.0, estimated_duration_s - fixed_duration_s)
+    elapsed_s = 0.0
+    scheduled: list[dict[str, Any]] = []
+    for index, step in enumerate(steps):
+        duration_s = step_duration_s(step)
+        if duration_s is None and step.get("distance_m") is not None and distance_without_duration_total_m > 0:
+            duration_s = remaining_duration_s * float(step["distance_m"]) / distance_without_duration_total_m
+        scheduled_step = dict(step)
+        scheduled_step["sequence_index"] = index
+        scheduled_step["planned_duration_s"] = duration_s
+        scheduled_step["planned_distance_m"] = step_target_distance_m(step)
+        scheduled_step["start_s"] = elapsed_s
+        if duration_s is not None:
+            elapsed_s += duration_s
+            scheduled_step["end_s"] = elapsed_s
+        else:
+            scheduled_step["end_s"] = None
+        scheduled.append(scheduled_step)
+    return scheduled
+
+
+def planned_distance_m(workout: dict[str, Any]) -> float | None:
+    total = 0.0
+    found = False
+    for step in planned_steps_with_timing(workout):
+        distance_m = step.get("planned_distance_m")
+        if distance_m is not None:
+            total += float(distance_m)
+            found = True
+    return total if found else None
+
+
+def distance_compliance_supported(workout: dict[str, Any]) -> bool:
+    steps = flatten_steps(workout.get("workout", {}).get("steps", []))
+    has_timed_pace_block = any(step_duration_s(step) is not None and ((step.get("target") or {}).get("type") == "pace_range") for step in steps)
+    has_repeat_group = any(step.get("type") == "repeat_group" for step in workout.get("workout", {}).get("steps", []))
+    return not (has_timed_pace_block or has_repeat_group)
+
+
+def planned_primary_hr_range(workout: dict[str, Any]) -> tuple[float | None, float | None]:
+    mins: list[float] = []
+    maxs: list[float] = []
+    for step in flatten_steps(workout.get("workout", {}).get("steps", [])):
+        target = step.get("target") or {}
+        if target.get("type") == "heart_rate_range":
+            if target.get("min_bpm") is not None:
+                mins.append(float(target["min_bpm"]))
+            if target.get("max_bpm") is not None:
+                maxs.append(float(target["max_bpm"]))
+    return (min(mins) if mins else None, max(maxs) if maxs else None)
+
+
+def hr_target_windows(workout: dict[str, Any], actual_duration_s: float) -> tuple[list[dict[str, float]], float | None, float | None]:
+    scheduled_steps = planned_steps_with_timing(workout)
+    total_planned_duration_s = sum(float(step.get("planned_duration_s") or 0.0) for step in scheduled_steps)
+    if not scheduled_steps or total_planned_duration_s <= 0 or actual_duration_s <= 0:
+        return [], None, None
+    scale = actual_duration_s / total_planned_duration_s
+    windows: list[dict[str, float]] = []
+    mins: list[float] = []
+    maxs: list[float] = []
+    for index, step in enumerate(scheduled_steps):
+        target = step.get("target") or {}
+        if target.get("type") != "heart_rate_range":
+            continue
+        start_s = step.get("start_s")
+        end_s = step.get("end_s")
+        duration_s = step.get("planned_duration_s")
+        if start_s is None or end_s is None or duration_s is None or duration_s <= 0:
+            continue
+        min_bpm = target.get("min_bpm")
+        max_bpm = target.get("max_bpm")
+        if min_bpm is None or max_bpm is None:
+            continue
+        previous_step = scheduled_steps[index - 1] if index > 0 else None
+        previous_target_type = ((previous_step or {}).get("target") or {}).get("type")
+        prior_quality_seen = any((((candidate.get("target") or {}).get("type") == "pace_range") for candidate in scheduled_steps[:index]))
+        step_type = str(step.get("step_type") or "")
+        if step_type == "recovery" and previous_target_type == "pace_range":
+            continue
+        if step_type == "cooldown" and prior_quality_seen:
+            continue
+        start_actual_s = float(start_s) * scale
+        end_actual_s = float(end_s) * scale
+        if end_actual_s <= start_actual_s:
+            continue
+        mins.append(float(min_bpm))
+        maxs.append(float(max_bpm))
+        windows.append(
+            {
+                "start_s": start_actual_s,
+                "end_s": end_actual_s,
+                "min_bpm": float(min_bpm),
+                "max_bpm": float(max_bpm),
+            }
+        )
+    return windows, (min(mins) if mins else None), (max(maxs) if maxs else None)
+
+
+def planned_goal_category(workout: dict[str, Any]) -> str:
+    workout_data = workout.get("workout", {})
+    name = str(workout_data.get("name") or "").lower()
+    description = str(workout_data.get("description") or "").lower()
+    steps = flatten_steps(workout.get("workout", {}).get("steps", []))
+    text = f"{name} {description}"
+    has_pace = any((step.get("target") or {}).get("type") == "pace_range" for step in steps)
+    has_rectas = "recta" in text or "strides" in text
+    has_warmup_cooldown = any(step.get("step_type") in {"warmup", "cooldown"} for step in steps)
+    distance_m = planned_distance_m(workout) or 0.0
+
+    if "reintroduccion" in text:
+        return "reintroduction_easy"
+    if "recuperacion" in text:
+        return "recovery_easy"
+    if "activacion" in text:
+        return "activation"
+    if "tirada larga" in text or distance_m >= 10000:
+        return "long_run"
+    if "continuidad" in text:
+        return "steady_easy"
+    if has_rectas:
+        return "easy_plus_strides"
+    if has_pace and has_warmup_cooldown:
+        return "controlled_quality"
+    if has_pace:
+        return "quality"
+    if "facil" in text or "suave" in text or "z2" in text:
+        return "easy_aerobic"
+    return "general_run"
+
+
+def planned_session_kind(workout: dict[str, Any]) -> str:
+    goal_category = planned_goal_category(workout)
+    if goal_category in {"reintroduction_easy", "recovery_easy"}:
+        return "recovery"
+    if goal_category in {"long_run"}:
+        return "long_run"
+    if goal_category in {"activation", "easy_plus_strides", "controlled_quality", "quality"}:
+        return "quality"
+    if "strength" in json.dumps(workout, ensure_ascii=False, default=str).lower():
+        return "strength"
+    return "easy"
+
+
+def planned_knowledge_summary(workout: dict[str, Any]) -> dict[str, Any] | None:
+    workout_data = workout.get("workout", {}) if isinstance(workout.get("workout"), dict) else {}
+    session_kind = planned_session_kind(workout)
+    return match_workout_knowledge(workout_data, session_kind, template_id=str(workout_data.get("template_id") or "").strip() or None)
+
+
+def planned_structural_goals(workout: dict[str, Any]) -> list[str]:
+    workout_data = workout.get("workout", {}) if isinstance(workout.get("workout"), dict) else {}
+    steps = flatten_steps(workout_data.get("steps", []))
+    goal_category = planned_goal_category(workout)
+    goals: list[str] = []
+    pace_steps = [step for step in steps if ((step.get("target") or {}).get("type") == "pace_range")]
+    if goal_category in {"recovery_easy", "reintroduction_easy"}:
+        goals.append("recuperacion")
+    if goal_category in {"easy_aerobic", "steady_easy", "general_run", "long_run"}:
+        goals.append("base_aerobica")
+    if goal_category == "controlled_quality":
+        goals.extend(["base_aerobica", "umbral_lactico"])
+    elif goal_category == "quality":
+        goals.append("umbral_lactico")
+    if any(str(step.get("step_type") or "") == "recovery" for step in steps):
+        goals.append("base_aerobica")
+    for step in pace_steps:
+        target = step.get("target") or {}
+        pace_candidates = [
+            pace_text_to_seconds(target.get("min_pace")),
+            pace_text_to_seconds(target.get("max_pace")),
+        ]
+        pace_candidates = [value for value in pace_candidates if value and value > 0]
+        if not pace_candidates:
+            continue
+        target_pace_s = sum(pace_candidates) / len(pace_candidates)
+        if target_pace_s <= 255:
+            goals.append("ritmo_5k")
+        elif target_pace_s <= 285:
+            goals.extend(["ritmo_10k", "umbral_lactico"])
+        elif target_pace_s <= 320:
+            goals.append("umbral_lactico")
+    return list(dict.fromkeys(goals))
+
+
+def planned_expected_goals(workout: dict[str, Any], planned_knowledge: dict[str, Any] | None) -> list[str]:
+    knowledge_goals = list((planned_knowledge or {}).get("goals") or [])
+    structural_goals = planned_structural_goals(workout)
+    return list(dict.fromkeys([*knowledge_goals, *structural_goals]))
+
+
+def actual_stimulus_summary(summary: dict[str, Any]) -> list[str]:
+    goals: list[str] = []
+    te_label = str(summary.get("trainingEffectLabel") or "").lower()
+    aerobic_te = float(summary.get("aerobicTrainingEffect") or 0.0)
+    anaerobic_te = float(summary.get("anaerobicTrainingEffect") or 0.0)
+    pace_s = float(summary.get("duration") or 0.0) / (float(summary.get("distance") or 1.0) / 1000.0) if float(summary.get("distance") or 0.0) > 0 else None
+    distance_km = float(summary.get("distance") or 0.0) / 1000.0
+    if distance_km >= 14:
+        goals.append("fondo_largo")
+    if aerobic_te >= 3.8:
+        goals.append("vo2max")
+    elif aerobic_te >= 2.8:
+        goals.append("umbral_lactico")
+    elif aerobic_te >= 1.5:
+        goals.append("base_aerobica")
+    if anaerobic_te >= 1.0:
+        goals.append("capacidad_anaerobica")
+    if any(keyword in te_label for keyword in ["tempo", "threshold"]):
+        goals.append("umbral_lactico")
+    if any(keyword in te_label for keyword in ["anaerobic", "sprint"]):
+        goals.append("tolerancia_al_lactato")
+    if pace_s is not None and pace_s <= 255:
+        goals.append("ritmo_5k")
+    elif pace_s is not None and pace_s <= 285:
+        goals.append("ritmo_10k")
+    return list(dict.fromkeys(goals))
+
+
+def planned_vs_actual_stimulus(workout: dict[str, Any], summary: dict[str, Any]) -> dict[str, Any]:
+    planned_knowledge = planned_knowledge_summary(workout)
+    planned_goals = planned_expected_goals(workout, planned_knowledge)
+    actual_goals = actual_stimulus_summary(summary)
+    overlap = [goal for goal in actual_goals if goal in planned_goals]
+    alignment = "aligned" if overlap else ("unknown" if not planned_goals or not actual_goals else "drifted")
+    summary_text = "No hay suficientes datos para comparar el estimulo real con el objetivo previsto."
+    if alignment == "aligned":
+        summary_text = f"El estimulo real parece alineado con el objetivo previsto: {', '.join(overlap[:3])}."
+    elif alignment == "drifted":
+        summary_text = f"El estimulo real se desvia del objetivo previsto. Previsto: {', '.join(planned_goals[:3])}. Real observado: {', '.join(actual_goals[:3])}."
+    return {
+        "planned_knowledge": planned_knowledge,
+        "actual_goals": actual_goals,
+        "overlap": overlap,
+        "alignment": alignment,
+        "summary": summary_text,
+    }
+
+
+def parse_duration_text(value: str | None) -> float | None:
+    if not value:
+        return None
+    parts = [int(part) for part in value.split(":")]
+    if len(parts) == 2:
+        return float(parts[0] * 60 + parts[1])
+    if len(parts) == 3:
+        return float(parts[0] * 3600 + parts[1] * 60 + parts[2])
+    return None
+
+
+def metric_rows(details: dict[str, Any]) -> list[dict[str, float | None]]:
+    descriptors = {item["metricsIndex"]: item["key"] for item in details["metricDescriptors"]}
+    rows: list[dict[str, float | None]] = []
+    for item in details["activityDetailMetrics"]:
+        metrics = item["metrics"]
+        row = {descriptors[index]: metrics[index] if index < len(metrics) else None for index in descriptors}
+        if row.get("sumDistance") is None or row.get("sumDuration") is None:
+            continue
+        rows.append(row)
+    return rows
+
+
+def segment_rows(rows: list[dict[str, float | None]]) -> list[dict[str, float | None]]:
+    segments: list[dict[str, float | None]] = []
+    for current, nxt in zip(rows, rows[1:]):
+        dt = float(nxt["sumDuration"]) - float(current["sumDuration"])
+        dd = float(nxt["sumDistance"]) - float(current["sumDistance"])
+        if dt <= 0:
+            continue
+        segment: dict[str, float | None] = {"dt": dt, "dd": dd}
+        for key in [
+            "directHeartRate",
+            "directSpeed",
+            "directRunCadence",
+            "directPower",
+            "directGroundContactTime",
+            "directVerticalOscillation",
+            "directVerticalRatio",
+            "directStrideLength",
+            "directAirTemperature",
+            "directElevation",
+            "directGradeAdjustedSpeed",
+        ]:
+            values = [value for value in (current.get(key), nxt.get(key)) if value is not None]
+            segment[key] = sum(values) / len(values) if values else None
+        segments.append(segment)
+    return segments
+
+
+def weighted_average(segments: list[dict[str, float | None]], key: str, weight_key: str = "dt") -> float | None:
+    weighted_sum = 0.0
+    total = 0.0
+    for segment in segments:
+        value = segment.get(key)
+        weight = segment.get(weight_key)
+        if value is None or weight is None or weight <= 0:
+            continue
+        weighted_sum += float(value) * float(weight)
+        total += float(weight)
+    return weighted_sum / total if total else None
+
+
+def weighted_std(segments: list[dict[str, float | None]], key: str, weight_key: str = "dt") -> float | None:
+    average = weighted_average(segments, key, weight_key)
+    if average is None:
+        return None
+    total = 0.0
+    variance = 0.0
+    for segment in segments:
+        value = segment.get(key)
+        weight = segment.get(weight_key)
+        if value is None or weight is None or weight <= 0:
+            continue
+        variance += float(weight) * (float(value) - average) ** 2
+        total += float(weight)
+    return math.sqrt(variance / total) if total else None
+
+
+def pace_from_speed(speed_mps: float | None) -> float | None:
+    if speed_mps is None or speed_mps <= 0:
+        return None
+    return 1000.0 / speed_mps
+
+
+def format_pace(seconds: float | None) -> str | None:
+    if seconds is None:
+        return None
+    minutes = int(seconds // 60)
+    secs = int(round(seconds - minutes * 60))
+    if secs == 60:
+        minutes += 1
+        secs = 0
+    return f"{minutes}:{secs:02d}/km"
+
+
+def format_duration(seconds: float | None) -> str | None:
+    if seconds is None:
+        return None
+    total = int(round(seconds))
+    minutes, secs = divmod(total, 60)
+    hours, minutes = divmod(minutes, 60)
+    if hours:
+        return f"{hours}:{minutes:02d}:{secs:02d}"
+    return f"{minutes}:{secs:02d}"
+
+
+def format_float(value: float | None, digits: int = 1) -> str:
+    if value is None:
+        return "-"
+    return f"{float(value):.{digits}f}"
+
+
+def format_int(value: float | int | None) -> str:
+    if value is None:
+        return "-"
+    return str(int(round(float(value))))
+
+
+def load_historical_reviews(current_activity_id: int) -> list[dict[str, Any]]:
+    reviews: list[dict[str, Any]] = []
+    for path in sorted(DEFAULT_REVIEW_ROOT.glob("*.analysis.json")):
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        if int(payload.get("summary", {}).get("activity_id") or 0) == current_activity_id:
+            continue
+        reviews.append(payload)
+    return reviews
+
+
+def comparable_session(candidate: dict[str, Any], planned: dict[str, Any], summary: dict[str, Any]) -> bool:
+    if candidate.get("planned", {}).get("sport") != planned.get("sport"):
+        return False
+    candidate_knowledge_id = str(candidate.get("planned", {}).get("knowledge_id") or "").strip()
+    planned_knowledge_id = str(planned.get("knowledge_id") or "").strip()
+    if candidate_knowledge_id and planned_knowledge_id:
+        if candidate_knowledge_id != planned_knowledge_id:
+            return False
+    else:
+        candidate_goal = candidate.get("planned", {}).get("goal_category")
+        planned_goal = planned.get("goal_category")
+        goal_groups = {
+            "easy_family": {
+                "reintroduction_easy",
+                "recovery_easy",
+                "easy_aerobic",
+                "steady_easy",
+                "general_run",
+                "easy_plus_strides",
+            },
+            "strides_family": {"activation"},
+            "quality_family": {"controlled_quality", "quality"},
+        }
+        same_goal = candidate_goal == planned_goal
+        same_family = any(candidate_goal in family and planned_goal in family for family in goal_groups.values())
+        if not same_goal and not same_family:
+            return False
+    candidate_distance = candidate.get("planned", {}).get("distance_m")
+    planned_distance = planned.get("distance_m")
+    if candidate_distance is None or planned_distance is None:
+        return False
+    if abs(float(candidate_distance) - float(planned_distance)) > max(1000.0, float(planned_distance) * 0.2):
+        return False
+    candidate_gain = candidate.get("summary", {}).get("elevation_gain_m")
+    current_gain = summary.get("elevation_gain_m")
+    if candidate_gain is None or current_gain is None:
+        return True
+    return abs(float(candidate_gain) - float(current_gain)) <= max(20.0, float(current_gain) * 0.75)
+
+
+def progression_label(delta_pace_s: float | None, delta_hr: float | None) -> tuple[str, str]:
+    if delta_pace_s is None or delta_hr is None:
+        return ("neutral", "No hay suficientes datos para valorar progresion de forma fiable.")
+    if delta_pace_s <= -8 and delta_hr <= 2:
+        return ("progress", "Ritmo mas rapido con pulso similar o mejor controlado frente a sesiones comparables.")
+    if delta_hr <= -3 and delta_pace_s <= 5:
+        return ("progress", "Pulso mas bajo a un ritmo parecido, senal positiva de eficiencia aerobica.")
+    if delta_pace_s >= 8 and delta_hr >= 3:
+        return ("regression", "Ritmo peor con pulso mas alto frente a sesiones comparables, senal de regresion o fatiga contextual.")
+    if delta_pace_s >= 12 and delta_hr >= 0:
+        return ("regression", "Ritmo claramente peor sin mejora cardiaca apreciable frente a referencias similares.")
+    return ("neutral", "Cambios pequenos o ambiguos frente a sesiones comparables; no hay una senal clara de progresion o regresion.")
+
+
+def progression_analysis(review: dict[str, Any]) -> dict[str, Any]:
+    history = load_historical_reviews(int(review["summary"]["activity_id"]))
+    comparables = [item for item in history if comparable_session(item, review["planned"], review["summary"])]
+    comparables.sort(key=lambda item: item.get("planned", {}).get("date", ""), reverse=True)
+    recent = comparables[:3]
+    if not recent:
+        return {
+            "comparable_count": 0,
+            "matches": [],
+            "trend": "insufficient_data",
+            "summary": "Aun no hay sesiones comparables previas para medir progresion o regresion.",
+        }
+
+    pace_values = [float(item["summary"]["pace_s_per_km"]) for item in recent if item.get("summary", {}).get("pace_s_per_km") is not None]
+    hr_values = [float(item["summary"]["avg_hr"]) for item in recent if item.get("summary", {}).get("avg_hr") is not None]
+    current_pace = float(review["summary"]["pace_s_per_km"])
+    current_hr = float(review["summary"]["avg_hr"])
+    baseline_pace = sum(pace_values) / len(pace_values) if pace_values else None
+    baseline_hr = sum(hr_values) / len(hr_values) if hr_values else None
+    delta_pace = current_pace - baseline_pace if baseline_pace is not None else None
+    delta_hr = current_hr - baseline_hr if baseline_hr is not None else None
+    trend, text = progression_label(delta_pace, delta_hr)
+    matches = []
+    for item in recent:
+        matches.append(
+            {
+                "date": item["planned"]["date"],
+                "name": item["planned"]["name"],
+                "goal_category": item["planned"].get("goal_category"),
+                "distance_m": item["summary"].get("distance_m"),
+                "elevation_gain_m": item["summary"].get("elevation_gain_m"),
+                "pace_s_per_km": item["summary"].get("pace_s_per_km"),
+                "avg_hr": item["summary"].get("avg_hr"),
+                "avg_power_w": item["summary"].get("avg_power_w"),
+                "decoupling_pct": item.get("halves", {}).get("decoupling_pct"),
+            }
+        )
+    return {
+        "comparable_count": len(comparables),
+        "matches": matches,
+        "baseline": {
+            "pace_s_per_km": baseline_pace,
+            "avg_hr": baseline_hr,
+        },
+        "delta_vs_baseline": {
+            "pace_s_per_km": delta_pace,
+            "avg_hr": delta_hr,
+        },
+        "trend": trend,
+        "summary": text,
+    }
+
+
+def split_metrics(segments: list[dict[str, float | None]], split_distance_m: float, total_distance_m: float, total_duration_s: float) -> list[dict[str, Any]]:
+    splits: list[dict[str, Any]] = []
+    markers: list[float] = []
+    marker = split_distance_m
+    while marker <= total_distance_m:
+        markers.append(marker)
+        marker += split_distance_m
+    previous_distance = 0.0
+    previous_time = 0.0
+    cumulative_distance = 0.0
+    cumulative_time = 0.0
+    segment_index = 0
+    for marker in markers:
+        while segment_index < len(segments) and cumulative_distance + float(segments[segment_index]["dd"] or 0.0) < marker:
+            cumulative_distance += float(segments[segment_index]["dd"] or 0.0)
+            cumulative_time += float(segments[segment_index]["dt"] or 0.0)
+            segment_index += 1
+        if segment_index >= len(segments):
+            break
+        segment = segments[segment_index]
+        fraction = 0.0
+        if segment["dd"]:
+            fraction = (marker - cumulative_distance) / float(segment["dd"])
+        time_at_marker = cumulative_time + float(segment["dt"] or 0.0) * fraction
+        splits.append(build_split(segments, previous_distance, marker, time_at_marker - previous_time, label=str(int(marker / 1000))))
+        previous_distance = marker
+        previous_time = time_at_marker
+    if total_distance_m > previous_distance:
+        splits.append(build_split(segments, previous_distance, total_distance_m, total_duration_s - previous_time, label=f"{(total_distance_m - previous_distance) / 1000:.2f}"))
+    return splits
+
+
+def build_split(segments: list[dict[str, float | None]], start_distance: float, end_distance: float, split_time_s: float, label: str) -> dict[str, Any]:
+    bucket: dict[str, list[tuple[float, float]]] = {
+        "directHeartRate": [],
+        "directRunCadence": [],
+        "directPower": [],
+        "directGroundContactTime": [],
+        "directVerticalOscillation": [],
+        "directVerticalRatio": [],
+        "directStrideLength": [],
+        "directAirTemperature": [],
+        "directElevation": [],
+        "directGradeAdjustedSpeed": [],
+    }
+    cumulative_distance = 0.0
+    for segment in segments:
+        next_distance = cumulative_distance + float(segment["dd"] or 0.0)
+        left = max(start_distance, cumulative_distance)
+        right = min(end_distance, next_distance)
+        if right > left and float(segment["dd"] or 0.0) > 0:
+            fraction = (right - left) / float(segment["dd"])
+            sample_time = float(segment["dt"] or 0.0) * fraction
+            for key in bucket:
+                value = segment.get(key)
+                if value is not None:
+                    bucket[key].append((float(value), sample_time))
+        cumulative_distance = next_distance
+        if cumulative_distance >= end_distance:
+            break
+    split_distance = end_distance - start_distance
+    return {
+        "label": label,
+        "distance_m": split_distance,
+        "duration_s": split_time_s,
+        "pace_s_per_km": split_time_s * 1000.0 / split_distance if split_distance else None,
+        "avg_hr": weighted_bucket(bucket["directHeartRate"]),
+        "avg_cadence_spm": weighted_bucket(bucket["directRunCadence"]),
+        "avg_power_w": weighted_bucket(bucket["directPower"]),
+        "avg_gct_ms": weighted_bucket(bucket["directGroundContactTime"]),
+        "avg_vo_cm": weighted_bucket(bucket["directVerticalOscillation"]),
+        "avg_vr": weighted_bucket(bucket["directVerticalRatio"]),
+        "avg_stride_cm": weighted_bucket(bucket["directStrideLength"]),
+        "avg_temp_c": weighted_bucket(bucket["directAirTemperature"]),
+        "avg_elevation_m": weighted_bucket(bucket["directElevation"]),
+        "avg_gap_pace_s_per_km": pace_from_speed(weighted_bucket(bucket["directGradeAdjustedSpeed"])),
+    }
+
+
+def weighted_bucket(bucket: list[tuple[float, float]]) -> float | None:
+    total = sum(weight for _, weight in bucket)
+    if not total:
+        return None
+    return sum(value * weight for value, weight in bucket) / total
+
+
+def split_halves(segments: list[dict[str, float | None]], total_distance_m: float) -> tuple[list[dict[str, float | None]], list[dict[str, float | None]]]:
+    half_distance = total_distance_m / 2.0
+    first_half: list[dict[str, float | None]] = []
+    second_half: list[dict[str, float | None]] = []
+    cumulative_distance = 0.0
+    for segment in segments:
+        segment_distance = float(segment["dd"] or 0.0)
+        next_distance = cumulative_distance + segment_distance
+        if next_distance <= half_distance:
+            first_half.append(segment)
+        elif cumulative_distance >= half_distance:
+            second_half.append(segment)
+        elif segment_distance > 0:
+            first_fraction = (half_distance - cumulative_distance) / segment_distance
+            second_fraction = 1.0 - first_fraction
+            first_segment = segment.copy()
+            first_segment["dd"] = segment_distance * first_fraction
+            first_segment["dt"] = float(segment["dt"] or 0.0) * first_fraction
+            second_segment = segment.copy()
+            second_segment["dd"] = segment_distance * second_fraction
+            second_segment["dt"] = float(segment["dt"] or 0.0) * second_fraction
+            first_half.append(first_segment)
+            second_half.append(second_segment)
+        cumulative_distance = next_distance
+    return first_half, second_half
+
+
+def traffic_light(score: int) -> str:
+    if score >= 8:
+        return "verde"
+    if score >= 5:
+        return "amarillo"
+    return "rojo"
+
+
+def risk_level(score: int, above_zone_pct: float, decoupling_pct: float | None) -> str:
+    if score >= 8 and above_zone_pct < 20 and (decoupling_pct is None or decoupling_pct < 5):
+        return "bajo"
+    if score >= 5 and above_zone_pct < 60 and (decoupling_pct is None or decoupling_pct < 10):
+        return "medio"
+    return "alto"
+
+
+def score_session(distance_diff_m: float | None, above_zone_pct: float, decoupling_pct: float | None) -> int:
+    score = 10
+    if distance_diff_m is not None:
+        if abs(distance_diff_m) > 800:
+            score -= 2
+        elif abs(distance_diff_m) > 400:
+            score -= 1
+    if above_zone_pct > 70:
+        score -= 3
+    elif above_zone_pct > 50:
+        score -= 2
+    elif above_zone_pct > 35:
+        score -= 1
+    if decoupling_pct is not None and decoupling_pct > 12:
+        score -= 2
+    elif decoupling_pct is not None and decoupling_pct > 8:
+        score -= 1
+    return max(1, min(10, score))
+
+
+def analyze_workout(planned: dict[str, Any], summary: dict[str, Any], details: dict[str, Any]) -> dict[str, Any]:
+    rows = metric_rows(details)
+    segments = segment_rows(rows)
+    planned_distance = planned_distance_m(planned)
+    distance_supported = distance_compliance_supported(planned)
+    actual_distance = float(summary["distance"])
+    actual_duration = float(summary["duration"])
+    hr_windows, planned_hr_min, planned_hr_max = hr_target_windows(planned, actual_duration)
+
+    time_in_zone = 0.0
+    time_below_zone = 0.0
+    time_above_zone = 0.0
+    time_to_enter_zone: float | None = None
+    distance_to_enter_zone: float | None = None
+    hr_evaluable_time = 0.0
+    elapsed_time = 0.0
+    elapsed_distance = 0.0
+    hr_window_index = 0
+    for segment in segments:
+        segment_dt = float(segment["dt"] or 0.0)
+        segment_dd = float(segment["dd"] or 0.0)
+        segment_start_time = elapsed_time
+        elapsed_time += float(segment["dt"] or 0.0)
+        elapsed_distance += segment_dd
+        heart_rate = segment.get("directHeartRate")
+        if heart_rate is None or not hr_windows:
+            continue
+        while hr_window_index < len(hr_windows) and hr_windows[hr_window_index]["end_s"] <= segment_start_time:
+            hr_window_index += 1
+        active_index = hr_window_index
+        while active_index < len(hr_windows) and hr_windows[active_index]["start_s"] < elapsed_time:
+            window = hr_windows[active_index]
+            overlap_start = max(segment_start_time, float(window["start_s"]))
+            overlap_end = min(elapsed_time, float(window["end_s"]))
+            overlap_s = overlap_end - overlap_start
+            if overlap_s > 0:
+                hr_evaluable_time += overlap_s
+                heart_rate_value = float(heart_rate)
+                if float(window["min_bpm"]) <= heart_rate_value <= float(window["max_bpm"]):
+                    time_in_zone += overlap_s
+                    if time_to_enter_zone is None:
+                        segment_fraction = (overlap_end - segment_start_time) / segment_dt if segment_dt > 0 else 0.0
+                        time_to_enter_zone = overlap_end
+                        distance_to_enter_zone = (elapsed_distance - segment_dd) + (segment_dd * segment_fraction)
+                elif heart_rate_value > float(window["max_bpm"]) and within_easy_floor_tolerance(segment.get("directSpeed"), heart_rate_value, float(window["max_bpm"])):
+                    time_in_zone += overlap_s
+                    if time_to_enter_zone is None:
+                        segment_fraction = (overlap_end - segment_start_time) / segment_dt if segment_dt > 0 else 0.0
+                        time_to_enter_zone = overlap_end
+                        distance_to_enter_zone = (elapsed_distance - segment_dd) + (segment_dd * segment_fraction)
+                elif heart_rate_value < float(window["min_bpm"]):
+                    time_below_zone += overlap_s
+                else:
+                    time_above_zone += overlap_s
+            active_index += 1
+
+    first_half, second_half = split_halves(segments, actual_distance)
+    first_half_speed = weighted_average(first_half, "directSpeed")
+    second_half_speed = weighted_average(second_half, "directSpeed")
+    first_half_hr = weighted_average(first_half, "directHeartRate")
+    second_half_hr = weighted_average(second_half, "directHeartRate")
+    first_half_power = weighted_average(first_half, "directPower")
+    second_half_power = weighted_average(second_half, "directPower")
+    first_half_pace = pace_from_speed(first_half_speed)
+    second_half_pace = pace_from_speed(second_half_speed)
+    efficiency_first = first_half_speed / first_half_hr if first_half_speed and first_half_hr else None
+    efficiency_second = second_half_speed / second_half_hr if second_half_speed and second_half_hr else None
+    decoupling = None
+    if all(value is not None for value in [first_half_hr, second_half_hr, first_half_pace, second_half_pace]):
+        decoupling = ((second_half_hr / first_half_hr) / (second_half_pace / first_half_pace) - 1.0) * 100.0
+
+    pace_std = None
+    speed_std = weighted_std(segments, "directSpeed")
+    avg_speed = weighted_average(segments, "directSpeed")
+    if speed_std is not None and avg_speed:
+        pace_std = (1000.0 / (avg_speed ** 2)) * speed_std
+
+    compliance = {
+        "distance_diff_m": actual_distance - planned_distance if planned_distance is not None and distance_supported else None,
+        "duration_diff_s_vs_est": actual_duration - float(planned["workout"].get("estimated_duration_s") or 0.0),
+        "hr_evaluable_time_s": hr_evaluable_time,
+        "time_in_hr_zone_s": time_in_zone,
+        "time_below_hr_zone_s": time_below_zone,
+        "time_above_hr_zone_s": time_above_zone,
+        "pct_in_hr_zone": (time_in_zone / hr_evaluable_time) * 100.0 if hr_evaluable_time else None,
+        "pct_below_hr_zone": (time_below_zone / hr_evaluable_time) * 100.0 if hr_evaluable_time else None,
+        "pct_above_hr_zone": (time_above_zone / hr_evaluable_time) * 100.0 if hr_evaluable_time else None,
+        "time_to_enter_zone_s": time_to_enter_zone,
+        "distance_to_enter_zone_m": distance_to_enter_zone,
+    }
+    score = score_session(
+        float(compliance["distance_diff_m"]) if compliance["distance_diff_m"] is not None else None,
+        float(compliance["pct_above_hr_zone"] or 0.0),
+        decoupling,
+    )
+
+    review = {
+        "planned": {
+            "name": planned["workout"]["name"],
+            "date": planned["workout"]["schedule_date"],
+            "sport": planned["workout"].get("sport"),
+            "goal_category": planned_goal_category(planned),
+            "template_id": planned["workout"].get("template_id"),
+            "knowledge_id": (planned_knowledge_summary(planned) or {}).get("id") or planned["workout"].get("knowledge_id"),
+            "knowledge_label": planned["workout"].get("knowledge_label"),
+            "primary_goal": planned["workout"].get("primary_goal"),
+            "description": planned["workout"].get("description"),
+            "estimated_duration_s": planned["workout"].get("estimated_duration_s"),
+            "distance_m": planned_distance if distance_supported else None,
+            "primary_hr_min": planned_hr_min,
+            "primary_hr_max": planned_hr_max,
+        },
+        "summary": {
+            "activity_id": summary["activityId"],
+            "activity_name": summary["activityName"],
+            "start_time_local": summary["startTimeLocal"],
+            "distance_m": actual_distance,
+            "duration_s": actual_duration,
+            "elapsed_s": summary.get("elapsedDuration"),
+            "moving_s": summary.get("movingDuration"),
+            "pace_s_per_km": actual_duration / (actual_distance / 1000.0) if actual_distance else None,
+            "moving_pace_s_per_km": float(summary.get("movingDuration") or 0.0) / (actual_distance / 1000.0) if actual_distance else None,
+            "avg_hr": summary.get("averageHR"),
+            "max_hr": summary.get("maxHR"),
+            "avg_cadence_spm": summary.get("averageRunningCadenceInStepsPerMinute"),
+            "max_cadence_spm": summary.get("maxRunningCadenceInStepsPerMinute"),
+            "avg_power_w": summary.get("avgPower"),
+            "max_power_w": summary.get("maxPower"),
+            "elevation_gain_m": summary.get("elevationGain"),
+            "elevation_loss_m": summary.get("elevationLoss"),
+            "avg_stride_cm": summary.get("avgStrideLength"),
+            "avg_gct_ms": summary.get("avgGroundContactTime"),
+            "avg_vo_cm": summary.get("avgVerticalOscillation"),
+            "avg_vr": summary.get("avgVerticalRatio"),
+            "calories": summary.get("calories"),
+            "water_estimated_ml": summary.get("waterEstimated"),
+            "aerobic_training_effect": summary.get("aerobicTrainingEffect"),
+            "anaerobic_training_effect": summary.get("anaerobicTrainingEffect"),
+            "training_effect_label": summary.get("trainingEffectLabel"),
+            "min_temp_c": summary.get("minTemperature"),
+            "max_temp_c": summary.get("maxTemperature"),
+            "gap_pace_s_per_km": pace_from_speed(summary.get("avgGradeAdjustedSpeed")),
+        },
+        "compliance": compliance,
+        "stability": {
+            "pace_std_s_per_km": pace_std,
+            "hr_std_bpm": weighted_std(segments, "directHeartRate"),
+            "cadence_std_spm": weighted_std(segments, "directRunCadence"),
+            "power_std_w": weighted_std(segments, "directPower"),
+        },
+        "halves": {
+            "first_half_pace_s_per_km": first_half_pace,
+            "second_half_pace_s_per_km": second_half_pace,
+            "first_half_hr": first_half_hr,
+            "second_half_hr": second_half_hr,
+            "first_half_power_w": first_half_power,
+            "second_half_power_w": second_half_power,
+            "efficiency_first": efficiency_first,
+            "efficiency_second": efficiency_second,
+            "efficiency_change_pct": ((efficiency_second / efficiency_first) - 1.0) * 100.0 if efficiency_first and efficiency_second else None,
+            "decoupling_pct": decoupling,
+        },
+        "splits": split_metrics(segments, 1000.0, actual_distance, actual_duration),
+        "score": score,
+        "traffic_light": traffic_light(score),
+        "risk_level": risk_level(score, float(compliance["pct_above_hr_zone"] or 0.0), decoupling),
+    }
+    review["stimulus_alignment"] = planned_vs_actual_stimulus(planned, summary)
+    review["progression"] = progression_analysis(review)
+    review["coaching_summary"] = coaching_paragraph(review)
+    return review
+
+
+def activity_record(review: dict[str, Any], planned_reference: str) -> dict[str, Any]:
+    summary = review["summary"]
+    return {
+        "activity": {
+            "id": f"garmin-{summary['activity_id']}",
+            "source": "garmin",
+            "garmin_activity_id": summary["activity_id"],
+            "date": review["planned"]["date"],
+            "title": summary["activity_name"],
+            "type": "run",
+            "planned_session_reference": planned_reference,
+            "distance_km": round(float(summary["distance_m"]) / 1000.0, 3),
+            "duration": format_duration(summary["duration_s"]),
+            "elevation_gain_m": summary["elevation_gain_m"],
+            "avg_pace": format_pace(summary["pace_s_per_km"]),
+            "avg_hr": summary["avg_hr"],
+            "max_hr": summary["max_hr"],
+            "shoes": None,
+            "notes": f"Autoimported from Garmin on {datetime.now().isoformat(timespec='seconds')}",
+        }
+    }
+
+
+def coaching_text(review: dict[str, Any]) -> tuple[str, str, str, str]:
+    planned = review["planned"]
+    summary = review["summary"]
+    compliance = review["compliance"]
+    halves = review["halves"]
+    stimulus_alignment = review.get("stimulus_alignment", {})
+    goal = planned.get("description") or planned["name"]
+    if halves["decoupling_pct"] is None:
+        good = "Se completo la distancia prevista con estabilidad mecanica y sin senales de fatiga clara."
+    elif halves["decoupling_pct"] < 5:
+        good = f"Se completo la sesion con estabilidad mecanica y una deriva cardiaca baja ({halves['decoupling_pct']:.1f}%)."
+    elif halves["decoupling_pct"] < 9:
+        good = f"La sesion mantuvo una tecnica estable y una deriva cardiaca moderada ({halves['decoupling_pct']:.1f}%), asumible si las sensaciones fueron buenas."
+    else:
+        good = f"Se sostuvo bien la tecnica, pero la deriva cardiaca ya fue apreciable ({halves['decoupling_pct']:.1f}%)."
+    missed = ""
+    if compliance["pct_above_hr_zone"] and compliance["pct_above_hr_zone"] > 50:
+        missed = f"La intensidad quedo claramente por encima de lo prescrito: {compliance['pct_above_hr_zone']:.1f}% del tiempo estuvo sobre el techo de FC objetivo."
+    elif compliance["pct_above_hr_zone"] and compliance["pct_above_hr_zone"] > 30:
+        missed = f"La intensidad se fue algo por encima de lo ideal en varios tramos ({compliance['pct_above_hr_zone']:.1f}% del tiempo sobre el techo de FC), pero no implica por si sola que haya que replantear la semana."
+    elif compliance["pct_above_hr_zone"] and compliance["pct_above_hr_zone"] > 15:
+        missed = f"Hubo algunos tramos por encima del techo de FC ({compliance['pct_above_hr_zone']:.1f}% del tiempo), aunque dentro de un desvio relativamente normal para un rodaje al aire libre."
+    elif stimulus_alignment.get("alignment") == "drifted":
+        missed = "El bloque principal se fue a un estimulo mas exigente del previsto, aunque la FC de los tramos faciles no justifica por si sola una alarma roja."
+    else:
+        missed = "La intensidad se mantuvo razonablemente alineada con el objetivo previsto."
+    relevant_parts: list[str] = []
+    if summary.get("duration_s") is not None:
+        relevant_parts.append(f"duracion {format_duration(summary['duration_s'])}")
+    if summary.get("pace_s_per_km") is not None:
+        relevant_parts.append(f"ritmo medio {format_pace(summary['pace_s_per_km'])}")
+    if summary.get("avg_hr") is not None or summary.get("max_hr") is not None:
+        relevant_parts.append(f"FC {summary.get('avg_hr') or '-'} / {summary.get('max_hr') or '-'} bpm")
+    if summary.get("avg_cadence_spm") is not None:
+        relevant_parts.append(f"cadencia {float(summary['avg_cadence_spm']):.1f} spm")
+    if summary.get("avg_power_w") is not None:
+        relevant_parts.append(f"potencia {summary['avg_power_w']} W")
+    if summary.get("min_temp_c") is not None or summary.get("max_temp_c") is not None:
+        relevant_parts.append(f"temperatura {summary.get('min_temp_c') or '-'}-{summary.get('max_temp_c') or '-'} C")
+    if summary.get("elevation_gain_m") is not None:
+        relevant_parts.append(f"desnivel +{summary['elevation_gain_m']} m")
+    relevant = ", ".join(relevant_parts) + "." if relevant_parts else "Senales objetivas limitadas para este tipo de sesion."
+    if compliance["pct_above_hr_zone"] and compliance["pct_above_hr_zone"] > 50:
+        written = (
+            "Sesion util, pero mas exigente de lo previsto para el objetivo del dia. "
+            "La lectura correcta es ajustar el juicio del entreno, no dramatizarlo: solo conviene vigilar fatiga y sensaciones antes de la siguiente sesion importante."
+        )
+    elif compliance["pct_above_hr_zone"] and compliance["pct_above_hr_zone"] > 30:
+        written = (
+            "Sesion globalmente valida, aunque algo mas viva de lo ideal. "
+            "Es una desviacion moderada y normalmente se corrige mas con control fino en los proximos rodajes que con cambios grandes en la semana."
+        )
+    else:
+        written = (
+            "Sesion bien alineada con el objetivo del dia y sin senales relevantes de exceso. "
+            "Si las sensaciones posteriores son normales, no deberia condicionar la planificacion inmediata."
+        )
+    return goal, good, missed, relevant + " " + written
+
+
+def coaching_paragraph(review: dict[str, Any]) -> str:
+    goal, good, missed, written = coaching_text(review)
+    parts = [
+        f"Objetivo: {goal}.",
+        f"Bien: {good}",
+        f"A mejorar: {missed}",
+        f"Impacto: {written}",
+    ]
+    return " ".join(part.strip() for part in parts if str(part).strip())
+
+
+def review_markdown(review: dict[str, Any], planned_reference: str, completed_reference: str) -> str:
+    summary = review["summary"]
+    compliance = review["compliance"]
+    halves = review["halves"]
+    goal, good, missed, written = coaching_text(review)
+    keep_week = "yes" if review["score"] >= 6 else "no"
+    changes = "none" if keep_week == "yes" else "Reduce upcoming load and review shin response."
+    split_lines = []
+    progression = review.get("progression", {})
+    hr_target_text = "-"
+    planned_distance_text = f"{review['planned']['distance_m']} m" if review['planned'].get('distance_m') is not None else "-"
+    distance_diff_text = f"{compliance['distance_diff_m']:.1f} m" if compliance.get('distance_diff_m') is not None else "-"
+    if review["planned"].get("primary_hr_min") is not None and review["planned"].get("primary_hr_max") is not None:
+        hr_target_text = f"{review['planned']['primary_hr_min']}-{review['planned']['primary_hr_max']} bpm"
+    hr_in_text = "-"
+    hr_above_text = "-"
+    if compliance.get("pct_in_hr_zone") is not None:
+        hr_in_text = f"{format_duration(compliance['time_in_hr_zone_s'])} ({compliance['pct_in_hr_zone']:.1f}% de {format_duration(compliance.get('hr_evaluable_time_s'))})"
+    if compliance.get("pct_above_hr_zone") is not None:
+        hr_above_text = f"{format_duration(compliance['time_above_hr_zone_s'])} ({compliance['pct_above_hr_zone']:.1f}% de {format_duration(compliance.get('hr_evaluable_time_s'))})"
+    for split in review["splits"]:
+        split_lines.append(
+            f"- {split['label']} km: {format_pace(split['pace_s_per_km']) or '-'}, {format_float(split.get('avg_hr'))} bpm, {format_int(split.get('avg_power_w'))} W, {format_float(split.get('avg_cadence_spm'))} spm"
+        )
+    progression_lines = [f"- Trend: {progression.get('trend', 'unknown')}", f"- Summary: {progression.get('summary', 'No progression summary available.')}" ]
+    stimulus_alignment = review.get("stimulus_alignment", {})
+    baseline = progression.get("baseline") or {}
+    delta = progression.get("delta_vs_baseline") or {}
+    if baseline.get("pace_s_per_km") is not None and baseline.get("avg_hr") is not None:
+        progression_lines.append(
+            f"- Baseline comparable sessions: {format_pace(baseline['pace_s_per_km'])}, {baseline['avg_hr']:.1f} bpm"
+        )
+    if delta.get("pace_s_per_km") is not None and delta.get("avg_hr") is not None:
+        progression_lines.append(
+            f"- Delta vs baseline: {delta['pace_s_per_km']:+.1f} s/km, {delta['avg_hr']:+.1f} bpm"
+        )
+    for match in progression.get("matches", []):
+        progression_lines.append(
+            f"- Comparable {match['date']}: {match['name']}, {format_pace(match['pace_s_per_km'])}, {match['avg_hr']:.1f} bpm, +{match['elevation_gain_m']:.0f} m"
+        )
+    if summary.get("pace_s_per_km") is None:
+        return "\n".join(
+            [
+                f"# Review {review['planned']['date']} - {review['planned']['name']}",
+                "",
+                "## Session",
+                "",
+                f"- Date: {review['planned']['date']}",
+                "- Activity source: garmin",
+                f"- Planned reference: {planned_reference}",
+                f"- Completed reference: {completed_reference}",
+                "",
+                "## Rating",
+                "",
+                f"- Numeric score: {review['score']}/10",
+                f"- Traffic light: {review['traffic_light']}",
+                f"- Written review: {written}",
+                "",
+                "## Execution Analysis",
+                "",
+                f"- Goal of the session: {goal}",
+                f"- What went well: {good}",
+                f"- What missed the target: {missed}",
+                "",
+                "## Planned Vs Completed",
+                "",
+                f"- Planned duration: {format_duration(review['planned']['estimated_duration_s'])}",
+                f"- Completed duration: {format_duration(summary.get('duration_s'))}",
+                f"- Completed distance: {summary.get('distance_m') or 0.0:.1f} m",
+                f"- Avg HR: {summary.get('avg_hr') or '-'}",
+                f"- Max HR: {summary.get('max_hr') or '-'}",
+                f"- Avg power: {summary.get('avg_power_w') or '-'}",
+                "",
+                "## Progression Markers",
+                "",
+                *progression_lines,
+                "",
+                "## Coaching Decision",
+                "",
+                f"- Keep the week as planned: {keep_week}",
+                f"- If not, what changes: {changes}",
+                f"- Risk level: {review['risk_level']}",
+            ]
+        )
+    return "\n".join(
+        [
+            f"# Review {review['planned']['date']} - {review['planned']['name']}",
+            "",
+            "## Session",
+            "",
+            f"- Date: {review['planned']['date']}",
+            "- Activity source: garmin",
+            f"- Planned reference: {planned_reference}",
+            f"- Completed reference: {completed_reference}",
+            "",
+            "## Rating",
+            "",
+            f"- Numeric score: {review['score']}/10",
+            f"- Traffic light: {review['traffic_light']}",
+            f"- Written review: {written}",
+            "",
+            "## Execution Analysis",
+            "",
+            f"- Goal of the session: {goal}",
+            f"- Template id: {review['planned'].get('template_id') or '-'}",
+            f"- Knowledge id: {review['planned'].get('knowledge_id') or '-'}",
+            f"- Planned physiological goal: {review['planned'].get('primary_goal') or '-'}",
+            f"- Stimulus alignment: {stimulus_alignment.get('summary') or '-'}",
+            f"- What went well: {good}",
+            f"- What missed the target: {missed}",
+            f"- Relevant signals: ritmo {format_pace(summary['pace_s_per_km']) or '-'}, FC media/max {format_float(summary.get('avg_hr'))}/{format_float(summary.get('max_hr'))}, cadencia {format_float(summary.get('avg_cadence_spm'))}, potencia {format_int(summary.get('avg_power_w'))}, terreno +{format_float(summary.get('elevation_gain_m'))} m, temperatura {format_float(summary.get('min_temp_c'))}-{format_float(summary.get('max_temp_c'))} C.",
+            "",
+            "## Planned Vs Completed",
+            "",
+            f"- Planned distance: {planned_distance_text}",
+            f"- Completed distance: {summary['distance_m']:.1f} m",
+            f"- Distance difference: {distance_diff_text}",
+            f"- Planned duration: {format_duration(review['planned']['estimated_duration_s'])}",
+            f"- Completed duration: {format_duration(summary['duration_s'])}",
+            f"- Duration difference: {format_duration(compliance['duration_diff_s_vs_est'])}",
+            f"- HR target: {hr_target_text}",
+            f"- Time in HR target: {hr_in_text}",
+            f"- Time above HR target: {hr_above_text}",
+            f"- Time to enter target zone: {format_duration(compliance['time_to_enter_zone_s'])}",
+            "",
+            "## Split Detail",
+            "",
+            *split_lines,
+            "",
+            "## Advanced Signals",
+            "",
+            f"- Pace variability: {format_float(review['stability'].get('pace_std_s_per_km'))} s/km",
+            f"- HR variability: {format_float(review['stability'].get('hr_std_bpm'))} bpm",
+            f"- Cadence variability: {format_float(review['stability'].get('cadence_std_spm'))} spm",
+            f"- Power variability: {format_float(review['stability'].get('power_std_w'))} W",
+            f"- First half: {format_pace(halves['first_half_pace_s_per_km']) or '-'}, {format_float(halves.get('first_half_hr'))} bpm, {format_int(halves.get('first_half_power_w'))} W",
+            f"- Second half: {format_pace(halves['second_half_pace_s_per_km']) or '-'}, {format_float(halves.get('second_half_hr'))} bpm, {format_int(halves.get('second_half_power_w'))} W",
+            f"- Decoupling: {format_float(halves.get('decoupling_pct'))}%",
+            f"- Avg stride length: {format_float(summary.get('avg_stride_cm'))} cm",
+            f"- Avg ground contact time: {format_float(summary.get('avg_gct_ms'))} ms",
+            f"- Avg vertical oscillation: {format_float(summary.get('avg_vo_cm'), 2)} cm",
+            f"- Avg vertical ratio: {format_float(summary.get('avg_vr'), 2)}",
+            f"- Aerobic training effect: {summary.get('aerobic_training_effect') if summary.get('aerobic_training_effect') is not None else '-'}",
+            f"- Anaerobic training effect: {summary.get('anaerobic_training_effect') if summary.get('anaerobic_training_effect') is not None else '-'}",
+            "",
+            "## Progression Markers",
+            "",
+            *progression_lines,
+            "",
+            "## Coaching Decision",
+            "",
+            f"- Keep the week as planned: {keep_week}",
+            f"- If not, what changes: {changes}",
+            f"- Risk level: {review['risk_level']}",
+        ]
+    )
+
+
+def output_paths(day: str, planned_workout_path: Path) -> tuple[Path, Path, Path]:
+    slug = planned_workout_path.stem
+    activity_path = DEFAULT_ACTIVITY_ROOT / f"{slug}.yaml"
+    review_path = DEFAULT_REVIEW_ROOT / f"{slug}.md"
+    analysis_path = DEFAULT_REVIEW_ROOT / f"{slug}.analysis.json"
+    return activity_path, review_path, analysis_path
+
+
+def main() -> None:
+    args = parse_args()
+    planned_workout_path = find_planned_workout(args.date)
+    activity_path, review_path, analysis_path = output_paths(args.date, planned_workout_path)
+    if not args.force and review_path.exists():
+        raise FileExistsError(f"Review already exists at {review_path}; use --force to regenerate")
+
+    planned = load_yaml(planned_workout_path)
+    if args.use_local_imports_only:
+        activities = load_local_matching_activities(args.date, planned)
+    else:
+        activities = import_recent_matching_activities(args.date, planned, args.credentials, args.days, args.limit)
+    activity = select_activity_by_id(activities, args.activity_id) if args.activity_id is not None else select_activity(activities, planned, args.date)
+    activity_dir = DEFAULT_IMPORT_ROOT / "activities" / f"{args.date}_{activity['activityId']}"
+    summary = json.loads((activity_dir / "summary.json").read_text(encoding="utf-8"))
+    details = json.loads((activity_dir / "details.json").read_text(encoding="utf-8"))
+    review = analyze_workout(planned, summary, details)
+    review["recovery_analysis"] = build_recovery_analysis(review)
+
+    planned_reference = str(planned_workout_path.relative_to(ROOT))
+    completed_reference = str(activity_path.relative_to(ROOT))
+    save_yaml(activity_path, activity_record(review, planned_reference))
+    save_text(review_path, review_markdown(review, planned_reference, completed_reference))
+    save_json(analysis_path, review)
+    print(
+        json.dumps(
+            {
+                "planned_workout": planned_reference,
+                "garmin_activity_id": summary["activityId"],
+                "activity_file": str(activity_path.relative_to(ROOT)),
+                "review_file": str(review_path.relative_to(ROOT)),
+                "analysis_file": str(analysis_path.relative_to(ROOT)),
+            },
+            indent=2,
+        )
+    )
+
+
+if __name__ == "__main__":
+    main()

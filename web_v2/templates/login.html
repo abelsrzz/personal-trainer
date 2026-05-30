@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Acceso | RunPilot Next{% endblock %}
+{% block content %}
+<section class="login-shell">
+  <article class="panel login-card">
+    <p class="eyebrow">Acceso</p>
+    <h1>RunPilot Next</h1>
+    <p class="muted">Nueva interfaz paralela en modo lectura mientras evoluciona la operativa.</p>
+    {% if error %}
+    <p class="alert">{{ error }}</p>
+    {% endif %}
+    <form class="stack-form" method="post" action="/login">
+      <label>
+        <span>Usuario</span>
+        <input type="text" name="username" required>
+      </label>
+      <label>
+        <span>Contraseña</span>
+        <input type="password" name="password" required>
+      </label>
+      <button type="submit">Entrar</button>
+    </form>
+  </article>
+</section>
+{% endblock %}

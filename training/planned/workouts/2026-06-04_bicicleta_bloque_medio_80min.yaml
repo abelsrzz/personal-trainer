@@ -1,0 +1,80 @@
+workout:
+  name: Bicicleta tempo controlado 80 min
+  schedule_date: 2026-06-04
+  sport: cycling
+  description: Sesion aerobica con una emulacion de tempo rota y controlada por pulsaciones para sostener estimulo aerobico sin impacto ni coste alto.
+  estimated_duration_s: 4800
+  steps:
+  - order: 1
+    step_type: warmup
+    description: 15 min suaves
+    duration_s: 900
+    target:
+      type: heart_rate_range
+      min_bpm: 120
+      max_bpm: 138
+  - order: 2
+    step_type: interval
+    description: 12 min Z2 para estabilizar pulso y cadencia
+    duration_s: 720
+    target:
+      type: heart_rate_range
+      min_bpm: 145
+      max_bpm: 155
+  - order: 3
+    step_type: interval
+    description: 8 min tempo emulado controlado
+    duration_s: 480
+    target:
+      type: heart_rate_range
+      min_bpm: 160
+      max_bpm: 168
+  - order: 4
+    step_type: recovery
+    description: 4 min suaves entre bloques
+    duration_s: 240
+    target:
+      type: heart_rate_range
+      min_bpm: 145
+      max_bpm: 152
+  - order: 5
+    step_type: interval
+    description: 8 min tempo emulado controlado
+    duration_s: 480
+    target:
+      type: heart_rate_range
+      min_bpm: 160
+      max_bpm: 168
+  - order: 6
+    step_type: recovery
+    description: 4 min suaves entre bloques
+    duration_s: 240
+    target:
+      type: heart_rate_range
+      min_bpm: 145
+      max_bpm: 152
+  - order: 7
+    step_type: interval
+    description: 8 min tempo emulado controlado
+    duration_s: 480
+    target:
+      type: heart_rate_range
+      min_bpm: 160
+      max_bpm: 168
+  - order: 8
+    step_type: interval
+    description: 11 min Z2 estable para cerrar con margen
+    duration_s: 660
+    target:
+      type: heart_rate_range
+      min_bpm: 145
+      max_bpm: 155
+  - order: 9
+    step_type: cooldown
+    description: 10 min suaves
+    duration_s: 600
+    target:
+      type: heart_rate_range
+      min_bpm: 115
+      max_bpm: 135
+  primary_goal: Tempo controlado

@@ -1,0 +1,33 @@
+shoes:
+- model: Joma TR-7
+  usage: Trail
+  distance_km: 80
+  notes: null
+- model: Joma R3000
+  usage: Long intervals and racing
+  distance_km: 16
+  notes: Aggressive carbon plate
+- model: Joma Supercross
+  usage: Easy runs
+  distance_km: 70
+  notes: null
+- model: Adidas Adistar BYD
+  usage: Easy runs and slow tempo
+  distance_km: 80
+  notes: Soft carbon plate but adds load
+- model: Nike Jupiter Trail 2 GORETEX
+  usage: Trail and door-to-trail
+  distance_km: 100
+  notes: Waterproof
+- model: Adidas Adizero EVO SL
+  usage: Tempo, intervals and racing
+  distance_km: 500
+  notes: null
+- model: RS1
+  usage: Imported from Garmin; review manually
+  distance_km: 0
+  notes: Auto-imported from Garmin gear snapshot
+- model: Van Rysel Road 100
+  usage: Imported from Garmin; review manually
+  distance_km: 0
+  notes: Auto-imported from Garmin gear snapshot

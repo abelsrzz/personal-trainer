@@ -1,0 +1,18 @@
+{
+  "source": "web_manual_feedback",
+  "created_at": "2026-05-16T13:54:17.801496",
+  "updated_at": "2026-05-16T13:55:44+02:00",
+  "updated_by": "opencode",
+  "date": "2026-05-16",
+  "planned_workout_slug": "2026-05-16_rodaje_5km_facil",
+  "completed_review_slug": "2026-05-16_rodaje_5km_facil",
+  "garmin_activity_id": 22900018441,
+  "athlete_feedback": {
+    "rpe": 1,
+    "pain_level": 7,
+    "pain_location": "Tibial posterior izquierdo",
+    "compliance": "full",
+    "time_feeling": "ok",
+    "note": "Actualizacion manual: dolor actual en periostio 6,5/10; redondeado a 7/10 para las reglas automaticas."
+  }
+}

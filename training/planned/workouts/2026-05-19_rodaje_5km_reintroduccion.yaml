@@ -1,0 +1,33 @@
+workout:
+  name: Eliptica aerobica estable 55 min
+  schedule_date: 2026-05-19
+  sport: elliptical
+  description: Carga aerobica equivalente a la bici prevista, sin impacto y con un
+    coste interno parecido en menos tiempo.
+  estimated_duration_s: 3300
+  steps:
+  - order: 1
+    step_type: warmup
+    description: 8 min suaves en eliptica
+    duration_s: 480
+    target:
+      type: heart_rate_range
+      min_bpm: 118
+      max_bpm: 136
+  - order: 2
+    step_type: interval
+    description: 40 min Z2 estable y fluida
+    duration_s: 2400
+    target:
+      type: heart_rate_range
+      min_bpm: 130
+      max_bpm: 148
+  - order: 3
+    step_type: cooldown
+    description: 7 min suaves para soltar
+    duration_s: 420
+    target:
+      type: heart_rate_range
+      min_bpm: 115
+      max_bpm: 132
+  primary_goal: Base aerobica

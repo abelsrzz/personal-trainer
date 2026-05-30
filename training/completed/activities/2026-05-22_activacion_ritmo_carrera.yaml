@@ -1,0 +1,16 @@
+activity:
+  id: garmin-22970190097
+  source: garmin
+  garmin_activity_id: 22970190097
+  date: 2026-05-22
+  title: Ordes - Activacion running ritmo carrera
+  type: run
+  planned_session_reference: training/planned/workouts/2026-05-22_activacion_ritmo_carrera.yaml
+  distance_km: 6.449
+  duration: '39:41'
+  elevation_gain_m: 15.0
+  avg_pace: 6:09/km
+  avg_hr: 161.0
+  max_hr: 188.0
+  shoes: null
+  notes: Autoimported from Garmin on 2026-05-23T19:12:07

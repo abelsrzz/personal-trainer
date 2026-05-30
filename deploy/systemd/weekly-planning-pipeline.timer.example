@@ -1,0 +1,10 @@
+[Unit]
+Description=Prepare next training week every Sunday
+
+[Timer]
+OnCalendar=Sun *-*-* 18:00:00
+Unit=weekly-planning-pipeline.service
+Persistent=true
+
+[Install]
+WantedBy=timers.target

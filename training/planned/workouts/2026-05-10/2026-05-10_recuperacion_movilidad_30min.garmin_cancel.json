@@ -1,0 +1,10 @@
+{
+  "workout_file": "training/planned/workouts/2026-05-10_recuperacion_movilidad_30min.yaml",
+  "scheduled_workout_id": 1644507648,
+  "workout_id": 1562917858,
+  "unschedule_response": {},
+  "delete_workout_response": {},
+  "verification": {
+    "scheduled_lookup_after_error": "API call client error (404): API Error 404 - No workout found for workout schedule = 1644507648"
+  }
+}

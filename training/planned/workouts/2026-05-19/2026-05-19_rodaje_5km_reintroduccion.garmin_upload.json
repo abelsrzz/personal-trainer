@@ -1,0 +1,468 @@
+{
+  "generated_at": "2026-05-19T15:02:22.918685Z",
+  "status": "scheduled",
+  "upload_mode": "other_workout_direct",
+  "workout_file": "training/planned/workouts/2026-05-19_rodaje_5km_reintroduccion.yaml",
+  "uploaded_response": {
+    "workoutId": 1573464546,
+    "ownerId": 137864769,
+    "workoutName": "Eliptica aerobica estable 55 min",
+    "description": "Carga aerobica equivalente a la bici prevista, sin impacto y con un coste interno parecido en menos tiempo.",
+    "updatedDate": "2026-05-19T15:02:23.0",
+    "createdDate": "2026-05-19T15:02:23.0",
+    "sportType": {
+      "sportTypeId": 3,
+      "sportTypeKey": "other",
+      "displayOrder": 13
+    },
+    "subSportType": null,
+    "trainingPlanId": null,
+    "author": {
+      "userProfilePk": 137864769,
+      "displayName": "4001188d-ed09-4b5d-86d2-ef751217099e",
+      "fullName": "Abel",
+      "profileImgNameLarge": null,
+      "profileImgNameMedium": "3f638055-fd65-4de8-a95a-ba40fab94e10-prfr.png",
+      "profileImgNameSmall": "3f638055-fd65-4de8-a95a-ba40fab94e10-prth.png",
+      "userPro": false,
+      "vivokidUser": false
+    },
+    "sharedWithUsers": null,
+    "estimatedDurationInSecs": 3300,
+    "estimatedDistanceInMeters": null,
+    "workoutSegments": [
+      {
+        "segmentOrder": 1,
+        "sportType": {
+          "sportTypeId": 3,
+          "sportTypeKey": "other",
+          "displayOrder": 13
+        },
+        "poolLengthUnit": null,
+        "poolLength": null,
+        "avgTrainingSpeed": null,
+        "estimatedDurationInSecs": null,
+        "estimatedDistanceInMeters": null,
+        "estimatedDistanceUnit": null,
+        "estimateType": null,
+        "description": null,
+        "workoutSteps": [
+          {
+            "type": "ExecutableStepDTO",
+            "stepId": 13414281075,
+            "stepOrder": 1,
+            "stepType": {
+              "stepTypeId": 1,
+              "stepTypeKey": "warmup",
+              "displayOrder": 1
+            },
+            "childStepId": null,
+            "description": "8 min suaves en eliptica",
+            "endCondition": {
+              "conditionTypeId": 2,
+              "conditionTypeKey": "time",
+              "displayOrder": 2,
+              "displayable": true
+            },
+            "endConditionValue": 480.0,
+            "preferredEndConditionUnit": null,
+            "endConditionCompare": null,
+            "targetType": {
+              "workoutTargetTypeId": 4,
+              "workoutTargetTypeKey": "heart.rate.zone",
+              "displayOrder": 4
+            },
+            "targetValueOne": 118.0,
+            "targetValueTwo": 136.0,
+            "targetValueUnit": null,
+            "zoneNumber": null,
+            "secondaryTargetType": null,
+            "secondaryTargetValueOne": null,
+            "secondaryTargetValueTwo": null,
+            "secondaryTargetValueUnit": null,
+            "secondaryZoneNumber": null,
+            "endConditionZone": null,
+            "strokeType": {
+              "strokeTypeId": 0,
+              "strokeTypeKey": null,
+              "displayOrder": 0
+            },
+            "equipmentType": {
+              "equipmentTypeId": 0,
+              "equipmentTypeKey": null,
+              "displayOrder": 0
+            },
+            "category": null,
+            "exerciseName": null,
+            "workoutProvider": null,
+            "providerExerciseSourceId": null,
+            "weightValue": null,
+            "weightUnit": null
+          },
+          {
+            "type": "ExecutableStepDTO",
+            "stepId": 13414281076,
+            "stepOrder": 2,
+            "stepType": {
+              "stepTypeId": 3,
+              "stepTypeKey": "interval",
+              "displayOrder": 3
+            },
+            "childStepId": null,
+            "description": "40 min Z2 estable y fluida",
+            "endCondition": {
+              "conditionTypeId": 2,
+              "conditionTypeKey": "time",
+              "displayOrder": 2,
+              "displayable": true
+            },
+            "endConditionValue": 2400.0,
+            "preferredEndConditionUnit": null,
+            "endConditionCompare": null,
+            "targetType": {
+              "workoutTargetTypeId": 4,
+              "workoutTargetTypeKey": "heart.rate.zone",
+              "displayOrder": 4
+            },
+            "targetValueOne": 130.0,
+            "targetValueTwo": 148.0,
+            "targetValueUnit": null,
+            "zoneNumber": null,
+            "secondaryTargetType": null,
+            "secondaryTargetValueOne": null,
+            "secondaryTargetValueTwo": null,
+            "secondaryTargetValueUnit": null,
+            "secondaryZoneNumber": null,
+            "endConditionZone": null,
+            "strokeType": {
+              "strokeTypeId": 0,
+              "strokeTypeKey": null,
+              "displayOrder": 0
+            },
+            "equipmentType": {
+              "equipmentTypeId": 0,
+              "equipmentTypeKey": null,
+              "displayOrder": 0
+            },
+            "category": null,
+            "exerciseName": null,
+            "workoutProvider": null,
+            "providerExerciseSourceId": null,
+            "weightValue": null,
+            "weightUnit": null
+          },
+          {
+            "type": "ExecutableStepDTO",
+            "stepId": 13414281077,
+            "stepOrder": 3,
+            "stepType": {
+              "stepTypeId": 2,
+              "stepTypeKey": "cooldown",
+              "displayOrder": 2
+            },
+            "childStepId": null,
+            "description": "7 min suaves para soltar",
+            "endCondition": {
+              "conditionTypeId": 2,
+              "conditionTypeKey": "time",
+              "displayOrder": 2,
+              "displayable": true
+            },
+            "endConditionValue": 420.0,
+            "preferredEndConditionUnit": null,
+            "endConditionCompare": null,
+            "targetType": {
+              "workoutTargetTypeId": 4,
+              "workoutTargetTypeKey": "heart.rate.zone",
+              "displayOrder": 4
+            },
+            "targetValueOne": 115.0,
+            "targetValueTwo": 132.0,
+            "targetValueUnit": null,
+            "zoneNumber": null,
+            "secondaryTargetType": null,
+            "secondaryTargetValueOne": null,
+            "secondaryTargetValueTwo": null,
+            "secondaryTargetValueUnit": null,
+            "secondaryZoneNumber": null,
+            "endConditionZone": null,
+            "strokeType": {
+              "strokeTypeId": 0,
+              "strokeTypeKey": null,
+              "displayOrder": 0
+            },
+            "equipmentType": {
+              "equipmentTypeId": 0,
+              "equipmentTypeKey": null,
+              "displayOrder": 0
+            },
+            "category": null,
+            "exerciseName": null,
+            "workoutProvider": null,
+            "providerExerciseSourceId": null,
+            "weightValue": null,
+            "weightUnit": null
+          }
+        ]
+      }
+    ],
+    "poolLength": null,
+    "poolLengthUnit": null,
+    "locale": null,
+    "workoutProvider": null,
+    "workoutSourceId": null,
+    "uploadTimestamp": null,
+    "atpPlanId": null,
+    "consumer": null,
+    "consumerName": null,
+    "consumerImageURL": null,
+    "consumerWebsiteURL": null,
+    "workoutNameI18nKey": null,
+    "descriptionI18nKey": null,
+    "avgTrainingSpeed": 0.0,
+    "estimateType": null,
+    "estimatedDistanceUnit": {
+      "unitId": null,
+      "unitKey": null,
+      "factor": null
+    },
+    "workoutThumbnailUrl": null,
+    "isSessionTransitionEnabled": null,
+    "shared": false
+  },
+  "scheduled_response": {
+    "workoutScheduleId": 1654981075,
+    "workout": {
+      "workoutId": 1573464546,
+      "ownerId": 137864769,
+      "workoutName": "Eliptica aerobica estable 55 min",
+      "description": "Carga aerobica equivalente a la bici prevista, sin impacto y con un coste interno parecido en menos tiempo.",
+      "updatedDate": "2026-05-19T15:02:23.0",
+      "createdDate": "2026-05-19T15:02:23.0",
+      "sportType": {
+        "sportTypeId": 3,
+        "sportTypeKey": "other",
+        "displayOrder": 13
+      },
+      "subSportType": null,
+      "trainingPlanId": null,
+      "author": null,
+      "sharedWithUsers": null,
+      "estimatedDurationInSecs": 3300,
+      "estimatedDistanceInMeters": null,
+      "workoutSegments": [
+        {
+          "segmentOrder": 1,
+          "sportType": {
+            "sportTypeId": 3,
+            "sportTypeKey": "other",
+            "displayOrder": 13
+          },
+          "poolLengthUnit": null,
+          "poolLength": null,
+          "avgTrainingSpeed": null,
+          "estimatedDurationInSecs": null,
+          "estimatedDistanceInMeters": null,
+          "estimatedDistanceUnit": null,
+          "estimateType": null,
+          "description": null,
+          "workoutSteps": [
+            {
+              "type": "ExecutableStepDTO",
+              "stepId": 13414281075,
+              "stepOrder": 1,
+              "stepType": {
+                "stepTypeId": 1,
+                "stepTypeKey": "warmup",
+                "displayOrder": 1
+              },
+              "childStepId": null,
+              "description": "8 min suaves en eliptica",
+              "endCondition": {
+                "conditionTypeId": 2,
+                "conditionTypeKey": "time",
+                "displayOrder": 2,
+                "displayable": true
+              },
+              "endConditionValue": 480.0,
+              "preferredEndConditionUnit": null,
+              "endConditionCompare": null,
+              "targetType": {
+                "workoutTargetTypeId": 4,
+                "workoutTargetTypeKey": "heart.rate.zone",
+                "displayOrder": 4
+              },
+              "targetValueOne": 118.0,
+              "targetValueTwo": 136.0,
+              "targetValueUnit": null,
+              "zoneNumber": null,
+              "secondaryTargetType": null,
+              "secondaryTargetValueOne": null,
+              "secondaryTargetValueTwo": null,
+              "secondaryTargetValueUnit": null,
+              "secondaryZoneNumber": null,
+              "endConditionZone": null,
+              "strokeType": {
+                "strokeTypeId": 0,
+                "strokeTypeKey": null,
+                "displayOrder": 0
+              },
+              "equipmentType": {
+                "equipmentTypeId": 0,
+                "equipmentTypeKey": null,
+                "displayOrder": 0
+              },
+              "category": null,
+              "exerciseName": null,
+              "workoutProvider": null,
+              "providerExerciseSourceId": null,
+              "weightValue": null,
+              "weightUnit": null
+            },
+            {
+              "type": "ExecutableStepDTO",
+              "stepId": 13414281076,
+              "stepOrder": 2,
+              "stepType": {
+                "stepTypeId": 3,
+                "stepTypeKey": "interval",
+                "displayOrder": 3
+              },
+              "childStepId": null,
+              "description": "40 min Z2 estable y fluida",
+              "endCondition": {
+                "conditionTypeId": 2,
+                "conditionTypeKey": "time",
+                "displayOrder": 2,
+                "displayable": true
+              },
+              "endConditionValue": 2400.0,
+              "preferredEndConditionUnit": null,
+              "endConditionCompare": null,
+              "targetType": {
+                "workoutTargetTypeId": 4,
+                "workoutTargetTypeKey": "heart.rate.zone",
+                "displayOrder": 4
+              },
+              "targetValueOne": 130.0,
+              "targetValueTwo": 148.0,
+              "targetValueUnit": null,
+              "zoneNumber": null,
+              "secondaryTargetType": null,
+              "secondaryTargetValueOne": null,
+              "secondaryTargetValueTwo": null,
+              "secondaryTargetValueUnit": null,
+              "secondaryZoneNumber": null,
+              "endConditionZone": null,
+              "strokeType": {
+                "strokeTypeId": 0,
+                "strokeTypeKey": null,
+                "displayOrder": 0
+              },
+              "equipmentType": {
+                "equipmentTypeId": 0,
+                "equipmentTypeKey": null,
+                "displayOrder": 0
+              },
+              "category": null,
+              "exerciseName": null,
+              "workoutProvider": null,
+              "providerExerciseSourceId": null,
+              "weightValue": null,
+              "weightUnit": null
+            },
+            {
+              "type": "ExecutableStepDTO",
+              "stepId": 13414281077,
+              "stepOrder": 3,
+              "stepType": {
+                "stepTypeId": 2,
+                "stepTypeKey": "cooldown",
+                "displayOrder": 2
+              },
+              "childStepId": null,
+              "description": "7 min suaves para soltar",
+              "endCondition": {
+                "conditionTypeId": 2,
+                "conditionTypeKey": "time",
+                "displayOrder": 2,
+                "displayable": true
+              },
+              "endConditionValue": 420.0,
+              "preferredEndConditionUnit": null,
+              "endConditionCompare": null,
+              "targetType": {
+                "workoutTargetTypeId": 4,
+                "workoutTargetTypeKey": "heart.rate.zone",
+                "displayOrder": 4
+              },
+              "targetValueOne": 115.0,
+              "targetValueTwo": 132.0,
+              "targetValueUnit": null,
+              "zoneNumber": null,
+              "secondaryTargetType": null,
+              "secondaryTargetValueOne": null,
+              "secondaryTargetValueTwo": null,
+              "secondaryTargetValueUnit": null,
+              "secondaryZoneNumber": null,
+              "endConditionZone": null,
+              "strokeType": {
+                "strokeTypeId": 0,
+                "strokeTypeKey": null,
+                "displayOrder": 0
+              },
+              "equipmentType": {
+                "equipmentTypeId": 0,
+                "equipmentTypeKey": null,
+                "displayOrder": 0
+              },
+              "category": null,
+              "exerciseName": null,
+              "workoutProvider": null,
+              "providerExerciseSourceId": null,
+              "weightValue": null,
+              "weightUnit": null
+            }
+          ]
+        }
+      ],
+      "poolLength": null,
+      "poolLengthUnit": null,
+      "locale": null,
+      "workoutProvider": null,
+      "workoutSourceId": null,
+      "uploadTimestamp": null,
+      "atpPlanId": null,
+      "consumer": null,
+      "consumerName": null,
+      "consumerImageURL": null,
+      "consumerWebsiteURL": null,
+      "workoutNameI18nKey": null,
+      "descriptionI18nKey": null,
+      "avgTrainingSpeed": 0.0,
+      "estimateType": null,
+      "estimatedDistanceUnit": {
+        "unitId": null,
+        "unitKey": null,
+        "factor": null
+      },
+      "workoutThumbnailUrl": null,
+      "isSessionTransitionEnabled": null,
+      "shared": false
+    },
+    "calendarDate": "2026-05-19",
+    "createdDate": "2026-05-19",
+    "ownerId": 137864769,
+    "newName": null,
+    "consumer": null,
+    "atpPlanTypeId": null,
+    "associatedActivityId": null,
+    "priority": null,
+    "associatedActivityDateTime": null,
+    "tpType": null,
+    "race": false,
+    "itp": false,
+    "nameChanged": false,
+    "protected": false
+  }
+}

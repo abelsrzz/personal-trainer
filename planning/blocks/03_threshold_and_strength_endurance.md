@@ -2,7 +2,7 @@
 
 ## Dates
 
-- `2026-08-24` to `2026-10-18`
+- `2026-09-01` to `2026-10-26`
 - Duration: `8 weeks`
 
 ## Block Objective
@@ -20,7 +20,7 @@
 
 ## Weekly Volume Guide
 
-- Typical range: `45-60 km/week`.
+- Typical range: `48-58 km/week`.
 - Optional upper edge: `60-62 km/week` only if the previous block was stable and the shin is quiet.
 - Keep at least one lighter week every `3-4 weeks`.
 
@@ -37,6 +37,7 @@
 - Pace prescriptions come from current checkpoint data, heart-rate trend and RPE.
 - If shin load rises with hills, move back to flat threshold work.
 - Do not chase `3:30/km`; this block is about raising the floor.
+- The block should consolidate runner volume, not rely on bike as the main aerobic backbone anymore.
 
 ## Checkpoints
 
@@ -50,6 +51,7 @@
 - Clearer estimate of threshold pace and realistic 10k pace band.
 - More comfort running near current 10k effort.
 - Ability to recover reliably between Tuesday and Thursday stimuli.
+- Reach the end of the block with several repeatable weeks near `55-60 km` if the state remains green.
 
 ## Failure Triggers
 

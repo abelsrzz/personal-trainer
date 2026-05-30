@@ -2,8 +2,8 @@
 
 ## Dates
 
-- `2027-01-25` to `2027-02-06`
-- Duration: `2 weeks`
+- `2027-01-19` to `2027-02-06`
+- Duration: `3 weeks`
 
 ## Block Objective
 
@@ -20,7 +20,8 @@
 
 ## Weekly Volume Guide
 
-- Week of `2027-01-25`: around `70-80%` of normal volume, depending on fatigue.
+- First taper week: around `75-80%` of normal volume, depending on fatigue.
+- Second taper week: around `55-65%` of normal volume.
 - Race week: low volume before race day, usually `18-28 km` before the race depending on the final normal-week volume.
 - Keep intensity touches, but cut total work.
 

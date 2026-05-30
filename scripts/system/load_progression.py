@@ -177,7 +177,8 @@ def progression_window(reviews: list[dict[str, Any]], shin_entries: list[dict[st
     absorbed = last_absorbed_week(reviews, shin_entries, as_of=as_of, coach_status=coach_status)
     shin = latest_shin_status(shin_entries, as_of=as_of)
     baseline_running_km = float((absorbed or {}).get("running_km") or 0.0)
-    next_running_km = baseline_running_km * 1.05 if baseline_running_km > 0 else 0.0
+    growth_pct = 8.0
+    next_running_km = baseline_running_km * (1.0 + (growth_pct / 100.0)) if baseline_running_km > 0 else 0.0
     blocked_dimensions: list[str] = []
     if shin["band"] != "green":
         blocked_dimensions.extend(["running_volume", "running_intensity"])
@@ -188,11 +189,11 @@ def progression_window(reviews: list[dict[str, Any]], shin_entries: list[dict[st
         "last_absorbed_week": absorbed,
         "shin_status": shin,
         "baseline_running_km": round(baseline_running_km, 1),
-        "default_running_growth_pct": 5.0,
+        "default_running_growth_pct": growth_pct,
         "next_running_target_km": round(next_running_km, 1),
         "next_running_target_range_km": {
-            "min": round(next_running_km * 0.98, 1) if next_running_km else 0.0,
-            "max": round(next_running_km * 1.02, 1) if next_running_km else 0.0,
+            "min": round(next_running_km * 0.95, 1) if next_running_km else 0.0,
+            "max": round(next_running_km * 1.05, 1) if next_running_km else 0.0,
         },
         "blocked_dimensions": sorted(set(blocked_dimensions)),
         "keep_bike_support_session": True,

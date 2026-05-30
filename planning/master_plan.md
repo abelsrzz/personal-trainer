@@ -53,55 +53,56 @@
 
 ## Revised Block Structure
 
-1. `Block 1: Rehabilitation, consistency and impact return`
-   - Dates: `2026-05-25` to `2026-07-12`
-   - Duration: `7 weeks`
-   - Focus: complete a `3-week` rehabilitation phase based on bike plus strength and then reintroduce running impact progressively without losing aerobic continuity.
+1. `Block 1: Final recovery and controlled impact return`
+   - Dates: `2026-05-25` to `2026-07-06`
+   - Duration: `6 weeks`
+   - Focus: absorb Ordes, complete the final low-impact phase, then restart running from `2026-06-16` with conservative but real progression.
 
 2. `Block 2: Aerobic base and volume consolidation`
-   - Dates: `2026-07-13` to `2026-09-06`
+   - Dates: `2026-07-07` to `2026-08-31`
    - Duration: `8 weeks`
-   - Focus: increase durable weekly running volume, long-run tolerance and easy aerobic efficiency while still using bike when useful.
+   - Focus: leave rehabilitation mode, rebuild real running frequency and move toward durable aerobic volume fast enough to keep the February goal alive.
 
 3. `Block 3: Threshold development and strength endurance`
-   - Dates: `2026-09-07` to `2026-11-01`
+   - Dates: `2026-09-01` to `2026-10-26`
    - Duration: `8 weeks`
    - Focus: lift sustainable speed through controlled threshold work and strength endurance.
 
 4. `Block 4: Specific 10k development`
-   - Dates: `2026-11-02` to `2026-12-27`
+   - Dates: `2026-10-27` to `2026-12-21`
    - Duration: `8 weeks`
-   - Focus: convert threshold gains into 10k-specific rhythm, but only from current checkpoint paces.
+   - Focus: convert base and threshold gains into 10k-specific rhythm while building enough running load to support demanding specific work.
 
 5. `Block 5: Specific consolidation and competitive sharpening`
-   - Dates: `2026-12-28` to `2027-01-24`
+   - Dates: `2026-12-22` to `2027-01-18`
    - Duration: `4 weeks`
-   - Focus: stabilize the final target pace band, sharpen economy and validate race strategy.
+   - Focus: stabilize the highest useful repeatable load, sharpen economy and validate race strategy without chasing fresh mileage records.
 
 6. `Block 6: Taper and race execution`
-   - Dates: `2027-01-25` to `2027-02-06`
-   - Duration: `2 weeks`
+   - Dates: `2027-01-19` to `2027-02-06`
+   - Duration: `3 weeks`
    - Focus: reduce fatigue, preserve sharpness and execute the `S` race.
 
 ## Volume Progression
 
-- Rehabilitation week 1 after Ordes: about `4h30-5h30` of bike, `0 km` running.
-- Rehabilitation week 2: about `5h15-6h15` of bike, `0 km` running.
-- Rehabilitation week 3: about `6h-7h` of bike, `0 km` running.
-- First week of impact return: about `4h30-5h30` of bike + `5 km` running.
-- Second week of impact return: about `4h15-5h15` of bike + `7 km` running.
+- Final low-impact week after Ordes: about `4h30-5h30` of bike, `0 km` running.
+- Second low-impact week: about `5h15-6h15` of bike, `0 km` running.
+- Third low-impact week until `2026-06-15`: about `6h-7h` of bike, `0 km` running.
+- First impact-return week from `2026-06-16`: about `12-16 km` running plus `1-2` bike support sessions.
+- Second impact-return week: about `16-20 km` running.
+- Third impact-return week: about `20-24 km` running.
 - Use bike duration as the main aerobic equivalent of the removed running load instead of forcing a fixed bike kilometer target.
-- Then progress gradually by reducing bike only as needed to fit `2-4 km` extra running per week when tibia response stays at `0-2/10` during the session and the next morning.
-- Once impact has restarted, default weekly running-volume progression should stay around `+5%` versus the last absorbed week. Small deviations are allowed when the calendar or recovery context force them, but the default assumption is conservative growth near `+5%`, not abrupt jumps.
+- Once impact has restarted, default weekly running-volume progression should usually stay around `+6-10%` versus the last absorbed week. If a week also raises running intensity, progression should narrow toward `0-5%` or hold steady instead.
 - Do not progress running volume and running intensity in the same week unless the previous `2-3` weeks were clearly absorbed and shin response remains green.
-- Even after running is reintroduced, keep at least one bike-based aerobic support session most weeks until running durability is clearly stable; during later blocks, bike can still carry extra aerobic work or low-impact tempo/VO2 support when it reduces tibial cost.
-- End of Block 1 target: arrive at roughly `14-18 km/week` of running plus `3h30-4h30` of bike support if stable.
-- Block 2 target range: `22-40 km/week` running, using bike to preserve aerobic load without forcing impact.
-- Block 3 target range: `45-60 km/week`; do not exceed this if quality or shin response worsens.
-- Blocks 4-5 target range: usually `48-62 km/week`, with `65 km` only if months of data show stable recovery and no shin reaction.
+- Even after running is reintroduced, keep at least one bike-based aerobic support session most weeks until running durability is clearly stable; later it becomes optional support rather than structural backbone.
+- End of Block 1 target: arrive at roughly `20-24 km/week` of running with stable tibial response and at least `3-4` controlled runs per week.
+- Block 2 target range: build from `24-28 km/week` toward `42-48 km/week` by the end of August if absorption stays green.
+- Block 3 target range: typically `48-58 km/week`, with controlled peaks around `60-62 km`.
+- Block 4 target range: typically `58-68 km/week`, with repeatable peaks around `68-72 km` and `72-75 km` only if months of data show stable recovery and no shin reaction.
+- Block 5 target range: typically `60-70 km/week`; the goal is to stabilize high useful load rather than set a new mileage record.
 - To keep the February 2027 `35:00` target alive, the plan must gradually move from rehabilitation hybrid load toward clearly higher repeatable running load and more specific work when checkpoints allow it; do not stay chronically underloaded once tibial tolerance and recovery support progression.
 - The goal is the highest repeatable load, not the highest single-week number.
-- Use a lighter week every `3-4 weeks`, or sooner if shin pain, sleep, resting HR, mood or easy-run HR trends worsen.
+- Use a lighter week every `3-4 weeks`, usually cutting `15-22%` of running volume, or sooner if shin pain, sleep, resting HR, mood or easy-run HR trends worsen.
 
 ## Weekly Structure Principles
 
@@ -143,14 +144,14 @@
    - Bike load can reach about `6-7 h/week` without excessive residual fatigue.
 
 2. End of Block 1
-   - Running has been reintroduced without next-day worsening.
-   - Weekly running volume is still modest but repeatable.
+   - Running has restarted without next-day worsening.
+   - Weekly running volume has reached roughly `20-24 km` repeatably.
    - Easy runs stay controlled without forcing pace.
-   - A re-evaluation decides whether Block 2 can increase impact or should keep a hybrid bike-running structure.
+   - A re-evaluation decides whether Block 2 can push toward real base-building instead of staying in hybrid protection mode.
 
 3. Mid Block 2
    - Weekly volume is rising without accumulating pain.
-   - Long run is moving toward `13-15 km` comfortably.
+   - Long run is moving toward `12-15 km` comfortably.
    - Easy pace improves at similar HR, or HR drops at similar pace.
 
 4. End of Block 2

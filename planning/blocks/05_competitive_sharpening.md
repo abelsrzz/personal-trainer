@@ -2,13 +2,13 @@
 
 ## Dates
 
-- `2026-12-14` to `2027-01-24`
-- Duration: `6 weeks`
+- `2026-12-22` to `2027-01-18`
+- Duration: `4 weeks`
 
 ## Block Objective
 
 - Confirm the final 10k strategy and target pace band.
-- Sharpen race economy without increasing total stress.
+- Sharpen race economy while holding the highest useful repeatable load.
 - Practice race-specific rhythm under controlled fatigue.
 
 ## Primary Stimulus
@@ -19,8 +19,8 @@
 
 ## Weekly Volume Guide
 
-- Typical range: `45-58 km/week`.
-- Do not chase new peak mileage in this block.
+- Typical range: `60-70 km/week`.
+- Do not chase new peak mileage in this block; stabilize what was already absorbed in Block 4.
 - Reduce volume immediately if quality, sleep or shin response deteriorates.
 
 ## Key Session Types
@@ -36,6 +36,7 @@
 - Shoe selection for race and key sessions should be validated here.
 - The goal pace now comes from accumulated evidence, not ambition.
 - If a target pace cannot be repeated in training with controlled recovery, it is not the race target.
+- Keep at least `2` clearly absorbed high-load weeks before taper instead of relying on one peak week.
 
 ## Final Target Gates
 

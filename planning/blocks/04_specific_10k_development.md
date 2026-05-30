@@ -2,7 +2,7 @@
 
 ## Dates
 
-- `2026-10-19` to `2026-12-13`
+- `2026-10-27` to `2026-12-21`
 - Duration: `8 weeks`
 
 ## Block Objective
@@ -20,8 +20,9 @@
 
 ## Weekly Volume Guide
 
-- Typical range: `48-62 km/week`.
-- Upper edge: `65 km/week` only if recovery, sleep and shin response are excellent.
+- Typical range: `58-68 km/week`.
+- Repeatable peak range: `68-72 km/week` when recovery and shin response stay excellent.
+- Exceptional upper edge: `72-75 km/week` only if months of data show stable recovery and no shin reaction.
 - Total load should not rise sharply when specificity rises.
 
 ## Key Session Types
@@ -37,6 +38,7 @@
 - Favor flat or gently rolling routes similar to the `S` race profile.
 - Use plated/race shoes selectively to test economy, not to mask overload.
 - Keep one day after demanding sessions genuinely easy.
+- Do not increase total volume and specific-session density aggressively in the same week.
 
 ## Checkpoints
 
@@ -50,6 +52,7 @@
 - Current 10k pace clearly improves from the initial `4:22-4:26/km` reference band.
 - The final target range becomes evidence-based.
 - Quality improves without sacrificing the easy aerobic base.
+- The athlete reaches the end of the block with multiple absorbed weeks above `60 km` if the body allows it.
 
 ## Failure Triggers
 

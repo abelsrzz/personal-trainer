@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-30T23:01:16.353734+00:00",
+  "generated_at": "2026-05-30T23:06:47.270290+00:00",
   "as_of": "2026-05-26",
   "lookback_days": 28,
   "activity_count_total": 67,
@@ -59,7 +59,7 @@
         "band": "red"
       },
       "baseline_running_km": 0.0,
-      "default_running_growth_pct": 5.0,
+      "default_running_growth_pct": 8.0,
       "next_running_target_km": 0.0,
       "next_running_target_range_km": {
         "min": 0.0,
@@ -95,7 +95,6 @@
       "Revision reciente de alto riesgo: 2026-05-24 XXIX CARREIRA POPULAR CONCELLO DE ORDES.",
       "Periostio con dolor maximo 7/10 en el ultimo registro.",
       "Demasiada densidad de calidad: 3 sesiones exigentes en 7 dias.",
-      "El bloque activo prioriza reconstruccion, consistencia y tolerancia tisular antes de ritmos agresivos.",
       "El limitador principal declarado sigue siendo la durabilidad aerobica; la construccion debe respetarlo.",
       "La automatizacion prioriza como backbone de calidad: fartlek_structured, cruise_intervals, tempo_broken."
     ],
@@ -763,9 +762,9 @@
         "ten_k_specific_reps",
         "ten_k_specific_continuous",
         "long_run_quality",
-        "short_hills_power",
         "short_intervals_economy",
         "hills_strength",
+        "short_hills_power",
         "five_k_specific_reps",
         "marathon_specific_blocks"
       ],
@@ -781,7 +780,7 @@
     },
     "active_context": {
       "cycle_id": "2026-05-25_padron_10k",
-      "active_block": "Block 1: Rehabilitation, consistency and impact return",
+      "active_block": "Block 1: Final recovery and controlled impact return",
       "goal_race_name": "XXIV Padron 10k",
       "goal_race_priority": "S",
       "days_to_goal_race": 256,
@@ -1306,7 +1305,7 @@
   },
   "active_context": {
     "cycle_id": "2026-05-25_padron_10k",
-    "active_block": "Block 1: Rehabilitation, consistency and impact return",
+    "active_block": "Block 1: Final recovery and controlled impact return",
     "goal_race": {
       "id": "xxiv_padron_10k_2027",
       "name": "XXIV Padron 10k",

@@ -6,9 +6,9 @@
   "last_processed_at": "2026-05-30T22:17:43.631369+00:00",
   "last_successful_run": "2026-05-30T22:17:43.631387+00:00",
   "last_error": "Traceback (most recent call last):\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1370, in <module>\n    main()\n    ~~~~^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1343, in main\n    activity = select_activity_by_id(activities, args.activity_id) if args.activity_id is not None else select_activity(activities, planned, args.date)\n               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 173, in select_activity_by_id\n    raise FileNotFoundError(f\"No Garmin activity with id {activity_id} available for review\")\nFileNotFoundError: No Garmin activity with id 23023955791 available for review",
-  "last_activity_import_at": "2026-05-30T23:00:51.763828+00:00",
-  "last_daily_import_at": "2026-05-30T23:01:13.987603+00:00",
-  "last_profile_sync_at": "2026-05-30T23:01:15.697820+00:00",
+  "last_activity_import_at": "2026-05-30T23:06:20.722200+00:00",
+  "last_daily_import_at": "2026-05-30T23:06:44.528612+00:00",
+  "last_profile_sync_at": "2026-05-30T23:06:46.460576+00:00",
   "next_action": "inspect_last_error",
   "timer_interval_minutes": 5,
   "processed_activities": [
@@ -731,6 +731,14 @@
       "review_slug": null,
       "result": "error",
       "processed_at": "2026-05-30T23:01:16.415524+00:00"
+    },
+    {
+      "activity_id": 23023955791,
+      "activity_date": "2026-05-26",
+      "activity_name": "Ordes Caminar",
+      "review_slug": null,
+      "result": "error",
+      "processed_at": "2026-05-30T23:06:47.360947+00:00"
     }
   ],
   "processed_feedback_updates": [
@@ -771,13 +779,6 @@
     }
   ],
   "runs": [
-    {
-      "run_at": "2026-05-30T18:31:47.179876+00:00",
-      "detected_count": 0,
-      "detected_activity_ids": [],
-      "triggered_pipeline": false,
-      "error": null
-    },
     {
       "run_at": "2026-05-30T18:36:50.151447+00:00",
       "detected_count": 0,
@@ -1153,6 +1154,16 @@
     },
     {
       "run_at": "2026-05-30T23:01:16.415545+00:00",
+      "detected_count": 2,
+      "detected_activity_ids": [
+        23023955791,
+        23036502558
+      ],
+      "triggered_pipeline": true,
+      "error": "Traceback (most recent call last):\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1370, in <module>\n    main()\n    ~~~~^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1343, in main\n    activity = select_activity_by_id(activities, args.activity_id) if args.activity_id is not None else select_activity(activities, planned, args.date)\n               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 173, in select_activity_by_id\n    raise FileNotFoundError(f\"No Garmin activity with id {activity_id} available for review\")\nFileNotFoundError: No Garmin activity with id 23023955791 available for review"
+    },
+    {
+      "run_at": "2026-05-30T23:06:47.360974+00:00",
       "detected_count": 2,
       "detected_activity_ids": [
         23023955791,

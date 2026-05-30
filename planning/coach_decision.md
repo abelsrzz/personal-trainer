@@ -10,7 +10,6 @@
 - Revision reciente de alto riesgo: 2026-05-24 XXIX CARREIRA POPULAR CONCELLO DE ORDES.
 - Periostio con dolor maximo 7/10 en el ultimo registro.
 - Demasiada densidad de calidad: 3 sesiones exigentes en 7 dias.
-- El bloque activo prioriza reconstruccion, consistencia y tolerancia tisular antes de ritmos agresivos.
 - El limitador principal declarado sigue siendo la durabilidad aerobica; la construccion debe respetarlo.
 - La automatizacion prioriza como backbone de calidad: fartlek_structured, cruise_intervals, tempo_broken.
 

@@ -1,5 +1,5 @@
 {
-  "synced_at": "2026-05-30T23:01:15.568307Z",
+  "synced_at": "2026-05-30T23:06:46.256013Z",
   "raw": {
     "get_full_name": "Abel",
     "get_user_profile": {
@@ -65,13 +65,13 @@
         "golfSpeedUnit": null,
         "externalBottomTime": null,
         "availableTrainingDays": [
-          "TUESDAY",
-          "WEDNESDAY",
-          "THURSDAY",
           "FRIDAY",
           "MONDAY",
-          "SATURDAY",
-          "SUNDAY"
+          "TUESDAY",
+          "SUNDAY",
+          "WEDNESDAY",
+          "THURSDAY",
+          "SATURDAY"
         ],
         "preferredLongTrainingDays": [
           "SUNDAY"
@@ -692,13 +692,13 @@
   "vo2max": 46.0,
   "lactate_threshold_heart_rate": 191,
   "training_days": [
-    "TUESDAY",
-    "WEDNESDAY",
-    "THURSDAY",
     "FRIDAY",
     "MONDAY",
-    "SATURDAY",
-    "SUNDAY"
+    "TUESDAY",
+    "SUNDAY",
+    "WEDNESDAY",
+    "THURSDAY",
+    "SATURDAY"
   ],
   "preferred_long_training_days": [
     "SUNDAY"

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-30T23:01:16.461789+00:00",
+  "generated_at": "2026-05-30T23:06:47.421855+00:00",
   "source_of_truth": "system/state/athlete_state.json",
   "identity": {
     "id": "main",
@@ -35,13 +35,13 @@
           "Work schedule 07:30-15:00"
         ],
         "garmin_training_days": [
-          "TUESDAY",
-          "WEDNESDAY",
-          "THURSDAY",
           "FRIDAY",
           "MONDAY",
-          "SATURDAY",
-          "SUNDAY"
+          "TUESDAY",
+          "SUNDAY",
+          "WEDNESDAY",
+          "THURSDAY",
+          "SATURDAY"
         ],
         "garmin_preferred_long_training_days": [
           "SUNDAY"
@@ -52,7 +52,7 @@
       },
       "data_sources": {
         "garmin": {
-          "last_sync": "2026-05-30T23:01:15.568307Z",
+          "last_sync": "2026-05-30T23:06:46.256013Z",
           "profile_snapshot": "training/completed/imports/garmin/profile/athlete_profile_snapshot.json"
         }
       }
@@ -69,7 +69,7 @@
       "stress_notes": null,
       "recovery_notes": "General sensations recently poor",
       "garmin_metrics": {
-        "last_sync": "2026-05-30T23:01:15.568307Z",
+        "last_sync": "2026-05-30T23:06:46.256013Z",
         "resting_hr": 52,
         "max_hr": 199,
         "vo2max": 46.0,
@@ -123,7 +123,7 @@
       },
       "data_sources": {
         "garmin": {
-          "last_sync": "2026-05-30T23:01:15.568307Z",
+          "last_sync": "2026-05-30T23:06:46.256013Z",
           "profile_snapshot": "training/completed/imports/garmin/profile/athlete_profile_snapshot.json"
         }
       }
@@ -280,7 +280,7 @@
         "band": "green"
       },
       "baseline_running_km": 0.0,
-      "default_running_growth_pct": 5.0,
+      "default_running_growth_pct": 8.0,
       "next_running_target_km": 0.0,
       "next_running_target_range_km": {
         "min": 0.0,
@@ -395,9 +395,9 @@
         "ten_k_specific_reps",
         "ten_k_specific_continuous",
         "long_run_quality",
-        "short_hills_power",
         "short_intervals_economy",
         "hills_strength",
+        "short_hills_power",
         "five_k_specific_reps",
         "marathon_specific_blocks"
       ],
@@ -443,9 +443,9 @@
     }
   },
   "garmin": {
-    "profile_synced_at": "2026-05-30T23:01:15.568307Z",
-    "latest_activity_import_at": "2026-05-30T23:00:51.651635Z",
-    "latest_daily_import_at": "2026-05-30T23:01:13.865714Z",
+    "profile_synced_at": "2026-05-30T23:06:46.256013Z",
+    "latest_activity_import_at": "2026-05-30T23:06:20.612435Z",
+    "latest_daily_import_at": "2026-05-30T23:06:44.394207Z",
     "latest_activity_ids": [
       23070751559,
       23060084660,

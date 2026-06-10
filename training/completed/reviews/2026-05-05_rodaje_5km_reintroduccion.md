@@ -9,16 +9,20 @@
 
 ## Rating
 
-- Numeric score: 8/10
+- Numeric score: 10/10
 - Traffic light: verde
-- Written review: Ritmo medio 7:24/km, FC 144.0/151.0 bpm, cadencia 165.9 spm, potencia 212.0 W, temperatura 19.0-26.0 C, desnivel +13.0 m. Sesion bien alineada con el objetivo del dia y sin senales relevantes de exceso. Si las sensaciones posteriores son normales, no deberia condicionar la planificacion inmediata.
+- Written review: duracion 37:15, ritmo medio 7:24/km, FC 144.0 / 151.0 bpm, cadencia 165.9 spm, potencia 212.0 W, temperatura 19.0-26.0 C, desnivel +13.0 m. Sesion bien alineada con el objetivo del dia y sin senales relevantes de exceso. Si las sensaciones posteriores son normales, no deberia condicionar la planificacion inmediata.
 
 ## Execution Analysis
 
 - Goal of the session: Primer contacto de carrera tras la carga andando. Muy facil y sin buscar ritmo.
+- Template id: -
+- Knowledge id: 30_regenerativo_muy_suave
+- Planned physiological goal: Recuperacion
+- Stimulus alignment: El estimulo real se desvia del objetivo previsto. Previsto: recuperacion. Real observado: base_aerobica.
 - What went well: Se completo la sesion con estabilidad mecanica y una deriva cardiaca baja (3.0%).
-- What missed the target: Hubo algunos tramos por encima del techo de FC (26.3% del tiempo), aunque dentro de un desvio relativamente normal para un rodaje al aire libre.
-- Relevant signals: ritmo 7:24/km, FC media/max 144.0/151.0, cadencia 165.9, potencia 212.0, terreno +13.0 m, temperatura 19.0-26.0 C.
+- What missed the target: El bloque principal se fue a un estimulo mas exigente del previsto, aunque la FC de los tramos faciles no justifica por si sola una alarma roja.
+- Relevant signals: ritmo 7:24/km, FC media/max 144.0/151.0, cadencia 165.9, potencia 212, terreno +13.0 m, temperatura 19.0-26.0 C.
 
 ## Planned Vs Completed
 
@@ -28,9 +32,9 @@
 - Planned duration: 35:00
 - Completed duration: 37:15
 - Duration difference: 2:15
-- HR target: 131.0-145.0 bpm
-- Time in HR target: 27:07 (72.8%)
-- Time above HR target: 9:48 (26.3%)
+- HR target: 131.0-150.0 bpm
+- Time in HR target: 36:53 (99.0% de 37:15)
+- Time above HR target: 0:02 (0.1% de 37:15)
 - Time to enter target zone: 0:22
 
 ## Split Detail
@@ -70,4 +74,4 @@
 
 - Keep the week as planned: yes
 - If not, what changes: none
-- Risk level: medio
+- Risk level: bajo

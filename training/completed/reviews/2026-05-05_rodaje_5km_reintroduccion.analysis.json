@@ -4,11 +4,15 @@
     "date": "2026-05-05",
     "sport": "running",
     "goal_category": "reintroduction_easy",
+    "template_id": null,
+    "knowledge_id": "30_regenerativo_muy_suave",
+    "knowledge_label": "30' regenerativo muy suave",
+    "primary_goal": "Recuperacion",
     "description": "Primer contacto de carrera tras la carga andando. Muy facil y sin buscar ritmo.",
     "estimated_duration_s": 2100,
     "distance_m": 5000.0,
     "primary_hr_min": 131.0,
-    "primary_hr_max": 145.0
+    "primary_hr_max": 150.0
   },
   "summary": {
     "activity_id": 22776053069,
@@ -44,12 +48,13 @@
   "compliance": {
     "distance_diff_m": 35.60009765625,
     "duration_diff_s_vs_est": 134.6708984375,
-    "time_in_hr_zone_s": 1627.0,
+    "hr_evaluable_time_s": 2234.6708984375,
+    "time_in_hr_zone_s": 2212.6708984375,
     "time_below_hr_zone_s": 20.0,
-    "time_above_hr_zone_s": 588.0,
-    "pct_in_hr_zone": 72.80714136196124,
+    "time_above_hr_zone_s": 2.0,
+    "pct_in_hr_zone": 99.01551499080324,
     "pct_below_hr_zone": 0.8949863719970651,
-    "pct_above_hr_zone": 26.312599336713717,
+    "pct_above_hr_zone": 0.08949863719970651,
     "time_to_enter_zone_s": 22.0,
     "distance_to_enter_zone_m": 55.08000183105469
   },
@@ -81,7 +86,7 @@
       "avg_cadence_spm": 82.45713108041399,
       "avg_power_w": 219.52481575311876,
       "avg_gct_ms": 285.37913518033145,
-      "avg_vo_cm": 8.259746947833298,
+      "avg_vo_cm": 8.259746947833294,
       "avg_vr": 9.969966823901323,
       "avg_stride_cm": 82.87468682159137,
       "avg_temp_c": 22.231807881319487,
@@ -93,15 +98,15 @@
       "distance_m": 1000.0,
       "duration_s": 448.7956003856862,
       "pace_s_per_km": 448.7956003856862,
-      "avg_hr": 144.1955823937764,
+      "avg_hr": 144.19558239377642,
       "avg_cadence_spm": 82.0701878538313,
-      "avg_power_w": 217.81685705817418,
-      "avg_gct_ms": 287.61946471875785,
-      "avg_vo_cm": 8.19727791820811,
-      "avg_vr": 10.102968306408876,
-      "avg_stride_cm": 81.1519271527251,
+      "avg_power_w": 217.8168570581742,
+      "avg_gct_ms": 287.6194647187579,
+      "avg_vo_cm": 8.197277918208112,
+      "avg_vr": 10.102968306408878,
+      "avg_stride_cm": 81.15192715272518,
       "avg_temp_c": 19.993315442492257,
-      "avg_elevation_m": 245.30642119882953,
+      "avg_elevation_m": 245.30642119882958,
       "avg_gap_pace_s_per_km": 443.540586373031
     },
     {
@@ -109,15 +114,15 @@
       "distance_m": 1000.0,
       "duration_s": 451.71409624069736,
       "pace_s_per_km": 451.71409624069736,
-      "avg_hr": 144.8465386769736,
+      "avg_hr": 144.84653867697364,
       "avg_cadence_spm": 82.50552856502388,
-      "avg_power_w": 210.23157467173155,
+      "avg_power_w": 210.23157467173158,
       "avg_gct_ms": 286.6290644979263,
-      "avg_vo_cm": 8.111592005801416,
-      "avg_vr": 10.117613824186977,
-      "avg_stride_cm": 80.30295661786364,
-      "avg_temp_c": 19.999999999999996,
-      "avg_elevation_m": 251.54546358951694,
+      "avg_vo_cm": 8.111592005801418,
+      "avg_vr": 10.11761382418698,
+      "avg_stride_cm": 80.30295661786366,
+      "avg_temp_c": 20.0,
+      "avg_elevation_m": 251.54546358951697,
       "avg_gap_pace_s_per_km": 451.1874125656624
     },
     {
@@ -126,15 +131,15 @@
       "duration_s": 445.3090874128327,
       "pace_s_per_km": 445.3090874128327,
       "avg_hr": 144.894822416525,
-      "avg_cadence_spm": 82.72619649388882,
+      "avg_cadence_spm": 82.72619649388879,
       "avg_power_w": 202.9742987544617,
       "avg_gct_ms": 285.3431311369778,
-      "avg_vo_cm": 8.162524961884845,
+      "avg_vo_cm": 8.16252496188484,
       "avg_vr": 10.0193531228633,
-      "avg_stride_cm": 81.46273177146297,
+      "avg_stride_cm": 81.46273177146294,
       "avg_temp_c": 20.0,
       "avg_elevation_m": 243.89718709501338,
-      "avg_gap_pace_s_per_km": 450.8877628230098
+      "avg_gap_pace_s_per_km": 450.88776282300967
     },
     {
       "label": "5",
@@ -142,15 +147,15 @@
       "duration_s": 440.3060853946156,
       "pace_s_per_km": 440.3060853946156,
       "avg_hr": 145.06243961403257,
-      "avg_cadence_spm": 82.7590659588694,
+      "avg_cadence_spm": 82.75906595886941,
       "avg_power_w": 208.37626853317528,
-      "avg_gct_ms": 284.5362455315093,
-      "avg_vo_cm": 8.189041541541888,
-      "avg_vr": 9.975738650872046,
-      "avg_stride_cm": 82.14472140887392,
-      "avg_temp_c": 19.66841248657931,
-      "avg_elevation_m": 241.67597058922354,
-      "avg_gap_pace_s_per_km": 440.50011732571545
+      "avg_gct_ms": 284.53624553150934,
+      "avg_vo_cm": 8.189041541541892,
+      "avg_vr": 9.97573865087205,
+      "avg_stride_cm": 82.14472140887393,
+      "avg_temp_c": 19.668412486579307,
+      "avg_elevation_m": 241.67597058922357,
+      "avg_gap_pace_s_per_km": 440.50011732571534
     },
     {
       "label": "0.04",
@@ -169,9 +174,30 @@
       "avg_gap_pace_s_per_km": 410.58093256036534
     }
   ],
-  "score": 8,
+  "score": 10,
   "traffic_light": "verde",
-  "risk_level": "medio",
+  "risk_level": "bajo",
+  "stimulus_alignment": {
+    "planned_knowledge": {
+      "label": "30' regenerativo muy suave",
+      "goals": [
+        "recuperacion"
+      ],
+      "id": "30_regenerativo_muy_suave",
+      "category": "base_aerobica_y_recuperacion",
+      "goal_labels": [
+        "Recuperacion"
+      ],
+      "primary_goal": "Recuperacion",
+      "summary": "Esta sesion se usa sobre todo para recuperacion."
+    },
+    "actual_goals": [
+      "base_aerobica"
+    ],
+    "overlap": [],
+    "alignment": "drifted",
+    "summary": "El estimulo real se desvia del objetivo previsto. Previsto: recuperacion. Real observado: base_aerobica."
+  },
   "progression": {
     "comparable_count": 1,
     "matches": [
@@ -198,6 +224,7 @@
     "trend": "neutral",
     "summary": "Cambios pequenos o ambiguos frente a sesiones comparables; no hay una senal clara de progresion o regresion."
   },
+  "coaching_summary": "Objetivo: Primer contacto de carrera tras la carga andando. Muy facil y sin buscar ritmo.. Bien: Se completo la sesion con estabilidad mecanica y una deriva cardiaca baja (3.0%). A mejorar: El bloque principal se fue a un estimulo mas exigente del previsto, aunque la FC de los tramos faciles no justifica por si sola una alarma roja. Impacto: duracion 37:15, ritmo medio 7:24/km, FC 144.0 / 151.0 bpm, cadencia 165.9 spm, potencia 212.0 W, temperatura 19.0-26.0 C, desnivel +13.0 m. Sesion bien alineada con el objetivo del dia y sin senales relevantes de exceso. Si las sensaciones posteriores son normales, no deberia condicionar la planificacion inmediata.",
   "recovery_analysis": {
     "status": "complete",
     "resting_hr_bpm": 51,

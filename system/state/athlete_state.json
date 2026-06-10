@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-30T23:06:47.421855+00:00",
+  "generated_at": "2026-06-01T12:34:09.819107+00:00",
   "source_of_truth": "system/state/athlete_state.json",
   "identity": {
     "id": "main",
@@ -35,12 +35,12 @@
           "Work schedule 07:30-15:00"
         ],
         "garmin_training_days": [
-          "FRIDAY",
           "MONDAY",
           "TUESDAY",
-          "SUNDAY",
           "WEDNESDAY",
           "THURSDAY",
+          "FRIDAY",
+          "SUNDAY",
           "SATURDAY"
         ],
         "garmin_preferred_long_training_days": [
@@ -52,7 +52,7 @@
       },
       "data_sources": {
         "garmin": {
-          "last_sync": "2026-05-30T23:06:46.256013Z",
+          "last_sync": "2026-06-01T12:34:06.105304Z",
           "profile_snapshot": "training/completed/imports/garmin/profile/athlete_profile_snapshot.json"
         }
       }
@@ -69,8 +69,8 @@
       "stress_notes": null,
       "recovery_notes": "General sensations recently poor",
       "garmin_metrics": {
-        "last_sync": "2026-05-30T23:06:46.256013Z",
-        "resting_hr": 52,
+        "last_sync": "2026-06-01T12:34:06.105304Z",
+        "resting_hr": 53,
         "max_hr": 199,
         "vo2max": 46.0,
         "lactate_threshold_hr": 191
@@ -78,7 +78,7 @@
     },
     "zones": {
       "heart_rate": {
-        "resting_hr": 52,
+        "resting_hr": 53,
         "max_hr": 199,
         "threshold_hr": 191,
         "z0": "<132",
@@ -123,7 +123,7 @@
       },
       "data_sources": {
         "garmin": {
-          "last_sync": "2026-05-30T23:06:46.256013Z",
+          "last_sync": "2026-06-01T12:34:06.105304Z",
           "profile_snapshot": "training/completed/imports/garmin/profile/athlete_profile_snapshot.json"
         }
       }
@@ -152,8 +152,8 @@
           "strength_minutes": 0.0,
           "hybrid_equivalent_km": 22.53531005859375,
           "review_count": 3,
-          "high_risk_reviews": 1,
-          "low_score_reviews": 1,
+          "high_risk_reviews": 0,
+          "low_score_reviews": 0,
           "sports": {
             "running": 3
           }
@@ -370,7 +370,7 @@
     }
   },
   "coach": {
-    "as_of": "2026-05-26",
+    "as_of": "2026-05-19",
     "status": "red",
     "action": "reduce_or_replace_quality",
     "recommendation": "Reducir carga inmediata: cambiar la proxima calidad por rodaje muy facil o descanso, y mantener FC capada.",
@@ -395,9 +395,9 @@
         "ten_k_specific_reps",
         "ten_k_specific_continuous",
         "long_run_quality",
-        "short_intervals_economy",
         "hills_strength",
         "short_hills_power",
+        "short_intervals_economy",
         "five_k_specific_reps",
         "marathon_specific_blocks"
       ],
@@ -443,16 +443,15 @@
     }
   },
   "garmin": {
-    "profile_synced_at": "2026-05-30T23:06:46.256013Z",
-    "latest_activity_import_at": "2026-05-30T23:06:20.612435Z",
-    "latest_daily_import_at": "2026-05-30T23:06:44.394207Z",
+    "profile_synced_at": "2026-06-01T12:34:06.105304Z",
+    "latest_activity_import_at": "2026-06-01T12:33:37.848527Z",
+    "latest_daily_import_at": "2026-06-01T12:34:03.974482Z",
     "latest_activity_ids": [
+      23083515075,
       23070751559,
-      23060084660,
-      23045517009
+      23060084660
     ],
     "latest_daily_days": [
-      "2026-05-17",
       "2026-05-18",
       "2026-05-19",
       "2026-05-20",
@@ -466,19 +465,20 @@
       "2026-05-28",
       "2026-05-29",
       "2026-05-30",
-      "2026-05-31"
+      "2026-05-31",
+      "2026-06-01"
     ],
     "daily_metrics": {
-      "latest_date": "2026-05-26",
+      "latest_date": "2026-05-19",
       "latest_hrv": 137864769.0,
       "latest_training_readiness": 137864769.0,
-      "latest_resting_heart_rate": 53.0,
+      "latest_resting_heart_rate": 54.0,
       "latest_training_status": {
         "userId": 137864769,
         "mostRecentVO2Max": {
           "userId": 137864769,
           "generic": {
-            "calendarDate": "2026-05-24",
+            "calendarDate": "2026-05-16",
             "vo2MaxPreciseValue": 45.9,
             "vo2MaxValue": 46.0,
             "fitnessAge": null,
@@ -487,33 +487,33 @@
           },
           "cycling": null,
           "heatAltitudeAcclimation": {
-            "calendarDate": "2026-05-26",
-            "altitudeAcclimationDate": "2026-05-26",
-            "previousAltitudeAcclimationDate": "2026-05-26",
-            "heatAcclimationDate": "2026-05-26",
-            "previousHeatAcclimationDate": "2026-05-25",
+            "calendarDate": "2026-05-19",
+            "altitudeAcclimationDate": "2026-05-19",
+            "previousAltitudeAcclimationDate": "2026-05-19",
+            "heatAcclimationDate": "2026-05-19",
+            "previousHeatAcclimationDate": "2026-05-19",
             "altitudeAcclimation": 0,
             "previousAltitudeAcclimation": 0,
-            "heatAcclimationPercentage": 30,
-            "previousHeatAcclimationPercentage": 29,
-            "heatTrend": "ACCLIMATIZING",
+            "heatAcclimationPercentage": 0,
+            "previousHeatAcclimationPercentage": 0,
+            "heatTrend": null,
             "altitudeTrend": null,
-            "currentAltitude": 287,
+            "currentAltitude": 283,
             "previousAltitude": 0,
             "acclimationPercentage": 0,
             "previousAcclimationPercentage": 0,
-            "altitudeAcclimationLocalTimestamp": "2026-05-26T23:57:37.0"
+            "altitudeAcclimationLocalTimestamp": "2026-05-19T23:56:11.0"
           }
         },
         "mostRecentTrainingLoadBalance": {
           "userId": 137864769,
           "metricsTrainingLoadBalanceDTOMap": {
             "3621896103": {
-              "calendarDate": "2026-05-26",
+              "calendarDate": "2026-05-19",
               "deviceId": 3621896103,
-              "monthlyLoadAerobicLow": 905.32666,
-              "monthlyLoadAerobicHigh": 1164.1838,
-              "monthlyLoadAnaerobic": 373.77026,
+              "monthlyLoadAerobicLow": 899.479,
+              "monthlyLoadAerobicHigh": 935.847,
+              "monthlyLoadAnaerobic": 336.0453,
               "monthlyLoadAerobicLowTargetMin": 393,
               "monthlyLoadAerobicLowTargetMax": 1046,
               "monthlyLoadAerobicHighTargetMin": 802,
@@ -537,11 +537,11 @@
           "userId": 137864769,
           "latestTrainingStatusData": {
             "3621896103": {
-              "calendarDate": "2026-05-26",
-              "sinceDate": "2026-05-24",
+              "calendarDate": "2026-05-19",
+              "sinceDate": "2026-05-19",
               "weeklyTrainingLoad": null,
-              "trainingStatus": 7,
-              "timestamp": 1779826443000,
+              "trainingStatus": 5,
+              "timestamp": 1779214810000,
               "deviceId": 3621896103,
               "loadTunnelMin": null,
               "loadTunnelMax": null,
@@ -550,17 +550,17 @@
               "subSport": "GENERIC",
               "fitnessTrendSport": "RUNNING",
               "fitnessTrend": 2,
-              "trainingStatusFeedbackPhrase": "PRODUCTIVE_6",
+              "trainingStatusFeedbackPhrase": "RECOVERY_2",
               "trainingPaused": false,
               "acuteTrainingLoadDTO": {
-                "acwrPercent": 61,
-                "acwrStatus": "OPTIMAL",
-                "acwrStatusFeedback": "FEEDBACK_3",
-                "dailyTrainingLoadAcute": 977,
-                "maxTrainingLoadChronic": 979.5,
-                "minTrainingLoadChronic": 522.4,
-                "dailyTrainingLoadChronic": 653,
-                "dailyAcuteChronicWorkloadRatio": 1.4
+                "acwrPercent": 25,
+                "acwrStatus": "LOW",
+                "acwrStatusFeedback": "FEEDBACK_1",
+                "dailyTrainingLoadAcute": 371,
+                "maxTrainingLoadChronic": 850.5,
+                "minTrainingLoadChronic": 453.6,
+                "dailyTrainingLoadChronic": 567,
+                "dailyAcuteChronicWorkloadRatio": 0.6
               },
               "primaryTrainingDevice": true
             }
@@ -574,7 +574,7 @@
             }
           ],
           "showSelector": false,
-          "lastPrimarySyncDate": "2026-05-26"
+          "lastPrimarySyncDate": "2026-05-19"
         },
         "heatAltitudeAcclimationDTO": null
       }
@@ -592,13 +592,13 @@
   },
   "automation": {
     "post_workout_refresh": {
-      "last_seen_activity_id": 23070751559,
-      "last_seen_activity_date": "2026-05-30",
-      "last_processed_activity_id": 23070751559,
-      "last_processed_activity_date": "2026-05-30",
-      "last_processed_at": "2026-05-30T22:17:43.631369+00:00",
+      "last_seen_activity_id": 23083515075,
+      "last_seen_activity_date": "2026-05-31",
+      "last_processed_activity_id": 22937591625,
+      "last_processed_activity_date": "2026-05-19",
+      "last_processed_at": "2026-06-01T12:34:08.999543+00:00",
       "last_successful_run": "2026-05-30T22:17:43.631387+00:00",
-      "last_error": "Traceback (most recent call last):\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1370, in <module>\n    main()\n    ~~~~^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1343, in main\n    activity = select_activity_by_id(activities, args.activity_id) if args.activity_id is not None else select_activity(activities, planned, args.date)\n               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 173, in select_activity_by_id\n    raise FileNotFoundError(f\"No Garmin activity with id {activity_id} available for review\")\nFileNotFoundError: No Garmin activity with id 23023955791 available for review",
+      "last_error": "Traceback (most recent call last):\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1370, in <module>\n    main()\n    ~~~~^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1343, in main\n    activity = select_activity_by_id(activities, args.activity_id) if args.activity_id is not None else select_activity(activities, planned, args.date)\n               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 173, in select_activity_by_id\n    raise FileNotFoundError(f\"No Garmin activity with id {activity_id} available for review\")\nFileNotFoundError: No Garmin activity with id 22939403784 available for review",
       "next_action": "inspect_last_error",
       "timer_interval_minutes": 5
     },
@@ -632,9 +632,9 @@
               "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569255563,\n  \"schedule_date\": \"2026-05-30\",\n  \"workout_name\": \"Bicicleta base aerobica 85 min\",\n  \"sport\": \"cycling\"\n}"
             },
             {
-              "file": "training/planned/workouts/2026-05-31_rodaje_10km_z2_continuidad.yaml",
+              "file": "training/planned/workouts/2026-06-01_bicicleta_larga_comoda_100min.yaml",
               "status": "ok",
-              "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569255569,\n  \"schedule_date\": \"2026-05-31\",\n  \"workout_name\": \"Bicicleta larga comoda 100 min\",\n  \"sport\": \"cycling\"\n}"
+              "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569255569,\n  \"schedule_date\": \"2026-06-01\",\n  \"workout_name\": \"Eliptica larga comoda 100 min\",\n  \"sport\": \"elliptical\"\n}"
             }
           ],
           "synced": 5,

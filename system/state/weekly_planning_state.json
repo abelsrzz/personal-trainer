@@ -31,9 +31,9 @@
             "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569255563,\n  \"schedule_date\": \"2026-05-30\",\n  \"workout_name\": \"Bicicleta base aerobica 85 min\",\n  \"sport\": \"cycling\"\n}"
           },
           {
-            "file": "training/planned/workouts/2026-05-31_rodaje_10km_z2_continuidad.yaml",
+            "file": "training/planned/workouts/2026-06-01_bicicleta_larga_comoda_100min.yaml",
             "status": "ok",
-            "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569255569,\n  \"schedule_date\": \"2026-05-31\",\n  \"workout_name\": \"Bicicleta larga comoda 100 min\",\n  \"sport\": \"cycling\"\n}"
+            "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569255569,\n  \"schedule_date\": \"2026-06-01\",\n  \"workout_name\": \"Eliptica larga comoda 100 min\",\n  \"sport\": \"elliptical\"\n}"
           }
         ],
         "synced": 5,
@@ -76,9 +76,9 @@
           "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569255563,\n  \"schedule_date\": \"2026-05-30\",\n  \"workout_name\": \"Bicicleta base aerobica 85 min\",\n  \"sport\": \"cycling\"\n}"
         },
         {
-          "file": "training/planned/workouts/2026-05-31_rodaje_10km_z2_continuidad.yaml",
+          "file": "training/planned/workouts/2026-06-01_bicicleta_larga_comoda_100min.yaml",
           "status": "ok",
-          "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569255569,\n  \"schedule_date\": \"2026-05-31\",\n  \"workout_name\": \"Bicicleta larga comoda 100 min\",\n  \"sport\": \"cycling\"\n}"
+          "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569255569,\n  \"schedule_date\": \"2026-06-01\",\n  \"workout_name\": \"Eliptica larga comoda 100 min\",\n  \"sport\": \"elliptical\"\n}"
         }
       ],
       "synced": 5,

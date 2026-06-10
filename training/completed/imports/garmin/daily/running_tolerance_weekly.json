@@ -21,12 +21,12 @@
   },
   {
     "userProfilePK": 137864769,
-    "calendarDate": "2026-05-31",
-    "totalImpactLoad": 16600,
-    "totalDistance": 10874.0,
-    "tolerance": 44253,
+    "calendarDate": "2026-06-01",
+    "totalImpactLoad": 0,
+    "totalDistance": 0.0,
+    "tolerance": 41481,
     "startOfWeek": "2026-05-31",
-    "endOfWeek": "2026-05-31",
+    "endOfWeek": "2026-06-01",
     "weekIndex": 1900
   }
 ]

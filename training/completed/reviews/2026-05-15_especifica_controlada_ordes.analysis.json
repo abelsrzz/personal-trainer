@@ -239,6 +239,7 @@
     "trend": "insufficient_data",
     "summary": "Aun no hay sesiones comparables previas para medir progresion o regresion."
   },
+  "coaching_summary": "Objetivo: Recordatorio controlado de ritmo cercano al objetivo de Ordes, sin convertirlo en una sesion de desgaste.. Bien: La sesion mantuvo una tecnica estable y una deriva cardiaca moderada (5.7%), asumible si las sensaciones fueron buenas. A mejorar: La intensidad se mantuvo razonablemente alineada con el objetivo previsto. Impacto: duracion 48:00, ritmo medio 6:20/km, FC 159.0 / 186.0 bpm, cadencia 172.7 spm, potencia 242.0 W, temperatura 20.0-30.0 C, desnivel +20.0 m. Sesion bien alineada con el objetivo del dia y sin senales relevantes de exceso. Si las sensaciones posteriores son normales, no deberia condicionar la planificacion inmediata.",
   "recovery_analysis": {
     "status": "complete",
     "resting_hr_bpm": 59,

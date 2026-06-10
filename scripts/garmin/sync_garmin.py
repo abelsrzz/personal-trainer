@@ -3,9 +3,11 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import logging
 import os
+import time
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any
@@ -81,6 +83,17 @@ def parse_args() -> argparse.Namespace:
 
     schedule_workout = subparsers.add_parser("schedule-workout-file", help="Upload and schedule a planned workout from YAML")
     schedule_workout.add_argument("workout_file", type=Path, help="Path to workout YAML file")
+
+    sync_planned = subparsers.add_parser(
+        "sync-planned-workouts",
+        help="Sync created, modified, or deleted planned workouts with Garmin",
+    )
+    sync_planned.add_argument(
+        "--interval-seconds",
+        type=int,
+        default=0,
+        help="Repeat the sync in a polling loop when greater than zero",
+    )
 
     return parser.parse_args()
 
@@ -206,6 +219,18 @@ def display_path(path: Path) -> str:
         return str(path)
 
 
+def file_sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def is_planned_workout_yaml(path: Path) -> bool:
+    return path.suffix.lower() == ".yaml" and path.name not in {"library_run_templates.yaml", "workout_template.yaml"}
+
+
+def planned_workout_yaml_files() -> list[Path]:
+    return [path for path in sorted(DEFAULT_WORKOUTS_ROOT.glob("*.yaml")) if is_planned_workout_yaml(path)]
+
+
 def garmin_strength_step_mapping(step_data: dict[str, Any], sport: str) -> dict[str, str]:
     if sport not in GARMIN_SELECTION_OPTIONAL_SPORTS:
         return {}
@@ -250,6 +275,21 @@ def existing_upload_records(workout_stem: str) -> list[tuple[Path, dict[str, Any
             continue
         records.append((path, payload if isinstance(payload, dict) else {}))
     return records
+
+
+def existing_upload_record_files() -> list[Path]:
+    return sorted(DEFAULT_WORKOUTS_ROOT.glob("*/*.garmin_upload.json"))
+
+
+def existing_upload_record_hashes(workout_stem: str) -> set[str]:
+    hashes: set[str] = set()
+    for _, payload in existing_upload_records(workout_stem):
+        if not isinstance(payload, dict):
+            continue
+        workout_hash = payload.get("workout_hash")
+        if workout_hash:
+            hashes.add(str(workout_hash))
+    return hashes
 
 
 def garmin_calendar_items(client: Garmin, schedule_date: str) -> list[dict[str, Any]]:
@@ -649,7 +689,7 @@ def sport_type_payload(sport: str) -> dict[str, Any]:
     if sport == "strength":
         return {"sportTypeId": 5, "sportTypeKey": "strength_training", "displayOrder": 5}
     if sport == "swimming":
-        return {"sportTypeId": 5, "sportTypeKey": "swimming", "displayOrder": 5}
+        return {"sportTypeId": 4, "sportTypeKey": "swimming", "displayOrder": 3}
     if sport in {"mobility", "stretching"}:
         return {"sportTypeId": 11, "sportTypeKey": "mobility", "displayOrder": 10}
     if sport == "elliptical":
@@ -672,6 +712,11 @@ def upload_sport_warning(requested_sport: str, response: dict[str, Any] | None) 
     if requested_sport == "strength" and stored_sport != "strength_training":
         return (
             "Garmin ha ignorado el tipo strength del workout y lo ha guardado como "
+            f"{stored_sport or 'desconocido'}."
+        )
+    if requested_sport == "swimming" and stored_sport != "swimming":
+        return (
+            "Garmin ha ignorado el tipo swimming del workout y lo ha guardado como "
             f"{stored_sport or 'desconocido'}."
         )
     if requested_sport in {"mobility", "stretching"} and stored_sport not in {"mobility", "stretching"}:
@@ -837,6 +882,7 @@ def schedule_workout_file(client: Garmin, workout_file: Path) -> None:
     save_json(target_dir / f"{workout_path.stem}.garmin_upload.json", {
         "generated_at": datetime.utcnow().isoformat() + "Z",
         "status": "scheduled",
+        "workout_hash": file_sha256(workout_path),
         "upload_mode": upload_mode,
         "workout_file": display_path(workout_path),
         "uploaded_response": response,
@@ -851,6 +897,82 @@ def schedule_workout_file(client: Garmin, workout_file: Path) -> None:
         "workout_name": workout.get("name"),
         "sport": sport,
     }, indent=2, ensure_ascii=True))
+
+
+def sync_deleted_planned_workouts(client: Garmin) -> list[dict[str, Any]]:
+    results: list[dict[str, Any]] = []
+    for record_path in existing_upload_record_files():
+        try:
+            payload = load_json(record_path)
+        except (OSError, json.JSONDecodeError):
+            logger.warning("Could not read Garmin upload record path=%s", display_path(record_path))
+            continue
+        if not isinstance(payload, dict):
+            continue
+        workout_file = payload.get("workout_file")
+        if not workout_file:
+            continue
+        workout_path = normalize_path(Path(str(workout_file)))
+        if workout_path.exists():
+            continue
+        cleanup = cleanup_previous_uploads(client, [(record_path, payload)])
+        results.append(
+            {
+                "file": str(workout_file),
+                "status": "deleted",
+                "message": "Workout eliminado localmente y retirado de Garmin.",
+                "cleanup": cleanup,
+            }
+        )
+    return results
+
+
+def sync_planned_workouts_once(client: Garmin) -> dict[str, Any]:
+    results = sync_deleted_planned_workouts(client)
+    for workout_path in planned_workout_yaml_files():
+        current_hash = file_sha256(workout_path)
+        if current_hash in existing_upload_record_hashes(workout_path.stem):
+            results.append(
+                {
+                    "file": display_path(workout_path),
+                    "status": "skipped",
+                    "message": "Sin cambios frente al ultimo upload registrado.",
+                }
+            )
+            continue
+        try:
+            schedule_workout_file(client, workout_path)
+            results.append(
+                {
+                    "file": display_path(workout_path),
+                    "status": "synced",
+                    "message": "Workout sincronizado con Garmin.",
+                }
+            )
+        except Exception as exc:
+            logger.exception("Planned workout sync failed file=%s", display_path(workout_path))
+            results.append(
+                {
+                    "file": display_path(workout_path),
+                    "status": "error",
+                    "message": str(exc),
+                }
+            )
+    synced = sum(1 for item in results if item["status"] == "synced")
+    deleted = sum(1 for item in results if item["status"] == "deleted")
+    failed = sum(1 for item in results if item["status"] == "error")
+    skipped = sum(1 for item in results if item["status"] == "skipped")
+    return {"items": results, "synced": synced, "deleted": deleted, "failed": failed, "skipped": skipped}
+
+
+def sync_planned_workouts(client: Garmin, interval_seconds: int = 0) -> None:
+    interval = max(0, int(interval_seconds or 0))
+    while True:
+        payload = sync_planned_workouts_once(client)
+        print(json.dumps(payload, indent=2, ensure_ascii=True))
+        if interval <= 0:
+            return
+        time.sleep(max(5, interval))
 
 
 def import_activities(client: Garmin, days: int, limit: int, activity_type: str | None, download_format: str | None) -> None:
@@ -1014,6 +1136,10 @@ def main() -> None:
 
     if args.command == "schedule-workout-file":
         schedule_workout_file(client, args.workout_file)
+        return
+
+    if args.command == "sync-planned-workouts":
+        sync_planned_workouts(client, args.interval_seconds)
         return
 
     raise ValueError(f"Unsupported command: {args.command}")

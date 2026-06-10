@@ -185,43 +185,12 @@
     "summary": "El estimulo real se desvia del objetivo previsto. Previsto: recuperacion, base_aerobica. Real observado: umbral_lactico."
   },
   "progression": {
-    "comparable_count": 2,
-    "matches": [
-      {
-        "date": "2026-05-07",
-        "name": "Rodaje 6 km + 4 rectas controladas",
-        "goal_category": "steady_easy",
-        "distance_m": 6680.5,
-        "elevation_gain_m": 18.0,
-        "pace_s_per_km": 432.8378112486902,
-        "avg_hr": 151.0,
-        "avg_power_w": 215.0,
-        "decoupling_pct": 8.306906458013486
-      },
-      {
-        "date": "2026-05-05",
-        "name": "Rodaje 5 km reintroduccion",
-        "goal_category": "reintroduction_easy",
-        "distance_m": 5035.60009765625,
-        "elevation_gain_m": 13.0,
-        "pace_s_per_km": 443.7744966042074,
-        "avg_hr": 144.0,
-        "avg_power_w": 212.0,
-        "decoupling_pct": 3.0259054638537286
-      }
-    ],
-    "baseline": {
-      "pace_s_per_km": 438.3061539264488,
-      "avg_hr": 147.5
-    },
-    "delta_vs_baseline": {
-      "pace_s_per_km": -23.03026796055775,
-      "avg_hr": 0.5
-    },
-    "trend": "progress",
-    "summary": "Ritmo mas rapido con pulso similar o mejor controlado frente a sesiones comparables."
+    "comparable_count": 0,
+    "matches": [],
+    "trend": "insufficient_data",
+    "summary": "Aun no hay sesiones comparables previas para medir progresion o regresion."
   },
-  "coaching_summary": "Objetivo: Rodaje corto para consolidar sin fatiga tras la sesion controlada del viernes.. Bien: Se completo la sesion con estabilidad mecanica y una deriva cardiaca baja (2.7%). A mejorar: Hubo algunos tramos por encima del techo de FC (25.1% del tiempo), aunque dentro de un desvio relativamente normal para un rodaje al aire libre. Impacto: Ritmo medio 6:55/km, FC 148.0/159.0 bpm, cadencia 168.7 spm, potencia 237.0 W, temperatura 18.0-23.0 C, desnivel +35.0 m. Sesion bien alineada con el objetivo del dia y sin senales relevantes de exceso. Si las sensaciones posteriores son normales, no deberia condicionar la planificacion inmediata.",
+  "coaching_summary": "Objetivo: Rodaje corto para consolidar sin fatiga tras la sesion controlada del viernes.. Bien: Se completo la sesion con estabilidad mecanica y una deriva cardiaca baja (2.7%). A mejorar: Hubo algunos tramos por encima del techo de FC (25.1% del tiempo), aunque dentro de un desvio relativamente normal para un rodaje al aire libre. Impacto: duracion 34:37, ritmo medio 6:55/km, FC 148.0 / 159.0 bpm, cadencia 168.7 spm, potencia 237.0 W, temperatura 18.0-23.0 C, desnivel +35.0 m. Sesion bien alineada con el objetivo del dia y sin senales relevantes de exceso. Si las sensaciones posteriores son normales, no deberia condicionar la planificacion inmediata.",
   "recovery_analysis": {
     "status": "complete",
     "resting_hr_bpm": 53,

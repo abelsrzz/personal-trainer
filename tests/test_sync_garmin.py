@@ -115,6 +115,11 @@ class FakeWorkoutClient:
         sport_type = payload.get("sportType") or {}
         return {"workoutId": 777, "sportType": sport_type}
 
+    def upload_swimming_workout(self, payload):
+        self.uploaded_payload = payload.to_dict()
+        sport_type = self.uploaded_payload.get("sportType") or {}
+        return {"workoutId": 777, "sportType": sport_type}
+
     def schedule_workout(self, workout_id: int, schedule_date: str):
         self.scheduled = (workout_id, schedule_date)
         return {"status": "scheduled", "date": schedule_date, "workoutScheduleId": 7770}
@@ -209,6 +214,22 @@ class GarminSyncTests(unittest.TestCase):
         self.assertEqual(payload["sportType"]["sportTypeKey"], "mobility")
         self.assertEqual(payload["sportType"]["sportTypeId"], 11)
         self.assertEqual(payload["workoutSegments"][0]["sportType"]["sportTypeKey"], "mobility")
+
+    def test_build_workout_payload_uses_swimming_sport_type(self) -> None:
+        payload = sync_garmin.build_workout_payload(
+            {
+                "workout": {
+                    "name": "Natacion continua",
+                    "sport": "swimming",
+                    "estimated_duration_s": 1800,
+                    "steps": [{"order": 1, "step_type": "interval", "description": "30 min continuos", "duration_s": 1800}],
+                }
+            },
+            include_targets=True,
+        ).to_dict()
+        self.assertEqual(payload["sportType"]["sportTypeKey"], "swimming")
+        self.assertEqual(payload["sportType"]["sportTypeId"], 4)
+        self.assertEqual(payload["workoutSegments"][0]["sportType"]["sportTypeKey"], "swimming")
 
     def test_build_workout_payload_maps_exact_mobility_exercises_from_garmin_catalog(self) -> None:
         payload = sync_garmin.build_workout_payload(

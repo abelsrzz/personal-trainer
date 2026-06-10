@@ -11,7 +11,7 @@
 
 - Numeric score: 10/10
 - Traffic light: verde
-- Written review: Ritmo medio 6:56/km, FC 150.0/175.0 bpm, cadencia 167.8 spm, potencia 224.0 W, temperatura 22.0-30.0 C, desnivel +20.0 m. Sesion bien alineada con el objetivo del dia y sin senales relevantes de exceso. Si las sensaciones posteriores son normales, no deberia condicionar la planificacion inmediata.
+- Written review: duracion 50:27, ritmo medio 6:56/km, FC 150.0 / 175.0 bpm, cadencia 167.8 spm, potencia 224.0 W, temperatura 22.0-30.0 C, desnivel +20.0 m. Sesion bien alineada con el objetivo del dia y sin senales relevantes de exceso. Si las sensaciones posteriores son normales, no deberia condicionar la planificacion inmediata.
 
 ## Execution Analysis
 
@@ -22,7 +22,7 @@
 - Stimulus alignment: El estimulo real se desvia del objetivo previsto. Previsto: recuperacion, base_aerobica. Real observado: umbral_lactico.
 - What went well: La sesion mantuvo una tecnica estable y una deriva cardiaca moderada (7.6%), asumible si las sensaciones fueron buenas.
 - What missed the target: Hubo algunos tramos por encima del techo de FC (26.4% del tiempo), aunque dentro de un desvio relativamente normal para un rodaje al aire libre.
-- Relevant signals: ritmo 6:56/km, FC media/max 150.0/175.0, cadencia 167.8, potencia 224.0, terreno +20.0 m, temperatura 22.0-30.0 C.
+- Relevant signals: ritmo 6:56/km, FC media/max 150.0/175.0, cadencia 167.8, potencia 224, terreno +20.0 m, temperatura 22.0-30.0 C.
 
 ## Planned Vs Completed
 

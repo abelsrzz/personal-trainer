@@ -1,665 +1,17 @@
 {
-  "last_seen_activity_id": 23070751559,
-  "last_seen_activity_date": "2026-05-30",
-  "last_processed_activity_id": 23070751559,
-  "last_processed_activity_date": "2026-05-30",
-  "last_processed_at": "2026-05-30T22:17:43.631369+00:00",
+  "last_seen_activity_id": 23083515075,
+  "last_seen_activity_date": "2026-05-31",
+  "last_processed_activity_id": 22937591625,
+  "last_processed_activity_date": "2026-05-19",
+  "last_processed_at": "2026-06-01T12:34:08.999543+00:00",
   "last_successful_run": "2026-05-30T22:17:43.631387+00:00",
-  "last_error": "Traceback (most recent call last):\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1370, in <module>\n    main()\n    ~~~~^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1343, in main\n    activity = select_activity_by_id(activities, args.activity_id) if args.activity_id is not None else select_activity(activities, planned, args.date)\n               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 173, in select_activity_by_id\n    raise FileNotFoundError(f\"No Garmin activity with id {activity_id} available for review\")\nFileNotFoundError: No Garmin activity with id 23023955791 available for review",
-  "last_activity_import_at": "2026-05-30T23:06:20.722200+00:00",
-  "last_daily_import_at": "2026-05-30T23:06:44.528612+00:00",
-  "last_profile_sync_at": "2026-05-30T23:06:46.460576+00:00",
+  "last_error": "Traceback (most recent call last):\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1370, in <module>\n    main()\n    ~~~~^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1343, in main\n    activity = select_activity_by_id(activities, args.activity_id) if args.activity_id is not None else select_activity(activities, planned, args.date)\n               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 173, in select_activity_by_id\n    raise FileNotFoundError(f\"No Garmin activity with id {activity_id} available for review\")\nFileNotFoundError: No Garmin activity with id 22939403784 available for review",
+  "last_activity_import_at": "2026-06-01T12:33:37.964082+00:00",
+  "last_daily_import_at": "2026-06-01T12:34:04.054770+00:00",
+  "last_profile_sync_at": "2026-06-01T12:34:06.276992+00:00",
   "next_action": "inspect_last_error",
   "timer_interval_minutes": 5,
   "processed_activities": [
-    {
-      "activity_id": 21469746216,
-      "activity_date": "2026-01-07",
-      "activity_name": "Ordes - S1 Mi\u00e9 Tempo - Carrera progresi",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:05.732769+00:00"
-    },
-    {
-      "activity_id": 21490398451,
-      "activity_date": "2026-01-09",
-      "activity_name": "Ordes - S1 Vie Intervalos - Repeticiones",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:06.113117+00:00"
-    },
-    {
-      "activity_id": 21511086356,
-      "activity_date": "2026-01-11",
-      "activity_name": "Ordes - S1 Dom Carrera larga - 15km Carr",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:06.487611+00:00"
-    },
-    {
-      "activity_id": 21534539726,
-      "activity_date": "2026-01-13",
-      "activity_name": "Ordes - S2 Mar Tempo - Repeticiones temp",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:06.863118+00:00"
-    },
-    {
-      "activity_id": 21558091935,
-      "activity_date": "2026-01-15",
-      "activity_name": "Ordes - S2 Jue Carrera larga - 17km Carr",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:07.257620+00:00"
-    },
-    {
-      "activity_id": 21585339290,
-      "activity_date": "2026-01-18",
-      "activity_name": "Ordes - S2 Dom Intervalos - Repeticiones",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:07.660882+00:00"
-    },
-    {
-      "activity_id": 21598151813,
-      "activity_date": "2026-01-19",
-      "activity_name": "Ordes - S3 Lun Carrera f\u00e1cil - Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:08.042581+00:00"
-    },
-    {
-      "activity_id": 21621449393,
-      "activity_date": "2026-01-21",
-      "activity_name": "Ordes - S3 Mi\u00e9 Carrera f\u00e1cil #2 - Carr",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:08.416740+00:00"
-    },
-    {
-      "activity_id": 21641563872,
-      "activity_date": "2026-01-23",
-      "activity_name": "Ordes - S3 Vie Carrera larga - 15km Carrera larga progresiva",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:08.791945+00:00"
-    },
-    {
-      "activity_id": 21657464342,
-      "activity_date": "2026-01-25",
-      "activity_name": "Puentecesures Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:09.185953+00:00"
-    },
-    {
-      "activity_id": 21657557875,
-      "activity_date": "2026-01-25",
-      "activity_name": "Puentecesures Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:09.563545+00:00"
-    },
-    {
-      "activity_id": 21658011411,
-      "activity_date": "2026-01-25",
-      "activity_name": "Puentecesures Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:09.928845+00:00"
-    },
-    {
-      "activity_id": 21681833374,
-      "activity_date": "2026-01-27",
-      "activity_name": "Ordes - S4 Mar Carrera larga - 9km Carre",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:10.319885+00:00"
-    },
-    {
-      "activity_id": 21693008218,
-      "activity_date": "2026-01-28",
-      "activity_name": "Ordes - S4 Mi\u00e9 Intervalos - Repeticione",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:10.699127+00:00"
-    },
-    {
-      "activity_id": 21712898849,
-      "activity_date": "2026-01-30",
-      "activity_name": "Ordes - 9km Carrera larga",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:11.082470+00:00"
-    },
-    {
-      "activity_id": 21733179601,
-      "activity_date": "2026-02-01",
-      "activity_name": "Ordes - S4 Dom Tempo - Carrera progresiv",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:11.449960+00:00"
-    },
-    {
-      "activity_id": 21752883528,
-      "activity_date": "2026-02-03",
-      "activity_name": "Ordes - S5 Mar Intervalos de afinamiento",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:11.818295+00:00"
-    },
-    {
-      "activity_id": 21775076297,
-      "activity_date": "2026-02-05",
-      "activity_name": "Ordes - S5 Jue Carrera f\u00e1cil - Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:12.222425+00:00"
-    },
-    {
-      "activity_id": 21795039064,
-      "activity_date": "2026-02-07",
-      "activity_name": "Padr\u00f3n Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:12.609189+00:00"
-    },
-    {
-      "activity_id": 21795563726,
-      "activity_date": "2026-02-07",
-      "activity_name": "Padr\u00f3n Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:13.014621+00:00"
-    },
-    {
-      "activity_id": 21848754999,
-      "activity_date": "2026-02-11",
-      "activity_name": "Ordes Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:13.397802+00:00"
-    },
-    {
-      "activity_id": 21887135245,
-      "activity_date": "2026-02-16",
-      "activity_name": "Ordes - S1 Lun Carrera f\u00e1cil - Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:13.822164+00:00"
-    },
-    {
-      "activity_id": 21897480123,
-      "activity_date": "2026-02-17",
-      "activity_name": "Ordes - S1 Mar Tempo - Carrera progresiv",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:14.213358+00:00"
-    },
-    {
-      "activity_id": 21897541380,
-      "activity_date": "2026-02-17",
-      "activity_name": "Ordes Entrenamiento en pista",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:14.585050+00:00"
-    },
-    {
-      "activity_id": 21920505485,
-      "activity_date": "2026-02-19",
-      "activity_name": "Ordes - S1 Jue Cuestas - Repeticiones en",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:14.979770+00:00"
-    },
-    {
-      "activity_id": 21948499371,
-      "activity_date": "2026-02-22",
-      "activity_name": "Ordes - S1 Dom Carrera larga - 12km Carr",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:15.359940+00:00"
-    },
-    {
-      "activity_id": 21982934216,
-      "activity_date": "2026-02-25",
-      "activity_name": "Ordes - S2 Mi\u00e9 Carrera f\u00e1cil - Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:15.737633+00:00"
-    },
-    {
-      "activity_id": 21994588415,
-      "activity_date": "2026-02-26",
-      "activity_name": "Ordes - S2 Jue Intervalos - Repeticiones",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:16.113287+00:00"
-    },
-    {
-      "activity_id": 22013626423,
-      "activity_date": "2026-02-28",
-      "activity_name": "Ordes - S2 S\u00e1b Carrera f\u00e1cil #2 - Carr",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:16.484983+00:00"
-    },
-    {
-      "activity_id": 22090618559,
-      "activity_date": "2026-03-07",
-      "activity_name": "Ordes - S3 S\u00e1b Carrera f\u00e1cil #2 - Carr",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:16.876155+00:00"
-    },
-    {
-      "activity_id": 22130606199,
-      "activity_date": "2026-03-10",
-      "activity_name": "Ordes - S4 Mar Carrera f\u00e1cil - Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:17.314658+00:00"
-    },
-    {
-      "activity_id": 22152251722,
-      "activity_date": "2026-03-12",
-      "activity_name": "Ordes - S4 Jue Carrera f\u00e1cil #2 - Carre",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:17.762408+00:00"
-    },
-    {
-      "activity_id": 22161817119,
-      "activity_date": "2026-03-13",
-      "activity_name": "Ordes - S4 Vie Carrera larga - 12km Carr",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:18.229977+00:00"
-    },
-    {
-      "activity_id": 22178118122,
-      "activity_date": "2026-03-15",
-      "activity_name": "Caldas de Reis Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:18.710310+00:00"
-    },
-    {
-      "activity_id": 22179159201,
-      "activity_date": "2026-03-15",
-      "activity_name": "Caldas de Reis - III TRAIL LAXE DOS BOLOS 2026",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:19.159618+00:00"
-    },
-    {
-      "activity_id": 22193880249,
-      "activity_date": "2026-03-16",
-      "activity_name": "Ordes - S5 Lun Carrera f\u00e1cil - Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:19.626931+00:00"
-    },
-    {
-      "activity_id": 22216903032,
-      "activity_date": "2026-03-18",
-      "activity_name": "Ordes - S5 Mi\u00e9 Tempo - Variantes de 300",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:20.108727+00:00"
-    },
-    {
-      "activity_id": 22228011456,
-      "activity_date": "2026-03-19",
-      "activity_name": "Ordes Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:20.573313+00:00"
-    },
-    {
-      "activity_id": 22248829401,
-      "activity_date": "2026-03-21",
-      "activity_name": "Ordes - S5 S\u00e1b Cuestas - Descendentes:",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:21.027522+00:00"
-    },
-    {
-      "activity_id": 22262856495,
-      "activity_date": "2026-03-22",
-      "activity_name": "Cerceda - S5 Dom Carrera larga - 12km Carr",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:21.497113+00:00"
-    },
-    {
-      "activity_id": 22273989426,
-      "activity_date": "2026-03-23",
-      "activity_name": "Ordes Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:21.962835+00:00"
-    },
-    {
-      "activity_id": 22297362456,
-      "activity_date": "2026-03-25",
-      "activity_name": "Ordes - S6",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:22.472116+00:00"
-    },
-    {
-      "activity_id": 22308492819,
-      "activity_date": "2026-03-26",
-      "activity_name": "Ordes - S7 Jue Carrera f\u00e1cil - Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:22.934262+00:00"
-    },
-    {
-      "activity_id": 22319447186,
-      "activity_date": "2026-03-27",
-      "activity_name": "Ordes Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:23.426590+00:00"
-    },
-    {
-      "activity_id": 22335799805,
-      "activity_date": "2026-03-29",
-      "activity_name": "Ordes - S6 Dom Intervalos - Repeticiones",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:23.916822+00:00"
-    },
-    {
-      "activity_id": 22373167942,
-      "activity_date": "2026-04-01",
-      "activity_name": "Entrenamiento en cinta",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:24.378865+00:00"
-    },
-    {
-      "activity_id": 22408614965,
-      "activity_date": "2026-04-04",
-      "activity_name": "Ordes Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:24.827487+00:00"
-    },
-    {
-      "activity_id": 22428354271,
-      "activity_date": "2026-04-06",
-      "activity_name": "Ordes - 7km <150ppm",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:25.273861+00:00"
-    },
-    {
-      "activity_id": 22456165150,
-      "activity_date": "2026-04-08",
-      "activity_name": "Ordes - 5x1000@4:10",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:25.719913+00:00"
-    },
-    {
-      "activity_id": 22468277669,
-      "activity_date": "2026-04-09",
-      "activity_name": "Ordes - Copia de 8km <150ppm",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:26.178670+00:00"
-    },
-    {
-      "activity_id": 22502751674,
-      "activity_date": "2026-04-12",
-      "activity_name": "Ordes - 10km Z2",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:26.629225+00:00"
-    },
-    {
-      "activity_id": 22512924914,
-      "activity_date": "2026-04-13",
-      "activity_name": "Culleredo - 8km <150ppm",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:27.081960+00:00"
-    },
-    {
-      "activity_id": 22536339184,
-      "activity_date": "2026-04-15",
-      "activity_name": "Ordes - 7k <145ppm",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:27.526635+00:00"
-    },
-    {
-      "activity_id": 22549284276,
-      "activity_date": "2026-04-16",
-      "activity_name": "Ordes - 4x1000@3:55",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:27.973595+00:00"
-    },
-    {
-      "activity_id": 22573396857,
-      "activity_date": "2026-04-18",
-      "activity_name": "Ordes Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:28.417876+00:00"
-    },
-    {
-      "activity_id": 22584349968,
-      "activity_date": "2026-04-19",
-      "activity_name": "Cerceda - 10k Z2",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:28.858984+00:00"
-    },
-    {
-      "activity_id": 22632227816,
-      "activity_date": "2026-04-23",
-      "activity_name": "Ordes Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:29.293745+00:00"
-    },
-    {
-      "activity_id": 22664185552,
-      "activity_date": "2026-04-26",
-      "activity_name": "Ordes Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:29.739484+00:00"
-    },
-    {
-      "activity_id": 22680042702,
-      "activity_date": "2026-04-27",
-      "activity_name": "Ordes Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:30.195497+00:00"
-    },
-    {
-      "activity_id": 22693329165,
-      "activity_date": "2026-04-28",
-      "activity_name": "Ordes - 4x1000@4:10",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:30.644119+00:00"
-    },
-    {
-      "activity_id": 22776053069,
-      "activity_date": "2026-05-05",
-      "activity_name": "Ordes - Rodaje 5 km reintroduccion",
-      "review_slug": "2026-05-05_rodaje_5km_reintroduccion",
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:31.164167+00:00"
-    },
-    {
-      "activity_id": 22798592588,
-      "activity_date": "2026-05-07",
-      "activity_name": "Ordes - Rodaje 6 km + 4 rectas controlad",
-      "review_slug": "2026-05-07_rodaje_6km_rectas_controladas",
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:31.671332+00:00"
-    },
-    {
-      "activity_id": 22822541135,
-      "activity_date": "2026-05-09",
-      "activity_name": "Cerceda Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:32.145685+00:00"
-    },
-    {
-      "activity_id": 22823255797,
-      "activity_date": "2026-05-09",
-      "activity_name": "Cerceda - IV EDICI\u00d3N OS 11 DAS V\u00cdAS - CONCELLO DE CERCEDA",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-12T09:58:32.598693+00:00"
-    },
-    {
-      "activity_id": 22870230448,
-      "activity_date": "2026-05-13",
-      "activity_name": "Ordes - Rodaje 7 km + 5 rectas controlad",
-      "review_slug": "2026-05-13_rodaje_7km_rectas_controladas",
-      "result": "success",
-      "processed_at": "2026-05-16T11:43:55.568359+00:00"
-    },
-    {
-      "activity_id": 22889384200,
-      "activity_date": "2026-05-15",
-      "activity_name": "Ordes - Especifica controlada Ordes",
-      "review_slug": "2026-05-15_especifica_controlada_ordes",
-      "result": "success",
-      "processed_at": "2026-05-16T11:43:56.273507+00:00"
-    },
-    {
-      "activity_id": 22900018441,
-      "activity_date": "2026-05-16",
-      "activity_name": "Ordes - Rodaje 5 km facil",
-      "review_slug": null,
-      "result": "error",
-      "processed_at": "2026-05-16T11:43:57.030623+00:00"
-    },
-    {
-      "activity_id": 22900018441,
-      "activity_date": "2026-05-16",
-      "activity_name": "Ordes - Rodaje 5 km facil",
-      "review_slug": "2026-05-16_rodaje_5km_facil",
-      "result": "success",
-      "processed_at": "2026-05-23T17:12:07.252403+00:00"
-    },
-    {
-      "activity_id": 22970190097,
-      "activity_date": "2026-05-22",
-      "activity_name": "Ordes - Activacion running ritmo carrera",
-      "review_slug": "2026-05-22_activacion_ritmo_carrera",
-      "result": "success",
-      "processed_at": "2026-05-23T17:12:08.212549+00:00"
-    },
-    {
-      "activity_id": 22992915868,
-      "activity_date": "2026-05-24",
-      "activity_name": "Ordes - Calentamiento pre-carrera Ordes",
-      "review_slug": "2026-05-24_calentamiento_precarrera_ordes",
-      "result": "success",
-      "processed_at": "2026-05-24T11:59:49.787970+00:00"
-    },
-    {
-      "activity_id": 22992941690,
-      "activity_date": "2026-05-24",
-      "activity_name": "Ordes - XXIX CARREIRA POPULAR CONCELLO DE ORDES",
-      "review_slug": "2026-05-24_calentamiento_precarrera_ordes",
-      "result": "success",
-      "processed_at": "2026-05-24T11:59:53.116704+00:00"
-    },
-    {
-      "activity_id": 23032805565,
-      "activity_date": "2026-05-27",
-      "activity_name": "Fuerza",
-      "review_slug": "2026-05-27_fuerza_movilidad_tolerancia_35min",
-      "result": "success",
-      "processed_at": "2026-05-27T18:38:56.477158+00:00"
-    },
-    {
-      "activity_id": 22937591625,
-      "activity_date": "2026-05-19",
-      "activity_name": "Eliptica aerobica estable 55 min",
-      "review_slug": "2026-05-19_rodaje_5km_reintroduccion",
-      "result": "success",
-      "processed_at": "2026-05-27T18:45:22.652296+00:00"
-    },
-    {
-      "activity_id": 22948750716,
-      "activity_date": "2026-05-20",
-      "activity_name": "Ordes - Bicicleta aerobica de continuidad 70 min",
-      "review_slug": "2026-05-20_rodaje_6km_rectas_suaves",
-      "result": "success",
-      "processed_at": "2026-05-27T18:45:28.420703+00:00"
-    },
-    {
-      "activity_id": 23017054300,
-      "activity_date": "2026-05-26",
-      "activity_name": "Ordes - Bicicleta recuperacion post-Ordes 50 min",
-      "review_slug": "2026-05-26_rodaje_6km_recuperacion_post_ordes",
-      "result": "success",
-      "processed_at": "2026-05-27T18:45:34.535556+00:00"
-    },
-    {
-      "activity_id": 23045517009,
-      "activity_date": "2026-05-28",
-      "activity_name": "Ordes - Bicicleta aerobica continua 65 min",
-      "review_slug": "2026-05-28_rodaje_7km_controlado",
-      "result": "success",
-      "processed_at": "2026-05-30T22:17:40.532180+00:00"
-    },
-    {
-      "activity_id": 23060084660,
-      "activity_date": "2026-05-29",
-      "activity_name": "Ordes Caminar",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-05-30T22:17:41.469680+00:00"
-    },
-    {
-      "activity_id": 23070751559,
-      "activity_date": "2026-05-30",
-      "activity_name": "Ordes - Bicicleta base aerobica 85 min",
-      "review_slug": "2026-05-30_rodaje_6km_progresivo_suave",
-      "result": "success",
-      "processed_at": "2026-05-30T22:17:43.631310+00:00"
-    },
-    {
-      "activity_id": 23023955791,
-      "activity_date": "2026-05-26",
-      "activity_name": "Ordes Caminar",
-      "review_slug": null,
-      "result": "error",
-      "processed_at": "2026-05-30T22:23:13.506949+00:00"
-    },
-    {
-      "activity_id": 23023955791,
-      "activity_date": "2026-05-26",
-      "activity_name": "Ordes Caminar",
-      "review_slug": null,
-      "result": "error",
-      "processed_at": "2026-05-30T22:28:43.879856+00:00"
-    },
-    {
-      "activity_id": 23023955791,
-      "activity_date": "2026-05-26",
-      "activity_name": "Ordes Caminar",
-      "review_slug": null,
-      "result": "error",
-      "processed_at": "2026-05-30T22:34:13.568982+00:00"
-    },
     {
       "activity_id": 23023955791,
       "activity_date": "2026-05-26",
@@ -739,6 +91,726 @@
       "review_slug": null,
       "result": "error",
       "processed_at": "2026-05-30T23:06:47.360947+00:00"
+    },
+    {
+      "activity_id": 23023955791,
+      "activity_date": "2026-05-26",
+      "activity_name": "Ordes Caminar",
+      "review_slug": null,
+      "result": "error",
+      "processed_at": "2026-05-30T23:12:16.228100+00:00"
+    },
+    {
+      "activity_id": 23023955791,
+      "activity_date": "2026-05-26",
+      "activity_name": "Ordes Caminar",
+      "review_slug": null,
+      "result": "error",
+      "processed_at": "2026-05-31T11:34:54.855505+00:00"
+    },
+    {
+      "activity_id": 22939403784,
+      "activity_date": "2026-05-19",
+      "activity_name": "Ordes Caminar",
+      "review_slug": null,
+      "result": "error",
+      "processed_at": "2026-05-31T11:39:22.763046+00:00"
+    },
+    {
+      "activity_id": 22939403784,
+      "activity_date": "2026-05-19",
+      "activity_name": "Ordes Caminar",
+      "review_slug": null,
+      "result": "error",
+      "processed_at": "2026-05-31T17:33:20.056904+00:00"
+    },
+    {
+      "activity_id": 22939403784,
+      "activity_date": "2026-05-19",
+      "activity_name": "Ordes Caminar",
+      "review_slug": null,
+      "result": "error",
+      "processed_at": "2026-05-31T17:38:55.323700+00:00"
+    },
+    {
+      "activity_id": 22939403784,
+      "activity_date": "2026-05-19",
+      "activity_name": "Ordes Caminar",
+      "review_slug": null,
+      "result": "error",
+      "processed_at": "2026-05-31T17:44:32.351314+00:00"
+    },
+    {
+      "activity_id": 22939403784,
+      "activity_date": "2026-05-19",
+      "activity_name": "Ordes Caminar",
+      "review_slug": null,
+      "result": "error",
+      "processed_at": "2026-05-31T17:55:19.019335+00:00"
+    },
+    {
+      "activity_id": 22939403784,
+      "activity_date": "2026-05-19",
+      "activity_name": "Ordes Caminar",
+      "review_slug": null,
+      "result": "error",
+      "processed_at": "2026-05-31T18:00:56.577260+00:00"
+    },
+    {
+      "activity_id": 22939403784,
+      "activity_date": "2026-05-19",
+      "activity_name": "Ordes Caminar",
+      "review_slug": null,
+      "result": "error",
+      "processed_at": "2026-05-31T18:06:38.021991+00:00"
+    },
+    {
+      "activity_id": 22939403784,
+      "activity_date": "2026-05-19",
+      "activity_name": "Ordes Caminar",
+      "review_slug": null,
+      "result": "error",
+      "processed_at": "2026-05-31T18:12:13.568407+00:00"
+    },
+    {
+      "activity_id": 21469746216,
+      "activity_date": "2026-01-07",
+      "activity_name": "Ordes - S1 Mi\u00e9 Tempo - Carrera progresi",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-05-31T18:17:46.011561+00:00"
+    },
+    {
+      "activity_id": 22939403784,
+      "activity_date": "2026-05-19",
+      "activity_name": "Ordes Caminar",
+      "review_slug": null,
+      "result": "error",
+      "processed_at": "2026-05-31T18:17:46.705390+00:00"
+    },
+    {
+      "activity_id": 21490398451,
+      "activity_date": "2026-01-09",
+      "activity_name": "Ordes - S1 Vie Intervalos - Repeticiones",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T07:12:00.034035+00:00"
+    },
+    {
+      "activity_id": 21511086356,
+      "activity_date": "2026-01-11",
+      "activity_name": "Ordes - S1 Dom Carrera larga - 15km Carr",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T07:12:00.864623+00:00"
+    },
+    {
+      "activity_id": 22939403784,
+      "activity_date": "2026-05-19",
+      "activity_name": "Ordes Caminar",
+      "review_slug": null,
+      "result": "error",
+      "processed_at": "2026-06-01T07:12:01.663559+00:00"
+    },
+    {
+      "activity_id": 21534539726,
+      "activity_date": "2026-01-13",
+      "activity_name": "Ordes - S2 Mar Tempo - Repeticiones temp",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T07:18:34.325063+00:00"
+    },
+    {
+      "activity_id": 21558091935,
+      "activity_date": "2026-01-15",
+      "activity_name": "Ordes - S2 Jue Carrera larga - 17km Carr",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T07:18:35.564941+00:00"
+    },
+    {
+      "activity_id": 21585339290,
+      "activity_date": "2026-01-18",
+      "activity_name": "Ordes - S2 Dom Intervalos - Repeticiones",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T07:18:36.645934+00:00"
+    },
+    {
+      "activity_id": 22939403784,
+      "activity_date": "2026-05-19",
+      "activity_name": "Ordes Caminar",
+      "review_slug": null,
+      "result": "error",
+      "processed_at": "2026-06-01T07:18:37.742473+00:00"
+    },
+    {
+      "activity_id": 21598151813,
+      "activity_date": "2026-01-19",
+      "activity_name": "Ordes - S3 Lun Carrera f\u00e1cil - Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T07:24:12.862925+00:00"
+    },
+    {
+      "activity_id": 21621449393,
+      "activity_date": "2026-01-21",
+      "activity_name": "Ordes - S3 Mi\u00e9 Carrera f\u00e1cil #2 - Carr",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T07:24:13.526703+00:00"
+    },
+    {
+      "activity_id": 21641563872,
+      "activity_date": "2026-01-23",
+      "activity_name": "Ordes - S3 Vie Carrera larga - 15km Carrera larga progresiva",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T07:24:14.222320+00:00"
+    },
+    {
+      "activity_id": 21657464342,
+      "activity_date": "2026-01-25",
+      "activity_name": "Puentecesures Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T07:24:14.870097+00:00"
+    },
+    {
+      "activity_id": 22939403784,
+      "activity_date": "2026-05-19",
+      "activity_name": "Ordes Caminar",
+      "review_slug": null,
+      "result": "error",
+      "processed_at": "2026-06-01T07:24:15.569253+00:00"
+    },
+    {
+      "activity_id": 21657557875,
+      "activity_date": "2026-01-25",
+      "activity_name": "Puentecesures Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T07:29:52.211952+00:00"
+    },
+    {
+      "activity_id": 21658011411,
+      "activity_date": "2026-01-25",
+      "activity_name": "Puentecesures Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T07:29:53.050129+00:00"
+    },
+    {
+      "activity_id": 21681833374,
+      "activity_date": "2026-01-27",
+      "activity_name": "Ordes - S4 Mar Carrera larga - 9km Carre",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T07:29:53.863631+00:00"
+    },
+    {
+      "activity_id": 21693008218,
+      "activity_date": "2026-01-28",
+      "activity_name": "Ordes - S4 Mi\u00e9 Intervalos - Repeticione",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T07:29:54.677439+00:00"
+    },
+    {
+      "activity_id": 21712898849,
+      "activity_date": "2026-01-30",
+      "activity_name": "Ordes - 9km Carrera larga",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T07:29:55.488339+00:00"
+    },
+    {
+      "activity_id": 22939403784,
+      "activity_date": "2026-05-19",
+      "activity_name": "Ordes Caminar",
+      "review_slug": null,
+      "result": "error",
+      "processed_at": "2026-06-01T07:29:56.311647+00:00"
+    },
+    {
+      "activity_id": 21733179601,
+      "activity_date": "2026-02-01",
+      "activity_name": "Ordes - S4 Dom Tempo - Carrera progresiv",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T07:35:27.132242+00:00"
+    },
+    {
+      "activity_id": 21752883528,
+      "activity_date": "2026-02-03",
+      "activity_name": "Ordes - S5 Mar Intervalos de afinamiento",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T07:35:27.888315+00:00"
+    },
+    {
+      "activity_id": 21775076297,
+      "activity_date": "2026-02-05",
+      "activity_name": "Ordes - S5 Jue Carrera f\u00e1cil - Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T07:35:28.677063+00:00"
+    },
+    {
+      "activity_id": 21795039064,
+      "activity_date": "2026-02-07",
+      "activity_name": "Padr\u00f3n Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T07:35:29.460240+00:00"
+    },
+    {
+      "activity_id": 21795563726,
+      "activity_date": "2026-02-07",
+      "activity_name": "Padr\u00f3n Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T07:35:30.230590+00:00"
+    },
+    {
+      "activity_id": 21848754999,
+      "activity_date": "2026-02-11",
+      "activity_name": "Ordes Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T07:35:31.040488+00:00"
+    },
+    {
+      "activity_id": 22939403784,
+      "activity_date": "2026-05-19",
+      "activity_name": "Ordes Caminar",
+      "review_slug": null,
+      "result": "error",
+      "processed_at": "2026-06-01T07:35:31.820164+00:00"
+    },
+    {
+      "activity_id": 21887135245,
+      "activity_date": "2026-02-16",
+      "activity_name": "Ordes - S1 Lun Carrera f\u00e1cil - Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T07:41:08.695558+00:00"
+    },
+    {
+      "activity_id": 21897480123,
+      "activity_date": "2026-02-17",
+      "activity_name": "Ordes - S1 Mar Tempo - Carrera progresiv",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T07:41:09.531934+00:00"
+    },
+    {
+      "activity_id": 21897541380,
+      "activity_date": "2026-02-17",
+      "activity_name": "Ordes Entrenamiento en pista",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T07:41:10.362419+00:00"
+    },
+    {
+      "activity_id": 21920505485,
+      "activity_date": "2026-02-19",
+      "activity_name": "Ordes - S1 Jue Cuestas - Repeticiones en",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T07:41:11.159575+00:00"
+    },
+    {
+      "activity_id": 21948499371,
+      "activity_date": "2026-02-22",
+      "activity_name": "Ordes - S1 Dom Carrera larga - 12km Carr",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T07:41:11.971136+00:00"
+    },
+    {
+      "activity_id": 21982934216,
+      "activity_date": "2026-02-25",
+      "activity_name": "Ordes - S2 Mi\u00e9 Carrera f\u00e1cil - Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T07:41:12.799224+00:00"
+    },
+    {
+      "activity_id": 21994588415,
+      "activity_date": "2026-02-26",
+      "activity_name": "Ordes - S2 Jue Intervalos - Repeticiones",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T07:41:13.652025+00:00"
+    },
+    {
+      "activity_id": 22939403784,
+      "activity_date": "2026-05-19",
+      "activity_name": "Ordes Caminar",
+      "review_slug": null,
+      "result": "error",
+      "processed_at": "2026-06-01T07:41:14.510391+00:00"
+    },
+    {
+      "activity_id": 22013626423,
+      "activity_date": "2026-02-28",
+      "activity_name": "Ordes - S2 S\u00e1b Carrera f\u00e1cil #2 - Carr",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T07:46:47.506161+00:00"
+    },
+    {
+      "activity_id": 22090618559,
+      "activity_date": "2026-03-07",
+      "activity_name": "Ordes - S3 S\u00e1b Carrera f\u00e1cil #2 - Carr",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T07:46:48.175289+00:00"
+    },
+    {
+      "activity_id": 22130606199,
+      "activity_date": "2026-03-10",
+      "activity_name": "Ordes - S4 Mar Carrera f\u00e1cil - Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T07:46:48.943899+00:00"
+    },
+    {
+      "activity_id": 22152251722,
+      "activity_date": "2026-03-12",
+      "activity_name": "Ordes - S4 Jue Carrera f\u00e1cil #2 - Carre",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T07:46:49.800267+00:00"
+    },
+    {
+      "activity_id": 22161817119,
+      "activity_date": "2026-03-13",
+      "activity_name": "Ordes - S4 Vie Carrera larga - 12km Carr",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T07:46:50.544724+00:00"
+    },
+    {
+      "activity_id": 22178118122,
+      "activity_date": "2026-03-15",
+      "activity_name": "Caldas de Reis Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T07:46:51.278118+00:00"
+    },
+    {
+      "activity_id": 22179159201,
+      "activity_date": "2026-03-15",
+      "activity_name": "Caldas de Reis - III TRAIL LAXE DOS BOLOS 2026",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T07:46:52.056254+00:00"
+    },
+    {
+      "activity_id": 22193880249,
+      "activity_date": "2026-03-16",
+      "activity_name": "Ordes - S5 Lun Carrera f\u00e1cil - Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T07:46:53.028561+00:00"
+    },
+    {
+      "activity_id": 22939403784,
+      "activity_date": "2026-05-19",
+      "activity_name": "Ordes Caminar",
+      "review_slug": null,
+      "result": "error",
+      "processed_at": "2026-06-01T07:46:53.950023+00:00"
+    },
+    {
+      "activity_id": 22216903032,
+      "activity_date": "2026-03-18",
+      "activity_name": "Ordes - S5 Mi\u00e9 Tempo - Variantes de 300",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T12:16:57.903538+00:00"
+    },
+    {
+      "activity_id": 22228011456,
+      "activity_date": "2026-03-19",
+      "activity_name": "Ordes Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T12:16:58.659214+00:00"
+    },
+    {
+      "activity_id": 22248829401,
+      "activity_date": "2026-03-21",
+      "activity_name": "Ordes - S5 S\u00e1b Cuestas - Descendentes:",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T12:16:59.378448+00:00"
+    },
+    {
+      "activity_id": 22262856495,
+      "activity_date": "2026-03-22",
+      "activity_name": "Cerceda - S5 Dom Carrera larga - 12km Carr",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T12:17:00.125960+00:00"
+    },
+    {
+      "activity_id": 22273989426,
+      "activity_date": "2026-03-23",
+      "activity_name": "Ordes Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T12:17:00.879366+00:00"
+    },
+    {
+      "activity_id": 22297362456,
+      "activity_date": "2026-03-25",
+      "activity_name": "Ordes - S6",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T12:17:01.745090+00:00"
+    },
+    {
+      "activity_id": 22308492819,
+      "activity_date": "2026-03-26",
+      "activity_name": "Ordes - S7 Jue Carrera f\u00e1cil - Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T12:17:02.516620+00:00"
+    },
+    {
+      "activity_id": 22319447186,
+      "activity_date": "2026-03-27",
+      "activity_name": "Ordes Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T12:17:03.281739+00:00"
+    },
+    {
+      "activity_id": 22335799805,
+      "activity_date": "2026-03-29",
+      "activity_name": "Ordes - S6 Dom Intervalos - Repeticiones",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T12:17:04.037942+00:00"
+    },
+    {
+      "activity_id": 22939403784,
+      "activity_date": "2026-05-19",
+      "activity_name": "Ordes Caminar",
+      "review_slug": null,
+      "result": "error",
+      "processed_at": "2026-06-01T12:17:04.812992+00:00"
+    },
+    {
+      "activity_id": 22373167942,
+      "activity_date": "2026-04-01",
+      "activity_name": "Entrenamiento en cinta",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T12:22:39.173294+00:00"
+    },
+    {
+      "activity_id": 22408614965,
+      "activity_date": "2026-04-04",
+      "activity_name": "Ordes Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T12:22:40.062730+00:00"
+    },
+    {
+      "activity_id": 22428354271,
+      "activity_date": "2026-04-06",
+      "activity_name": "Ordes - 7km <150ppm",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T12:22:40.858657+00:00"
+    },
+    {
+      "activity_id": 22456165150,
+      "activity_date": "2026-04-08",
+      "activity_name": "Ordes - 5x1000@4:10",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T12:22:41.726613+00:00"
+    },
+    {
+      "activity_id": 22468277669,
+      "activity_date": "2026-04-09",
+      "activity_name": "Ordes - Copia de 8km <150ppm",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T12:22:42.501957+00:00"
+    },
+    {
+      "activity_id": 22502751674,
+      "activity_date": "2026-04-12",
+      "activity_name": "Ordes - 10km Z2",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T12:22:43.340284+00:00"
+    },
+    {
+      "activity_id": 22512924914,
+      "activity_date": "2026-04-13",
+      "activity_name": "Culleredo - 8km <150ppm",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T12:22:44.116019+00:00"
+    },
+    {
+      "activity_id": 22536339184,
+      "activity_date": "2026-04-15",
+      "activity_name": "Ordes - 7k <145ppm",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T12:22:44.911963+00:00"
+    },
+    {
+      "activity_id": 22549284276,
+      "activity_date": "2026-04-16",
+      "activity_name": "Ordes - 4x1000@3:55",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T12:22:45.727192+00:00"
+    },
+    {
+      "activity_id": 22573396857,
+      "activity_date": "2026-04-18",
+      "activity_name": "Ordes Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T12:22:46.556275+00:00"
+    },
+    {
+      "activity_id": 22939403784,
+      "activity_date": "2026-05-19",
+      "activity_name": "Ordes Caminar",
+      "review_slug": null,
+      "result": "error",
+      "processed_at": "2026-06-01T12:22:47.344088+00:00"
+    },
+    {
+      "activity_id": 22584349968,
+      "activity_date": "2026-04-19",
+      "activity_name": "Cerceda - 10k Z2",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T12:28:22.426627+00:00"
+    },
+    {
+      "activity_id": 22632227816,
+      "activity_date": "2026-04-23",
+      "activity_name": "Ordes Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T12:28:23.217960+00:00"
+    },
+    {
+      "activity_id": 22664185552,
+      "activity_date": "2026-04-26",
+      "activity_name": "Ordes Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T12:28:24.013953+00:00"
+    },
+    {
+      "activity_id": 22680042702,
+      "activity_date": "2026-04-27",
+      "activity_name": "Ordes Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T12:28:24.802552+00:00"
+    },
+    {
+      "activity_id": 22693329165,
+      "activity_date": "2026-04-28",
+      "activity_name": "Ordes - 4x1000@4:10",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T12:28:25.646983+00:00"
+    },
+    {
+      "activity_id": 22776053069,
+      "activity_date": "2026-05-05",
+      "activity_name": "Ordes - Rodaje 5 km reintroduccion",
+      "review_slug": "2026-05-05_rodaje_5km_reintroduccion",
+      "result": "success",
+      "processed_at": "2026-06-01T12:28:26.630848+00:00"
+    },
+    {
+      "activity_id": 22798592588,
+      "activity_date": "2026-05-07",
+      "activity_name": "Ordes - Rodaje 6 km + 4 rectas controlad",
+      "review_slug": "2026-05-07_rodaje_6km_rectas_controladas",
+      "result": "success",
+      "processed_at": "2026-06-01T12:28:29.041093+00:00"
+    },
+    {
+      "activity_id": 22822541135,
+      "activity_date": "2026-05-09",
+      "activity_name": "Cerceda Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T12:28:29.875056+00:00"
+    },
+    {
+      "activity_id": 22823255797,
+      "activity_date": "2026-05-09",
+      "activity_name": "Cerceda - IV EDICI\u00d3N OS 11 DAS V\u00cdAS - CONCELLO DE CERCEDA",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-01T12:28:30.597937+00:00"
+    },
+    {
+      "activity_id": 22870230448,
+      "activity_date": "2026-05-13",
+      "activity_name": "Ordes - Rodaje 7 km + 5 rectas controlad",
+      "review_slug": "2026-05-13_rodaje_7km_rectas_controladas",
+      "result": "success",
+      "processed_at": "2026-06-01T12:28:32.164398+00:00"
+    },
+    {
+      "activity_id": 22889384200,
+      "activity_date": "2026-05-15",
+      "activity_name": "Ordes - Especifica controlada Ordes",
+      "review_slug": "2026-05-15_especifica_controlada_ordes",
+      "result": "success",
+      "processed_at": "2026-06-01T12:28:33.123084+00:00"
+    },
+    {
+      "activity_id": 22939403784,
+      "activity_date": "2026-05-19",
+      "activity_name": "Ordes Caminar",
+      "review_slug": null,
+      "result": "error",
+      "processed_at": "2026-06-01T12:28:33.905730+00:00"
+    },
+    {
+      "activity_id": 22900018441,
+      "activity_date": "2026-05-16",
+      "activity_name": "Ordes - Rodaje 5 km facil",
+      "review_slug": "2026-05-16_rodaje_5km_facil",
+      "result": "success",
+      "processed_at": "2026-06-01T12:34:08.010017+00:00"
+    },
+    {
+      "activity_id": 22937591625,
+      "activity_date": "2026-05-19",
+      "activity_name": "Eliptica aerobica estable 55 min",
+      "review_slug": "2026-05-19_rodaje_5km_reintroduccion",
+      "result": "success",
+      "processed_at": "2026-06-01T12:34:08.999520+00:00"
+    },
+    {
+      "activity_id": 22939403784,
+      "activity_date": "2026-05-19",
+      "activity_name": "Ordes Caminar",
+      "review_slug": null,
+      "result": "error",
+      "processed_at": "2026-06-01T12:34:09.745586+00:00"
     }
   ],
   "processed_feedback_updates": [
@@ -779,160 +851,6 @@
     }
   ],
   "runs": [
-    {
-      "run_at": "2026-05-30T18:36:50.151447+00:00",
-      "detected_count": 0,
-      "detected_activity_ids": [],
-      "triggered_pipeline": false,
-      "error": null
-    },
-    {
-      "run_at": "2026-05-30T18:41:53.665419+00:00",
-      "detected_count": 0,
-      "detected_activity_ids": [],
-      "triggered_pipeline": false,
-      "error": null
-    },
-    {
-      "run_at": "2026-05-30T18:46:57.424082+00:00",
-      "detected_count": 0,
-      "detected_activity_ids": [],
-      "triggered_pipeline": false,
-      "error": null
-    },
-    {
-      "run_at": "2026-05-30T18:52:00.649241+00:00",
-      "detected_count": 0,
-      "detected_activity_ids": [],
-      "triggered_pipeline": false,
-      "error": null
-    },
-    {
-      "run_at": "2026-05-30T18:57:04.339372+00:00",
-      "detected_count": 0,
-      "detected_activity_ids": [],
-      "triggered_pipeline": false,
-      "error": null
-    },
-    {
-      "run_at": "2026-05-30T19:02:13.576808+00:00",
-      "detected_count": 0,
-      "detected_activity_ids": [],
-      "triggered_pipeline": false,
-      "error": null
-    },
-    {
-      "run_at": "2026-05-30T19:07:31.402975+00:00",
-      "detected_count": 0,
-      "detected_activity_ids": [],
-      "triggered_pipeline": false,
-      "error": null
-    },
-    {
-      "run_at": "2026-05-30T19:13:00.341650+00:00",
-      "detected_count": 0,
-      "detected_activity_ids": [],
-      "triggered_pipeline": false,
-      "error": null
-    },
-    {
-      "run_at": "2026-05-30T19:18:21.190048+00:00",
-      "detected_count": 0,
-      "detected_activity_ids": [],
-      "triggered_pipeline": false,
-      "error": null
-    },
-    {
-      "run_at": "2026-05-30T19:23:32.171863+00:00",
-      "detected_count": 0,
-      "detected_activity_ids": [],
-      "triggered_pipeline": false,
-      "error": null
-    },
-    {
-      "run_at": "2026-05-30T19:28:42.737063+00:00",
-      "detected_count": 0,
-      "detected_activity_ids": [],
-      "triggered_pipeline": false,
-      "error": null
-    },
-    {
-      "run_at": "2026-05-30T19:33:51.115004+00:00",
-      "detected_count": 0,
-      "detected_activity_ids": [],
-      "triggered_pipeline": false,
-      "error": null
-    },
-    {
-      "run_at": "2026-05-30T19:38:57.949735+00:00",
-      "detected_count": 0,
-      "detected_activity_ids": [],
-      "triggered_pipeline": false,
-      "error": null
-    },
-    {
-      "run_at": "2026-05-30T19:44:04.477261+00:00",
-      "detected_count": 0,
-      "detected_activity_ids": [],
-      "triggered_pipeline": false,
-      "error": null
-    },
-    {
-      "run_at": "2026-05-30T19:49:16.227570+00:00",
-      "detected_count": 0,
-      "detected_activity_ids": [],
-      "triggered_pipeline": false,
-      "error": null
-    },
-    {
-      "run_at": "2026-05-30T19:54:19.792709+00:00",
-      "detected_count": 0,
-      "detected_activity_ids": [],
-      "triggered_pipeline": false,
-      "error": null
-    },
-    {
-      "run_at": "2026-05-30T19:59:23.887984+00:00",
-      "detected_count": 0,
-      "detected_activity_ids": [],
-      "triggered_pipeline": false,
-      "error": null
-    },
-    {
-      "run_at": "2026-05-30T20:04:32.832682+00:00",
-      "detected_count": 0,
-      "detected_activity_ids": [],
-      "triggered_pipeline": false,
-      "error": null
-    },
-    {
-      "run_at": "2026-05-30T20:09:38.260676+00:00",
-      "detected_count": 0,
-      "detected_activity_ids": [],
-      "triggered_pipeline": false,
-      "error": null
-    },
-    {
-      "run_at": "2026-05-30T20:14:41.903525+00:00",
-      "detected_count": 0,
-      "detected_activity_ids": [],
-      "triggered_pipeline": false,
-      "error": null
-    },
-    {
-      "run_at": "2026-05-30T20:19:50.466402+00:00",
-      "detected_count": 0,
-      "detected_activity_ids": [],
-      "triggered_pipeline": false,
-      "error": null
-    },
-    {
-      "run_at": "2026-05-30T20:24:55.513447+00:00",
-      "detected_count": 0,
-      "detected_activity_ids": [],
-      "triggered_pipeline": false,
-      "error": null
-    },
     {
       "run_at": "2026-05-30T20:30:43.207401+00:00",
       "detected_count": 0,
@@ -1171,6 +1089,394 @@
       ],
       "triggered_pipeline": true,
       "error": "Traceback (most recent call last):\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1370, in <module>\n    main()\n    ~~~~^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1343, in main\n    activity = select_activity_by_id(activities, args.activity_id) if args.activity_id is not None else select_activity(activities, planned, args.date)\n               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 173, in select_activity_by_id\n    raise FileNotFoundError(f\"No Garmin activity with id {activity_id} available for review\")\nFileNotFoundError: No Garmin activity with id 23023955791 available for review"
+    },
+    {
+      "run_at": "2026-05-30T23:12:16.228123+00:00",
+      "detected_count": 2,
+      "detected_activity_ids": [
+        23023955791,
+        23036502558
+      ],
+      "triggered_pipeline": true,
+      "error": "Traceback (most recent call last):\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1370, in <module>\n    main()\n    ~~~~^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1343, in main\n    activity = select_activity_by_id(activities, args.activity_id) if args.activity_id is not None else select_activity(activities, planned, args.date)\n               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 173, in select_activity_by_id\n    raise FileNotFoundError(f\"No Garmin activity with id {activity_id} available for review\")\nFileNotFoundError: No Garmin activity with id 23023955791 available for review"
+    },
+    {
+      "run_at": "2026-05-31T11:34:54.855533+00:00",
+      "detected_count": 2,
+      "detected_activity_ids": [
+        23023955791,
+        23036502558
+      ],
+      "triggered_pipeline": true,
+      "error": "Traceback (most recent call last):\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1370, in <module>\n    main()\n    ~~~~^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1343, in main\n    activity = select_activity_by_id(activities, args.activity_id) if args.activity_id is not None else select_activity(activities, planned, args.date)\n               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 173, in select_activity_by_id\n    raise FileNotFoundError(f\"No Garmin activity with id {activity_id} available for review\")\nFileNotFoundError: No Garmin activity with id 23023955791 available for review"
+    },
+    {
+      "run_at": "2026-05-31T11:39:22.763089+00:00",
+      "detected_count": 6,
+      "detected_activity_ids": [
+        22939403784,
+        22963606132,
+        22987606190,
+        23011843653,
+        23023955791,
+        23036502558
+      ],
+      "triggered_pipeline": true,
+      "error": "Traceback (most recent call last):\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1370, in <module>\n    main()\n    ~~~~^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1343, in main\n    activity = select_activity_by_id(activities, args.activity_id) if args.activity_id is not None else select_activity(activities, planned, args.date)\n               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 173, in select_activity_by_id\n    raise FileNotFoundError(f\"No Garmin activity with id {activity_id} available for review\")\nFileNotFoundError: No Garmin activity with id 22939403784 available for review"
+    },
+    {
+      "run_at": "2026-05-31T17:33:20.056933+00:00",
+      "detected_count": 6,
+      "detected_activity_ids": [
+        22939403784,
+        22963606132,
+        22987606190,
+        23011843653,
+        23023955791,
+        23036502558
+      ],
+      "triggered_pipeline": true,
+      "error": "Traceback (most recent call last):\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1370, in <module>\n    main()\n    ~~~~^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1343, in main\n    activity = select_activity_by_id(activities, args.activity_id) if args.activity_id is not None else select_activity(activities, planned, args.date)\n               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 173, in select_activity_by_id\n    raise FileNotFoundError(f\"No Garmin activity with id {activity_id} available for review\")\nFileNotFoundError: No Garmin activity with id 22939403784 available for review"
+    },
+    {
+      "run_at": "2026-05-31T17:38:55.323727+00:00",
+      "detected_count": 6,
+      "detected_activity_ids": [
+        22939403784,
+        22963606132,
+        22987606190,
+        23011843653,
+        23023955791,
+        23036502558
+      ],
+      "triggered_pipeline": true,
+      "error": "Traceback (most recent call last):\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1370, in <module>\n    main()\n    ~~~~^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1343, in main\n    activity = select_activity_by_id(activities, args.activity_id) if args.activity_id is not None else select_activity(activities, planned, args.date)\n               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 173, in select_activity_by_id\n    raise FileNotFoundError(f\"No Garmin activity with id {activity_id} available for review\")\nFileNotFoundError: No Garmin activity with id 22939403784 available for review"
+    },
+    {
+      "run_at": "2026-05-31T17:44:32.351343+00:00",
+      "detected_count": 6,
+      "detected_activity_ids": [
+        22939403784,
+        22963606132,
+        22987606190,
+        23011843653,
+        23023955791,
+        23036502558
+      ],
+      "triggered_pipeline": true,
+      "error": "Traceback (most recent call last):\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1370, in <module>\n    main()\n    ~~~~^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1343, in main\n    activity = select_activity_by_id(activities, args.activity_id) if args.activity_id is not None else select_activity(activities, planned, args.date)\n               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 173, in select_activity_by_id\n    raise FileNotFoundError(f\"No Garmin activity with id {activity_id} available for review\")\nFileNotFoundError: No Garmin activity with id 22939403784 available for review"
+    },
+    {
+      "run_at": "2026-05-31T17:55:19.019361+00:00",
+      "detected_count": 6,
+      "detected_activity_ids": [
+        22939403784,
+        22963606132,
+        22987606190,
+        23011843653,
+        23023955791,
+        23036502558
+      ],
+      "triggered_pipeline": true,
+      "error": "Traceback (most recent call last):\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1370, in <module>\n    main()\n    ~~~~^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1343, in main\n    activity = select_activity_by_id(activities, args.activity_id) if args.activity_id is not None else select_activity(activities, planned, args.date)\n               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 173, in select_activity_by_id\n    raise FileNotFoundError(f\"No Garmin activity with id {activity_id} available for review\")\nFileNotFoundError: No Garmin activity with id 22939403784 available for review"
+    },
+    {
+      "run_at": "2026-05-31T18:00:56.577300+00:00",
+      "detected_count": 6,
+      "detected_activity_ids": [
+        22939403784,
+        22963606132,
+        22987606190,
+        23011843653,
+        23023955791,
+        23036502558
+      ],
+      "triggered_pipeline": true,
+      "error": "Traceback (most recent call last):\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1370, in <module>\n    main()\n    ~~~~^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1343, in main\n    activity = select_activity_by_id(activities, args.activity_id) if args.activity_id is not None else select_activity(activities, planned, args.date)\n               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 173, in select_activity_by_id\n    raise FileNotFoundError(f\"No Garmin activity with id {activity_id} available for review\")\nFileNotFoundError: No Garmin activity with id 22939403784 available for review"
+    },
+    {
+      "run_at": "2026-05-31T18:06:38.022028+00:00",
+      "detected_count": 6,
+      "detected_activity_ids": [
+        22939403784,
+        22963606132,
+        22987606190,
+        23011843653,
+        23023955791,
+        23036502558
+      ],
+      "triggered_pipeline": true,
+      "error": "Traceback (most recent call last):\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1370, in <module>\n    main()\n    ~~~~^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1343, in main\n    activity = select_activity_by_id(activities, args.activity_id) if args.activity_id is not None else select_activity(activities, planned, args.date)\n               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 173, in select_activity_by_id\n    raise FileNotFoundError(f\"No Garmin activity with id {activity_id} available for review\")\nFileNotFoundError: No Garmin activity with id 22939403784 available for review"
+    },
+    {
+      "run_at": "2026-05-31T18:12:13.568439+00:00",
+      "detected_count": 6,
+      "detected_activity_ids": [
+        22939403784,
+        22963606132,
+        22987606190,
+        23011843653,
+        23023955791,
+        23036502558
+      ],
+      "triggered_pipeline": true,
+      "error": "Traceback (most recent call last):\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1370, in <module>\n    main()\n    ~~~~^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1343, in main\n    activity = select_activity_by_id(activities, args.activity_id) if args.activity_id is not None else select_activity(activities, planned, args.date)\n               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 173, in select_activity_by_id\n    raise FileNotFoundError(f\"No Garmin activity with id {activity_id} available for review\")\nFileNotFoundError: No Garmin activity with id 22939403784 available for review"
+    },
+    {
+      "run_at": "2026-05-31T18:17:46.705431+00:00",
+      "detected_count": 7,
+      "detected_activity_ids": [
+        21469746216,
+        22939403784,
+        22963606132,
+        22987606190,
+        23011843653,
+        23023955791,
+        23036502558
+      ],
+      "triggered_pipeline": true,
+      "error": "Traceback (most recent call last):\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1370, in <module>\n    main()\n    ~~~~^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1343, in main\n    activity = select_activity_by_id(activities, args.activity_id) if args.activity_id is not None else select_activity(activities, planned, args.date)\n               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 173, in select_activity_by_id\n    raise FileNotFoundError(f\"No Garmin activity with id {activity_id} available for review\")\nFileNotFoundError: No Garmin activity with id 22939403784 available for review"
+    },
+    {
+      "run_at": "2026-06-01T07:12:01.663589+00:00",
+      "detected_count": 9,
+      "detected_activity_ids": [
+        21490398451,
+        21511086356,
+        22939403784,
+        22963606132,
+        22987606190,
+        23011843653,
+        23023955791,
+        23036502558,
+        23083515075
+      ],
+      "triggered_pipeline": true,
+      "error": "Traceback (most recent call last):\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1370, in <module>\n    main()\n    ~~~~^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1343, in main\n    activity = select_activity_by_id(activities, args.activity_id) if args.activity_id is not None else select_activity(activities, planned, args.date)\n               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 173, in select_activity_by_id\n    raise FileNotFoundError(f\"No Garmin activity with id {activity_id} available for review\")\nFileNotFoundError: No Garmin activity with id 22939403784 available for review"
+    },
+    {
+      "run_at": "2026-06-01T07:18:37.742530+00:00",
+      "detected_count": 10,
+      "detected_activity_ids": [
+        21534539726,
+        21558091935,
+        21585339290,
+        22939403784,
+        22963606132,
+        22987606190,
+        23011843653,
+        23023955791,
+        23036502558,
+        23083515075
+      ],
+      "triggered_pipeline": true,
+      "error": "Traceback (most recent call last):\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1370, in <module>\n    main()\n    ~~~~^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1343, in main\n    activity = select_activity_by_id(activities, args.activity_id) if args.activity_id is not None else select_activity(activities, planned, args.date)\n               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 173, in select_activity_by_id\n    raise FileNotFoundError(f\"No Garmin activity with id {activity_id} available for review\")\nFileNotFoundError: No Garmin activity with id 22939403784 available for review"
+    },
+    {
+      "run_at": "2026-06-01T07:24:15.569279+00:00",
+      "detected_count": 11,
+      "detected_activity_ids": [
+        21598151813,
+        21621449393,
+        21641563872,
+        21657464342,
+        22939403784,
+        22963606132,
+        22987606190,
+        23011843653,
+        23023955791,
+        23036502558,
+        23083515075
+      ],
+      "triggered_pipeline": true,
+      "error": "Traceback (most recent call last):\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1370, in <module>\n    main()\n    ~~~~^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1343, in main\n    activity = select_activity_by_id(activities, args.activity_id) if args.activity_id is not None else select_activity(activities, planned, args.date)\n               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 173, in select_activity_by_id\n    raise FileNotFoundError(f\"No Garmin activity with id {activity_id} available for review\")\nFileNotFoundError: No Garmin activity with id 22939403784 available for review"
+    },
+    {
+      "run_at": "2026-06-01T07:29:56.311676+00:00",
+      "detected_count": 12,
+      "detected_activity_ids": [
+        21657557875,
+        21658011411,
+        21681833374,
+        21693008218,
+        21712898849,
+        22939403784,
+        22963606132,
+        22987606190,
+        23011843653,
+        23023955791,
+        23036502558,
+        23083515075
+      ],
+      "triggered_pipeline": true,
+      "error": "Traceback (most recent call last):\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1370, in <module>\n    main()\n    ~~~~^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1343, in main\n    activity = select_activity_by_id(activities, args.activity_id) if args.activity_id is not None else select_activity(activities, planned, args.date)\n               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 173, in select_activity_by_id\n    raise FileNotFoundError(f\"No Garmin activity with id {activity_id} available for review\")\nFileNotFoundError: No Garmin activity with id 22939403784 available for review"
+    },
+    {
+      "run_at": "2026-06-01T07:35:31.820204+00:00",
+      "detected_count": 13,
+      "detected_activity_ids": [
+        21733179601,
+        21752883528,
+        21775076297,
+        21795039064,
+        21795563726,
+        21848754999,
+        22939403784,
+        22963606132,
+        22987606190,
+        23011843653,
+        23023955791,
+        23036502558,
+        23083515075
+      ],
+      "triggered_pipeline": true,
+      "error": "Traceback (most recent call last):\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1370, in <module>\n    main()\n    ~~~~^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1343, in main\n    activity = select_activity_by_id(activities, args.activity_id) if args.activity_id is not None else select_activity(activities, planned, args.date)\n               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 173, in select_activity_by_id\n    raise FileNotFoundError(f\"No Garmin activity with id {activity_id} available for review\")\nFileNotFoundError: No Garmin activity with id 22939403784 available for review"
+    },
+    {
+      "run_at": "2026-06-01T07:41:14.510425+00:00",
+      "detected_count": 14,
+      "detected_activity_ids": [
+        21887135245,
+        21897480123,
+        21897541380,
+        21920505485,
+        21948499371,
+        21982934216,
+        21994588415,
+        22939403784,
+        22963606132,
+        22987606190,
+        23011843653,
+        23023955791,
+        23036502558,
+        23083515075
+      ],
+      "triggered_pipeline": true,
+      "error": "Traceback (most recent call last):\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1370, in <module>\n    main()\n    ~~~~^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1343, in main\n    activity = select_activity_by_id(activities, args.activity_id) if args.activity_id is not None else select_activity(activities, planned, args.date)\n               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 173, in select_activity_by_id\n    raise FileNotFoundError(f\"No Garmin activity with id {activity_id} available for review\")\nFileNotFoundError: No Garmin activity with id 22939403784 available for review"
+    },
+    {
+      "run_at": "2026-06-01T07:46:53.950060+00:00",
+      "detected_count": 15,
+      "detected_activity_ids": [
+        22013626423,
+        22090618559,
+        22130606199,
+        22152251722,
+        22161817119,
+        22178118122,
+        22179159201,
+        22193880249,
+        22939403784,
+        22963606132,
+        22987606190,
+        23011843653,
+        23023955791,
+        23036502558,
+        23083515075
+      ],
+      "triggered_pipeline": true,
+      "error": "Traceback (most recent call last):\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1370, in <module>\n    main()\n    ~~~~^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1343, in main\n    activity = select_activity_by_id(activities, args.activity_id) if args.activity_id is not None else select_activity(activities, planned, args.date)\n               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 173, in select_activity_by_id\n    raise FileNotFoundError(f\"No Garmin activity with id {activity_id} available for review\")\nFileNotFoundError: No Garmin activity with id 22939403784 available for review"
+    },
+    {
+      "run_at": "2026-06-01T12:17:04.813028+00:00",
+      "detected_count": 16,
+      "detected_activity_ids": [
+        22216903032,
+        22228011456,
+        22248829401,
+        22262856495,
+        22273989426,
+        22297362456,
+        22308492819,
+        22319447186,
+        22335799805,
+        22939403784,
+        22963606132,
+        22987606190,
+        23011843653,
+        23023955791,
+        23036502558,
+        23083515075
+      ],
+      "triggered_pipeline": true,
+      "error": "Traceback (most recent call last):\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1370, in <module>\n    main()\n    ~~~~^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1343, in main\n    activity = select_activity_by_id(activities, args.activity_id) if args.activity_id is not None else select_activity(activities, planned, args.date)\n               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 173, in select_activity_by_id\n    raise FileNotFoundError(f\"No Garmin activity with id {activity_id} available for review\")\nFileNotFoundError: No Garmin activity with id 22939403784 available for review"
+    },
+    {
+      "run_at": "2026-06-01T12:22:47.344117+00:00",
+      "detected_count": 17,
+      "detected_activity_ids": [
+        22373167942,
+        22408614965,
+        22428354271,
+        22456165150,
+        22468277669,
+        22502751674,
+        22512924914,
+        22536339184,
+        22549284276,
+        22573396857,
+        22939403784,
+        22963606132,
+        22987606190,
+        23011843653,
+        23023955791,
+        23036502558,
+        23083515075
+      ],
+      "triggered_pipeline": true,
+      "error": "Traceback (most recent call last):\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1370, in <module>\n    main()\n    ~~~~^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1343, in main\n    activity = select_activity_by_id(activities, args.activity_id) if args.activity_id is not None else select_activity(activities, planned, args.date)\n               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 173, in select_activity_by_id\n    raise FileNotFoundError(f\"No Garmin activity with id {activity_id} available for review\")\nFileNotFoundError: No Garmin activity with id 22939403784 available for review"
+    },
+    {
+      "run_at": "2026-06-01T12:28:33.905758+00:00",
+      "detected_count": 18,
+      "detected_activity_ids": [
+        22584349968,
+        22632227816,
+        22664185552,
+        22680042702,
+        22693329165,
+        22776053069,
+        22798592588,
+        22822541135,
+        22823255797,
+        22870230448,
+        22889384200,
+        22939403784,
+        22963606132,
+        22987606190,
+        23011843653,
+        23023955791,
+        23036502558,
+        23083515075
+      ],
+      "triggered_pipeline": true,
+      "error": "Traceback (most recent call last):\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1370, in <module>\n    main()\n    ~~~~^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1343, in main\n    activity = select_activity_by_id(activities, args.activity_id) if args.activity_id is not None else select_activity(activities, planned, args.date)\n               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 173, in select_activity_by_id\n    raise FileNotFoundError(f\"No Garmin activity with id {activity_id} available for review\")\nFileNotFoundError: No Garmin activity with id 22939403784 available for review"
+    },
+    {
+      "run_at": "2026-06-01T12:34:09.745623+00:00",
+      "detected_count": 18,
+      "detected_activity_ids": [
+        22900018441,
+        22937591625,
+        22939403784,
+        22948750716,
+        22963606132,
+        22970190097,
+        22987606190,
+        22992915868,
+        22992941690,
+        23011843653,
+        23017054300,
+        23023955791,
+        23032805565,
+        23036502558,
+        23045517009,
+        23060084660,
+        23070751559,
+        23083515075
+      ],
+      "triggered_pipeline": true,
+      "error": "Traceback (most recent call last):\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1370, in <module>\n    main()\n    ~~~~^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1343, in main\n    activity = select_activity_by_id(activities, args.activity_id) if args.activity_id is not None else select_activity(activities, planned, args.date)\n               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 173, in select_activity_by_id\n    raise FileNotFoundError(f\"No Garmin activity with id {activity_id} available for review\")\nFileNotFoundError: No Garmin activity with id 22939403784 available for review"
     }
   ]
 }

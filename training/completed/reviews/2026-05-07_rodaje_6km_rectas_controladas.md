@@ -9,28 +9,32 @@
 
 ## Rating
 
-- Numeric score: 4/10
-- Traffic light: rojo
-- Written review: Ritmo medio 7:13/km, FC 151.0/169.0 bpm, cadencia 167.0 spm, potencia 215.0 W, temperatura 22.0-28.0 C, desnivel +18.0 m. Sesion util, pero mas exigente de lo previsto para el objetivo del dia. La lectura correcta es ajustar el juicio del entreno, no dramatizarlo: solo conviene vigilar fatiga y sensaciones antes de la siguiente sesion importante.
+- Numeric score: 8/10
+- Traffic light: verde
+- Written review: duracion 48:12, ritmo medio 7:13/km, FC 151.0 / 169.0 bpm, cadencia 167.0 spm, potencia 215.0 W, temperatura 22.0-28.0 C, desnivel +18.0 m. Sesion globalmente valida, aunque algo mas viva de lo ideal. Es una desviacion moderada y normalmente se corrige mas con control fino en los proximos rodajes que con cambios grandes en la semana.
 
 ## Execution Analysis
 
 - Goal of the session: Rodaje facil de continuidad con 4 rectas suaves para despertar piernas, sin sprintar.
+- Template id: recovery_plus_mobility
+- Knowledge id: 40_regenerativo_muy_suave
+- Planned physiological goal: Recuperacion
+- Stimulus alignment: El estimulo real se desvia del objetivo previsto. Previsto: recuperacion, base_aerobica. Real observado: umbral_lactico.
 - What went well: La sesion mantuvo una tecnica estable y una deriva cardiaca moderada (8.3%), asumible si las sensaciones fueron buenas.
-- What missed the target: La intensidad quedo claramente por encima de lo prescrito: 54.2% del tiempo estuvo sobre el techo de FC objetivo.
-- Relevant signals: ritmo 7:13/km, FC media/max 151.0/169.0, cadencia 167.0, potencia 215.0, terreno +18.0 m, temperatura 22.0-28.0 C.
+- What missed the target: La intensidad se fue algo por encima de lo ideal en varios tramos (42.6% del tiempo sobre el techo de FC), pero no implica por si sola que haya que replantear la semana.
+- Relevant signals: ritmo 7:13/km, FC media/max 151.0/169.0, cadencia 167.0, potencia 215, terreno +18.0 m, temperatura 22.0-28.0 C.
 
 ## Planned Vs Completed
 
-- Planned distance: 6000.0 m
+- Planned distance: -
 - Completed distance: 6680.5 m
-- Distance difference: 680.5 m
+- Distance difference: -
 - Planned duration: 41:00
 - Completed duration: 48:12
 - Duration difference: 7:12
 - HR target: 135.0-150.0 bpm
-- Time in HR target: 21:42 (45.0%)
-- Time above HR target: 26:06 (54.2%)
+- Time in HR target: 24:33 (56.4% de 43:29)
+- Time above HR target: 18:33 (42.6% de 43:29)
 - Time to enter target zone: 0:26
 
 ## Split Detail
@@ -61,14 +65,11 @@
 
 ## Progression Markers
 
-- Trend: neutral
-- Summary: Cambios pequenos o ambiguos frente a sesiones comparables; no hay una senal clara de progresion o regresion.
-- Baseline comparable sessions: 7:24/km, 144.0 bpm
-- Delta vs baseline: -10.9 s/km, +7.0 bpm
-- Comparable 2026-05-05: Rodaje 5 km reintroduccion, 7:24/km, 144.0 bpm, +13 m
+- Trend: insufficient_data
+- Summary: Aun no hay sesiones comparables previas para medir progresion o regresion.
 
 ## Coaching Decision
 
-- Keep the week as planned: no
-- If not, what changes: Reduce upcoming load and review shin response.
-- Risk level: alto
+- Keep the week as planned: yes
+- If not, what changes: none
+- Risk level: medio

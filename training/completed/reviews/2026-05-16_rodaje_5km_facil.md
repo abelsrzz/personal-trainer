@@ -11,7 +11,7 @@
 
 - Numeric score: 10/10
 - Traffic light: verde
-- Written review: Ritmo medio 6:55/km, FC 148.0/159.0 bpm, cadencia 168.7 spm, potencia 237.0 W, temperatura 18.0-23.0 C, desnivel +35.0 m. Sesion bien alineada con el objetivo del dia y sin senales relevantes de exceso. Si las sensaciones posteriores son normales, no deberia condicionar la planificacion inmediata.
+- Written review: duracion 34:37, ritmo medio 6:55/km, FC 148.0 / 159.0 bpm, cadencia 168.7 spm, potencia 237.0 W, temperatura 18.0-23.0 C, desnivel +35.0 m. Sesion bien alineada con el objetivo del dia y sin senales relevantes de exceso. Si las sensaciones posteriores son normales, no deberia condicionar la planificacion inmediata.
 
 ## Execution Analysis
 
@@ -22,7 +22,7 @@
 - Stimulus alignment: El estimulo real se desvia del objetivo previsto. Previsto: recuperacion, base_aerobica. Real observado: umbral_lactico.
 - What went well: Se completo la sesion con estabilidad mecanica y una deriva cardiaca baja (2.7%).
 - What missed the target: Hubo algunos tramos por encima del techo de FC (25.1% del tiempo), aunque dentro de un desvio relativamente normal para un rodaje al aire libre.
-- Relevant signals: ritmo 6:55/km, FC media/max 148.0/159.0, cadencia 168.7, potencia 237.0, terreno +35.0 m, temperatura 18.0-23.0 C.
+- Relevant signals: ritmo 6:55/km, FC media/max 148.0/159.0, cadencia 168.7, potencia 237, terreno +35.0 m, temperatura 18.0-23.0 C.
 
 ## Planned Vs Completed
 
@@ -63,12 +63,8 @@
 
 ## Progression Markers
 
-- Trend: progress
-- Summary: Ritmo mas rapido con pulso similar o mejor controlado frente a sesiones comparables.
-- Baseline comparable sessions: 7:18/km, 147.5 bpm
-- Delta vs baseline: -23.0 s/km, +0.5 bpm
-- Comparable 2026-05-07: Rodaje 6 km + 4 rectas controladas, 7:13/km, 151.0 bpm, +18 m
-- Comparable 2026-05-05: Rodaje 5 km reintroduccion, 7:24/km, 144.0 bpm, +13 m
+- Trend: insufficient_data
+- Summary: Aun no hay sesiones comparables previas para medir progresion o regresion.
 
 ## Coaching Decision
 

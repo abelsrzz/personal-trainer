@@ -1,15 +1,16 @@
 {
-  "generated_at": "2026-05-19T19:42:49.411301Z",
+  "generated_at": "2026-06-11T11:34:54.179458Z",
   "status": "scheduled",
+  "workout_hash": "827748c925b81edae65718584664f6681ad4ec65cb069be2aedecf334ca6682a",
   "upload_mode": "structured_targets",
   "workout_file": "training/planned/workouts/2026-05-20_rodaje_6km_rectas_suaves.yaml",
   "uploaded_response": {
-    "workoutId": 1573690976,
+    "workoutId": 1597254398,
     "ownerId": 137864769,
     "workoutName": "Bicicleta aerobica de continuidad 70 min",
     "description": "Continuidad aerobica sin impacto para sumar carga util manteniendo la tibia protegida.",
-    "updatedDate": "2026-05-19T19:42:49.0",
-    "createdDate": "2026-05-19T19:42:49.0",
+    "updatedDate": "2026-06-11T11:34:52.0",
+    "createdDate": "2026-06-11T11:34:52.0",
     "sportType": {
       "sportTypeId": 2,
       "sportTypeKey": "cycling",
@@ -49,7 +50,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13416777803,
+            "stepId": 13645681776,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 1,
@@ -101,7 +102,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13416777804,
+            "stepId": 13645681777,
             "stepOrder": 2,
             "stepType": {
               "stepTypeId": 3,
@@ -153,7 +154,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13416777805,
+            "stepId": 13645681778,
             "stepOrder": 3,
             "stepType": {
               "stepTypeId": 2,
@@ -231,14 +232,14 @@
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1655203147,
+    "workoutScheduleId": 1678519148,
     "workout": {
-      "workoutId": 1573690976,
+      "workoutId": 1597254398,
       "ownerId": 137864769,
       "workoutName": "Bicicleta aerobica de continuidad 70 min",
       "description": "Continuidad aerobica sin impacto para sumar carga util manteniendo la tibia protegida.",
-      "updatedDate": "2026-05-19T19:42:49.0",
-      "createdDate": "2026-05-19T19:42:49.0",
+      "updatedDate": "2026-06-11T11:34:52.0",
+      "createdDate": "2026-06-11T11:34:52.0",
       "sportType": {
         "sportTypeId": 2,
         "sportTypeKey": "cycling",
@@ -269,7 +270,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13416777803,
+              "stepId": 13645681776,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 1,
@@ -321,7 +322,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13416777804,
+              "stepId": 13645681777,
               "stepOrder": 2,
               "stepType": {
                 "stepTypeId": 3,
@@ -373,7 +374,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13416777805,
+              "stepId": 13645681778,
               "stepOrder": 3,
               "stepType": {
                 "stepTypeId": 2,
@@ -451,7 +452,7 @@
       "shared": false
     },
     "calendarDate": "2026-05-20",
-    "createdDate": "2026-05-19",
+    "createdDate": "2026-06-11",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -461,8 +462,18 @@
     "associatedActivityDateTime": null,
     "tpType": null,
     "protected": false,
-    "nameChanged": false,
     "itp": false,
-    "race": false
-  }
+    "race": false,
+    "nameChanged": false
+  },
+  "warning": null,
+  "replaced_uploads": [
+    {
+      "record": "training/planned/workouts/2026-05-20/2026-05-20_rodaje_6km_rectas_suaves.garmin_upload.json",
+      "scheduled_workout_id": 1655203147,
+      "unscheduled": true,
+      "workout_id": 1573690976,
+      "deleted": true
+    }
+  ]
 }

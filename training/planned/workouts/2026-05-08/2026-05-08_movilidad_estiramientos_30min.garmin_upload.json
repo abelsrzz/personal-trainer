@@ -1,15 +1,16 @@
 {
-  "generated_at": "2026-05-25T16:53:17.256350Z",
+  "generated_at": "2026-06-11T11:34:39.540636Z",
   "status": "scheduled",
+  "workout_hash": "2eedb6b726367c1629587357f17982a2d7a067051c0dafd47941fadf235c5edf",
   "upload_mode": "structured_targets",
   "workout_file": "training/planned/workouts/2026-05-08_movilidad_estiramientos_30min.yaml",
   "uploaded_response": {
-    "workoutId": 1579701299,
+    "workoutId": 1597254286,
     "ownerId": 137864769,
     "workoutName": "Movilidad y estiramientos 30 min",
     "description": "Sesion suave de movilidad y estiramientos para descargar sin impacto. Priorizar tobillo, soleo, gemelo, tibial anterior, cadera e isquios. Mantener dolor tibial en 0-2/10 y parar si empeora.",
-    "updatedDate": "2026-05-25T16:53:14.0",
-    "createdDate": "2026-05-25T16:53:14.0",
+    "updatedDate": "2026-06-11T11:34:38.0",
+    "createdDate": "2026-06-11T11:34:38.0",
     "sportType": {
       "sportTypeId": 11,
       "sportTypeKey": "mobility",
@@ -49,7 +50,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13473699271,
+            "stepId": 13645680042,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 1,
@@ -101,7 +102,7 @@
           },
           {
             "type": "RepeatGroupDTO",
-            "stepId": 13473699272,
+            "stepId": 13645680043,
             "stepOrder": 2,
             "stepType": {
               "stepTypeId": 6,
@@ -113,7 +114,7 @@
             "workoutSteps": [
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13473699273,
+                "stepId": 13645680044,
                 "stepOrder": 3,
                 "stepType": {
                   "stepTypeId": 3,
@@ -165,7 +166,7 @@
               },
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13473699274,
+                "stepId": 13645680045,
                 "stepOrder": 4,
                 "stepType": {
                   "stepTypeId": 3,
@@ -230,7 +231,7 @@
           },
           {
             "type": "RepeatGroupDTO",
-            "stepId": 13473699275,
+            "stepId": 13645680046,
             "stepOrder": 5,
             "stepType": {
               "stepTypeId": 6,
@@ -242,7 +243,7 @@
             "workoutSteps": [
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13473699276,
+                "stepId": 13645680047,
                 "stepOrder": 6,
                 "stepType": {
                   "stepTypeId": 3,
@@ -294,7 +295,7 @@
               },
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13473699277,
+                "stepId": 13645680048,
                 "stepOrder": 7,
                 "stepType": {
                   "stepTypeId": 3,
@@ -359,7 +360,7 @@
           },
           {
             "type": "RepeatGroupDTO",
-            "stepId": 13473699278,
+            "stepId": 13645680049,
             "stepOrder": 8,
             "stepType": {
               "stepTypeId": 6,
@@ -371,7 +372,7 @@
             "workoutSteps": [
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13473699279,
+                "stepId": 13645680050,
                 "stepOrder": 9,
                 "stepType": {
                   "stepTypeId": 3,
@@ -423,7 +424,7 @@
               },
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13473699280,
+                "stepId": 13645680051,
                 "stepOrder": 10,
                 "stepType": {
                   "stepTypeId": 3,
@@ -488,7 +489,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13473699281,
+            "stepId": 13645680052,
             "stepOrder": 11,
             "stepType": {
               "stepTypeId": 2,
@@ -566,14 +567,14 @@
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1661172832,
+    "workoutScheduleId": 1678519052,
     "workout": {
-      "workoutId": 1579701299,
+      "workoutId": 1597254286,
       "ownerId": 137864769,
       "workoutName": "Movilidad y estiramientos 30 min",
       "description": "Sesion suave de movilidad y estiramientos para descargar sin impacto. Priorizar tobillo, soleo, gemelo, tibial anterior, cadera e isquios. Mantener dolor tibial en 0-2/10 y parar si empeora.",
-      "updatedDate": "2026-05-25T16:53:14.0",
-      "createdDate": "2026-05-25T16:53:14.0",
+      "updatedDate": "2026-06-11T11:34:38.0",
+      "createdDate": "2026-06-11T11:34:38.0",
       "sportType": {
         "sportTypeId": 11,
         "sportTypeKey": "mobility",
@@ -604,7 +605,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13473699271,
+              "stepId": 13645680042,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 1,
@@ -656,7 +657,7 @@
             },
             {
               "type": "RepeatGroupDTO",
-              "stepId": 13473699272,
+              "stepId": 13645680043,
               "stepOrder": 2,
               "stepType": {
                 "stepTypeId": 6,
@@ -668,7 +669,7 @@
               "workoutSteps": [
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13473699273,
+                  "stepId": 13645680044,
                   "stepOrder": 3,
                   "stepType": {
                     "stepTypeId": 3,
@@ -720,7 +721,7 @@
                 },
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13473699274,
+                  "stepId": 13645680045,
                   "stepOrder": 4,
                   "stepType": {
                     "stepTypeId": 3,
@@ -785,7 +786,7 @@
             },
             {
               "type": "RepeatGroupDTO",
-              "stepId": 13473699275,
+              "stepId": 13645680046,
               "stepOrder": 5,
               "stepType": {
                 "stepTypeId": 6,
@@ -797,7 +798,7 @@
               "workoutSteps": [
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13473699276,
+                  "stepId": 13645680047,
                   "stepOrder": 6,
                   "stepType": {
                     "stepTypeId": 3,
@@ -849,7 +850,7 @@
                 },
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13473699277,
+                  "stepId": 13645680048,
                   "stepOrder": 7,
                   "stepType": {
                     "stepTypeId": 3,
@@ -914,7 +915,7 @@
             },
             {
               "type": "RepeatGroupDTO",
-              "stepId": 13473699278,
+              "stepId": 13645680049,
               "stepOrder": 8,
               "stepType": {
                 "stepTypeId": 6,
@@ -926,7 +927,7 @@
               "workoutSteps": [
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13473699279,
+                  "stepId": 13645680050,
                   "stepOrder": 9,
                   "stepType": {
                     "stepTypeId": 3,
@@ -978,7 +979,7 @@
                 },
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13473699280,
+                  "stepId": 13645680051,
                   "stepOrder": 10,
                   "stepType": {
                     "stepTypeId": 3,
@@ -1043,7 +1044,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13473699281,
+              "stepId": 13645680052,
               "stepOrder": 11,
               "stepType": {
                 "stepTypeId": 2,
@@ -1121,7 +1122,7 @@
       "shared": false
     },
     "calendarDate": "2026-05-08",
-    "createdDate": "2026-05-25",
+    "createdDate": "2026-06-11",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -1130,18 +1131,18 @@
     "priority": null,
     "associatedActivityDateTime": null,
     "tpType": null,
+    "protected": false,
     "itp": false,
     "race": false,
-    "nameChanged": false,
-    "protected": false
+    "nameChanged": false
   },
   "warning": null,
   "replaced_uploads": [
     {
       "record": "training/planned/workouts/2026-05-08/2026-05-08_movilidad_estiramientos_30min.garmin_upload.json",
-      "scheduled_workout_id": 1661140130,
+      "scheduled_workout_id": 1661172832,
       "unscheduled": true,
-      "workout_id": 1579668544,
+      "workout_id": 1579701299,
       "deleted": true
     }
   ]

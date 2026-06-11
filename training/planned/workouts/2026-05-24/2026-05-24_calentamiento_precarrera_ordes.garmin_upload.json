@@ -1,15 +1,16 @@
 {
-  "generated_at": "2026-05-22T16:17:25.175420Z",
+  "generated_at": "2026-06-11T11:34:59.798750Z",
   "status": "scheduled",
+  "workout_hash": "94a04a20ca9949db95307457859cb37c4cd40323e61a252b747ab353cab72be3",
   "upload_mode": "structured_targets",
   "workout_file": "training/planned/workouts/2026-05-24_calentamiento_precarrera_ordes.yaml",
   "uploaded_response": {
-    "workoutId": 1575966527,
+    "workoutId": 1597254444,
     "ownerId": 137864769,
     "workoutName": "Calentamiento pre-carrera Ordes",
     "description": "Calentamiento corto y conservador antes de Ordes para activar sin fatigar ni irritar el periostio. Trote suave, rectas cortas controladas y cierre facil hasta la salida.",
-    "updatedDate": "2026-05-22T16:17:24.0",
-    "createdDate": "2026-05-22T16:17:24.0",
+    "updatedDate": "2026-06-11T11:34:58.0",
+    "createdDate": "2026-06-11T11:34:58.0",
     "sportType": {
       "sportTypeId": 1,
       "sportTypeKey": "running",
@@ -49,7 +50,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13442028302,
+            "stepId": 13645682425,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 1,
@@ -101,7 +102,7 @@
           },
           {
             "type": "RepeatGroupDTO",
-            "stepId": 13442028303,
+            "stepId": 13645682426,
             "stepOrder": 2,
             "stepType": {
               "stepTypeId": 6,
@@ -113,7 +114,7 @@
             "workoutSteps": [
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13442028304,
+                "stepId": 13645682427,
                 "stepOrder": 3,
                 "stepType": {
                   "stepTypeId": 3,
@@ -165,7 +166,7 @@
               },
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13442028305,
+                "stepId": 13645682428,
                 "stepOrder": 4,
                 "stepType": {
                   "stepTypeId": 4,
@@ -230,7 +231,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13442028306,
+            "stepId": 13645682429,
             "stepOrder": 5,
             "stepType": {
               "stepTypeId": 2,
@@ -308,14 +309,14 @@
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1657436911,
+    "workoutScheduleId": 1678519195,
     "workout": {
-      "workoutId": 1575966527,
+      "workoutId": 1597254444,
       "ownerId": 137864769,
       "workoutName": "Calentamiento pre-carrera Ordes",
       "description": "Calentamiento corto y conservador antes de Ordes para activar sin fatigar ni irritar el periostio. Trote suave, rectas cortas controladas y cierre facil hasta la salida.",
-      "updatedDate": "2026-05-22T16:17:24.0",
-      "createdDate": "2026-05-22T16:17:24.0",
+      "updatedDate": "2026-06-11T11:34:58.0",
+      "createdDate": "2026-06-11T11:34:58.0",
       "sportType": {
         "sportTypeId": 1,
         "sportTypeKey": "running",
@@ -346,7 +347,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13442028302,
+              "stepId": 13645682425,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 1,
@@ -398,7 +399,7 @@
             },
             {
               "type": "RepeatGroupDTO",
-              "stepId": 13442028303,
+              "stepId": 13645682426,
               "stepOrder": 2,
               "stepType": {
                 "stepTypeId": 6,
@@ -410,7 +411,7 @@
               "workoutSteps": [
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13442028304,
+                  "stepId": 13645682427,
                   "stepOrder": 3,
                   "stepType": {
                     "stepTypeId": 3,
@@ -462,7 +463,7 @@
                 },
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13442028305,
+                  "stepId": 13645682428,
                   "stepOrder": 4,
                   "stepType": {
                     "stepTypeId": 4,
@@ -527,7 +528,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13442028306,
+              "stepId": 13645682429,
               "stepOrder": 5,
               "stepType": {
                 "stepTypeId": 2,
@@ -605,7 +606,7 @@
       "shared": false
     },
     "calendarDate": "2026-05-24",
-    "createdDate": "2026-05-22",
+    "createdDate": "2026-06-11",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -615,10 +616,18 @@
     "associatedActivityDateTime": null,
     "tpType": null,
     "protected": false,
-    "nameChanged": false,
     "itp": false,
-    "race": false
+    "race": false,
+    "nameChanged": false
   },
   "warning": null,
-  "replaced_uploads": []
+  "replaced_uploads": [
+    {
+      "record": "training/planned/workouts/2026-05-24/2026-05-24_calentamiento_precarrera_ordes.garmin_upload.json",
+      "scheduled_workout_id": 1657436911,
+      "unscheduled": true,
+      "workout_id": 1575966527,
+      "deleted": true
+    }
+  ]
 }

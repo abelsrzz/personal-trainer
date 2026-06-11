@@ -1,15 +1,16 @@
 {
-  "generated_at": "2026-05-16T12:42:14.486797Z",
+  "generated_at": "2026-06-11T11:34:56.143364Z",
   "status": "scheduled",
+  "workout_hash": "dbb076fc2b4311d43c9edc28db10f2ff0a79f363e6dfdc65c3964f87c5a03dca",
   "upload_mode": "structured_targets",
   "workout_file": "training/planned/workouts/2026-05-22_activacion_ritmo_carrera.yaml",
   "uploaded_response": {
-    "workoutId": 1569240240,
+    "workoutId": 1597254419,
     "ownerId": 137864769,
     "workoutName": "Activacion running ritmo carrera",
     "description": "Unica activacion de calidad de running antes de Ordes. Debe recordar ritmo de carrera sin dejar fatiga residual.",
-    "updatedDate": "2026-05-16T12:42:14.0",
-    "createdDate": "2026-05-16T12:42:14.0",
+    "updatedDate": "2026-06-11T11:34:54.0",
+    "createdDate": "2026-06-11T11:34:54.0",
     "sportType": {
       "sportTypeId": 1,
       "sportTypeKey": "running",
@@ -49,7 +50,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13376331647,
+            "stepId": 13645682013,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 1,
@@ -105,7 +106,7 @@
           },
           {
             "type": "RepeatGroupDTO",
-            "stepId": 13376331648,
+            "stepId": 13645682014,
             "stepOrder": 2,
             "stepType": {
               "stepTypeId": 6,
@@ -117,7 +118,7 @@
             "workoutSteps": [
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13376331649,
+                "stepId": 13645682015,
                 "stepOrder": 3,
                 "stepType": {
                   "stepTypeId": 3,
@@ -169,7 +170,7 @@
               },
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13376331650,
+                "stepId": 13645682016,
                 "stepOrder": 4,
                 "stepType": {
                   "stepTypeId": 4,
@@ -234,7 +235,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13376331651,
+            "stepId": 13645682017,
             "stepOrder": 5,
             "stepType": {
               "stepTypeId": 2,
@@ -316,14 +317,14 @@
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1650769379,
+    "workoutScheduleId": 1678519170,
     "workout": {
-      "workoutId": 1569240240,
+      "workoutId": 1597254419,
       "ownerId": 137864769,
       "workoutName": "Activacion running ritmo carrera",
       "description": "Unica activacion de calidad de running antes de Ordes. Debe recordar ritmo de carrera sin dejar fatiga residual.",
-      "updatedDate": "2026-05-16T12:42:14.0",
-      "createdDate": "2026-05-16T12:42:14.0",
+      "updatedDate": "2026-06-11T11:34:54.0",
+      "createdDate": "2026-06-11T11:34:54.0",
       "sportType": {
         "sportTypeId": 1,
         "sportTypeKey": "running",
@@ -354,7 +355,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13376331647,
+              "stepId": 13645682013,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 1,
@@ -410,7 +411,7 @@
             },
             {
               "type": "RepeatGroupDTO",
-              "stepId": 13376331648,
+              "stepId": 13645682014,
               "stepOrder": 2,
               "stepType": {
                 "stepTypeId": 6,
@@ -422,7 +423,7 @@
               "workoutSteps": [
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13376331649,
+                  "stepId": 13645682015,
                   "stepOrder": 3,
                   "stepType": {
                     "stepTypeId": 3,
@@ -474,7 +475,7 @@
                 },
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13376331650,
+                  "stepId": 13645682016,
                   "stepOrder": 4,
                   "stepType": {
                     "stepTypeId": 4,
@@ -539,7 +540,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13376331651,
+              "stepId": 13645682017,
               "stepOrder": 5,
               "stepType": {
                 "stepTypeId": 2,
@@ -621,7 +622,7 @@
       "shared": false
     },
     "calendarDate": "2026-05-22",
-    "createdDate": "2026-05-16",
+    "createdDate": "2026-06-11",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -630,9 +631,19 @@
     "priority": null,
     "associatedActivityDateTime": null,
     "tpType": null,
-    "race": false,
+    "protected": false,
     "itp": false,
-    "nameChanged": false,
-    "protected": false
-  }
+    "race": false,
+    "nameChanged": false
+  },
+  "warning": null,
+  "replaced_uploads": [
+    {
+      "record": "training/planned/workouts/2026-05-22/2026-05-22_activacion_ritmo_carrera.garmin_upload.json",
+      "scheduled_workout_id": 1650769379,
+      "unscheduled": true,
+      "workout_id": 1569240240,
+      "deleted": true
+    }
+  ]
 }

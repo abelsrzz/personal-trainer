@@ -90,6 +90,31 @@ from scripts.web_v2 import app
 
 
 class WebV2Tests(unittest.TestCase):
+    def test_aerobic_target_hr_values_derive_from_z2_band(self) -> None:
+        with mock.patch.object(app.portal_core, "load_yaml", return_value={"zones": {"heart_rate": {"z2": "145-160"}}}):
+            self.assertEqual(app.aerobic_target_hr_values(), [145, 153, 160])
+
+    def test_build_aerobic_trend_chart_returns_series_for_recent_weeks(self) -> None:
+        activities = [
+            {"date": app.portal_core.date(2026, 5, 5), "distance_km": 8.2, "duration_s": 3013, "pace_s_per_km": 367.4, "avg_hr": 145.0},
+            {"date": app.portal_core.date(2026, 5, 8), "distance_km": 9.0, "duration_s": 3240, "pace_s_per_km": 360.0, "avg_hr": 147.0},
+            {"date": app.portal_core.date(2026, 5, 15), "distance_km": 10.0, "duration_s": 3540, "pace_s_per_km": 354.0, "avg_hr": 150.0},
+            {"date": app.portal_core.date(2026, 5, 22), "distance_km": 9.4, "duration_s": 3271, "pace_s_per_km": 348.0, "avg_hr": 153.0},
+            {"date": app.portal_core.date(2026, 5, 29), "distance_km": 10.1, "duration_s": 3444, "pace_s_per_km": 341.0, "avg_hr": 156.0},
+            {"date": app.portal_core.date(2026, 6, 5), "distance_km": 11.2, "duration_s": 3729, "pace_s_per_km": 333.0, "avg_hr": 159.0},
+        ]
+        with (
+            mock.patch.object(app.portal_core, "running_activity_summaries", return_value=activities),
+            mock.patch.object(app.portal_core, "load_yaml", return_value={"zones": {"heart_rate": {"z2": "145-160"}}}),
+        ):
+            chart = app.build_aerobic_trend_chart()
+
+        self.assertIsNotNone(chart)
+        self.assertEqual(chart["target_hrs"], [145, 153, 160])
+        self.assertEqual(len(chart["series"]), 3)
+        self.assertTrue(chart["series"][0]["points"])
+        self.assertIn("6 semanas", chart["subtitle"])
+
     def test_home_page_prioritizes_race_review_when_race_exists(self) -> None:
         payload = {
             "today_plan": {
@@ -113,6 +138,7 @@ class WebV2Tests(unittest.TestCase):
         }
 
         with (
+            mock.patch.object(app, "load_today_feed", return_value=None),
             mock.patch.object(app.portal_core, "home_page_data", return_value=payload),
             mock.patch.object(app.portal_core, "calendar_day_data", return_value={"planned_items": [{"slug": "2026-05-24_calentamiento_precarrera_ordes", "name": "Calentamiento pre-carrera Ordes", "session_kind_label": "Rodaje facil", "estimated_duration": "17:00"}], "completed_items": []}),
             mock.patch.object(app.portal_core, "races_by_day", return_value={"2026-05-24": [{"name": "XXIX CARREIRA POPULAR CONCELLO DE ORDES"}]}),
@@ -156,6 +182,7 @@ class WebV2Tests(unittest.TestCase):
         }
 
         with (
+            mock.patch.object(app, "load_today_feed", return_value=None),
             mock.patch.object(app.portal_core, "home_page_data", return_value=payload),
             mock.patch.object(app.portal_core, "calendar_day_data", return_value=day_payload),
             mock.patch.object(app.portal_core, "races_by_day", return_value={"2026-05-24": [{"name": "Race event", "distance_km": "8.5k", "goal": "4:10-4:20/km"}]}),
@@ -197,6 +224,23 @@ class WebV2Tests(unittest.TestCase):
         self.assertEqual(page["review"]["slug"], "race-review")
         self.assertIsNone(page["review"]["payload"]["compliance"].get("duration_diff_s_vs_est"))
         self.assertEqual(page["review"]["garmin_feedback"][0]["label"], "Calorías")
+
+    def test_completed_workout_page_data_supports_imported_garmin_slug(self) -> None:
+        imported = {
+            "slug": "garmin-import-23201148301",
+            "name": "Ordes Caminar",
+            "payload": {"summary": {}},
+            "garmin_activity_id": 23201148301,
+            "recovery_analysis": None,
+        }
+        with (
+            mock.patch.object(app.portal_core, "completed_review_detail", return_value=None),
+            mock.patch.object(app.portal_core, "imported_garmin_activity_detail", return_value=imported),
+            mock.patch.object(app.portal_core, "garmin_feedback_metrics", return_value=[{"label": "Pasos", "value": "5458"}]),
+        ):
+            page = app.completed_workout_page_data("garmin-import-23201148301")
+        self.assertEqual(page["review"]["slug"], "garmin-import-23201148301")
+        self.assertEqual(page["review"]["garmin_feedback"][0]["label"], "Pasos")
 
     def test_start_garmin_auto_sync_respects_disabled_flag(self) -> None:
         with mock.patch.object(app, "GARMIN_AUTO_SYNC_ENABLED", False), mock.patch("threading.Thread") as thread_mock:
@@ -240,6 +284,22 @@ class WebV2Tests(unittest.TestCase):
         refresh_command = run_mock.call_args_list[5].args[0]
         self.assertIn("--skip-activity-import", refresh_command)
         self.assertTrue(app._garmin_sync_state["last_ok"])
+
+    def test_plan_page_data_exposes_aerobic_trend_chart(self) -> None:
+        cycle_payload = {
+            "dashboard": {"decision": {}, "goal_gates": {}, "athlete_state": {}},
+            "master_plan": {"blocks": []},
+            "current_block": None,
+        }
+        with (
+            mock.patch.object(app.portal_core, "planned_workouts", return_value=[]),
+            mock.patch.object(app.portal_core, "completed_reviews", return_value=[]),
+            mock.patch.object(app.portal_core, "cycle_page_data", return_value=cycle_payload),
+            mock.patch.object(app.portal_core, "week_page_data", return_value={"rows": [], "executive_summary": None}),
+            mock.patch.object(app, "build_aerobic_trend_chart", return_value={"target_hrs": [145, 153, 160], "series": []}),
+        ):
+            payload = app.plan_page_data()
+        self.assertEqual(payload["aerobic_trend_chart"]["target_hrs"], [145, 153, 160])
 
 
 if __name__ == "__main__":

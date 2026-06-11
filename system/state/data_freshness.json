@@ -6,14 +6,29 @@
       "last_successful_sync": "2026-05-10T16:19:02.572994+00:00"
     },
     "athlete_profile": {
-      "last_attempted_sync": "2026-06-10T19:48:07.117429+00:00",
+      "last_attempted_sync": "2026-06-11T20:31:06.509486+00:00",
       "last_error": null,
-      "last_successful_sync": "2026-06-10T19:48:07.117429+00:00"
+      "last_successful_sync": "2026-06-11T20:31:06.509486+00:00"
     },
     "coach_decision": {
-      "last_attempted_sync": "2026-06-10T19:45:34.998952+00:00",
+      "last_attempted_sync": "2026-06-11T17:47:06.480179+00:00",
       "last_error": null,
-      "last_successful_sync": "2026-06-10T19:45:34.998952+00:00"
+      "last_successful_sync": "2026-06-11T17:47:06.480179+00:00"
+    },
+    "athlete_state": {
+      "last_attempted_sync": "2026-06-11T17:26:43.373175+00:00",
+      "last_error": null,
+      "last_successful_sync": "2026-06-11T17:26:43.373175+00:00"
+    },
+    "progression_state": {
+      "last_attempted_sync": "2026-06-11T17:26:43.373411+00:00",
+      "last_error": null,
+      "last_successful_sync": "2026-06-11T17:26:43.373411+00:00"
+    },
+    "training_paces": {
+      "last_attempted_sync": "2026-06-11T17:26:43.373590+00:00",
+      "last_error": null,
+      "last_successful_sync": "2026-06-11T17:26:43.373590+00:00"
     }
   }
 }

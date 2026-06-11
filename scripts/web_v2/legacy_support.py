@@ -3426,6 +3426,123 @@ def running_activity_summaries() -> list[dict[str, Any]]:
     return items
 
 
+def imported_activity_type_label(value: str | None) -> str:
+    normalized = str(value or "").strip().lower()
+    return {
+        "running": "Correr",
+        "trail_running": "Trail",
+        "walking": "Caminar",
+        "cycling": "Bici",
+        "road_biking": "Bici",
+        "indoor_cycling": "Bici indoor",
+        "strength_training": "Fuerza",
+        "elliptical": "Elíptica",
+        "fitness_equipment": "Cardio",
+        "swimming": "Natación",
+        "mobility": "Movilidad",
+        "stretching": "Movilidad",
+    }.get(normalized, normalized.replace("_", " ").title() or "Actividad")
+
+
+def imported_garmin_activities(day: str, reviewed_activity_ids: set[int] | None = None) -> list[dict[str, Any]]:
+    reviewed_ids = reviewed_activity_ids or set()
+    items: list[dict[str, Any]] = []
+    for path in sorted(GARMIN_ACTIVITY_DIR.glob(f"{day}_*/summary.json")):
+        try:
+            payload = load_json(path)
+        except (OSError, json.JSONDecodeError):
+            continue
+        if not isinstance(payload, dict):
+            continue
+        activity_id = int(payload.get("activityId") or 0)
+        if not activity_id or activity_id in reviewed_ids:
+            continue
+        distance_m = float(payload.get("distance") or 0.0)
+        duration_s = float(payload.get("duration") or payload.get("movingDuration") or 0.0)
+        activity_type = str(((payload.get("activityType") or {}) if isinstance(payload.get("activityType"), dict) else {}).get("typeKey") or "").strip().lower()
+        items.append(
+            {
+                "slug": f"garmin-import-{activity_id}",
+                "date": day,
+                "activity_name": payload.get("activityName") or path.parent.name,
+                "name": payload.get("activityName") or path.parent.name,
+                "distance_km": round(distance_m / 1000.0, 2) if distance_m > 0 else 0.0,
+                "duration": format_duration(duration_s),
+                "pace": format_pace((duration_s * 1000.0 / distance_m) if distance_m > 0 and duration_s > 0 else None),
+                "avg_hr": payload.get("averageHR") or "-",
+                "traffic_light": "Importada",
+                "compliance_note": "Actividad Garmin importada todavía sin revisión asociada.",
+                "feedback_summary": None,
+                "sport": activity_type or "other",
+                "sport_label": imported_activity_type_label(activity_type),
+                "intensity_label": "Importada",
+                "session_kind_label": imported_activity_type_label(activity_type),
+                "calendar_color_class": "intensity-easy",
+                "calendar_inline_style": "",
+                "primary_icon": "",
+                "detail_url": f"/completed-workouts/garmin-import-{activity_id}",
+                "garmin_activity_id": activity_id,
+                "payload": {"summary": payload},
+                "is_imported_only": True,
+            }
+        )
+    return items
+
+
+def imported_garmin_activity_detail(activity_id: Any) -> dict[str, Any] | None:
+    summary = garmin_activity_summary_payload(activity_id)
+    if not isinstance(summary, dict) or not summary:
+        return None
+    parsed_date = parse_local_summary_date(summary.get("startTimeLocal") or summary.get("startTimeGMT"))
+    date_text = parsed_date.isoformat() if parsed_date else ""
+    distance_m = float(summary.get("distance") or 0.0)
+    duration_s = float(summary.get("duration") or summary.get("movingDuration") or 0.0)
+    activity_type = str(((summary.get("activityType") or {}) if isinstance(summary.get("activityType"), dict) else {}).get("typeKey") or "").strip().lower()
+    review_payload = {
+        "planned": {"date": date_text, "name": summary.get("activityName") or f"Actividad Garmin {activity_id}", "sport": activity_type or "other"},
+        "summary": {
+            "activity_id": summary.get("activityId"),
+            "activity_name": summary.get("activityName"),
+            "distance_m": distance_m,
+            "duration_s": duration_s,
+            "pace_s_per_km": (duration_s * 1000.0 / distance_m) if distance_m > 0 and duration_s > 0 else None,
+            "avg_hr": summary.get("averageHR"),
+        },
+    }
+    return {
+        "slug": f"garmin-import-{activity_id}",
+        "date": date_text,
+        "name": summary.get("activityName") or f"Actividad Garmin {activity_id}",
+        "score": "-",
+        "traffic_light": "Importada",
+        "risk_level": "-",
+        "distance_km": round(distance_m / 1000.0, 2) if distance_m > 0 else 0.0,
+        "duration": format_duration(duration_s),
+        "pace": format_pace((duration_s * 1000.0 / distance_m) if distance_m > 0 and duration_s > 0 else None),
+        "avg_hr": summary.get("averageHR") or "-",
+        "garmin_activity_id": summary.get("activityId"),
+        "garmin_activity_url": garmin_activity_url(summary.get("activityId")),
+        "garmin_workout_id": None,
+        "garmin_workout_url": None,
+        "activity_name": summary.get("activityName") or f"Actividad Garmin {activity_id}",
+        "planned_session_reference": None,
+        "sport": activity_type or "other",
+        "session_kind": activity_type or "other",
+        "session_kind_label": imported_activity_type_label(activity_type),
+        "session_color_class": "intensity-easy",
+        "compliance_note": "Actividad Garmin importada en local sin revisión automática asociada.",
+        "automated_review_summary": "Disponible para consulta y planificación aunque no tenga review enlazada.",
+        "athlete_feedback": None,
+        "feedback_badge": feedback_badge(None),
+        "feedback_summary": None,
+        "feedback_form": feedback_form_state(None),
+        "feedback_locked": False,
+        "recovery_analysis": build_recovery_analysis(review_payload),
+        "payload": review_payload,
+        "is_imported_only": True,
+    }
+
+
 def activity_window_stats(activities: list[dict[str, Any]], start: date, end: date, min_distance_km: float = 4.0, max_distance_km: float = 12.5) -> dict[str, Any]:
     window = [
         item for item in activities
@@ -4437,9 +4554,15 @@ def compare_day_plan_vs_execution(planned_items: list[dict[str, Any]], completed
 
 def calendar_day_data(day: str) -> dict[str, Any]:
     planned_items = [item for item in planned_workouts() if item.get("date") == day]
-    completed_items = [item for item in completed_reviews() if item.get("date") == day]
+    review_items = [item for item in completed_reviews() if item.get("date") == day]
+    reviewed_activity_ids = {
+        int(item.get("garmin_activity_id"))
+        for item in review_items
+        if item.get("garmin_activity_id") not in {None, ""}
+    }
+    completed_items = review_items + imported_garmin_activities(day, reviewed_activity_ids)
     race_items = races_by_day().get(day, [])
-    reviews = completed_items
+    reviews = review_items
     summary_items = len(planned_items) + len(completed_items) + len(race_items)
     comparison = compare_day_plan_vs_execution(planned_items, completed_items)
     return {

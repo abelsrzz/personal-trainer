@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+from datetime import timedelta
 import logging
+import math
 import os
 import subprocess
 import sys
@@ -15,8 +17,11 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
 
+from scripts.system.automation_hub import build_status as automation_jobs_status, load_state as load_automation_jobs_state, run_due_jobs, run_job
+from scripts.system.action_runtime import list_actions, run_action
 from scripts.system.automation_health import load_automation_health
 from scripts.system.context_engine import load_context_artifact
+from scripts.system.today_feed import load_today_feed
 from scripts.web_v2 import legacy_support as portal_core
 
 
@@ -257,6 +262,184 @@ def svg_smooth_path(points: list[dict[str, Any]]) -> str:
             f"C {cp1x:.2f} {cp1y:.2f}, {cp2x:.2f} {cp2y:.2f}, {nxt['x']:.2f} {nxt['y']:.2f}"
         )
     return " ".join(commands)
+
+
+def format_pace_label(seconds: float | None) -> str:
+    return portal_core.format_pace(seconds)
+
+
+def aerobic_target_hr_values() -> list[int]:
+    fallback = [145, 153, 160]
+    try:
+        zones_payload = portal_core.load_yaml(ROOT / "athlete" / "zones.yaml")
+    except OSError:
+        return fallback
+    heart_rate = zones_payload.get("zones", {}).get("heart_rate", {}) if isinstance(zones_payload, dict) else {}
+    z2_text = str(heart_rate.get("z2") or "").strip()
+    try:
+        z2_low, z2_high = [int(part.strip()) for part in z2_text.split("-")]
+    except ValueError:
+        return fallback
+    midpoint = int(math.ceil((z2_low + z2_high) / 2.0))
+    return [z2_low, midpoint, z2_high]
+
+
+def build_aerobic_trend_chart() -> dict[str, Any] | None:
+    activities = portal_core.running_activity_summaries()
+    if not isinstance(activities, list) or len(activities) < 3:
+        return None
+
+    target_hrs = aerobic_target_hr_values()
+    z2_low, _, z2_high = target_hrs
+    eligible = []
+    for item in activities:
+        if not isinstance(item, dict):
+            continue
+        activity_date = item.get("date")
+        pace_s = item.get("pace_s_per_km")
+        avg_hr = item.get("avg_hr")
+        distance_km = float(item.get("distance_km") or 0.0)
+        if activity_date is None or pace_s is None or avg_hr is None:
+            continue
+        if distance_km < 4.0 or distance_km > 30.0:
+            continue
+        avg_hr_num = float(avg_hr)
+        if avg_hr_num < (z2_low - 8) or avg_hr_num > (z2_high + 3):
+            continue
+        eligible.append(
+            {
+                **item,
+                "avg_hr": avg_hr_num,
+                "pace_s_per_km": float(pace_s),
+                "distance_km": distance_km,
+            }
+        )
+    if len(eligible) < 3:
+        return None
+
+    week_starts = sorted({item["date"] - timedelta(days=item["date"].weekday()) for item in eligible})
+    if not week_starts:
+        return None
+
+    palette = ["#72f0c2", "#7cb8ff", "#ffcc81"]
+    series = [{"target_hr": target_hr, "color": palette[index % len(palette)], "points": []} for index, target_hr in enumerate(target_hrs)]
+    week_labels = []
+
+    for week_start in week_starts[-10:]:
+        week_end = week_start + timedelta(days=6)
+        window_start = week_end - timedelta(days=41)
+        window = [item for item in eligible if window_start <= item["date"] <= week_end]
+        if len(window) < 2:
+            continue
+
+        added_point = False
+        week_label = f"W{week_start.isocalendar().week:02d}"
+        for series_item in series:
+            target_hr = float(series_item["target_hr"])
+            weighted_pace = 0.0
+            total_weight = 0.0
+            comparable_count = 0
+            for candidate in window:
+                hr_gap = abs(float(candidate["avg_hr"]) - target_hr)
+                if hr_gap > 8.0:
+                    continue
+                age_days = max(0, (week_end - candidate["date"]).days)
+                hr_weight = max(0.1, 1.0 - (hr_gap / 8.0))
+                recency_weight = max(0.3, 1.0 - (age_days / 42.0))
+                distance_weight = min(max(float(candidate["distance_km"]), 4.0), 18.0) / 18.0
+                weight = hr_weight * recency_weight * distance_weight
+                weighted_pace += float(candidate["pace_s_per_km"]) * weight
+                total_weight += weight
+                comparable_count += 1
+            if comparable_count < 2 or total_weight <= 0.0:
+                continue
+            estimated_pace = weighted_pace / total_weight
+            series_item["points"].append(
+                {
+                    "week_start": week_start.isoformat(),
+                    "week_label": week_label,
+                    "week_end": week_end.isoformat(),
+                    "pace_s_per_km": estimated_pace,
+                    "pace_label": format_pace_label(estimated_pace),
+                    "comparable_count": comparable_count,
+                }
+            )
+            added_point = True
+        if added_point:
+            week_labels.append({"week_start": week_start.isoformat(), "label": week_label})
+
+    if not week_labels or not any(item["points"] for item in series):
+        return None
+
+    width = 720.0
+    height = 300.0
+    pad_left = 52.0
+    pad_right = 20.0
+    pad_top = 30.0
+    pad_bottom = 56.0
+    plot_width = width - pad_left - pad_right
+    plot_height = height - pad_top - pad_bottom
+    week_index = {item["week_start"]: index for index, item in enumerate(week_labels)}
+    max_index = max(1, len(week_labels) - 1)
+    all_paces = [float(point["pace_s_per_km"]) for item in series for point in item["points"]]
+    pace_padding = max(6.0, (max(all_paces) - min(all_paces)) * 0.14) if len(all_paces) > 1 else 10.0
+    chart_min_pace = max(1.0, min(all_paces) - pace_padding)
+    chart_max_pace = max(all_paces) + pace_padding
+    pace_span = max(1.0, chart_max_pace - chart_min_pace)
+
+    def point_xy(week_start: str, pace_s: float) -> tuple[float, float]:
+        x_index = week_index[week_start]
+        x = pad_left + (x_index / max_index) * plot_width
+        y = pad_top + ((pace_s - chart_min_pace) / pace_span) * plot_height
+        return round(x, 2), round(y, 2)
+
+    for item in series:
+        svg_points = []
+        for point in item["points"]:
+            x, y = point_xy(str(point["week_start"]), float(point["pace_s_per_km"]))
+            svg_points.append({**point, "x": x, "y": y})
+        item["svg_points"] = svg_points
+        item["polyline"] = " ".join(
+            f"{'M' if index == 0 else 'L'} {point['x']:.2f} {point['y']:.2f}"
+            for index, point in enumerate(svg_points)
+        )
+        item["latest"] = svg_points[-1] if svg_points else None
+        item["recent_points"] = svg_points[-3:]
+
+    latest_values = [
+        {
+            "target_hr": item["target_hr"],
+            "pace_label": item["latest"]["pace_label"],
+            "week_label": item["latest"]["week_label"],
+            "color": item["color"],
+        }
+        for item in series
+        if item.get("latest")
+    ]
+    y_ticks = []
+    for value in [chart_min_pace, chart_min_pace + pace_span / 2.0, chart_max_pace]:
+        y = pad_top + ((value - chart_min_pace) / pace_span) * plot_height
+        y_ticks.append({"value": format_pace_label(value), "y": round(y, 2)})
+    x_ticks = []
+    for item in week_labels:
+        x, _ = point_xy(str(item["week_start"]), chart_max_pace)
+        x_ticks.append({"x": x, "label": item["label"]})
+
+    return {
+        "title": "Evolución ritmos aeróbicos",
+        "target_hrs": target_hrs,
+        "subtitle": f"Estimación semanal con ventana móvil de 6 semanas para tu Z2 ({z2_low}-{z2_high} ppm).",
+        "series": series,
+        "latest_values": latest_values,
+        "svg": {
+            "width": width,
+            "height": height,
+            "x_axis_y": height - pad_bottom,
+            "y_axis_x": pad_left,
+            "x_ticks": x_ticks,
+            "y_ticks": y_ticks,
+        },
+    }
 
 
 def authenticated(request: Request) -> bool:
@@ -532,6 +715,13 @@ def decorate_calendar_entry(item: dict[str, Any] | None, source: str | None = No
 
 
 def home_page_data() -> dict[str, Any]:
+    feed = load_today_feed()
+    if feed:
+        return {
+            **feed,
+            "active_nav": "hoy",
+        }
+
     payload = portal_core.home_page_data()
     today_plan = payload.get("today_plan", {}) if isinstance(payload.get("today_plan"), dict) else {}
     today_date = str(today_plan.get("date") or "").strip()
@@ -794,6 +984,7 @@ def plan_page_data() -> dict[str, Any]:
         "goal_gates": dashboard.get("goal_gates", {}),
         "hybrid_training": (dashboard.get("athlete_state", {}) or {}).get("athlete", {}).get("hybrid_training", {}),
         "replanning": decision.get("replanning", {}),
+        "aerobic_trend_chart": build_aerobic_trend_chart(),
         "active_nav": "plan",
     }
 
@@ -1127,6 +1318,66 @@ async def today_context_api(request: Request) -> JSONResponse:
     if guard:
         return JSONResponse({"ok": False, "error": "Sesion no valida."}, status_code=401)
     return JSONResponse({"ok": True, "context": load_context_artifact("today_context")}, status_code=200)
+
+
+@app.get("/api/actions/catalog")
+async def action_catalog_api(request: Request) -> JSONResponse:
+    guard = auth_guard(request)
+    if guard:
+        return JSONResponse({"ok": False, "error": "Sesion no valida."}, status_code=401)
+    return JSONResponse({"ok": True, "actions": list_actions()}, status_code=200)
+
+
+@app.post("/api/actions/run")
+async def action_run_api(request: Request) -> JSONResponse:
+    guard = auth_guard(request)
+    if guard:
+        return JSONResponse({"ok": False, "error": "Sesion no valida."}, status_code=401)
+    try:
+        payload = await request.json()
+    except json.JSONDecodeError:
+        payload = {}
+    if not isinstance(payload, dict):
+        return JSONResponse({"ok": False, "error": "Payload no valido."}, status_code=400)
+    action_name = str(payload.get("action") or "").strip()
+    if not action_name:
+        return JSONResponse({"ok": False, "error": "Falta la accion."}, status_code=400)
+    action_payload = payload.get("payload") if isinstance(payload.get("payload"), dict) else {}
+    result = run_action(action_name, payload=action_payload)
+    status_code = 200 if result.get("ok") else 400
+    return JSONResponse(result, status_code=status_code)
+
+
+@app.get("/api/automation/jobs")
+async def automation_jobs_api(request: Request) -> JSONResponse:
+    guard = auth_guard(request)
+    if guard:
+        return JSONResponse({"ok": False, "error": "Sesion no valida."}, status_code=401)
+    return JSONResponse({"ok": True, **automation_jobs_status(load_automation_jobs_state())}, status_code=200)
+
+
+@app.post("/api/automation/jobs/run")
+async def automation_jobs_run_api(request: Request) -> JSONResponse:
+    guard = auth_guard(request)
+    if guard:
+        return JSONResponse({"ok": False, "error": "Sesion no valida."}, status_code=401)
+    try:
+        payload = await request.json()
+    except json.JSONDecodeError:
+        payload = {}
+    if not isinstance(payload, dict):
+        return JSONResponse({"ok": False, "error": "Payload no valido."}, status_code=400)
+    job_name = str(payload.get("job") or "").strip()
+    force = bool(payload.get("force"))
+    run_due = bool(payload.get("run_due"))
+    if run_due:
+        result = run_due_jobs()
+    elif job_name:
+        result = run_job(job_name, force=force)
+    else:
+        return JSONResponse({"ok": False, "error": "Indica un job o activa run_due."}, status_code=400)
+    status_code = 200 if result.get("ok") else 400
+    return JSONResponse(result, status_code=status_code)
 
 
 if hasattr(app, "on_event"):

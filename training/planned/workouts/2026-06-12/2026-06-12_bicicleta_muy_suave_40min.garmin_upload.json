@@ -1,15 +1,16 @@
 {
-  "generated_at": "2026-05-24T14:08:45.959949Z",
+  "generated_at": "2026-06-11T11:35:36.316131Z",
   "status": "scheduled",
+  "workout_hash": "91b9add4367559f2e93a707472158ff45934825208c3d0b7a4c6c30ea97c0aa4",
   "upload_mode": "structured_targets",
   "workout_file": "training/planned/workouts/2026-06-12_bicicleta_muy_suave_40min.yaml",
   "uploaded_response": {
-    "workoutId": 1577548918,
+    "workoutId": 1597254791,
     "ownerId": 137864769,
     "workoutName": "Bicicleta muy suave 40 min",
     "description": "Descarga activa para facilitar absorcion de la semana sin perder continuidad.",
-    "updatedDate": "2026-05-24T14:08:43.0",
-    "createdDate": "2026-05-24T14:08:43.0",
+    "updatedDate": "2026-06-11T11:35:35.0",
+    "createdDate": "2026-06-11T11:35:35.0",
     "sportType": {
       "sportTypeId": 2,
       "sportTypeKey": "cycling",
@@ -49,7 +50,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13457233416,
+            "stepId": 13645685884,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 3,
@@ -127,14 +128,14 @@
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1659009719,
+    "workoutScheduleId": 1678519527,
     "workout": {
-      "workoutId": 1577548918,
+      "workoutId": 1597254791,
       "ownerId": 137864769,
       "workoutName": "Bicicleta muy suave 40 min",
       "description": "Descarga activa para facilitar absorcion de la semana sin perder continuidad.",
-      "updatedDate": "2026-05-24T14:08:43.0",
-      "createdDate": "2026-05-24T14:08:43.0",
+      "updatedDate": "2026-06-11T11:35:35.0",
+      "createdDate": "2026-06-11T11:35:35.0",
       "sportType": {
         "sportTypeId": 2,
         "sportTypeKey": "cycling",
@@ -165,7 +166,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13457233416,
+              "stepId": 13645685884,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 3,
@@ -243,7 +244,7 @@
       "shared": false
     },
     "calendarDate": "2026-06-12",
-    "createdDate": "2026-05-24",
+    "createdDate": "2026-06-11",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -254,16 +255,16 @@
     "tpType": null,
     "itp": false,
     "race": false,
-    "nameChanged": false,
-    "protected": false
+    "protected": false,
+    "nameChanged": false
   },
   "warning": null,
   "replaced_uploads": [
     {
       "record": "training/planned/workouts/2026-06-12/2026-06-12_bicicleta_muy_suave_40min.garmin_upload.json",
-      "scheduled_workout_id": 1650784642,
+      "scheduled_workout_id": 1659009719,
       "unscheduled": true,
-      "workout_id": 1569255591,
+      "workout_id": 1577548918,
       "deleted": true
     }
   ]

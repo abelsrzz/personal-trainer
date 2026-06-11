@@ -1,16 +1,16 @@
 activity:
-  id: garmin-22992915868
+  id: garmin-22992941690
   source: garmin
-  garmin_activity_id: 22992915868
+  garmin_activity_id: 22992941690
   date: 2026-05-24
-  title: Ordes - Calentamiento pre-carrera Ordes
+  title: Ordes - XXIX CARREIRA POPULAR CONCELLO DE ORDES
   type: run
   planned_session_reference: training/planned/workouts/2026-05-24_calentamiento_precarrera_ordes.yaml
-  distance_km: 2.427
-  duration: '17:38'
-  elevation_gain_m: 29.0
-  avg_pace: 7:16/km
-  avg_hr: 169.0
-  max_hr: 187.0
+  distance_km: 8.447
+  duration: '39:37'
+  elevation_gain_m: 143.0
+  avg_pace: 4:41/km
+  avg_hr: 191.0
+  max_hr: 199.0
   shoes: null
-  notes: Autoimported from Garmin and relinked to the correct warmup activity.
+  notes: Autoimported from Garmin on 2026-06-11T13:50:36

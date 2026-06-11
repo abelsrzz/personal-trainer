@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 {% block title %}Plan | RunPilot Next{% endblock %}
 {% block content %}
-{% set progression = page.get('progression', {}) %}
+{% set progression = page.get('progression') or {} %}
 {% set training_paces = page.get('training_paces', {}) %}
 {% set training_pace_labels = training_paces.get('labels', {}) if training_paces else {} %}
 {% set bike_paces = training_paces.get('bike', {}) if training_paces else {} %}
-{% set goal_gates = page.get('goal_gates', {}) %}
-{% set replanning = page.get('replanning', {}) %}
+{% set goal_gates = page.get('goal_gates') or {} %}
+{% set replanning = page.get('replanning') or {} %}
+{% set aerobic_trend_chart = page.get('aerobic_trend_chart') %}
 <section class="hero-card">
   <div>
     <p class="eyebrow">Plan</p>
@@ -104,6 +105,40 @@
     </div>
   </article>
 </section>
+
+{% if aerobic_trend_chart %}
+<section class="panel">
+  <div class="section-head">
+    <div>
+      <p class="eyebrow">Progreso aeróbico</p>
+      <h2>{{ aerobic_trend_chart.title }} @{{ aerobic_trend_chart.target_hrs|join('/@') }}</h2>
+    </div>
+  </div>
+  <p class="muted chart-copy">{{ aerobic_trend_chart.subtitle }}</p>
+  <svg class="trend-chart" viewBox="0 0 {{ aerobic_trend_chart.svg.width }} {{ aerobic_trend_chart.svg.height }}" role="img" aria-label="Evolucion de ritmos aerobicos por pulsaciones objetivo">
+    {% for item in aerobic_trend_chart.latest_values %}
+    <circle class="trend-dot" style="fill: {{ item.color }};" cx="{{ 52 + loop.index0 * 118 }}" cy="16" r="4"></circle>
+    <text class="trend-value trend-legend-text" fill="#eff6ff" x="{{ 62 + loop.index0 * 118 }}" y="20">{{ item.target_hr }} ppm</text>
+    {% endfor %}
+    <line class="trend-axis" stroke="rgba(239, 246, 255, 0.2)" stroke-width="1" x1="{{ aerobic_trend_chart.svg.y_axis_x }}" y1="{{ aerobic_trend_chart.svg.x_axis_y }}" x2="{{ aerobic_trend_chart.svg.width - 20 }}" y2="{{ aerobic_trend_chart.svg.x_axis_y }}"></line>
+    {% for item in aerobic_trend_chart.series %}
+      {% if item.polyline %}
+      <path class="trend-line" fill="none" stroke="{{ item.color }}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="{{ item.polyline }}"></path>
+      {% endif %}
+      {% for point in item.svg_points %}
+      <circle class="trend-dot" style="fill: {{ item.color }};" cx="{{ point.x }}" cy="{{ point.y }}" r="3"></circle>
+      {% endfor %}
+      {% for point in item.recent_points %}
+      <circle class="trend-dot trend-dot-latest" style="fill: {{ item.color }};" cx="{{ point.x }}" cy="{{ point.y }}" r="4"></circle>
+      <text class="trend-value" fill="#eff6ff" x="{{ point.x }}" y="{{ point.y - 10 }}" text-anchor="middle">{{ point.pace_label }}</text>
+      {% endfor %}
+    {% endfor %}
+    {% for tick in aerobic_trend_chart.svg.x_ticks %}
+    <text class="trend-label" fill="#eff6ff" x="{{ tick.x }}" y="{{ aerobic_trend_chart.svg.height - 14 }}" text-anchor="middle">{{ tick.label }}</text>
+    {% endfor %}
+  </svg>
+</section>
+{% endif %}
 
 {% if goal_gates.get('block_checkpoints') %}
 <section class="panel">

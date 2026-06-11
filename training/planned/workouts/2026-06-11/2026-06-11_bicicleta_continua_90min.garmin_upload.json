@@ -1,15 +1,16 @@
 {
-  "generated_at": "2026-05-27T18:45:25.022376Z",
+  "generated_at": "2026-06-11T13:09:36.577475Z",
   "status": "scheduled",
+  "workout_hash": "3826d17d24709e73f65d45425f4830eee84e80377ccb8653c5248c46e1d7d3d2",
   "upload_mode": "structured_targets",
   "workout_file": "training/planned/workouts/2026-06-11_bicicleta_continua_90min.yaml",
   "uploaded_response": {
-    "workoutId": 1581661624,
+    "workoutId": 1597308401,
     "ownerId": 137864769,
-    "workoutName": "Bicicleta tempo controlado 90 min",
-    "description": "Trabajo aerobico con emulacion de tempo rota algo mas larga, siempre por pulsaciones y sin convertirlo en un dia agresivo.",
-    "updatedDate": "2026-05-27T18:45:21.0",
-    "createdDate": "2026-05-27T18:45:21.0",
+    "workoutName": "Bicicleta continua controlada 80 min",
+    "description": "Trabajo aerobico continuo y prudente en Z2 para cerrar la semana sin sumar tension extra antes de la reintroduccion.",
+    "updatedDate": "2026-06-11T13:09:35.0",
+    "createdDate": "2026-06-11T13:09:35.0",
     "sportType": {
       "sportTypeId": 2,
       "sportTypeKey": "cycling",
@@ -28,7 +29,7 @@
       "vivokidUser": false
     },
     "sharedWithUsers": null,
-    "estimatedDurationInSecs": 5400,
+    "estimatedDurationInSecs": 4800,
     "estimatedDistanceInMeters": null,
     "workoutSegments": [
       {
@@ -49,7 +50,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13495047645,
+            "stepId": 13646294208,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 1,
@@ -57,14 +58,14 @@
               "displayOrder": 1
             },
             "childStepId": null,
-            "description": "15 min suaves",
+            "description": "10 min suaves",
             "endCondition": {
               "conditionTypeId": 2,
               "conditionTypeKey": "time",
               "displayOrder": 2,
               "displayable": true
             },
-            "endConditionValue": 900.0,
+            "endConditionValue": 600.0,
             "preferredEndConditionUnit": null,
             "endConditionCompare": null,
             "targetType": {
@@ -101,7 +102,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13495047646,
+            "stepId": 13646294209,
             "stepOrder": 2,
             "stepType": {
               "stepTypeId": 3,
@@ -109,14 +110,14 @@
               "displayOrder": 3
             },
             "childStepId": null,
-            "description": "15 min Z2 estable para asentar pulso",
+            "description": "60 min Z2 estable y continua",
             "endCondition": {
               "conditionTypeId": 2,
               "conditionTypeKey": "time",
               "displayOrder": 2,
               "displayable": true
             },
-            "endConditionValue": 900.0,
+            "endConditionValue": 3600.0,
             "preferredEndConditionUnit": null,
             "endConditionCompare": null,
             "targetType": {
@@ -153,216 +154,8 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13495047647,
+            "stepId": 13646294210,
             "stepOrder": 3,
-            "stepType": {
-              "stepTypeId": 3,
-              "stepTypeKey": "interval",
-              "displayOrder": 3
-            },
-            "childStepId": null,
-            "description": "12 min tempo emulado controlado",
-            "endCondition": {
-              "conditionTypeId": 2,
-              "conditionTypeKey": "time",
-              "displayOrder": 2,
-              "displayable": true
-            },
-            "endConditionValue": 720.0,
-            "preferredEndConditionUnit": null,
-            "endConditionCompare": null,
-            "targetType": {
-              "workoutTargetTypeId": 4,
-              "workoutTargetTypeKey": "heart.rate.zone",
-              "displayOrder": 4
-            },
-            "targetValueOne": 162.0,
-            "targetValueTwo": 170.0,
-            "targetValueUnit": null,
-            "zoneNumber": null,
-            "secondaryTargetType": null,
-            "secondaryTargetValueOne": null,
-            "secondaryTargetValueTwo": null,
-            "secondaryTargetValueUnit": null,
-            "secondaryZoneNumber": null,
-            "endConditionZone": null,
-            "strokeType": {
-              "strokeTypeId": 0,
-              "strokeTypeKey": null,
-              "displayOrder": 0
-            },
-            "equipmentType": {
-              "equipmentTypeId": 0,
-              "equipmentTypeKey": null,
-              "displayOrder": 0
-            },
-            "category": null,
-            "exerciseName": null,
-            "workoutProvider": null,
-            "providerExerciseSourceId": null,
-            "weightValue": null,
-            "weightUnit": null
-          },
-          {
-            "type": "ExecutableStepDTO",
-            "stepId": 13495047648,
-            "stepOrder": 4,
-            "stepType": {
-              "stepTypeId": 4,
-              "stepTypeKey": "recovery",
-              "displayOrder": 4
-            },
-            "childStepId": null,
-            "description": "5 min suaves entre bloques",
-            "endCondition": {
-              "conditionTypeId": 2,
-              "conditionTypeKey": "time",
-              "displayOrder": 2,
-              "displayable": true
-            },
-            "endConditionValue": 300.0,
-            "preferredEndConditionUnit": null,
-            "endConditionCompare": null,
-            "targetType": {
-              "workoutTargetTypeId": 4,
-              "workoutTargetTypeKey": "heart.rate.zone",
-              "displayOrder": 4
-            },
-            "targetValueOne": 145.0,
-            "targetValueTwo": 152.0,
-            "targetValueUnit": null,
-            "zoneNumber": null,
-            "secondaryTargetType": null,
-            "secondaryTargetValueOne": null,
-            "secondaryTargetValueTwo": null,
-            "secondaryTargetValueUnit": null,
-            "secondaryZoneNumber": null,
-            "endConditionZone": null,
-            "strokeType": {
-              "strokeTypeId": 0,
-              "strokeTypeKey": null,
-              "displayOrder": 0
-            },
-            "equipmentType": {
-              "equipmentTypeId": 0,
-              "equipmentTypeKey": null,
-              "displayOrder": 0
-            },
-            "category": null,
-            "exerciseName": null,
-            "workoutProvider": null,
-            "providerExerciseSourceId": null,
-            "weightValue": null,
-            "weightUnit": null
-          },
-          {
-            "type": "ExecutableStepDTO",
-            "stepId": 13495047649,
-            "stepOrder": 5,
-            "stepType": {
-              "stepTypeId": 3,
-              "stepTypeKey": "interval",
-              "displayOrder": 3
-            },
-            "childStepId": null,
-            "description": "12 min tempo emulado controlado",
-            "endCondition": {
-              "conditionTypeId": 2,
-              "conditionTypeKey": "time",
-              "displayOrder": 2,
-              "displayable": true
-            },
-            "endConditionValue": 720.0,
-            "preferredEndConditionUnit": null,
-            "endConditionCompare": null,
-            "targetType": {
-              "workoutTargetTypeId": 4,
-              "workoutTargetTypeKey": "heart.rate.zone",
-              "displayOrder": 4
-            },
-            "targetValueOne": 162.0,
-            "targetValueTwo": 170.0,
-            "targetValueUnit": null,
-            "zoneNumber": null,
-            "secondaryTargetType": null,
-            "secondaryTargetValueOne": null,
-            "secondaryTargetValueTwo": null,
-            "secondaryTargetValueUnit": null,
-            "secondaryZoneNumber": null,
-            "endConditionZone": null,
-            "strokeType": {
-              "strokeTypeId": 0,
-              "strokeTypeKey": null,
-              "displayOrder": 0
-            },
-            "equipmentType": {
-              "equipmentTypeId": 0,
-              "equipmentTypeKey": null,
-              "displayOrder": 0
-            },
-            "category": null,
-            "exerciseName": null,
-            "workoutProvider": null,
-            "providerExerciseSourceId": null,
-            "weightValue": null,
-            "weightUnit": null
-          },
-          {
-            "type": "ExecutableStepDTO",
-            "stepId": 13495047650,
-            "stepOrder": 6,
-            "stepType": {
-              "stepTypeId": 3,
-              "stepTypeKey": "interval",
-              "displayOrder": 3
-            },
-            "childStepId": null,
-            "description": "21 min Z2 estable para cerrar sin tension",
-            "endCondition": {
-              "conditionTypeId": 2,
-              "conditionTypeKey": "time",
-              "displayOrder": 2,
-              "displayable": true
-            },
-            "endConditionValue": 1260.0,
-            "preferredEndConditionUnit": null,
-            "endConditionCompare": null,
-            "targetType": {
-              "workoutTargetTypeId": 4,
-              "workoutTargetTypeKey": "heart.rate.zone",
-              "displayOrder": 4
-            },
-            "targetValueOne": 145.0,
-            "targetValueTwo": 155.0,
-            "targetValueUnit": null,
-            "zoneNumber": null,
-            "secondaryTargetType": null,
-            "secondaryTargetValueOne": null,
-            "secondaryTargetValueTwo": null,
-            "secondaryTargetValueUnit": null,
-            "secondaryZoneNumber": null,
-            "endConditionZone": null,
-            "strokeType": {
-              "strokeTypeId": 0,
-              "strokeTypeKey": null,
-              "displayOrder": 0
-            },
-            "equipmentType": {
-              "equipmentTypeId": 0,
-              "equipmentTypeKey": null,
-              "displayOrder": 0
-            },
-            "category": null,
-            "exerciseName": null,
-            "workoutProvider": null,
-            "providerExerciseSourceId": null,
-            "weightValue": null,
-            "weightUnit": null
-          },
-          {
-            "type": "ExecutableStepDTO",
-            "stepId": 13495047651,
-            "stepOrder": 7,
             "stepType": {
               "stepTypeId": 2,
               "stepTypeKey": "cooldown",
@@ -434,19 +227,19 @@
       "unitKey": null,
       "factor": null
     },
-    "workoutThumbnailUrl": "https://connect.garmin.com/chart-service/workout?data=129,15,ch-150,15,ch-166,12,ch-148.5,5,ch-166,12,ch-150,21,ch-125,10,ch",
+    "workoutThumbnailUrl": "https://connect.garmin.com/chart-service/workout?data=129,10,ch-150,60,ch-125,10,ch",
     "isSessionTransitionEnabled": null,
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1663109033,
+    "workoutScheduleId": 1678571615,
     "workout": {
-      "workoutId": 1581661624,
+      "workoutId": 1597308401,
       "ownerId": 137864769,
-      "workoutName": "Bicicleta tempo controlado 90 min",
-      "description": "Trabajo aerobico con emulacion de tempo rota algo mas larga, siempre por pulsaciones y sin convertirlo en un dia agresivo.",
-      "updatedDate": "2026-05-27T18:45:21.0",
-      "createdDate": "2026-05-27T18:45:21.0",
+      "workoutName": "Bicicleta continua controlada 80 min",
+      "description": "Trabajo aerobico continuo y prudente en Z2 para cerrar la semana sin sumar tension extra antes de la reintroduccion.",
+      "updatedDate": "2026-06-11T13:09:35.0",
+      "createdDate": "2026-06-11T13:09:35.0",
       "sportType": {
         "sportTypeId": 2,
         "sportTypeKey": "cycling",
@@ -456,7 +249,7 @@
       "trainingPlanId": null,
       "author": null,
       "sharedWithUsers": null,
-      "estimatedDurationInSecs": 5400,
+      "estimatedDurationInSecs": 4800,
       "estimatedDistanceInMeters": null,
       "workoutSegments": [
         {
@@ -477,7 +270,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13495047645,
+              "stepId": 13646294208,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 1,
@@ -485,14 +278,14 @@
                 "displayOrder": 1
               },
               "childStepId": null,
-              "description": "15 min suaves",
+              "description": "10 min suaves",
               "endCondition": {
                 "conditionTypeId": 2,
                 "conditionTypeKey": "time",
                 "displayOrder": 2,
                 "displayable": true
               },
-              "endConditionValue": 900.0,
+              "endConditionValue": 600.0,
               "preferredEndConditionUnit": null,
               "endConditionCompare": null,
               "targetType": {
@@ -529,7 +322,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13495047646,
+              "stepId": 13646294209,
               "stepOrder": 2,
               "stepType": {
                 "stepTypeId": 3,
@@ -537,14 +330,14 @@
                 "displayOrder": 3
               },
               "childStepId": null,
-              "description": "15 min Z2 estable para asentar pulso",
+              "description": "60 min Z2 estable y continua",
               "endCondition": {
                 "conditionTypeId": 2,
                 "conditionTypeKey": "time",
                 "displayOrder": 2,
                 "displayable": true
               },
-              "endConditionValue": 900.0,
+              "endConditionValue": 3600.0,
               "preferredEndConditionUnit": null,
               "endConditionCompare": null,
               "targetType": {
@@ -581,216 +374,8 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13495047647,
+              "stepId": 13646294210,
               "stepOrder": 3,
-              "stepType": {
-                "stepTypeId": 3,
-                "stepTypeKey": "interval",
-                "displayOrder": 3
-              },
-              "childStepId": null,
-              "description": "12 min tempo emulado controlado",
-              "endCondition": {
-                "conditionTypeId": 2,
-                "conditionTypeKey": "time",
-                "displayOrder": 2,
-                "displayable": true
-              },
-              "endConditionValue": 720.0,
-              "preferredEndConditionUnit": null,
-              "endConditionCompare": null,
-              "targetType": {
-                "workoutTargetTypeId": 4,
-                "workoutTargetTypeKey": "heart.rate.zone",
-                "displayOrder": 4
-              },
-              "targetValueOne": 162.0,
-              "targetValueTwo": 170.0,
-              "targetValueUnit": null,
-              "zoneNumber": null,
-              "secondaryTargetType": null,
-              "secondaryTargetValueOne": null,
-              "secondaryTargetValueTwo": null,
-              "secondaryTargetValueUnit": null,
-              "secondaryZoneNumber": null,
-              "endConditionZone": null,
-              "strokeType": {
-                "strokeTypeId": 0,
-                "strokeTypeKey": null,
-                "displayOrder": 0
-              },
-              "equipmentType": {
-                "equipmentTypeId": 0,
-                "equipmentTypeKey": null,
-                "displayOrder": 0
-              },
-              "category": null,
-              "exerciseName": null,
-              "workoutProvider": null,
-              "providerExerciseSourceId": null,
-              "weightValue": null,
-              "weightUnit": null
-            },
-            {
-              "type": "ExecutableStepDTO",
-              "stepId": 13495047648,
-              "stepOrder": 4,
-              "stepType": {
-                "stepTypeId": 4,
-                "stepTypeKey": "recovery",
-                "displayOrder": 4
-              },
-              "childStepId": null,
-              "description": "5 min suaves entre bloques",
-              "endCondition": {
-                "conditionTypeId": 2,
-                "conditionTypeKey": "time",
-                "displayOrder": 2,
-                "displayable": true
-              },
-              "endConditionValue": 300.0,
-              "preferredEndConditionUnit": null,
-              "endConditionCompare": null,
-              "targetType": {
-                "workoutTargetTypeId": 4,
-                "workoutTargetTypeKey": "heart.rate.zone",
-                "displayOrder": 4
-              },
-              "targetValueOne": 145.0,
-              "targetValueTwo": 152.0,
-              "targetValueUnit": null,
-              "zoneNumber": null,
-              "secondaryTargetType": null,
-              "secondaryTargetValueOne": null,
-              "secondaryTargetValueTwo": null,
-              "secondaryTargetValueUnit": null,
-              "secondaryZoneNumber": null,
-              "endConditionZone": null,
-              "strokeType": {
-                "strokeTypeId": 0,
-                "strokeTypeKey": null,
-                "displayOrder": 0
-              },
-              "equipmentType": {
-                "equipmentTypeId": 0,
-                "equipmentTypeKey": null,
-                "displayOrder": 0
-              },
-              "category": null,
-              "exerciseName": null,
-              "workoutProvider": null,
-              "providerExerciseSourceId": null,
-              "weightValue": null,
-              "weightUnit": null
-            },
-            {
-              "type": "ExecutableStepDTO",
-              "stepId": 13495047649,
-              "stepOrder": 5,
-              "stepType": {
-                "stepTypeId": 3,
-                "stepTypeKey": "interval",
-                "displayOrder": 3
-              },
-              "childStepId": null,
-              "description": "12 min tempo emulado controlado",
-              "endCondition": {
-                "conditionTypeId": 2,
-                "conditionTypeKey": "time",
-                "displayOrder": 2,
-                "displayable": true
-              },
-              "endConditionValue": 720.0,
-              "preferredEndConditionUnit": null,
-              "endConditionCompare": null,
-              "targetType": {
-                "workoutTargetTypeId": 4,
-                "workoutTargetTypeKey": "heart.rate.zone",
-                "displayOrder": 4
-              },
-              "targetValueOne": 162.0,
-              "targetValueTwo": 170.0,
-              "targetValueUnit": null,
-              "zoneNumber": null,
-              "secondaryTargetType": null,
-              "secondaryTargetValueOne": null,
-              "secondaryTargetValueTwo": null,
-              "secondaryTargetValueUnit": null,
-              "secondaryZoneNumber": null,
-              "endConditionZone": null,
-              "strokeType": {
-                "strokeTypeId": 0,
-                "strokeTypeKey": null,
-                "displayOrder": 0
-              },
-              "equipmentType": {
-                "equipmentTypeId": 0,
-                "equipmentTypeKey": null,
-                "displayOrder": 0
-              },
-              "category": null,
-              "exerciseName": null,
-              "workoutProvider": null,
-              "providerExerciseSourceId": null,
-              "weightValue": null,
-              "weightUnit": null
-            },
-            {
-              "type": "ExecutableStepDTO",
-              "stepId": 13495047650,
-              "stepOrder": 6,
-              "stepType": {
-                "stepTypeId": 3,
-                "stepTypeKey": "interval",
-                "displayOrder": 3
-              },
-              "childStepId": null,
-              "description": "21 min Z2 estable para cerrar sin tension",
-              "endCondition": {
-                "conditionTypeId": 2,
-                "conditionTypeKey": "time",
-                "displayOrder": 2,
-                "displayable": true
-              },
-              "endConditionValue": 1260.0,
-              "preferredEndConditionUnit": null,
-              "endConditionCompare": null,
-              "targetType": {
-                "workoutTargetTypeId": 4,
-                "workoutTargetTypeKey": "heart.rate.zone",
-                "displayOrder": 4
-              },
-              "targetValueOne": 145.0,
-              "targetValueTwo": 155.0,
-              "targetValueUnit": null,
-              "zoneNumber": null,
-              "secondaryTargetType": null,
-              "secondaryTargetValueOne": null,
-              "secondaryTargetValueTwo": null,
-              "secondaryTargetValueUnit": null,
-              "secondaryZoneNumber": null,
-              "endConditionZone": null,
-              "strokeType": {
-                "strokeTypeId": 0,
-                "strokeTypeKey": null,
-                "displayOrder": 0
-              },
-              "equipmentType": {
-                "equipmentTypeId": 0,
-                "equipmentTypeKey": null,
-                "displayOrder": 0
-              },
-              "category": null,
-              "exerciseName": null,
-              "workoutProvider": null,
-              "providerExerciseSourceId": null,
-              "weightValue": null,
-              "weightUnit": null
-            },
-            {
-              "type": "ExecutableStepDTO",
-              "stepId": 13495047651,
-              "stepOrder": 7,
               "stepType": {
                 "stepTypeId": 2,
                 "stepTypeKey": "cooldown",
@@ -862,12 +447,12 @@
         "unitKey": null,
         "factor": null
       },
-      "workoutThumbnailUrl": "https://connect.garmin.com/chart-service/workout?data=129,15,ch-150,15,ch-166,12,ch-148.5,5,ch-166,12,ch-150,21,ch-125,10,ch",
+      "workoutThumbnailUrl": "https://connect.garmin.com/chart-service/workout?data=129,10,ch-150,60,ch-125,10,ch",
       "isSessionTransitionEnabled": null,
       "shared": false
     },
     "calendarDate": "2026-06-11",
-    "createdDate": "2026-05-27",
+    "createdDate": "2026-06-11",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -876,18 +461,18 @@
     "priority": null,
     "associatedActivityDateTime": null,
     "tpType": null,
+    "protected": false,
     "itp": false,
     "race": false,
-    "protected": false,
     "nameChanged": false
   },
   "warning": null,
   "replaced_uploads": [
     {
       "record": "training/planned/workouts/2026-06-11/2026-06-11_bicicleta_continua_90min.garmin_upload.json",
-      "scheduled_workout_id": 1659009599,
+      "scheduled_workout_id": 1678569862,
       "unscheduled": true,
-      "workout_id": 1577548799,
+      "workout_id": 1597306620,
       "deleted": true
     }
   ]

@@ -1,15 +1,16 @@
 {
-  "generated_at": "2026-05-24T14:09:00.271078Z",
+  "generated_at": "2026-06-11T11:35:46.764372Z",
   "status": "scheduled",
+  "workout_hash": "0e400557d962fc76dd03bb0978f5bb1718589ba641c7d19b9a18cf5c31f4f9da",
   "upload_mode": "structured_targets",
   "workout_file": "training/planned/workouts/2026-06-18_bicicleta_continua_80min.yaml",
   "uploaded_response": {
-    "workoutId": 1577549588,
+    "workoutId": 1597254852,
     "ownerId": 137864769,
     "workoutName": "Bicicleta continua 80 min",
     "description": "Base aerobica suave en Z2 en bici para sostener carga mientras vuelve el impacto.",
-    "updatedDate": "2026-05-24T14:08:58.0",
-    "createdDate": "2026-05-24T14:08:58.0",
+    "updatedDate": "2026-06-11T11:35:45.0",
+    "createdDate": "2026-06-11T11:35:45.0",
     "sportType": {
       "sportTypeId": 2,
       "sportTypeKey": "cycling",
@@ -49,7 +50,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13457237762,
+            "stepId": 13645686643,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 1,
@@ -101,7 +102,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13457237763,
+            "stepId": 13645686644,
             "stepOrder": 2,
             "stepType": {
               "stepTypeId": 3,
@@ -153,7 +154,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13457237764,
+            "stepId": 13645686645,
             "stepOrder": 3,
             "stepType": {
               "stepTypeId": 2,
@@ -231,14 +232,14 @@
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1659010396,
+    "workoutScheduleId": 1678519583,
     "workout": {
-      "workoutId": 1577549588,
+      "workoutId": 1597254852,
       "ownerId": 137864769,
       "workoutName": "Bicicleta continua 80 min",
       "description": "Base aerobica suave en Z2 en bici para sostener carga mientras vuelve el impacto.",
-      "updatedDate": "2026-05-24T14:08:58.0",
-      "createdDate": "2026-05-24T14:08:58.0",
+      "updatedDate": "2026-06-11T11:35:45.0",
+      "createdDate": "2026-06-11T11:35:45.0",
       "sportType": {
         "sportTypeId": 2,
         "sportTypeKey": "cycling",
@@ -269,7 +270,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13457237762,
+              "stepId": 13645686643,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 1,
@@ -321,7 +322,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13457237763,
+              "stepId": 13645686644,
               "stepOrder": 2,
               "stepType": {
                 "stepTypeId": 3,
@@ -373,7 +374,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13457237764,
+              "stepId": 13645686645,
               "stepOrder": 3,
               "stepType": {
                 "stepTypeId": 2,
@@ -451,7 +452,7 @@
       "shared": false
     },
     "calendarDate": "2026-06-18",
-    "createdDate": "2026-05-24",
+    "createdDate": "2026-06-11",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -460,18 +461,18 @@
     "priority": null,
     "associatedActivityDateTime": null,
     "tpType": null,
-    "nameChanged": false,
+    "protected": false,
     "itp": false,
     "race": false,
-    "protected": false
+    "nameChanged": false
   },
   "warning": null,
   "replaced_uploads": [
     {
       "record": "training/planned/workouts/2026-06-18/2026-06-18_bicicleta_continua_80min.garmin_upload.json",
-      "scheduled_workout_id": 1650784649,
+      "scheduled_workout_id": 1659010396,
       "unscheduled": true,
-      "workout_id": 1569255596,
+      "workout_id": 1577549588,
       "deleted": true
     }
   ]

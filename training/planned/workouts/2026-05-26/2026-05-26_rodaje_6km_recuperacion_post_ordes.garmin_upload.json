@@ -1,15 +1,16 @@
 {
-  "generated_at": "2026-05-24T14:08:09.745370Z",
+  "generated_at": "2026-06-11T11:35:05.936388Z",
   "status": "scheduled",
+  "workout_hash": "7acd7e5090b6d484adceff3bd62251be5310aa276ebacd5738ceff9103e00021",
   "upload_mode": "structured_targets",
   "workout_file": "training/planned/workouts/2026-05-26_rodaje_6km_recuperacion_post_ordes.yaml",
   "uploaded_response": {
-    "workoutId": 1577547585,
+    "workoutId": 1597254465,
     "ownerId": 137864769,
     "workoutName": "Bicicleta recuperacion post-Ordes 50 min",
     "description": "Carga muy controlada para absorber Ordes, mover sangre y recuperar sin impacto.",
-    "updatedDate": "2026-05-24T14:08:06.0",
-    "createdDate": "2026-05-24T14:08:06.0",
+    "updatedDate": "2026-06-11T11:35:02.0",
+    "createdDate": "2026-06-11T11:35:02.0",
     "sportType": {
       "sportTypeId": 2,
       "sportTypeKey": "cycling",
@@ -49,7 +50,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13457225144,
+            "stepId": 13645682672,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 1,
@@ -101,7 +102,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13457225145,
+            "stepId": 13645682673,
             "stepOrder": 2,
             "stepType": {
               "stepTypeId": 3,
@@ -153,7 +154,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13457225146,
+            "stepId": 13645682674,
             "stepOrder": 3,
             "stepType": {
               "stepTypeId": 2,
@@ -231,14 +232,14 @@
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1659008375,
+    "workoutScheduleId": 1678519218,
     "workout": {
-      "workoutId": 1577547585,
+      "workoutId": 1597254465,
       "ownerId": 137864769,
       "workoutName": "Bicicleta recuperacion post-Ordes 50 min",
       "description": "Carga muy controlada para absorber Ordes, mover sangre y recuperar sin impacto.",
-      "updatedDate": "2026-05-24T14:08:06.0",
-      "createdDate": "2026-05-24T14:08:06.0",
+      "updatedDate": "2026-06-11T11:35:02.0",
+      "createdDate": "2026-06-11T11:35:02.0",
       "sportType": {
         "sportTypeId": 2,
         "sportTypeKey": "cycling",
@@ -269,7 +270,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13457225144,
+              "stepId": 13645682672,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 1,
@@ -321,7 +322,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13457225145,
+              "stepId": 13645682673,
               "stepOrder": 2,
               "stepType": {
                 "stepTypeId": 3,
@@ -373,7 +374,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13457225146,
+              "stepId": 13645682674,
               "stepOrder": 3,
               "stepType": {
                 "stepTypeId": 2,
@@ -451,7 +452,7 @@
       "shared": false
     },
     "calendarDate": "2026-05-26",
-    "createdDate": "2026-05-24",
+    "createdDate": "2026-06-11",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -460,18 +461,18 @@
     "priority": null,
     "associatedActivityDateTime": null,
     "tpType": null,
+    "protected": false,
     "itp": false,
     "race": false,
-    "nameChanged": false,
-    "protected": false
+    "nameChanged": false
   },
   "warning": null,
   "replaced_uploads": [
     {
       "record": "training/planned/workouts/2026-05-26/2026-05-26_rodaje_6km_recuperacion_post_ordes.garmin_upload.json",
-      "scheduled_workout_id": 1650784604,
+      "scheduled_workout_id": 1659008375,
       "unscheduled": true,
-      "workout_id": 1569255550,
+      "workout_id": 1577547585,
       "deleted": true
     }
   ]

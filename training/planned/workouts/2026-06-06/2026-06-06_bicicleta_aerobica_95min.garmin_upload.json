@@ -1,15 +1,16 @@
 {
-  "generated_at": "2026-05-24T14:08:32.869321Z",
+  "generated_at": "2026-06-11T11:35:25.568162Z",
   "status": "scheduled",
+  "workout_hash": "4fd0fa69b6155eb66f889c8a5779d207d4a66947d4ecdca7067ce24816262742",
   "upload_mode": "structured_targets",
   "workout_file": "training/planned/workouts/2026-06-06_bicicleta_aerobica_95min.yaml",
   "uploaded_response": {
-    "workoutId": 1577548433,
+    "workoutId": 1597254728,
     "ownerId": 137864769,
     "workoutName": "Bicicleta aerobica 95 min",
     "description": "Salida aerobica suave y continua en Z2 para reforzar fondo sin impacto.",
-    "updatedDate": "2026-05-24T14:08:30.0",
-    "createdDate": "2026-05-24T14:08:30.0",
+    "updatedDate": "2026-06-11T11:35:24.0",
+    "createdDate": "2026-06-11T11:35:24.0",
     "sportType": {
       "sportTypeId": 2,
       "sportTypeKey": "cycling",
@@ -49,7 +50,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13457230454,
+            "stepId": 13645685066,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 1,
@@ -101,7 +102,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13457230455,
+            "stepId": 13645685067,
             "stepOrder": 2,
             "stepType": {
               "stepTypeId": 3,
@@ -153,7 +154,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13457230456,
+            "stepId": 13645685068,
             "stepOrder": 3,
             "stepType": {
               "stepTypeId": 2,
@@ -231,14 +232,14 @@
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1659009234,
+    "workoutScheduleId": 1678519472,
     "workout": {
-      "workoutId": 1577548433,
+      "workoutId": 1597254728,
       "ownerId": 137864769,
       "workoutName": "Bicicleta aerobica 95 min",
       "description": "Salida aerobica suave y continua en Z2 para reforzar fondo sin impacto.",
-      "updatedDate": "2026-05-24T14:08:30.0",
-      "createdDate": "2026-05-24T14:08:30.0",
+      "updatedDate": "2026-06-11T11:35:24.0",
+      "createdDate": "2026-06-11T11:35:24.0",
       "sportType": {
         "sportTypeId": 2,
         "sportTypeKey": "cycling",
@@ -269,7 +270,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13457230454,
+              "stepId": 13645685066,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 1,
@@ -321,7 +322,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13457230455,
+              "stepId": 13645685067,
               "stepOrder": 2,
               "stepType": {
                 "stepTypeId": 3,
@@ -373,7 +374,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13457230456,
+              "stepId": 13645685068,
               "stepOrder": 3,
               "stepType": {
                 "stepTypeId": 2,
@@ -451,7 +452,7 @@
       "shared": false
     },
     "calendarDate": "2026-06-06",
-    "createdDate": "2026-05-24",
+    "createdDate": "2026-06-11",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -460,18 +461,18 @@
     "priority": null,
     "associatedActivityDateTime": null,
     "tpType": null,
-    "protected": false,
     "nameChanged": false,
-    "itp": false,
-    "race": false
+    "protected": false,
+    "race": false,
+    "itp": false
   },
   "warning": null,
   "replaced_uploads": [
     {
       "record": "training/planned/workouts/2026-06-06/2026-06-06_bicicleta_aerobica_95min.garmin_upload.json",
-      "scheduled_workout_id": 1650784631,
+      "scheduled_workout_id": 1659009234,
       "unscheduled": true,
-      "workout_id": 1569255577,
+      "workout_id": 1577548433,
       "deleted": true
     }
   ]

@@ -1,15 +1,16 @@
 {
-  "generated_at": "2026-05-19T15:02:22.918685Z",
+  "generated_at": "2026-06-11T11:34:52.082579Z",
   "status": "scheduled",
+  "workout_hash": "b3b859bc1cef83f4a8b7c9064d0c5b71416fcf99824c23792a79dd739c2e461a",
   "upload_mode": "other_workout_direct",
   "workout_file": "training/planned/workouts/2026-05-19_rodaje_5km_reintroduccion.yaml",
   "uploaded_response": {
-    "workoutId": 1573464546,
+    "workoutId": 1597254365,
     "ownerId": 137864769,
     "workoutName": "Eliptica aerobica estable 55 min",
     "description": "Carga aerobica equivalente a la bici prevista, sin impacto y con un coste interno parecido en menos tiempo.",
-    "updatedDate": "2026-05-19T15:02:23.0",
-    "createdDate": "2026-05-19T15:02:23.0",
+    "updatedDate": "2026-06-11T11:34:51.0",
+    "createdDate": "2026-06-11T11:34:51.0",
     "sportType": {
       "sportTypeId": 3,
       "sportTypeKey": "other",
@@ -49,7 +50,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13414281075,
+            "stepId": 13645681205,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 1,
@@ -101,7 +102,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13414281076,
+            "stepId": 13645681206,
             "stepOrder": 2,
             "stepType": {
               "stepTypeId": 3,
@@ -153,7 +154,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13414281077,
+            "stepId": 13645681207,
             "stepOrder": 3,
             "stepType": {
               "stepTypeId": 2,
@@ -231,14 +232,14 @@
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1654981075,
+    "workoutScheduleId": 1678519115,
     "workout": {
-      "workoutId": 1573464546,
+      "workoutId": 1597254365,
       "ownerId": 137864769,
       "workoutName": "Eliptica aerobica estable 55 min",
       "description": "Carga aerobica equivalente a la bici prevista, sin impacto y con un coste interno parecido en menos tiempo.",
-      "updatedDate": "2026-05-19T15:02:23.0",
-      "createdDate": "2026-05-19T15:02:23.0",
+      "updatedDate": "2026-06-11T11:34:51.0",
+      "createdDate": "2026-06-11T11:34:51.0",
       "sportType": {
         "sportTypeId": 3,
         "sportTypeKey": "other",
@@ -269,7 +270,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13414281075,
+              "stepId": 13645681205,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 1,
@@ -321,7 +322,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13414281076,
+              "stepId": 13645681206,
               "stepOrder": 2,
               "stepType": {
                 "stepTypeId": 3,
@@ -373,7 +374,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13414281077,
+              "stepId": 13645681207,
               "stepOrder": 3,
               "stepType": {
                 "stepTypeId": 2,
@@ -451,7 +452,7 @@
       "shared": false
     },
     "calendarDate": "2026-05-19",
-    "createdDate": "2026-05-19",
+    "createdDate": "2026-06-11",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -460,9 +461,19 @@
     "priority": null,
     "associatedActivityDateTime": null,
     "tpType": null,
-    "race": false,
     "itp": false,
-    "nameChanged": false,
-    "protected": false
-  }
+    "race": false,
+    "protected": false,
+    "nameChanged": false
+  },
+  "warning": null,
+  "replaced_uploads": [
+    {
+      "record": "training/planned/workouts/2026-05-19/2026-05-19_rodaje_5km_reintroduccion.garmin_upload.json",
+      "scheduled_workout_id": 1654981075,
+      "unscheduled": true,
+      "workout_id": 1573464546,
+      "deleted": true
+    }
+  ]
 }

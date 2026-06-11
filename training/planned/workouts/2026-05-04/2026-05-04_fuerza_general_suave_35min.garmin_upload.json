@@ -1,15 +1,16 @@
 {
-  "generated_at": "2026-05-25T16:53:09.130148Z",
+  "generated_at": "2026-06-11T11:34:33.714445Z",
   "status": "scheduled",
+  "workout_hash": "c4c09d5a7efc3301a9c22b18d48f3531dc2f8eee967cf3110ce594e433f2830e",
   "upload_mode": "structured_targets",
   "workout_file": "training/planned/workouts/2026-05-04_fuerza_general_suave_35min.yaml",
   "uploaded_response": {
-    "workoutId": 1579701159,
+    "workoutId": 1597254189,
     "ownerId": 137864769,
     "workoutName": "Fuerza general suave 35 min",
     "description": "Sesion suave de fuerza y movilidad tras la caminata acumulada. Priorizar tobillo, pie, gemelo, soleo, gluteo medio y core. Nada de agujetas.",
-    "updatedDate": "2026-05-25T16:53:04.0",
-    "createdDate": "2026-05-25T16:53:04.0",
+    "updatedDate": "2026-06-11T11:34:32.0",
+    "createdDate": "2026-06-11T11:34:32.0",
     "sportType": {
       "sportTypeId": 5,
       "sportTypeKey": "strength_training",
@@ -49,7 +50,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13473698113,
+            "stepId": 13645679221,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 1,
@@ -101,7 +102,7 @@
           },
           {
             "type": "RepeatGroupDTO",
-            "stepId": 13473698114,
+            "stepId": 13645679222,
             "stepOrder": 2,
             "stepType": {
               "stepTypeId": 6,
@@ -113,7 +114,7 @@
             "workoutSteps": [
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13473698115,
+                "stepId": 13645679223,
                 "stepOrder": 3,
                 "stepType": {
                   "stepTypeId": 3,
@@ -178,7 +179,7 @@
           },
           {
             "type": "RepeatGroupDTO",
-            "stepId": 13473698116,
+            "stepId": 13645679224,
             "stepOrder": 4,
             "stepType": {
               "stepTypeId": 6,
@@ -190,7 +191,7 @@
             "workoutSteps": [
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13473698117,
+                "stepId": 13645679225,
                 "stepOrder": 5,
                 "stepType": {
                   "stepTypeId": 3,
@@ -255,7 +256,7 @@
           },
           {
             "type": "RepeatGroupDTO",
-            "stepId": 13473698118,
+            "stepId": 13645679226,
             "stepOrder": 6,
             "stepType": {
               "stepTypeId": 6,
@@ -267,7 +268,7 @@
             "workoutSteps": [
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13473698119,
+                "stepId": 13645679227,
                 "stepOrder": 7,
                 "stepType": {
                   "stepTypeId": 3,
@@ -332,7 +333,7 @@
           },
           {
             "type": "RepeatGroupDTO",
-            "stepId": 13473698120,
+            "stepId": 13645679228,
             "stepOrder": 8,
             "stepType": {
               "stepTypeId": 6,
@@ -344,7 +345,7 @@
             "workoutSteps": [
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13473698121,
+                "stepId": 13645679229,
                 "stepOrder": 9,
                 "stepType": {
                   "stepTypeId": 3,
@@ -409,7 +410,7 @@
           },
           {
             "type": "RepeatGroupDTO",
-            "stepId": 13473698122,
+            "stepId": 13645679230,
             "stepOrder": 10,
             "stepType": {
               "stepTypeId": 6,
@@ -421,7 +422,7 @@
             "workoutSteps": [
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13473698123,
+                "stepId": 13645679231,
                 "stepOrder": 11,
                 "stepType": {
                   "stepTypeId": 3,
@@ -486,7 +487,7 @@
           },
           {
             "type": "RepeatGroupDTO",
-            "stepId": 13473698124,
+            "stepId": 13645679232,
             "stepOrder": 12,
             "stepType": {
               "stepTypeId": 6,
@@ -498,7 +499,7 @@
             "workoutSteps": [
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13473698125,
+                "stepId": 13645679233,
                 "stepOrder": 13,
                 "stepType": {
                   "stepTypeId": 3,
@@ -563,7 +564,7 @@
           },
           {
             "type": "RepeatGroupDTO",
-            "stepId": 13473698126,
+            "stepId": 13645679234,
             "stepOrder": 14,
             "stepType": {
               "stepTypeId": 6,
@@ -575,7 +576,7 @@
             "workoutSteps": [
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13473698127,
+                "stepId": 13645679235,
                 "stepOrder": 15,
                 "stepType": {
                   "stepTypeId": 3,
@@ -640,7 +641,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13473698128,
+            "stepId": 13645679236,
             "stepOrder": 16,
             "stepType": {
               "stepTypeId": 2,
@@ -718,14 +719,14 @@
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1661172687,
+    "workoutScheduleId": 1678518955,
     "workout": {
-      "workoutId": 1579701159,
+      "workoutId": 1597254189,
       "ownerId": 137864769,
       "workoutName": "Fuerza general suave 35 min",
       "description": "Sesion suave de fuerza y movilidad tras la caminata acumulada. Priorizar tobillo, pie, gemelo, soleo, gluteo medio y core. Nada de agujetas.",
-      "updatedDate": "2026-05-25T16:53:04.0",
-      "createdDate": "2026-05-25T16:53:04.0",
+      "updatedDate": "2026-06-11T11:34:32.0",
+      "createdDate": "2026-06-11T11:34:32.0",
       "sportType": {
         "sportTypeId": 5,
         "sportTypeKey": "strength_training",
@@ -756,7 +757,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13473698113,
+              "stepId": 13645679221,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 1,
@@ -808,7 +809,7 @@
             },
             {
               "type": "RepeatGroupDTO",
-              "stepId": 13473698114,
+              "stepId": 13645679222,
               "stepOrder": 2,
               "stepType": {
                 "stepTypeId": 6,
@@ -820,7 +821,7 @@
               "workoutSteps": [
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13473698115,
+                  "stepId": 13645679223,
                   "stepOrder": 3,
                   "stepType": {
                     "stepTypeId": 3,
@@ -885,7 +886,7 @@
             },
             {
               "type": "RepeatGroupDTO",
-              "stepId": 13473698116,
+              "stepId": 13645679224,
               "stepOrder": 4,
               "stepType": {
                 "stepTypeId": 6,
@@ -897,7 +898,7 @@
               "workoutSteps": [
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13473698117,
+                  "stepId": 13645679225,
                   "stepOrder": 5,
                   "stepType": {
                     "stepTypeId": 3,
@@ -962,7 +963,7 @@
             },
             {
               "type": "RepeatGroupDTO",
-              "stepId": 13473698118,
+              "stepId": 13645679226,
               "stepOrder": 6,
               "stepType": {
                 "stepTypeId": 6,
@@ -974,7 +975,7 @@
               "workoutSteps": [
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13473698119,
+                  "stepId": 13645679227,
                   "stepOrder": 7,
                   "stepType": {
                     "stepTypeId": 3,
@@ -1039,7 +1040,7 @@
             },
             {
               "type": "RepeatGroupDTO",
-              "stepId": 13473698120,
+              "stepId": 13645679228,
               "stepOrder": 8,
               "stepType": {
                 "stepTypeId": 6,
@@ -1051,7 +1052,7 @@
               "workoutSteps": [
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13473698121,
+                  "stepId": 13645679229,
                   "stepOrder": 9,
                   "stepType": {
                     "stepTypeId": 3,
@@ -1116,7 +1117,7 @@
             },
             {
               "type": "RepeatGroupDTO",
-              "stepId": 13473698122,
+              "stepId": 13645679230,
               "stepOrder": 10,
               "stepType": {
                 "stepTypeId": 6,
@@ -1128,7 +1129,7 @@
               "workoutSteps": [
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13473698123,
+                  "stepId": 13645679231,
                   "stepOrder": 11,
                   "stepType": {
                     "stepTypeId": 3,
@@ -1193,7 +1194,7 @@
             },
             {
               "type": "RepeatGroupDTO",
-              "stepId": 13473698124,
+              "stepId": 13645679232,
               "stepOrder": 12,
               "stepType": {
                 "stepTypeId": 6,
@@ -1205,7 +1206,7 @@
               "workoutSteps": [
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13473698125,
+                  "stepId": 13645679233,
                   "stepOrder": 13,
                   "stepType": {
                     "stepTypeId": 3,
@@ -1270,7 +1271,7 @@
             },
             {
               "type": "RepeatGroupDTO",
-              "stepId": 13473698126,
+              "stepId": 13645679234,
               "stepOrder": 14,
               "stepType": {
                 "stepTypeId": 6,
@@ -1282,7 +1283,7 @@
               "workoutSteps": [
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13473698127,
+                  "stepId": 13645679235,
                   "stepOrder": 15,
                   "stepType": {
                     "stepTypeId": 3,
@@ -1347,7 +1348,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13473698128,
+              "stepId": 13645679236,
               "stepOrder": 16,
               "stepType": {
                 "stepTypeId": 2,
@@ -1425,7 +1426,7 @@
       "shared": false
     },
     "calendarDate": "2026-05-04",
-    "createdDate": "2026-05-25",
+    "createdDate": "2026-06-11",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -1435,17 +1436,17 @@
     "associatedActivityDateTime": null,
     "tpType": null,
     "nameChanged": false,
-    "itp": false,
+    "protected": false,
     "race": false,
-    "protected": false
+    "itp": false
   },
   "warning": null,
   "replaced_uploads": [
     {
       "record": "training/planned/workouts/2026-05-04/2026-05-04_fuerza_general_suave_35min.garmin_upload.json",
-      "scheduled_workout_id": 1661140061,
+      "scheduled_workout_id": 1661172687,
       "unscheduled": true,
-      "workout_id": 1579668474,
+      "workout_id": 1579701159,
       "deleted": true
     }
   ]

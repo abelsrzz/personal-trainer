@@ -144,9 +144,25 @@ class CapabilityEngine:
             error=error,
         )
 
+    def record(self, name: str, *, success: bool, error: str | None = None) -> None:
+        self.capability(name)
+        self._record(name, success=success, error=error)
+
+    def record_many(self, names: list[str], *, success: bool, error: str | None = None) -> None:
+        for name in names:
+            self.record(name, success=success, error=error)
+
 
 def ensure_fresh(name: str) -> CapabilityResult:
     return CapabilityEngine().ensure_fresh(name)
+
+
+def record_capability(name: str, *, success: bool, error: str | None = None) -> None:
+    CapabilityEngine().record(name, success=success, error=error)
+
+
+def record_capabilities(names: list[str], *, success: bool, error: str | None = None) -> None:
+    CapabilityEngine().record_many(names, success=success, error=error)
 
 
 if __name__ == "__main__":

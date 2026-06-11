@@ -30,6 +30,19 @@ SYNC_SCRIPT = ROOT / "scripts" / "garmin" / "sync_garmin.py"
 REVIEW_SCRIPT = ROOT / "scripts" / "garmin" / "review_planned_session.py"
 ENGINE_SCRIPT = ROOT / "scripts" / "garmin" / "coach_engine.py"
 ATHLETE_SYNC_SCRIPT = ROOT / "scripts" / "garmin" / "athlete_sync.py"
+REVIEWABLE_ACTIVITY_TYPES = {
+    "running",
+    "trail_running",
+    "cycling",
+    "road_biking",
+    "indoor_cycling",
+    "swimming",
+    "strength_training",
+    "elliptical",
+    "fitness_equipment",
+    "mobility",
+    "stretching",
+}
 
 
 def parse_args() -> argparse.Namespace:
@@ -109,13 +122,15 @@ def activity_summaries() -> list[dict[str, Any]]:
         activity_id = payload.get("activityId")
         start_local = str(payload.get("startTimeLocal") or "")
         date_text = start_local.split(" ")[0] if start_local else ""
-        if not activity_id or not date_text:
+        activity_type = str(payload.get("activityType", {}).get("typeKey") or "").strip().lower()
+        if not activity_id or not date_text or activity_type not in REVIEWABLE_ACTIVITY_TYPES:
             continue
         items.append(
             {
                 "activity_id": int(activity_id),
                 "activity_date": date_text,
                 "activity_name": payload.get("activityName") or path.parent.name,
+                "activity_type": activity_type,
                 "source_path": str(path.relative_to(ROOT)),
             }
         )
@@ -143,6 +158,19 @@ def run_json_step(command: list[str]) -> tuple[bool, dict[str, Any] | None, str 
         return True, json.loads(stdout), None
     except json.JSONDecodeError:
         return True, {"raw_output": stdout}, None
+
+
+def review_error_is_non_blocking(error: str | None) -> bool:
+    text = str(error or "")
+    return any(
+        marker in text
+        for marker in (
+            "No planned workout found",
+            "Multiple planned workouts found",
+            "No local Garmin matching activities found",
+            "available for review",
+        )
+    )
 
 
 def remember_processed(state: dict[str, Any], activity: dict[str, Any], result: str, review_slug: str | None = None) -> None:
@@ -382,9 +410,7 @@ def main() -> None:
             if review_ok and isinstance(review_payload, dict):
                 analysis_file = str(review_payload.get("analysis_file") or "")
                 review_slug = Path(analysis_file).stem.replace(".analysis", "") if analysis_file else None
-            elif review_error and "No planned workout found" in review_error:
-                review_ok = True
-            elif review_error and "Multiple planned workouts found" in review_error:
+            elif review_error and review_error_is_non_blocking(review_error):
                 review_ok = True
             ok, pipeline_error = run_step(
                 [

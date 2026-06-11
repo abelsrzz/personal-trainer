@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-11T11:29:44.883420+00:00",
+  "generated_at": "2026-06-11T20:57:50.519250+00:00",
   "source_of_truth": "system/state/athlete_state.json",
   "identity": {
     "id": "main",
@@ -35,12 +35,12 @@
           "Work schedule 07:30-15:00"
         ],
         "garmin_training_days": [
-          "MONDAY",
-          "FRIDAY",
+          "THURSDAY",
           "SATURDAY",
           "WEDNESDAY",
-          "THURSDAY",
+          "FRIDAY",
           "SUNDAY",
+          "MONDAY",
           "TUESDAY"
         ],
         "garmin_preferred_long_training_days": [
@@ -52,14 +52,14 @@
       },
       "data_sources": {
         "garmin": {
-          "last_sync": "2026-06-11T11:29:43.442078Z",
+          "last_sync": "2026-06-11T20:57:49.494501Z",
           "profile_snapshot": "training/completed/imports/garmin/profile/athlete_profile_snapshot.json"
         }
       }
     },
     "health": {
       "current_issues": [
-        "Left shin periosteum discomfort"
+        "Left shin periosteum improving; no pain after 2 km test run, but mild tension remains with exaggerated inward foot rotation"
       ],
       "past_injuries": [
         "Tibial periostitis"
@@ -67,9 +67,9 @@
       "medical_constraints": [],
       "sleep_notes": null,
       "stress_notes": null,
-      "recovery_notes": "General sensations recently poor",
+      "recovery_notes": "General sensations recently poor, but the 2026-06-10 2 km test run did not leave next-day pain; only mild provoked tension remains in the left shin area.",
       "garmin_metrics": {
-        "last_sync": "2026-06-11T11:29:43.442078Z",
+        "last_sync": "2026-06-11T20:57:49.494501Z",
         "resting_hr": 53,
         "max_hr": 199,
         "vo2max": 46.0,
@@ -123,21 +123,21 @@
       },
       "data_sources": {
         "garmin": {
-          "last_sync": "2026-06-11T11:29:43.442078Z",
+          "last_sync": "2026-06-11T20:57:49.494501Z",
           "profile_snapshot": "training/completed/imports/garmin/profile/athlete_profile_snapshot.json"
         }
       }
     },
     "shoes_count": 8,
     "latest_shin_entry": {
-      "date": "2026-05-31",
-      "pain_during": 2,
+      "date": "2026-06-11",
+      "pain_during": 0,
       "pain_after": 0,
-      "pain_next_morning": 0,
+      "pain_next_morning": 1,
       "location": "left_shin",
       "surface": null,
       "shoes": null,
-      "notes": "Actualizacion manual. Primera semana de recuperacion cerrada con 0/10 en reposo; 1.5/10 si se intenta forzar a proposito y 2/10 al hacer presion fuerte en la zona lesionada del periostio.",
+      "notes": "Actualizacion manual tras prueba de carrera de 2 km del 2026-06-10. Hoy no hay dolor en actividad normal, pero si tension y casi ligero dolor al colocar el pie en una postura exagerada girada hacia dentro. Entrada marcada como 1/10 por ser una molestia provocada, no dolor funcional en reposo o marcha normal.",
       "source": "manual"
     },
     "hybrid_training": {
@@ -178,13 +178,13 @@
           "week_start": "2026-05-18",
           "week_end": "2026-05-24",
           "week": "2026-W21",
-          "running_km": 17.323730224609374,
+          "running_km": 23.34367041015625,
           "cycling_minutes": 70.05543619791666,
           "elliptical_minutes": 55.10170084635417,
           "strength_minutes": 0.0,
-          "hybrid_equivalent_km": 48.35990930757069,
+          "hybrid_equivalent_km": 54.37984949311756,
           "review_count": 7,
-          "high_risk_reviews": 1,
+          "high_risk_reviews": 2,
           "low_score_reviews": 0,
           "sports": {
             "cross_training": 1,
@@ -266,17 +266,17 @@
       },
       "shin_status": {
         "entry": {
-          "date": "2026-05-31",
-          "pain_during": 2,
+          "date": "2026-06-11",
+          "pain_during": 0,
           "pain_after": 0,
-          "pain_next_morning": 0,
+          "pain_next_morning": 1,
           "location": "left_shin",
           "surface": null,
           "shoes": null,
-          "notes": "Actualizacion manual. Primera semana de recuperacion cerrada con 0/10 en reposo; 1.5/10 si se intenta forzar a proposito y 2/10 al hacer presion fuerte en la zona lesionada del periostio.",
+          "notes": "Actualizacion manual tras prueba de carrera de 2 km del 2026-06-10. Hoy no hay dolor en actividad normal, pero si tension y casi ligero dolor al colocar el pie en una postura exagerada girada hacia dentro. Entrada marcada como 1/10 por ser una molestia provocada, no dolor funcional en reposo o marcha normal.",
           "source": "manual"
         },
-        "max_pain": 2,
+        "max_pain": 1,
         "band": "green"
       },
       "baseline_running_km": 0.0,
@@ -370,38 +370,35 @@
     }
   },
   "coach": {
-    "as_of": "2026-05-19",
-    "status": "red",
-    "action": "reduce_or_replace_quality",
-    "recommendation": "Reducir carga inmediata: cambiar la proxima calidad por rodaje muy facil o descanso, y mantener FC capada.",
+    "as_of": "2026-06-11",
+    "status": "yellow",
+    "action": "maintain_with_caution",
+    "recommendation": "Mantener estructura, pero sin subir volumen ni intensidad hasta ver 2-3 sesiones faciles estables.",
     "session_guidance": {
-      "coach_state": "red",
-      "shin_band": "red",
+      "coach_state": "yellow",
+      "shin_band": "green",
       "block": "block_1",
       "target_distance": "10k",
       "primary": [
+        "tempo_broken",
+        "easy_plus_strides",
         "easy_recovery",
-        "recovery_plus_mobility"
+        "easy_z2",
+        "long_run"
       ],
       "optional": [
-        "bike_easy_aerobic",
-        "easy_z2"
+        "aerobic_steady"
       ],
       "avoid": [
-        "cruise_intervals",
-        "tempo_continuous",
         "short_intervals_vo2",
         "medium_intervals_vo2",
-        "ten_k_specific_reps",
         "ten_k_specific_continuous",
         "long_run_quality",
         "hills_strength",
-        "short_hills_power",
-        "short_intervals_economy",
         "five_k_specific_reps",
         "marathon_specific_blocks"
       ],
-      "quality_volume_cap": "none",
+      "quality_volume_cap": "low_to_medium",
       "selection_order": [
         "coach_state",
         "shin_band",
@@ -443,14 +440,22 @@
     }
   },
   "garmin": {
-    "profile_synced_at": "2026-06-11T11:29:43.442078Z",
-    "latest_activity_import_at": "2026-06-11T11:29:08.600735Z",
-    "latest_daily_import_at": "2026-06-11T11:29:40.267856Z",
+    "profile_synced_at": "2026-06-11T20:57:49.494501Z",
+    "latest_activity_import_at": "2026-06-11T20:57:25.007512Z",
+    "latest_daily_import_at": "2026-06-11T20:57:47.729065Z",
     "latest_activity_ids": [
+      23216229033,
       23203823134,
       23201148301,
       23192634658,
-      23178472430
+      23178472430,
+      23141074036,
+      23117118586,
+      23108592340,
+      23083515075,
+      23070751559,
+      23060084660,
+      23045517009
     ],
     "latest_daily_days": [
       "2026-05-28",
@@ -470,16 +475,16 @@
       "2026-06-11"
     ],
     "daily_metrics": {
-      "latest_date": "2026-05-19",
+      "latest_date": "2026-06-11",
       "latest_hrv": 137864769.0,
       "latest_training_readiness": 137864769.0,
-      "latest_resting_heart_rate": 54.0,
+      "latest_resting_heart_rate": 53.0,
       "latest_training_status": {
         "userId": 137864769,
         "mostRecentVO2Max": {
           "userId": 137864769,
           "generic": {
-            "calendarDate": "2026-05-16",
+            "calendarDate": "2026-06-10",
             "vo2MaxPreciseValue": 45.9,
             "vo2MaxValue": 46.0,
             "fitnessAge": null,
@@ -488,40 +493,40 @@
           },
           "cycling": null,
           "heatAltitudeAcclimation": {
-            "calendarDate": "2026-05-19",
-            "altitudeAcclimationDate": "2026-05-19",
-            "previousAltitudeAcclimationDate": "2026-05-19",
-            "heatAcclimationDate": "2026-05-19",
-            "previousHeatAcclimationDate": "2026-05-19",
+            "calendarDate": "2026-06-11",
+            "altitudeAcclimationDate": "2026-06-11",
+            "previousAltitudeAcclimationDate": "2026-06-11",
+            "heatAcclimationDate": "2026-06-11",
+            "previousHeatAcclimationDate": "2026-06-10",
             "altitudeAcclimation": 0,
             "previousAltitudeAcclimation": 0,
-            "heatAcclimationPercentage": 0,
-            "previousHeatAcclimationPercentage": 0,
-            "heatTrend": null,
+            "heatAcclimationPercentage": 1,
+            "previousHeatAcclimationPercentage": 2,
+            "heatTrend": "DEACCLIMATIZING",
             "altitudeTrend": null,
-            "currentAltitude": 283,
+            "currentAltitude": 0,
             "previousAltitude": 0,
             "acclimationPercentage": 0,
             "previousAcclimationPercentage": 0,
-            "altitudeAcclimationLocalTimestamp": "2026-05-19T23:56:11.0"
+            "altitudeAcclimationLocalTimestamp": "2026-06-11T22:19:24.0"
           }
         },
         "mostRecentTrainingLoadBalance": {
           "userId": 137864769,
           "metricsTrainingLoadBalanceDTOMap": {
             "3621896103": {
-              "calendarDate": "2026-05-19",
+              "calendarDate": "2026-06-11",
               "deviceId": 3621896103,
-              "monthlyLoadAerobicLow": 899.479,
-              "monthlyLoadAerobicHigh": 935.847,
-              "monthlyLoadAnaerobic": 336.0453,
-              "monthlyLoadAerobicLowTargetMin": 393,
-              "monthlyLoadAerobicLowTargetMax": 1046,
-              "monthlyLoadAerobicHighTargetMin": 802,
-              "monthlyLoadAerobicHighTargetMax": 1455,
+              "monthlyLoadAerobicLow": 955.29346,
+              "monthlyLoadAerobicHigh": 711.74243,
+              "monthlyLoadAnaerobic": 311.98096,
+              "monthlyLoadAerobicLowTargetMin": 396,
+              "monthlyLoadAerobicLowTargetMax": 1048,
+              "monthlyLoadAerobicHighTargetMin": 800,
+              "monthlyLoadAerobicHighTargetMax": 1453,
               "monthlyLoadAnaerobicTargetMin": 217,
               "monthlyLoadAnaerobicTargetMax": 652,
-              "trainingBalanceFeedbackPhrase": "BALANCED",
+              "trainingBalanceFeedbackPhrase": "AEROBIC_HIGH_SHORTAGE",
               "primaryTrainingDevice": true
             }
           },
@@ -538,11 +543,11 @@
           "userId": 137864769,
           "latestTrainingStatusData": {
             "3621896103": {
-              "calendarDate": "2026-05-19",
-              "sinceDate": "2026-05-19",
+              "calendarDate": "2026-06-11",
+              "sinceDate": "2026-06-02",
               "weeklyTrainingLoad": null,
               "trainingStatus": 5,
-              "timestamp": 1779214810000,
+              "timestamp": 1781209164000,
               "deviceId": 3621896103,
               "loadTunnelMin": null,
               "loadTunnelMax": null,
@@ -554,14 +559,14 @@
               "trainingStatusFeedbackPhrase": "RECOVERY_2",
               "trainingPaused": false,
               "acuteTrainingLoadDTO": {
-                "acwrPercent": 25,
+                "acwrPercent": 16,
                 "acwrStatus": "LOW",
                 "acwrStatusFeedback": "FEEDBACK_1",
-                "dailyTrainingLoadAcute": 371,
-                "maxTrainingLoadChronic": 850.5,
-                "minTrainingLoadChronic": 453.6,
-                "dailyTrainingLoadChronic": 567,
-                "dailyAcuteChronicWorkloadRatio": 0.6
+                "dailyTrainingLoadAcute": 219,
+                "maxTrainingLoadChronic": 690.0,
+                "minTrainingLoadChronic": 368.0,
+                "dailyTrainingLoadChronic": 460,
+                "dailyAcuteChronicWorkloadRatio": 0.4
               },
               "primaryTrainingDevice": true
             }
@@ -575,7 +580,7 @@
             }
           ],
           "showSelector": false,
-          "lastPrimarySyncDate": "2026-05-19"
+          "lastPrimarySyncDate": "2026-06-11"
         },
         "heatAltitudeAcclimationDTO": null
       }
@@ -593,57 +598,78 @@
   },
   "automation": {
     "post_workout_refresh": {
-      "last_seen_activity_id": 23203823134,
+      "last_seen_activity_id": 23201148301,
       "last_seen_activity_date": "2026-06-10",
-      "last_processed_activity_id": 22937591625,
-      "last_processed_activity_date": "2026-05-19",
-      "last_processed_at": "2026-06-01T12:34:08.999543+00:00",
-      "last_successful_run": "2026-05-30T22:17:43.631387+00:00",
-      "last_error": "Traceback (most recent call last):\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1370, in <module>\n    main()\n    ~~~~^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 1343, in main\n    activity = select_activity_by_id(activities, args.activity_id) if args.activity_id is not None else select_activity(activities, planned, args.date)\n               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/abel/Documentos/Proyectos/personal-trainer/scripts/garmin/review_planned_session.py\", line 173, in select_activity_by_id\n    raise FileNotFoundError(f\"No Garmin activity with id {activity_id} available for review\")\nFileNotFoundError: No Garmin activity with id 22939403784 available for review",
-      "next_action": "inspect_last_error",
+      "last_processed_activity_id": 22335799805,
+      "last_processed_activity_date": "2026-03-29",
+      "last_processed_at": "2026-06-11T12:25:08.864637+00:00",
+      "last_successful_run": "2026-06-11T20:57:49.838512+00:00",
+      "last_error": null,
+      "next_action": "wait_for_new_activity_or_feedback",
       "timer_interval_minutes": 5
     },
     "weekly_planning": {
       "last_plan": {
-        "status": "prepared",
-        "target_start": "2026-05-25",
-        "target_end": "2026-05-31",
-        "updated_at": "2026-05-16T14:43:04+02:00",
+        "status": "already_prepared",
+        "target_start": "2026-06-15",
+        "target_end": "2026-06-21",
+        "updated_at": "2026-06-11T19:41:07.959294",
+        "source": "timer"
+      },
+      "last_activation": {
+        "status": "activated",
+        "target_start": "2026-06-08",
+        "target_end": "2026-06-14",
+        "updated_at": "2026-06-11T15:09:10.635517",
         "source": "manual",
+        "archived_path": "planning/weeks/archived/2026/2026-05-04_2026-05-24_puente_excepcional.md",
+        "pdf": {
+          "ok": true,
+          "message": "Sent /home/abel/Documentos/Proyectos/personal-trainer/planning/weeks/generated/semana_actual.pdf"
+        },
         "garmin_sync": {
           "items": [
             {
-              "file": "training/planned/workouts/2026-05-26_rodaje_6km_recuperacion_post_ordes.yaml",
-              "status": "ok",
-              "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569255550,\n  \"schedule_date\": \"2026-05-26\",\n  \"workout_name\": \"Bicicleta recuperacion post-Ordes 50 min\",\n  \"sport\": \"cycling\"\n}"
+              "file": "training/planned/workouts/2026-06-08_movilidad_control_articular_25min.yaml",
+              "status": "skipped",
+              "message": "Sin cambios frente al ultimo upload registrado."
             },
             {
-              "file": "training/planned/workouts/2026-05-27_fuerza_movilidad_tolerancia_35min.yaml",
-              "status": "ok",
-              "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569240267,\n  \"schedule_date\": \"2026-05-27\",\n  \"workout_name\": \"Fuerza rehabilitadora A 35 min\",\n  \"sport\": \"strength\"\n}"
+              "file": "training/planned/workouts/2026-06-09_bicicleta_aerobica_80min.yaml",
+              "status": "skipped",
+              "message": "Sin cambios frente al ultimo upload registrado."
             },
             {
-              "file": "training/planned/workouts/2026-05-28_rodaje_7km_controlado.yaml",
-              "status": "ok",
-              "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569255554,\n  \"schedule_date\": \"2026-05-28\",\n  \"workout_name\": \"Bicicleta aerobica continua 65 min\",\n  \"sport\": \"cycling\"\n}"
+              "file": "training/planned/workouts/2026-06-10_fuerza_rehabilitadora_a_35min.yaml",
+              "status": "skipped",
+              "message": "Sin cambios frente al ultimo upload registrado."
             },
             {
-              "file": "training/planned/workouts/2026-05-30_rodaje_6km_progresivo_suave.yaml",
-              "status": "ok",
-              "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569255563,\n  \"schedule_date\": \"2026-05-30\",\n  \"workout_name\": \"Bicicleta base aerobica 85 min\",\n  \"sport\": \"cycling\"\n}"
+              "file": "training/planned/workouts/2026-06-11_bicicleta_continua_90min.yaml",
+              "status": "skipped",
+              "message": "Sin cambios frente al ultimo upload registrado."
             },
             {
-              "file": "training/planned/workouts/2026-06-01_bicicleta_larga_comoda_100min.yaml",
-              "status": "ok",
-              "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569255569,\n  \"schedule_date\": \"2026-06-01\",\n  \"workout_name\": \"Eliptica larga comoda 100 min\",\n  \"sport\": \"elliptical\"\n}"
+              "file": "training/planned/workouts/2026-06-12_bicicleta_muy_suave_40min.yaml",
+              "status": "skipped",
+              "message": "Sin cambios frente al ultimo upload registrado."
+            },
+            {
+              "file": "training/planned/workouts/2026-06-13_bicicleta_larga_110min.yaml",
+              "status": "skipped",
+              "message": "Sin cambios frente al ultimo upload registrado."
+            },
+            {
+              "file": "training/planned/workouts/2026-06-14_bicicleta_larga_cierre_125min.yaml",
+              "status": "skipped",
+              "message": "Sin cambios frente al ultimo upload registrado."
             }
           ],
-          "synced": 5,
+          "synced": 0,
           "failed": 0,
-          "skipped": 0
+          "skipped": 7
         }
-      },
-      "last_activation": null
+      }
     },
     "safety_policy": {
       "allow_auto": [

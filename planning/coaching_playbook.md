@@ -20,6 +20,7 @@ This file is the default decision policy for weekly planning, workout creation a
 - Current limiter is aerobic durability and repeatability, not isolated short-rep speed.
 - Easy running must stay controlled by heart rate while the athlete is rebuilding consistency.
 - For running workouts, use `150 ppm` as the default easy cap; reserve `145 ppm` for true recovery after competition or very hard sessions.
+- For reintroduction runs after impact restriction, prioritize mechanics over artificially low heart rate: allow low Z2 up to `160 ppm` when needed to run with clean form.
 - Use `7:30/km` as the mechanical floor for continuous running. If staying under the easy HR cap would require running slower than that, hold `7:30/km` and tolerate roughly `+1` to `+3 ppm` before treating it as a real execution issue.
 - The shin is a hard constraint: any progression is only valid when the next-morning response stays stable.
 - `35:00` is aspirational until checkpoints support it.

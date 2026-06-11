@@ -1,15 +1,16 @@
 {
-  "generated_at": "2026-05-24T14:08:49.519449Z",
+  "generated_at": "2026-06-11T11:35:38.188534Z",
   "status": "scheduled",
+  "workout_hash": "ed4be81a73552705ebe8be4b246c4bf7aba1f5b83b25880e56bbcd9f6e6e8699",
   "upload_mode": "structured_targets",
   "workout_file": "training/planned/workouts/2026-06-13_bicicleta_larga_110min.yaml",
   "uploaded_response": {
-    "workoutId": 1577549110,
+    "workoutId": 1597254802,
     "ownerId": 137864769,
     "workoutName": "Bicicleta larga 110 min",
     "description": "Salida larga, comoda y en Z2 de base para reforzar el trabajo aerobico previo a la reevaluacion.",
-    "updatedDate": "2026-05-24T14:08:46.0",
-    "createdDate": "2026-05-24T14:08:46.0",
+    "updatedDate": "2026-06-11T11:35:36.0",
+    "createdDate": "2026-06-11T11:35:36.0",
     "sportType": {
       "sportTypeId": 2,
       "sportTypeKey": "cycling",
@@ -49,7 +50,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13457234766,
+            "stepId": 13645686013,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 1,
@@ -101,7 +102,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13457234767,
+            "stepId": 13645686014,
             "stepOrder": 2,
             "stepType": {
               "stepTypeId": 3,
@@ -153,7 +154,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13457234768,
+            "stepId": 13645686015,
             "stepOrder": 3,
             "stepType": {
               "stepTypeId": 2,
@@ -231,14 +232,14 @@
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1659009916,
+    "workoutScheduleId": 1678519539,
     "workout": {
-      "workoutId": 1577549110,
+      "workoutId": 1597254802,
       "ownerId": 137864769,
       "workoutName": "Bicicleta larga 110 min",
       "description": "Salida larga, comoda y en Z2 de base para reforzar el trabajo aerobico previo a la reevaluacion.",
-      "updatedDate": "2026-05-24T14:08:46.0",
-      "createdDate": "2026-05-24T14:08:46.0",
+      "updatedDate": "2026-06-11T11:35:36.0",
+      "createdDate": "2026-06-11T11:35:36.0",
       "sportType": {
         "sportTypeId": 2,
         "sportTypeKey": "cycling",
@@ -269,7 +270,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13457234766,
+              "stepId": 13645686013,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 1,
@@ -321,7 +322,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13457234767,
+              "stepId": 13645686014,
               "stepOrder": 2,
               "stepType": {
                 "stepTypeId": 3,
@@ -373,7 +374,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13457234768,
+              "stepId": 13645686015,
               "stepOrder": 3,
               "stepType": {
                 "stepTypeId": 2,
@@ -451,7 +452,7 @@
       "shared": false
     },
     "calendarDate": "2026-06-13",
-    "createdDate": "2026-05-24",
+    "createdDate": "2026-06-11",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -460,18 +461,18 @@
     "priority": null,
     "associatedActivityDateTime": null,
     "tpType": null,
-    "protected": false,
+    "race": false,
     "nameChanged": false,
     "itp": false,
-    "race": false
+    "protected": false
   },
   "warning": null,
   "replaced_uploads": [
     {
       "record": "training/planned/workouts/2026-06-13/2026-06-13_bicicleta_larga_110min.garmin_upload.json",
-      "scheduled_workout_id": 1650784643,
+      "scheduled_workout_id": 1659009916,
       "unscheduled": true,
-      "workout_id": 1569255593,
+      "workout_id": 1577549110,
       "deleted": true
     }
   ]

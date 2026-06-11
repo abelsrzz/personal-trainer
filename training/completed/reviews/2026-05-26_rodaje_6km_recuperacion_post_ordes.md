@@ -16,7 +16,7 @@
 ## Execution Analysis
 
 - Goal of the session: Carga muy controlada para absorber Ordes, mover sangre y recuperar sin impacto.
-- Template id: -
+- Template id: recovery_plus_mobility
 - Knowledge id: 40_regenerativo_muy_suave
 - Planned physiological goal: Recuperacion
 - Stimulus alignment: El estimulo real se desvia del objetivo previsto. Previsto: recuperacion. Real observado: fondo_largo, base_aerobica, ritmo_5k.

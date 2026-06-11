@@ -1,15 +1,16 @@
 {
-  "generated_at": "2026-05-24T14:08:56.958414Z",
+  "generated_at": "2026-06-11T20:26:33.238553Z",
   "status": "scheduled",
+  "workout_hash": "d2e62d30e4e2ff266604788c74168e90dbbd52802cf8c01af071c65641a8a3f6",
   "upload_mode": "structured_targets",
   "workout_file": "training/planned/workouts/2026-06-16_trote_reintroduccion_2km.yaml",
   "uploaded_response": {
-    "workoutId": 1577549437,
+    "workoutId": 1597606179,
     "ownerId": 137864769,
     "workoutName": "Trote reintroduccion 2 km",
-    "description": "Primer trote de vuelta al impacto. Debe sentirse muy facil y completamente controlado.",
-    "updatedDate": "2026-05-24T14:08:54.0",
-    "createdDate": "2026-05-24T14:08:54.0",
+    "description": "Primer trote programado de vuelta al impacto tras el test favorable del 10 de junio. Debe sentirse muy facil, completamente controlado y sin forzar la zancada.",
+    "updatedDate": "2026-06-11T20:26:32.0",
+    "createdDate": "2026-06-11T20:26:32.0",
     "sportType": {
       "sportTypeId": 1,
       "sportTypeKey": "running",
@@ -49,7 +50,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13457236757,
+            "stepId": 13649541868,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 3,
@@ -77,7 +78,7 @@
               "displayOrder": 4
             },
             "targetValueOne": 132.0,
-            "targetValueTwo": 145.0,
+            "targetValueTwo": 160.0,
             "targetValueUnit": null,
             "zoneNumber": null,
             "secondaryTargetType": null,
@@ -131,14 +132,14 @@
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1659010249,
+    "workoutScheduleId": 1678861392,
     "workout": {
-      "workoutId": 1577549437,
+      "workoutId": 1597606179,
       "ownerId": 137864769,
       "workoutName": "Trote reintroduccion 2 km",
-      "description": "Primer trote de vuelta al impacto. Debe sentirse muy facil y completamente controlado.",
-      "updatedDate": "2026-05-24T14:08:54.0",
-      "createdDate": "2026-05-24T14:08:54.0",
+      "description": "Primer trote programado de vuelta al impacto tras el test favorable del 10 de junio. Debe sentirse muy facil, completamente controlado y sin forzar la zancada.",
+      "updatedDate": "2026-06-11T20:26:32.0",
+      "createdDate": "2026-06-11T20:26:32.0",
       "sportType": {
         "sportTypeId": 1,
         "sportTypeKey": "running",
@@ -169,7 +170,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13457236757,
+              "stepId": 13649541868,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 3,
@@ -197,7 +198,7 @@
                 "displayOrder": 4
               },
               "targetValueOne": 132.0,
-              "targetValueTwo": 145.0,
+              "targetValueTwo": 160.0,
               "targetValueUnit": null,
               "zoneNumber": null,
               "secondaryTargetType": null,
@@ -251,7 +252,7 @@
       "shared": false
     },
     "calendarDate": "2026-06-16",
-    "createdDate": "2026-05-24",
+    "createdDate": "2026-06-11",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -260,18 +261,18 @@
     "priority": null,
     "associatedActivityDateTime": null,
     "tpType": null,
-    "nameChanged": false,
     "itp": false,
     "race": false,
+    "nameChanged": false,
     "protected": false
   },
   "warning": null,
   "replaced_uploads": [
     {
       "record": "training/planned/workouts/2026-06-16/2026-06-16_trote_reintroduccion_2km.garmin_upload.json",
-      "scheduled_workout_id": 1650769469,
+      "scheduled_workout_id": 1678558742,
       "unscheduled": true,
-      "workout_id": 1569240341,
+      "workout_id": 1597295106,
       "deleted": true
     }
   ]

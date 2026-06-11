@@ -73,7 +73,7 @@
     </div>
     <div class="stack-list">
       {% for review in page.completed_items %}
-      <a class="detail-row-card {{ review.calendar_color_class }} calendar-detail-card" href="{{ review.detail_url }}" style="{{ review.calendar_inline_style }}">
+      <a class="detail-row-card {{ review.calendar_color_class }} calendar-detail-card" {% if review.detail_url %}href="{{ review.detail_url }}"{% endif %} style="{{ review.calendar_inline_style }}">
         <div>
           <p class="calendar-entry-topline">
             <span class="calendar-entry-icons">

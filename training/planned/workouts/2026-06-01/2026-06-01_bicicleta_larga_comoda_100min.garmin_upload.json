@@ -1,19 +1,20 @@
 {
-  "generated_at": "2026-06-01T07:48:55.420988Z",
+  "generated_at": "2026-06-11T11:35:16.759015Z",
   "status": "scheduled",
-  "upload_mode": "structured_targets",
+  "workout_hash": "bb759b695282cbf3a9cdb7dadb870ea4f7e691d1ffcffd476f4db0e7041ed175",
+  "upload_mode": "other_workout_direct",
   "workout_file": "training/planned/workouts/2026-06-01_bicicleta_larga_comoda_100min.yaml",
   "uploaded_response": {
-    "workoutId": 1586592074,
+    "workoutId": 1597254645,
     "ownerId": 137864769,
     "workoutName": "Eliptica larga comoda 100 min",
     "description": "Sesion larga, comoda y continua en eliptica para mantener la carga aerobica equivalente sin impacto en un dia de alergia.",
-    "updatedDate": "2026-06-01T07:48:54.0",
-    "createdDate": "2026-06-01T07:48:54.0",
+    "updatedDate": "2026-06-11T11:35:14.0",
+    "createdDate": "2026-06-11T11:35:14.0",
     "sportType": {
-      "sportTypeId": 2,
-      "sportTypeKey": "elliptical",
-      "displayOrder": 2
+      "sportTypeId": 3,
+      "sportTypeKey": "other",
+      "displayOrder": 13
     },
     "subSportType": null,
     "trainingPlanId": null,
@@ -34,9 +35,9 @@
       {
         "segmentOrder": 1,
         "sportType": {
-          "sportTypeId": 2,
-          "sportTypeKey": "elliptical",
-          "displayOrder": 2
+          "sportTypeId": 3,
+          "sportTypeKey": "other",
+          "displayOrder": 13
         },
         "poolLengthUnit": null,
         "poolLength": null,
@@ -49,7 +50,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13539621776,
+            "stepId": 13645684340,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 1,
@@ -57,7 +58,7 @@
               "displayOrder": 1
             },
             "childStepId": null,
-            "description": "10 min suaves",
+            "description": "10 min suaves en eliptica",
             "endCondition": {
               "conditionTypeId": 2,
               "conditionTypeKey": "time",
@@ -101,7 +102,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13539621777,
+            "stepId": 13645684341,
             "stepOrder": 2,
             "stepType": {
               "stepTypeId": 3,
@@ -109,7 +110,7 @@
               "displayOrder": 3
             },
             "childStepId": null,
-            "description": "80 min Z2 baja y continua",
+            "description": "80 min Z2 baja y continua en eliptica",
             "endCondition": {
               "conditionTypeId": 2,
               "conditionTypeKey": "time",
@@ -153,7 +154,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13539621778,
+            "stepId": 13645684342,
             "stepOrder": 3,
             "stepType": {
               "stepTypeId": 2,
@@ -161,7 +162,7 @@
               "displayOrder": 2
             },
             "childStepId": null,
-            "description": "10 min suaves",
+            "description": "10 min suaves en eliptica",
             "endCondition": {
               "conditionTypeId": 2,
               "conditionTypeKey": "time",
@@ -226,23 +227,23 @@
       "unitKey": null,
       "factor": null
     },
-    "workoutThumbnailUrl": "https://connect.garmin.com/chart-service/workout?data=129,10,ch-150,80,ch-125,10,ch",
+    "workoutThumbnailUrl": null,
     "isSessionTransitionEnabled": null,
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1668019872,
+    "workoutScheduleId": 1678519390,
     "workout": {
-      "workoutId": 1586592074,
+      "workoutId": 1597254645,
       "ownerId": 137864769,
       "workoutName": "Eliptica larga comoda 100 min",
       "description": "Sesion larga, comoda y continua en eliptica para mantener la carga aerobica equivalente sin impacto en un dia de alergia.",
-      "updatedDate": "2026-06-01T07:48:54.0",
-      "createdDate": "2026-06-01T07:48:54.0",
+      "updatedDate": "2026-06-11T11:35:14.0",
+      "createdDate": "2026-06-11T11:35:14.0",
       "sportType": {
-        "sportTypeId": 2,
-        "sportTypeKey": "elliptical",
-        "displayOrder": 2
+        "sportTypeId": 3,
+        "sportTypeKey": "other",
+        "displayOrder": 13
       },
       "subSportType": null,
       "trainingPlanId": null,
@@ -254,9 +255,9 @@
         {
           "segmentOrder": 1,
           "sportType": {
-            "sportTypeId": 2,
-            "sportTypeKey": "elliptical",
-            "displayOrder": 2
+            "sportTypeId": 3,
+            "sportTypeKey": "other",
+            "displayOrder": 13
           },
           "poolLengthUnit": null,
           "poolLength": null,
@@ -269,7 +270,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13539621776,
+              "stepId": 13645684340,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 1,
@@ -277,7 +278,7 @@
                 "displayOrder": 1
               },
               "childStepId": null,
-              "description": "10 min suaves",
+              "description": "10 min suaves en eliptica",
               "endCondition": {
                 "conditionTypeId": 2,
                 "conditionTypeKey": "time",
@@ -321,7 +322,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13539621777,
+              "stepId": 13645684341,
               "stepOrder": 2,
               "stepType": {
                 "stepTypeId": 3,
@@ -329,7 +330,7 @@
                 "displayOrder": 3
               },
               "childStepId": null,
-              "description": "80 min Z2 baja y continua",
+              "description": "80 min Z2 baja y continua en eliptica",
               "endCondition": {
                 "conditionTypeId": 2,
                 "conditionTypeKey": "time",
@@ -373,7 +374,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13539621778,
+              "stepId": 13645684342,
               "stepOrder": 3,
               "stepType": {
                 "stepTypeId": 2,
@@ -381,7 +382,7 @@
                 "displayOrder": 2
               },
               "childStepId": null,
-              "description": "10 min suaves",
+              "description": "10 min suaves en eliptica",
               "endCondition": {
                 "conditionTypeId": 2,
                 "conditionTypeKey": "time",
@@ -446,12 +447,12 @@
         "unitKey": null,
         "factor": null
       },
-      "workoutThumbnailUrl": "https://connect.garmin.com/chart-service/workout?data=129,10,ch-150,80,ch-125,10,ch",
+      "workoutThumbnailUrl": null,
       "isSessionTransitionEnabled": null,
       "shared": false
     },
     "calendarDate": "2026-06-01",
-    "createdDate": "2026-06-01",
+    "createdDate": "2026-06-11",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -460,11 +461,19 @@
     "priority": null,
     "associatedActivityDateTime": null,
     "tpType": null,
-    "nameChanged": false,
+    "protected": false,
     "itp": false,
     "race": false,
-    "protected": false
+    "nameChanged": false
   },
   "warning": null,
-  "replaced_uploads": []
+  "replaced_uploads": [
+    {
+      "record": "training/planned/workouts/2026-06-01/2026-06-01_bicicleta_larga_comoda_100min.garmin_upload.json",
+      "scheduled_workout_id": 1668019872,
+      "unscheduled": true,
+      "workout_id": 1586592074,
+      "deleted": true
+    }
+  ]
 }

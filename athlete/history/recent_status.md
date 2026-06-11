@@ -15,6 +15,7 @@
 
 - `2026-05-05`: `5.0 km` reintroduction run at `7:24/km`, `144 bpm`, aerobic TE `2.4`; controlled enough to keep training conservative.
 - `2026-05-07`: `6.7 km` easy run with strides at `7:13/km`, `151 bpm`, aerobic TE `3.0`; too much time above the intended HR cap, reviewed as red/high risk.
+- `2026-06-10`: `2.0 km` test run used to check lesion tolerance; next morning there is no pain in normal activity, only mild tension with an exaggerated inward-rotated foot position.
 - Recent key interval examples before the Camino fatigue:
   - `2026-04-16`: `4 x 1000 m` around `3:56-4:01/km`, high HR/anaerobic cost.
   - `2026-04-28`: faster segments around `4:05-4:18/km`, also high cost.
@@ -27,6 +28,6 @@
 
 ## Current Feelings And Risk
 
-- General sensations recently poor.
-- Current issue: left shin periosteum discomfort with history of tibial periostitis.
+- General sensations recently poor, but the immediate shin response after the 2 km test is better than in previous reintroductions.
+- Current issue: left shin periosteum still shows mild provoked tension with aggressive inward foot rotation, with history of tibial periostitis.
 - Current limiter: aerobic durability and tissue tolerance, not isolated speed.

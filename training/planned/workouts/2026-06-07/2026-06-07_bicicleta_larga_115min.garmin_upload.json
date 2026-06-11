@@ -1,15 +1,16 @@
 {
-  "generated_at": "2026-05-24T14:08:36.010118Z",
+  "generated_at": "2026-06-11T11:35:27.538701Z",
   "status": "scheduled",
+  "workout_hash": "678ba9cfd0f323c4c5f132d1d5d00297c7f340fff834d62d4e5f9e330cf05e64",
   "upload_mode": "structured_targets",
   "workout_file": "training/planned/workouts/2026-06-07_bicicleta_larga_115min.yaml",
   "uploaded_response": {
-    "workoutId": 1577548568,
+    "workoutId": 1597254740,
     "ownerId": 137864769,
     "workoutName": "Bicicleta larga 115 min",
     "description": "Trabajo largo, comodo y en Z2 de base aerobica para seguir mejorando eficiencia sin impacto.",
-    "updatedDate": "2026-05-24T14:08:33.0",
-    "createdDate": "2026-05-24T14:08:33.0",
+    "updatedDate": "2026-06-11T11:35:26.0",
+    "createdDate": "2026-06-11T11:35:26.0",
     "sportType": {
       "sportTypeId": 2,
       "sportTypeKey": "cycling",
@@ -49,7 +50,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13457231676,
+            "stepId": 13645685233,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 1,
@@ -101,7 +102,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13457231677,
+            "stepId": 13645685234,
             "stepOrder": 2,
             "stepType": {
               "stepTypeId": 3,
@@ -153,7 +154,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13457231678,
+            "stepId": 13645685236,
             "stepOrder": 3,
             "stepType": {
               "stepTypeId": 2,
@@ -231,14 +232,14 @@
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1659009363,
+    "workoutScheduleId": 1678519479,
     "workout": {
-      "workoutId": 1577548568,
+      "workoutId": 1597254740,
       "ownerId": 137864769,
       "workoutName": "Bicicleta larga 115 min",
       "description": "Trabajo largo, comodo y en Z2 de base aerobica para seguir mejorando eficiencia sin impacto.",
-      "updatedDate": "2026-05-24T14:08:33.0",
-      "createdDate": "2026-05-24T14:08:33.0",
+      "updatedDate": "2026-06-11T11:35:26.0",
+      "createdDate": "2026-06-11T11:35:26.0",
       "sportType": {
         "sportTypeId": 2,
         "sportTypeKey": "cycling",
@@ -269,7 +270,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13457231676,
+              "stepId": 13645685233,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 1,
@@ -321,7 +322,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13457231677,
+              "stepId": 13645685234,
               "stepOrder": 2,
               "stepType": {
                 "stepTypeId": 3,
@@ -373,7 +374,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13457231678,
+              "stepId": 13645685236,
               "stepOrder": 3,
               "stepType": {
                 "stepTypeId": 2,
@@ -451,7 +452,7 @@
       "shared": false
     },
     "calendarDate": "2026-06-07",
-    "createdDate": "2026-05-24",
+    "createdDate": "2026-06-11",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -461,17 +462,17 @@
     "associatedActivityDateTime": null,
     "tpType": null,
     "nameChanged": false,
-    "itp": false,
+    "protected": false,
     "race": false,
-    "protected": false
+    "itp": false
   },
   "warning": null,
   "replaced_uploads": [
     {
       "record": "training/planned/workouts/2026-06-07/2026-06-07_bicicleta_larga_115min.garmin_upload.json",
-      "scheduled_workout_id": 1650784632,
+      "scheduled_workout_id": 1659009363,
       "unscheduled": true,
-      "workout_id": 1569255578,
+      "workout_id": 1577548568,
       "deleted": true
     }
   ]

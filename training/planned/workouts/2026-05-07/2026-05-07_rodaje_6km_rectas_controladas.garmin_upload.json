@@ -1,13 +1,16 @@
 {
+  "generated_at": "2026-06-11T11:34:37.795239Z",
+  "status": "scheduled",
+  "workout_hash": "469cd5a6868006099d7f64613fdca0cd2bd68049700c2f935d151128f8a13a70",
   "upload_mode": "structured_targets",
   "workout_file": "training/planned/workouts/2026-05-07_rodaje_6km_rectas_controladas.yaml",
   "uploaded_response": {
-    "workoutId": 1557407890,
+    "workoutId": 1597254272,
     "ownerId": 137864769,
     "workoutName": "Rodaje 6 km + 4 rectas controladas",
     "description": "Rodaje facil de continuidad con 4 rectas suaves para despertar piernas, sin sprintar.",
-    "updatedDate": "2026-05-04T12:46:49.0",
-    "createdDate": "2026-05-04T12:46:49.0",
+    "updatedDate": "2026-06-11T11:34:35.0",
+    "createdDate": "2026-06-11T11:34:35.0",
     "sportType": {
       "sportTypeId": 1,
       "sportTypeKey": "running",
@@ -47,7 +50,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13256382679,
+            "stepId": 13645679807,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 3,
@@ -103,7 +106,7 @@
           },
           {
             "type": "RepeatGroupDTO",
-            "stepId": 13256382680,
+            "stepId": 13645679808,
             "stepOrder": 2,
             "stepType": {
               "stepTypeId": 6,
@@ -115,7 +118,7 @@
             "workoutSteps": [
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13256382681,
+                "stepId": 13645679809,
                 "stepOrder": 3,
                 "stepType": {
                   "stepTypeId": 3,
@@ -167,7 +170,7 @@
               },
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13256382682,
+                "stepId": 13645679810,
                 "stepOrder": 4,
                 "stepType": {
                   "stepTypeId": 4,
@@ -232,7 +235,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13256382683,
+            "stepId": 13645679811,
             "stepOrder": 5,
             "stepType": {
               "stepTypeId": 2,
@@ -314,14 +317,14 @@
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1639075085,
+    "workoutScheduleId": 1678519036,
     "workout": {
-      "workoutId": 1557407890,
+      "workoutId": 1597254272,
       "ownerId": 137864769,
       "workoutName": "Rodaje 6 km + 4 rectas controladas",
       "description": "Rodaje facil de continuidad con 4 rectas suaves para despertar piernas, sin sprintar.",
-      "updatedDate": "2026-05-04T12:46:49.0",
-      "createdDate": "2026-05-04T12:46:49.0",
+      "updatedDate": "2026-06-11T11:34:35.0",
+      "createdDate": "2026-06-11T11:34:35.0",
       "sportType": {
         "sportTypeId": 1,
         "sportTypeKey": "running",
@@ -352,7 +355,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13256382679,
+              "stepId": 13645679807,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 3,
@@ -408,7 +411,7 @@
             },
             {
               "type": "RepeatGroupDTO",
-              "stepId": 13256382680,
+              "stepId": 13645679808,
               "stepOrder": 2,
               "stepType": {
                 "stepTypeId": 6,
@@ -420,7 +423,7 @@
               "workoutSteps": [
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13256382681,
+                  "stepId": 13645679809,
                   "stepOrder": 3,
                   "stepType": {
                     "stepTypeId": 3,
@@ -472,7 +475,7 @@
                 },
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13256382682,
+                  "stepId": 13645679810,
                   "stepOrder": 4,
                   "stepType": {
                     "stepTypeId": 4,
@@ -537,7 +540,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13256382683,
+              "stepId": 13645679811,
               "stepOrder": 5,
               "stepType": {
                 "stepTypeId": 2,
@@ -619,7 +622,7 @@
       "shared": false
     },
     "calendarDate": "2026-05-07",
-    "createdDate": "2026-05-04",
+    "createdDate": "2026-06-11",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -628,9 +631,19 @@
     "priority": null,
     "associatedActivityDateTime": null,
     "tpType": null,
+    "protected": false,
     "itp": false,
     "race": false,
-    "protected": false,
     "nameChanged": false
-  }
+  },
+  "warning": null,
+  "replaced_uploads": [
+    {
+      "record": "training/planned/workouts/2026-05-07/2026-05-07_rodaje_6km_rectas_controladas.garmin_upload.json",
+      "scheduled_workout_id": 1639075085,
+      "unscheduled": true,
+      "workout_id": 1557407890,
+      "deleted": true
+    }
+  ]
 }

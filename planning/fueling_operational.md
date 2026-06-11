@@ -1,6 +1,6 @@
 # Fueling Operational Plan
 
-- Generated: `2026-06-11T11:31:57.686586+00:00`
+- Generated: `2026-06-11T20:57:15.895980+00:00`
 - Athlete weight: `64.199` kg
 
 ## Supplements
@@ -39,6 +39,18 @@
 - `2026-05-24 T-30m` pre: Cafeina opcional solo si ya esta probada en entrenos o carreras. (40 mg cafeina; SUB9 PRO SALTS ELECTROLYTES)
 - `2026-05-24 Durante` during: Para esta distancia basta con pequeños sorbos de agua/electrolitos si hace calor o hay espera larga. (A demanda; Evolytes Powder)
 - `2026-05-24 T+30m` post: Recuperacion inmediata con proteina, creatina y algo de hidratos si no comes pronto. (20-30 g proteina + 3-5 g creatina + 40-60 g CHO; Evowhey Protein + Creatina + Maltodextrina)
+
+### 2026-06-28 · VI CARREIRA 5K EL CANARIO - HOMENAXE JOSE NESPEREIRA
+
+- Distance: `5k`
+- Prediction: `21:17` · pace `4:15/km`
+- `2026-06-27 Durante el dia` carb_load: Apuntar a 321 g de hidratos en el dia, priorizando comidas faciles de digerir. (321 g CHO/dia; Maltodextrina + Fructosa)
+- `2026-06-27 Distribuido en el dia` hydration: Beber entre 2.2 y 2.6 L repartidos y añadir sodio si hace calor. (2.2-2.6 L; Evolytes Powder)
+- `2026-06-28 T-3h` pre: Comida previa con 77 g de hidratos y muy baja en fibra/grasa. (77 g CHO; Maltodextrina + Fructosa)
+- `2026-06-28 T-45m` pre: Top-up pequeño si llegas con hambre o la salida se retrasa. (20-25 g CHO; Maltodextrina + Fructosa)
+- `2026-06-28 T-30m` pre: Cafeina opcional solo si ya esta probada en entrenos o carreras. (40 mg cafeina; SUB9 PRO SALTS ELECTROLYTES)
+- `2026-06-28 Durante` during: Para esta distancia basta con pequeños sorbos de agua/electrolitos si hace calor o hay espera larga. (A demanda; Evolytes Powder)
+- `2026-06-28 T+30m` post: Recuperacion inmediata con proteina, creatina y algo de hidratos si no comes pronto. (20-30 g proteina + 3-5 g creatina + 40-60 g CHO; Evowhey Protein + Creatina + Maltodextrina)
 
 ### 2027-02-06 · XXIV Padron 10k
 
@@ -120,10 +132,10 @@
 - `2026-06-09 Durante` during: Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho. (30-45 g CHO/h + sodio; Maltodextrina + Fructosa + Evolytes Powder)
 - `2026-06-09 T+30m` post: Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura. (20-30 g proteina + 3-5 g creatina + 30-60 g CHO; Evowhey Protein + Creatina + Maltodextrina)
 
-### 2026-06-11 · Bicicleta tempo controlado 90 min
+### 2026-06-11 · Bicicleta continua controlada 80 min
 
 - `2026-06-11 T-90m` pre: Llegar con hidratos disponibles y sin pesadez antes de la sesion exigente. (30-60 g CHO; Maltodextrina + Fructosa)
-- `2026-06-11 Durante` during: Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho. (60-75 g CHO/h + sodio; Maltodextrina + Fructosa + Evolytes Powder)
+- `2026-06-11 Durante` during: Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho. (30-45 g CHO/h + sodio; Maltodextrina + Fructosa + Evolytes Powder)
 - `2026-06-11 T+30m` post: Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura. (20-30 g proteina + 3-5 g creatina + 30-60 g CHO; Evowhey Protein + Creatina + Maltodextrina)
 
 ### 2026-06-13 · Bicicleta larga 110 min
@@ -155,3 +167,9 @@
 - `2026-06-21 T-90m` pre: Llegar con hidratos disponibles y sin pesadez antes de la sesion exigente. (30-60 g CHO; Maltodextrina + Fructosa)
 - `2026-06-21 Durante` during: Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho. (60-75 g CHO/h + sodio; Maltodextrina + Fructosa + Evolytes Powder)
 - `2026-06-21 T+30m` post: Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura. (20-30 g proteina + 3-5 g creatina + 30-60 g CHO; Evowhey Protein + Creatina + Maltodextrina)
+
+### 2026-06-25 · Bicicleta continua 70 min
+
+- `2026-06-25 T-90m` pre: Llegar con hidratos disponibles y sin pesadez antes de la sesion exigente. (30-60 g CHO; Maltodextrina + Fructosa)
+- `2026-06-25 Durante` during: Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho. (30-45 g CHO/h + sodio; Maltodextrina + Fructosa + Evolytes Powder)
+- `2026-06-25 T+30m` post: Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura. (20-30 g proteina + 3-5 g creatina + 30-60 g CHO; Evowhey Protein + Creatina + Maltodextrina)

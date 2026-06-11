@@ -1,13 +1,16 @@
 {
-  "upload_mode": "heart_rate_target",
-  "workout_file": "training/planned/workouts/2026-05-04_rodaje_10km_z2.yaml",
+  "generated_at": "2026-06-11T14:24:14.966172Z",
+  "status": "scheduled",
+  "workout_hash": "7cd71e6e5af6de96e682dce29c7f2dc6933c77173907a54381372af69c3ee552",
+  "upload_mode": "structured_targets",
+  "workout_file": "training/planned/workouts/2026-06-23_trote_consolidacion_2_5km.yaml",
   "uploaded_response": {
-    "workoutId": 1557350263,
+    "workoutId": 1597359099,
     "ownerId": 137864769,
-    "workoutName": "Rodaje 10 km Z2",
-    "description": "Rodaje continuo de 10 km en Z2, controlando 141-155 ppm y sin forzar el ritmo.",
-    "updatedDate": "2026-05-04T11:45:15.0",
-    "createdDate": "2026-05-04T11:45:15.0",
+    "workoutName": "Trote consolidacion 2.5 km",
+    "description": "Sesion facil para consolidar la reintroduccion con margen para moverse en Z2 baja si el gesto sale limpio. Debe sentirse estable y sin tension rara.",
+    "updatedDate": "2026-06-11T14:24:14.0",
+    "createdDate": "2026-06-11T14:24:14.0",
     "sportType": {
       "sportTypeId": 1,
       "sportTypeKey": "running",
@@ -26,8 +29,8 @@
       "vivokidUser": false
     },
     "sharedWithUsers": null,
-    "estimatedDurationInSecs": 4200,
-    "estimatedDistanceInMeters": null,
+    "estimatedDurationInSecs": 1080,
+    "estimatedDistanceInMeters": 2500.0,
     "workoutSegments": [
       {
         "segmentOrder": 1,
@@ -47,7 +50,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13255790270,
+            "stepId": 13646839837,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 3,
@@ -55,23 +58,27 @@
               "displayOrder": 3
             },
             "childStepId": null,
-            "description": "10 km en Z2",
+            "description": "2.5 km muy faciles",
             "endCondition": {
-              "conditionTypeId": 1,
-              "conditionTypeKey": "lap.button",
-              "displayOrder": 1,
+              "conditionTypeId": 3,
+              "conditionTypeKey": "distance",
+              "displayOrder": 3,
               "displayable": true
             },
-            "endConditionValue": 10000.0,
-            "preferredEndConditionUnit": null,
+            "endConditionValue": 2500.0,
+            "preferredEndConditionUnit": {
+              "unitId": 1,
+              "unitKey": "meter",
+              "factor": 100.0
+            },
             "endConditionCompare": null,
             "targetType": {
               "workoutTargetTypeId": 4,
               "workoutTargetTypeKey": "heart.rate.zone",
               "displayOrder": 4
             },
-            "targetValueOne": null,
-            "targetValueTwo": null,
+            "targetValueOne": 140.0,
+            "targetValueTwo": 155.0,
             "targetValueUnit": null,
             "zoneNumber": null,
             "secondaryTargetType": null,
@@ -125,14 +132,14 @@
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1639017507,
+    "workoutScheduleId": 1678620409,
     "workout": {
-      "workoutId": 1557350263,
+      "workoutId": 1597359099,
       "ownerId": 137864769,
-      "workoutName": "Rodaje 10 km Z2",
-      "description": "Rodaje continuo de 10 km en Z2, controlando 141-155 ppm y sin forzar el ritmo.",
-      "updatedDate": "2026-05-04T11:45:15.0",
-      "createdDate": "2026-05-04T11:45:15.0",
+      "workoutName": "Trote consolidacion 2.5 km",
+      "description": "Sesion facil para consolidar la reintroduccion con margen para moverse en Z2 baja si el gesto sale limpio. Debe sentirse estable y sin tension rara.",
+      "updatedDate": "2026-06-11T14:24:14.0",
+      "createdDate": "2026-06-11T14:24:14.0",
       "sportType": {
         "sportTypeId": 1,
         "sportTypeKey": "running",
@@ -142,8 +149,8 @@
       "trainingPlanId": null,
       "author": null,
       "sharedWithUsers": null,
-      "estimatedDurationInSecs": 4200,
-      "estimatedDistanceInMeters": null,
+      "estimatedDurationInSecs": 1080,
+      "estimatedDistanceInMeters": 2500.0,
       "workoutSegments": [
         {
           "segmentOrder": 1,
@@ -163,7 +170,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13255790270,
+              "stepId": 13646839837,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 3,
@@ -171,23 +178,27 @@
                 "displayOrder": 3
               },
               "childStepId": null,
-              "description": "10 km en Z2",
+              "description": "2.5 km muy faciles",
               "endCondition": {
-                "conditionTypeId": 1,
-                "conditionTypeKey": "lap.button",
-                "displayOrder": 1,
+                "conditionTypeId": 3,
+                "conditionTypeKey": "distance",
+                "displayOrder": 3,
                 "displayable": true
               },
-              "endConditionValue": 10000.0,
-              "preferredEndConditionUnit": null,
+              "endConditionValue": 2500.0,
+              "preferredEndConditionUnit": {
+                "unitId": 1,
+                "unitKey": "meter",
+                "factor": 100.0
+              },
               "endConditionCompare": null,
               "targetType": {
                 "workoutTargetTypeId": 4,
                 "workoutTargetTypeKey": "heart.rate.zone",
                 "displayOrder": 4
               },
-              "targetValueOne": null,
-              "targetValueTwo": null,
+              "targetValueOne": 140.0,
+              "targetValueTwo": 155.0,
               "targetValueUnit": null,
               "zoneNumber": null,
               "secondaryTargetType": null,
@@ -240,8 +251,8 @@
       "isSessionTransitionEnabled": null,
       "shared": false
     },
-    "calendarDate": "2026-05-04",
-    "createdDate": "2026-05-04",
+    "calendarDate": "2026-06-23",
+    "createdDate": "2026-06-11",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -250,9 +261,19 @@
     "priority": null,
     "associatedActivityDateTime": null,
     "tpType": null,
-    "protected": false,
     "race": false,
+    "nameChanged": false,
     "itp": false,
-    "nameChanged": false
-  }
+    "protected": false
+  },
+  "warning": null,
+  "replaced_uploads": [
+    {
+      "record": "training/planned/workouts/2026-06-23/2026-06-23_trote_consolidacion_2_5km.garmin_upload.json",
+      "scheduled_workout_id": 1678583299,
+      "unscheduled": true,
+      "workout_id": 1597320362,
+      "deleted": true
+    }
+  ]
 }

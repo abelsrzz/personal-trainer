@@ -1,15 +1,16 @@
 {
-  "generated_at": "2026-05-25T16:53:42.358302Z",
+  "generated_at": "2026-06-11T11:35:08.731868Z",
   "status": "scheduled",
+  "workout_hash": "24f2331e0df2f5ce14aa6cc53f02b0cab31b8968eb01ba7c9bcfd68c77e5da28",
   "upload_mode": "structured_targets",
   "workout_file": "training/planned/workouts/2026-05-27_fuerza_movilidad_tolerancia_35min.yaml",
   "uploaded_response": {
-    "workoutId": 1579701653,
+    "workoutId": 1597254490,
     "ownerId": 137864769,
     "workoutName": "Fuerza rehabilitadora A 35 min",
     "description": "Sesion A de rehabilitacion para fortalecer pie, soleo, gemelo, gluteo medio y core sin agujetas.",
-    "updatedDate": "2026-05-25T16:53:39.0",
-    "createdDate": "2026-05-25T16:53:39.0",
+    "updatedDate": "2026-06-11T11:35:07.0",
+    "createdDate": "2026-06-11T11:35:07.0",
     "sportType": {
       "sportTypeId": 5,
       "sportTypeKey": "strength_training",
@@ -49,7 +50,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13473703865,
+            "stepId": 13645683181,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 1,
@@ -101,7 +102,7 @@
           },
           {
             "type": "RepeatGroupDTO",
-            "stepId": 13473703866,
+            "stepId": 13645683182,
             "stepOrder": 2,
             "stepType": {
               "stepTypeId": 6,
@@ -113,7 +114,7 @@
             "workoutSteps": [
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13473703867,
+                "stepId": 13645683183,
                 "stepOrder": 3,
                 "stepType": {
                   "stepTypeId": 3,
@@ -178,7 +179,7 @@
           },
           {
             "type": "RepeatGroupDTO",
-            "stepId": 13473703868,
+            "stepId": 13645683184,
             "stepOrder": 4,
             "stepType": {
               "stepTypeId": 6,
@@ -190,7 +191,7 @@
             "workoutSteps": [
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13473703869,
+                "stepId": 13645683185,
                 "stepOrder": 5,
                 "stepType": {
                   "stepTypeId": 3,
@@ -255,7 +256,7 @@
           },
           {
             "type": "RepeatGroupDTO",
-            "stepId": 13473703870,
+            "stepId": 13645683186,
             "stepOrder": 6,
             "stepType": {
               "stepTypeId": 6,
@@ -267,7 +268,7 @@
             "workoutSteps": [
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13473703871,
+                "stepId": 13645683187,
                 "stepOrder": 7,
                 "stepType": {
                   "stepTypeId": 3,
@@ -332,7 +333,7 @@
           },
           {
             "type": "RepeatGroupDTO",
-            "stepId": 13473703872,
+            "stepId": 13645683188,
             "stepOrder": 8,
             "stepType": {
               "stepTypeId": 6,
@@ -344,7 +345,7 @@
             "workoutSteps": [
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13473703873,
+                "stepId": 13645683189,
                 "stepOrder": 9,
                 "stepType": {
                   "stepTypeId": 3,
@@ -409,7 +410,7 @@
           },
           {
             "type": "RepeatGroupDTO",
-            "stepId": 13473703874,
+            "stepId": 13645683190,
             "stepOrder": 10,
             "stepType": {
               "stepTypeId": 6,
@@ -421,7 +422,7 @@
             "workoutSteps": [
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13473703875,
+                "stepId": 13645683191,
                 "stepOrder": 11,
                 "stepType": {
                   "stepTypeId": 3,
@@ -486,7 +487,7 @@
           },
           {
             "type": "RepeatGroupDTO",
-            "stepId": 13473703876,
+            "stepId": 13645683192,
             "stepOrder": 12,
             "stepType": {
               "stepTypeId": 6,
@@ -498,7 +499,7 @@
             "workoutSteps": [
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13473703877,
+                "stepId": 13645683193,
                 "stepOrder": 13,
                 "stepType": {
                   "stepTypeId": 3,
@@ -563,7 +564,7 @@
           },
           {
             "type": "RepeatGroupDTO",
-            "stepId": 13473703878,
+            "stepId": 13645683194,
             "stepOrder": 14,
             "stepType": {
               "stepTypeId": 6,
@@ -575,7 +576,7 @@
             "workoutSteps": [
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13473703879,
+                "stepId": 13645683195,
                 "stepOrder": 15,
                 "stepType": {
                   "stepTypeId": 3,
@@ -640,7 +641,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13473703880,
+            "stepId": 13645683196,
             "stepOrder": 16,
             "stepType": {
               "stepTypeId": 2,
@@ -718,14 +719,14 @@
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1661173159,
+    "workoutScheduleId": 1678519246,
     "workout": {
-      "workoutId": 1579701653,
+      "workoutId": 1597254490,
       "ownerId": 137864769,
       "workoutName": "Fuerza rehabilitadora A 35 min",
       "description": "Sesion A de rehabilitacion para fortalecer pie, soleo, gemelo, gluteo medio y core sin agujetas.",
-      "updatedDate": "2026-05-25T16:53:39.0",
-      "createdDate": "2026-05-25T16:53:39.0",
+      "updatedDate": "2026-06-11T11:35:07.0",
+      "createdDate": "2026-06-11T11:35:07.0",
       "sportType": {
         "sportTypeId": 5,
         "sportTypeKey": "strength_training",
@@ -756,7 +757,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13473703865,
+              "stepId": 13645683181,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 1,
@@ -808,7 +809,7 @@
             },
             {
               "type": "RepeatGroupDTO",
-              "stepId": 13473703866,
+              "stepId": 13645683182,
               "stepOrder": 2,
               "stepType": {
                 "stepTypeId": 6,
@@ -820,7 +821,7 @@
               "workoutSteps": [
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13473703867,
+                  "stepId": 13645683183,
                   "stepOrder": 3,
                   "stepType": {
                     "stepTypeId": 3,
@@ -885,7 +886,7 @@
             },
             {
               "type": "RepeatGroupDTO",
-              "stepId": 13473703868,
+              "stepId": 13645683184,
               "stepOrder": 4,
               "stepType": {
                 "stepTypeId": 6,
@@ -897,7 +898,7 @@
               "workoutSteps": [
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13473703869,
+                  "stepId": 13645683185,
                   "stepOrder": 5,
                   "stepType": {
                     "stepTypeId": 3,
@@ -962,7 +963,7 @@
             },
             {
               "type": "RepeatGroupDTO",
-              "stepId": 13473703870,
+              "stepId": 13645683186,
               "stepOrder": 6,
               "stepType": {
                 "stepTypeId": 6,
@@ -974,7 +975,7 @@
               "workoutSteps": [
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13473703871,
+                  "stepId": 13645683187,
                   "stepOrder": 7,
                   "stepType": {
                     "stepTypeId": 3,
@@ -1039,7 +1040,7 @@
             },
             {
               "type": "RepeatGroupDTO",
-              "stepId": 13473703872,
+              "stepId": 13645683188,
               "stepOrder": 8,
               "stepType": {
                 "stepTypeId": 6,
@@ -1051,7 +1052,7 @@
               "workoutSteps": [
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13473703873,
+                  "stepId": 13645683189,
                   "stepOrder": 9,
                   "stepType": {
                     "stepTypeId": 3,
@@ -1116,7 +1117,7 @@
             },
             {
               "type": "RepeatGroupDTO",
-              "stepId": 13473703874,
+              "stepId": 13645683190,
               "stepOrder": 10,
               "stepType": {
                 "stepTypeId": 6,
@@ -1128,7 +1129,7 @@
               "workoutSteps": [
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13473703875,
+                  "stepId": 13645683191,
                   "stepOrder": 11,
                   "stepType": {
                     "stepTypeId": 3,
@@ -1193,7 +1194,7 @@
             },
             {
               "type": "RepeatGroupDTO",
-              "stepId": 13473703876,
+              "stepId": 13645683192,
               "stepOrder": 12,
               "stepType": {
                 "stepTypeId": 6,
@@ -1205,7 +1206,7 @@
               "workoutSteps": [
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13473703877,
+                  "stepId": 13645683193,
                   "stepOrder": 13,
                   "stepType": {
                     "stepTypeId": 3,
@@ -1270,7 +1271,7 @@
             },
             {
               "type": "RepeatGroupDTO",
-              "stepId": 13473703878,
+              "stepId": 13645683194,
               "stepOrder": 14,
               "stepType": {
                 "stepTypeId": 6,
@@ -1282,7 +1283,7 @@
               "workoutSteps": [
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13473703879,
+                  "stepId": 13645683195,
                   "stepOrder": 15,
                   "stepType": {
                     "stepTypeId": 3,
@@ -1347,7 +1348,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13473703880,
+              "stepId": 13645683196,
               "stepOrder": 16,
               "stepType": {
                 "stepTypeId": 2,
@@ -1425,7 +1426,7 @@
       "shared": false
     },
     "calendarDate": "2026-05-27",
-    "createdDate": "2026-05-25",
+    "createdDate": "2026-06-11",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -1434,18 +1435,18 @@
     "priority": null,
     "associatedActivityDateTime": null,
     "tpType": null,
-    "race": false,
+    "protected": false,
     "itp": false,
-    "nameChanged": false,
-    "protected": false
+    "race": false,
+    "nameChanged": false
   },
   "warning": null,
   "replaced_uploads": [
     {
       "record": "training/planned/workouts/2026-05-27/2026-05-27_fuerza_movilidad_tolerancia_35min.garmin_upload.json",
-      "scheduled_workout_id": 1661140420,
+      "scheduled_workout_id": 1661173159,
       "unscheduled": true,
-      "workout_id": 1579668852,
+      "workout_id": 1579701653,
       "deleted": true
     }
   ]

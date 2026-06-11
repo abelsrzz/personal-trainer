@@ -1,13 +1,16 @@
 {
+  "generated_at": "2026-06-11T11:34:42.983786Z",
+  "status": "scheduled",
+  "workout_hash": "d95bc9d8868730dba9527814309fe82c6fcf8ecfcb4742d18772b7654743b371",
   "upload_mode": "structured_targets",
   "workout_file": "training/planned/workouts/2026-05-13_rodaje_7km_rectas_controladas.yaml",
   "uploaded_response": {
-    "workoutId": 1557407931,
+    "workoutId": 1597254310,
     "ownerId": 137864769,
     "workoutName": "Rodaje 7 km + 5 rectas controladas",
     "description": "Rodaje facil con 5 rectas para recuperar chispa sin hacer una sesion exigente.",
-    "updatedDate": "2026-05-04T12:46:53.0",
-    "createdDate": "2026-05-04T12:46:53.0",
+    "updatedDate": "2026-06-11T11:34:41.0",
+    "createdDate": "2026-06-11T11:34:41.0",
     "sportType": {
       "sportTypeId": 1,
       "sportTypeKey": "running",
@@ -47,7 +50,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13256383113,
+            "stepId": 13645680424,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 3,
@@ -103,7 +106,7 @@
           },
           {
             "type": "RepeatGroupDTO",
-            "stepId": 13256383114,
+            "stepId": 13645680425,
             "stepOrder": 2,
             "stepType": {
               "stepTypeId": 6,
@@ -115,7 +118,7 @@
             "workoutSteps": [
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13256383115,
+                "stepId": 13645680426,
                 "stepOrder": 3,
                 "stepType": {
                   "stepTypeId": 3,
@@ -167,7 +170,7 @@
               },
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13256383116,
+                "stepId": 13645680427,
                 "stepOrder": 4,
                 "stepType": {
                   "stepTypeId": 4,
@@ -232,7 +235,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13256383117,
+            "stepId": 13645680428,
             "stepOrder": 5,
             "stepType": {
               "stepTypeId": 2,
@@ -314,14 +317,14 @@
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1639075130,
+    "workoutScheduleId": 1678519070,
     "workout": {
-      "workoutId": 1557407931,
+      "workoutId": 1597254310,
       "ownerId": 137864769,
       "workoutName": "Rodaje 7 km + 5 rectas controladas",
       "description": "Rodaje facil con 5 rectas para recuperar chispa sin hacer una sesion exigente.",
-      "updatedDate": "2026-05-04T12:46:53.0",
-      "createdDate": "2026-05-04T12:46:53.0",
+      "updatedDate": "2026-06-11T11:34:41.0",
+      "createdDate": "2026-06-11T11:34:41.0",
       "sportType": {
         "sportTypeId": 1,
         "sportTypeKey": "running",
@@ -352,7 +355,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13256383113,
+              "stepId": 13645680424,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 3,
@@ -408,7 +411,7 @@
             },
             {
               "type": "RepeatGroupDTO",
-              "stepId": 13256383114,
+              "stepId": 13645680425,
               "stepOrder": 2,
               "stepType": {
                 "stepTypeId": 6,
@@ -420,7 +423,7 @@
               "workoutSteps": [
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13256383115,
+                  "stepId": 13645680426,
                   "stepOrder": 3,
                   "stepType": {
                     "stepTypeId": 3,
@@ -472,7 +475,7 @@
                 },
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13256383116,
+                  "stepId": 13645680427,
                   "stepOrder": 4,
                   "stepType": {
                     "stepTypeId": 4,
@@ -537,7 +540,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13256383117,
+              "stepId": 13645680428,
               "stepOrder": 5,
               "stepType": {
                 "stepTypeId": 2,
@@ -619,7 +622,7 @@
       "shared": false
     },
     "calendarDate": "2026-05-13",
-    "createdDate": "2026-05-04",
+    "createdDate": "2026-06-11",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -628,9 +631,19 @@
     "priority": null,
     "associatedActivityDateTime": null,
     "tpType": null,
-    "protected": false,
-    "race": false,
     "itp": false,
+    "race": false,
+    "protected": false,
     "nameChanged": false
-  }
+  },
+  "warning": null,
+  "replaced_uploads": [
+    {
+      "record": "training/planned/workouts/2026-05-13/2026-05-13_rodaje_7km_rectas_controladas.garmin_upload.json",
+      "scheduled_workout_id": 1639075130,
+      "unscheduled": true,
+      "workout_id": 1557407931,
+      "deleted": true
+    }
+  ]
 }

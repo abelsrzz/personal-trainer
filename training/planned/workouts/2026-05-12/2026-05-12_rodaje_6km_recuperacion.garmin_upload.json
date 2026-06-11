@@ -1,19 +1,20 @@
 {
-  "generated_at": "2026-05-12T16:31:45.096265Z",
+  "generated_at": "2026-06-11T11:34:40.846444Z",
   "status": "scheduled",
+  "workout_hash": "8fc76daf2f9ad56fb767f7ebbf78d54927a13151393227b1d2fe69dc190d784b",
   "upload_mode": "structured_targets",
-  "workout_file": "/tmp/personal-trainer/garmin-replans/2026-05-12_rodaje_6km_recuperacion.yaml",
+  "workout_file": "training/planned/workouts/2026-05-12_rodaje_6km_recuperacion.yaml",
   "uploaded_response": {
-    "workoutId": 1566145124,
+    "workoutId": 1597254300,
     "ownerId": 137864769,
-    "workoutName": "Alternativa: Eliptica 42 min recuperacion",
-    "description": "Sesion equivalente en eliptica para hoy. Mantener respiracion comoda y cadencia fluida, sin impacto, en rango aerobico suave.",
-    "updatedDate": "2026-05-12T16:31:45.0",
-    "createdDate": "2026-05-12T16:31:45.0",
+    "workoutName": "Rodaje 6 km recuperacion",
+    "description": "Rodaje de recuperacion tras la carrera suave de Cerceda. Soltar piernas y controlar carga.",
+    "updatedDate": "2026-06-11T11:34:40.0",
+    "createdDate": "2026-06-11T11:34:40.0",
     "sportType": {
-      "sportTypeId": 6,
-      "sportTypeKey": "cardio_training",
-      "displayOrder": 6
+      "sportTypeId": 1,
+      "sportTypeKey": "running",
+      "displayOrder": 1
     },
     "subSportType": null,
     "trainingPlanId": null,
@@ -29,14 +30,14 @@
     },
     "sharedWithUsers": null,
     "estimatedDurationInSecs": 2520,
-    "estimatedDistanceInMeters": null,
+    "estimatedDistanceInMeters": 6000.0,
     "workoutSegments": [
       {
         "segmentOrder": 1,
         "sportType": {
-          "sportTypeId": 6,
-          "sportTypeKey": "cardio_training",
-          "displayOrder": 6
+          "sportTypeId": 1,
+          "sportTypeKey": "running",
+          "displayOrder": 1
         },
         "poolLengthUnit": null,
         "poolLength": null,
@@ -49,75 +50,27 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13342757326,
+            "stepId": 13645680302,
             "stepOrder": 1,
-            "stepType": {
-              "stepTypeId": 1,
-              "stepTypeKey": "warmup",
-              "displayOrder": 1
-            },
-            "childStepId": null,
-            "description": "5 min progresivos en eliptica, soltando piernas y estabilizando respiracion.",
-            "endCondition": {
-              "conditionTypeId": 2,
-              "conditionTypeKey": "time",
-              "displayOrder": 2,
-              "displayable": true
-            },
-            "endConditionValue": 300.0,
-            "preferredEndConditionUnit": null,
-            "endConditionCompare": null,
-            "targetType": {
-              "workoutTargetTypeId": 4,
-              "workoutTargetTypeKey": "heart.rate.zone",
-              "displayOrder": 4
-            },
-            "targetValueOne": 120.0,
-            "targetValueTwo": 135.0,
-            "targetValueUnit": null,
-            "zoneNumber": null,
-            "secondaryTargetType": null,
-            "secondaryTargetValueOne": null,
-            "secondaryTargetValueTwo": null,
-            "secondaryTargetValueUnit": null,
-            "secondaryZoneNumber": null,
-            "endConditionZone": null,
-            "strokeType": {
-              "strokeTypeId": 0,
-              "strokeTypeKey": null,
-              "displayOrder": 0
-            },
-            "equipmentType": {
-              "equipmentTypeId": 0,
-              "equipmentTypeKey": null,
-              "displayOrder": 0
-            },
-            "category": null,
-            "exerciseName": null,
-            "workoutProvider": null,
-            "providerExerciseSourceId": null,
-            "weightValue": null,
-            "weightUnit": null
-          },
-          {
-            "type": "ExecutableStepDTO",
-            "stepId": 13342757327,
-            "stepOrder": 2,
             "stepType": {
               "stepTypeId": 3,
               "stepTypeKey": "interval",
               "displayOrder": 3
             },
             "childStepId": null,
-            "description": "32 min continuos en eliptica a esfuerzo regenerativo estable.",
+            "description": "6 km suaves",
             "endCondition": {
-              "conditionTypeId": 2,
-              "conditionTypeKey": "time",
-              "displayOrder": 2,
+              "conditionTypeId": 3,
+              "conditionTypeKey": "distance",
+              "displayOrder": 3,
               "displayable": true
             },
-            "endConditionValue": 1920.0,
-            "preferredEndConditionUnit": null,
+            "endConditionValue": 6000.0,
+            "preferredEndConditionUnit": {
+              "unitId": 1,
+              "unitKey": "meter",
+              "factor": 100.0
+            },
             "endConditionCompare": null,
             "targetType": {
               "workoutTargetTypeId": 4,
@@ -126,58 +79,6 @@
             },
             "targetValueOne": 131.0,
             "targetValueTwo": 145.0,
-            "targetValueUnit": null,
-            "zoneNumber": null,
-            "secondaryTargetType": null,
-            "secondaryTargetValueOne": null,
-            "secondaryTargetValueTwo": null,
-            "secondaryTargetValueUnit": null,
-            "secondaryZoneNumber": null,
-            "endConditionZone": null,
-            "strokeType": {
-              "strokeTypeId": 0,
-              "strokeTypeKey": null,
-              "displayOrder": 0
-            },
-            "equipmentType": {
-              "equipmentTypeId": 0,
-              "equipmentTypeKey": null,
-              "displayOrder": 0
-            },
-            "category": null,
-            "exerciseName": null,
-            "workoutProvider": null,
-            "providerExerciseSourceId": null,
-            "weightValue": null,
-            "weightUnit": null
-          },
-          {
-            "type": "ExecutableStepDTO",
-            "stepId": 13342757328,
-            "stepOrder": 3,
-            "stepType": {
-              "stepTypeId": 2,
-              "stepTypeKey": "cooldown",
-              "displayOrder": 2
-            },
-            "childStepId": null,
-            "description": "5 min muy suaves para cerrar sin fatiga residual.",
-            "endCondition": {
-              "conditionTypeId": 2,
-              "conditionTypeKey": "time",
-              "displayOrder": 2,
-              "displayable": true
-            },
-            "endConditionValue": 300.0,
-            "preferredEndConditionUnit": null,
-            "endConditionCompare": null,
-            "targetType": {
-              "workoutTargetTypeId": 4,
-              "workoutTargetTypeKey": "heart.rate.zone",
-              "displayOrder": 4
-            },
-            "targetValueOne": 115.0,
-            "targetValueTwo": 132.0,
             "targetValueUnit": null,
             "zoneNumber": null,
             "secondaryTargetType": null,
@@ -231,32 +132,32 @@
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1647734293,
+    "workoutScheduleId": 1678519062,
     "workout": {
-      "workoutId": 1566145124,
+      "workoutId": 1597254300,
       "ownerId": 137864769,
-      "workoutName": "Alternativa: Eliptica 42 min recuperacion",
-      "description": "Sesion equivalente en eliptica para hoy. Mantener respiracion comoda y cadencia fluida, sin impacto, en rango aerobico suave.",
-      "updatedDate": "2026-05-12T16:31:45.0",
-      "createdDate": "2026-05-12T16:31:45.0",
+      "workoutName": "Rodaje 6 km recuperacion",
+      "description": "Rodaje de recuperacion tras la carrera suave de Cerceda. Soltar piernas y controlar carga.",
+      "updatedDate": "2026-06-11T11:34:40.0",
+      "createdDate": "2026-06-11T11:34:40.0",
       "sportType": {
-        "sportTypeId": 6,
-        "sportTypeKey": "cardio_training",
-        "displayOrder": 6
+        "sportTypeId": 1,
+        "sportTypeKey": "running",
+        "displayOrder": 1
       },
       "subSportType": null,
       "trainingPlanId": null,
       "author": null,
       "sharedWithUsers": null,
       "estimatedDurationInSecs": 2520,
-      "estimatedDistanceInMeters": null,
+      "estimatedDistanceInMeters": 6000.0,
       "workoutSegments": [
         {
           "segmentOrder": 1,
           "sportType": {
-            "sportTypeId": 6,
-            "sportTypeKey": "cardio_training",
-            "displayOrder": 6
+            "sportTypeId": 1,
+            "sportTypeKey": "running",
+            "displayOrder": 1
           },
           "poolLengthUnit": null,
           "poolLength": null,
@@ -269,75 +170,27 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13342757326,
+              "stepId": 13645680302,
               "stepOrder": 1,
-              "stepType": {
-                "stepTypeId": 1,
-                "stepTypeKey": "warmup",
-                "displayOrder": 1
-              },
-              "childStepId": null,
-              "description": "5 min progresivos en eliptica, soltando piernas y estabilizando respiracion.",
-              "endCondition": {
-                "conditionTypeId": 2,
-                "conditionTypeKey": "time",
-                "displayOrder": 2,
-                "displayable": true
-              },
-              "endConditionValue": 300.0,
-              "preferredEndConditionUnit": null,
-              "endConditionCompare": null,
-              "targetType": {
-                "workoutTargetTypeId": 4,
-                "workoutTargetTypeKey": "heart.rate.zone",
-                "displayOrder": 4
-              },
-              "targetValueOne": 120.0,
-              "targetValueTwo": 135.0,
-              "targetValueUnit": null,
-              "zoneNumber": null,
-              "secondaryTargetType": null,
-              "secondaryTargetValueOne": null,
-              "secondaryTargetValueTwo": null,
-              "secondaryTargetValueUnit": null,
-              "secondaryZoneNumber": null,
-              "endConditionZone": null,
-              "strokeType": {
-                "strokeTypeId": 0,
-                "strokeTypeKey": null,
-                "displayOrder": 0
-              },
-              "equipmentType": {
-                "equipmentTypeId": 0,
-                "equipmentTypeKey": null,
-                "displayOrder": 0
-              },
-              "category": null,
-              "exerciseName": null,
-              "workoutProvider": null,
-              "providerExerciseSourceId": null,
-              "weightValue": null,
-              "weightUnit": null
-            },
-            {
-              "type": "ExecutableStepDTO",
-              "stepId": 13342757327,
-              "stepOrder": 2,
               "stepType": {
                 "stepTypeId": 3,
                 "stepTypeKey": "interval",
                 "displayOrder": 3
               },
               "childStepId": null,
-              "description": "32 min continuos en eliptica a esfuerzo regenerativo estable.",
+              "description": "6 km suaves",
               "endCondition": {
-                "conditionTypeId": 2,
-                "conditionTypeKey": "time",
-                "displayOrder": 2,
+                "conditionTypeId": 3,
+                "conditionTypeKey": "distance",
+                "displayOrder": 3,
                 "displayable": true
               },
-              "endConditionValue": 1920.0,
-              "preferredEndConditionUnit": null,
+              "endConditionValue": 6000.0,
+              "preferredEndConditionUnit": {
+                "unitId": 1,
+                "unitKey": "meter",
+                "factor": 100.0
+              },
               "endConditionCompare": null,
               "targetType": {
                 "workoutTargetTypeId": 4,
@@ -346,58 +199,6 @@
               },
               "targetValueOne": 131.0,
               "targetValueTwo": 145.0,
-              "targetValueUnit": null,
-              "zoneNumber": null,
-              "secondaryTargetType": null,
-              "secondaryTargetValueOne": null,
-              "secondaryTargetValueTwo": null,
-              "secondaryTargetValueUnit": null,
-              "secondaryZoneNumber": null,
-              "endConditionZone": null,
-              "strokeType": {
-                "strokeTypeId": 0,
-                "strokeTypeKey": null,
-                "displayOrder": 0
-              },
-              "equipmentType": {
-                "equipmentTypeId": 0,
-                "equipmentTypeKey": null,
-                "displayOrder": 0
-              },
-              "category": null,
-              "exerciseName": null,
-              "workoutProvider": null,
-              "providerExerciseSourceId": null,
-              "weightValue": null,
-              "weightUnit": null
-            },
-            {
-              "type": "ExecutableStepDTO",
-              "stepId": 13342757328,
-              "stepOrder": 3,
-              "stepType": {
-                "stepTypeId": 2,
-                "stepTypeKey": "cooldown",
-                "displayOrder": 2
-              },
-              "childStepId": null,
-              "description": "5 min muy suaves para cerrar sin fatiga residual.",
-              "endCondition": {
-                "conditionTypeId": 2,
-                "conditionTypeKey": "time",
-                "displayOrder": 2,
-                "displayable": true
-              },
-              "endConditionValue": 300.0,
-              "preferredEndConditionUnit": null,
-              "endConditionCompare": null,
-              "targetType": {
-                "workoutTargetTypeId": 4,
-                "workoutTargetTypeKey": "heart.rate.zone",
-                "displayOrder": 4
-              },
-              "targetValueOne": 115.0,
-              "targetValueTwo": 132.0,
               "targetValueUnit": null,
               "zoneNumber": null,
               "secondaryTargetType": null,
@@ -451,7 +252,7 @@
       "shared": false
     },
     "calendarDate": "2026-05-12",
-    "createdDate": "2026-05-12",
+    "createdDate": "2026-06-11",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -460,9 +261,11 @@
     "priority": null,
     "associatedActivityDateTime": null,
     "tpType": null,
-    "itp": false,
     "protected": false,
-    "nameChanged": false,
-    "race": false
-  }
+    "itp": false,
+    "race": false,
+    "nameChanged": false
+  },
+  "warning": null,
+  "replaced_uploads": []
 }

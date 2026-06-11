@@ -1,14 +1,17 @@
 health:
   current_issues:
-  - Left shin periosteum discomfort
+  - Left shin periosteum improving; no pain after 2 km test run, but mild tension
+    remains with exaggerated inward foot rotation
   past_injuries:
   - Tibial periostitis
   medical_constraints: []
   sleep_notes: null
   stress_notes: null
-  recovery_notes: General sensations recently poor
+  recovery_notes: General sensations recently poor, but the 2026-06-10 2 km test run
+    did not leave next-day pain; only mild provoked tension remains in the left shin
+    area.
   garmin_metrics:
-    last_sync: '2026-06-11T11:29:43.442078Z'
+    last_sync: '2026-06-11T20:57:49.494501Z'
     resting_hr: 53
     max_hr: 199
     vo2max: 46.0

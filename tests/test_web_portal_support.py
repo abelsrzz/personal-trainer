@@ -10,6 +10,10 @@ from unittest.mock import patch
 
 import yaml
 
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
 
 def _install_web_framework_stubs() -> None:
     fastapi_module = types.ModuleType("fastapi")
@@ -82,6 +86,52 @@ from scripts.garmin.recovery_analysis import build_recovery_analysis
 
 
 class WebAppTests(unittest.TestCase):
+    def test_calendar_day_data_includes_imported_unreviewed_activity(self) -> None:
+        review = {
+            "slug": "reviewed-run",
+            "date": "2026-06-17",
+            "garmin_activity_id": 123,
+            "activity_name": "Run reviewed",
+        }
+        imported = {
+            "slug": "garmin-import-456",
+            "date": "2026-06-17",
+            "garmin_activity_id": 456,
+            "activity_name": "Walk imported",
+            "is_imported_only": True,
+        }
+        with (
+            patch.object(app, "planned_workouts", return_value=[]),
+            patch.object(app, "completed_reviews", return_value=[review]),
+            patch.object(app, "imported_garmin_activities", return_value=[imported]) as imported_mock,
+            patch.object(app, "races_by_day", return_value={}),
+            patch.object(app, "today_plan_data", return_value=None),
+            patch.object(app, "compare_day_plan_vs_execution", return_value=[]),
+            patch.object(app, "day_status_label", return_value="Hecho"),
+        ):
+            payload = app.calendar_day_data("2026-06-17")
+
+        self.assertEqual(len(payload["completed_items"]), 2)
+        self.assertEqual(payload["reviews"], [review])
+        self.assertEqual(payload["completed_items"][1]["activity_name"], "Walk imported")
+        imported_mock.assert_called_once_with("2026-06-17", {123})
+
+    def test_imported_garmin_activity_detail_builds_readable_payload(self) -> None:
+        summary = {
+            "activityId": 23201148301,
+            "activityName": "Ordes Caminar",
+            "startTimeLocal": "2026-06-10 19:37:10",
+            "activityType": {"typeKey": "walking"},
+            "distance": 4541.25,
+            "duration": 2677.57,
+            "averageHR": 116,
+        }
+        with patch.object(app, "garmin_activity_summary_payload", return_value=summary), patch.object(app, "build_recovery_analysis", return_value={"status": "missing_data"}):
+            item = app.imported_garmin_activity_detail(23201148301)
+        self.assertEqual(item["slug"], "garmin-import-23201148301")
+        self.assertEqual(item["session_kind_label"], "Caminar")
+        self.assertEqual(item["garmin_activity_id"], 23201148301)
+
     def test_build_recovery_analysis_from_daily_hr_data(self) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:
             root = Path(tmp_dir)

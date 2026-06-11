@@ -1,13 +1,16 @@
 {
+  "generated_at": "2026-06-11T20:26:34.697325Z",
+  "status": "scheduled",
+  "workout_hash": "6c95156c945c9730e1121c40ab882452726f40a39a518a9d99a45c312a080118",
   "upload_mode": "structured_targets",
-  "workout_file": "training/planned/workouts/2026-05-30_rodaje_6km_facil.yaml",
+  "workout_file": "training/planned/workouts/2026-06-19_trote_control_2km.yaml",
   "uploaded_response": {
-    "workoutId": 1557392140,
+    "workoutId": 1597606225,
     "ownerId": 137864769,
-    "workoutName": "Rodaje 6 km facil",
-    "description": "Rodaje facil para cerrar la semana sin fatiga residual. Mantener el esfuerzo muy comodo.",
-    "updatedDate": "2026-05-04T12:30:19.0",
-    "createdDate": "2026-05-04T12:30:19.0",
+    "workoutName": "Trote facil control 2 km",
+    "description": "Segunda exposicion de control, repitiendo la misma dosis del martes. Saltar la sesion si la tibia deja mas de 2 sobre 10 o reacciona peor al dia siguiente.",
+    "updatedDate": "2026-06-11T20:26:33.0",
+    "createdDate": "2026-06-11T20:26:33.0",
     "sportType": {
       "sportTypeId": 1,
       "sportTypeKey": "running",
@@ -26,8 +29,8 @@
       "vivokidUser": false
     },
     "sharedWithUsers": null,
-    "estimatedDurationInSecs": 2460,
-    "estimatedDistanceInMeters": 6000.0,
+    "estimatedDurationInSecs": 900,
+    "estimatedDistanceInMeters": 2000.0,
     "workoutSegments": [
       {
         "segmentOrder": 1,
@@ -47,7 +50,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13256217872,
+            "stepId": 13649542054,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 3,
@@ -55,14 +58,14 @@
               "displayOrder": 3
             },
             "childStepId": null,
-            "description": "6 km en Z2 baja",
+            "description": "2 km muy faciles",
             "endCondition": {
               "conditionTypeId": 3,
               "conditionTypeKey": "distance",
               "displayOrder": 3,
               "displayable": true
             },
-            "endConditionValue": 6000.0,
+            "endConditionValue": 2000.0,
             "preferredEndConditionUnit": {
               "unitId": 1,
               "unitKey": "meter",
@@ -74,10 +77,10 @@
               "workoutTargetTypeKey": "heart.rate.zone",
               "displayOrder": 4
             },
-            "targetValueOne": null,
-            "targetValueTwo": null,
+            "targetValueOne": 132.0,
+            "targetValueTwo": 160.0,
             "targetValueUnit": null,
-            "zoneNumber": 2,
+            "zoneNumber": null,
             "secondaryTargetType": null,
             "secondaryTargetValueOne": null,
             "secondaryTargetValueTwo": null,
@@ -129,14 +132,14 @@
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1639059384,
+    "workoutScheduleId": 1678861404,
     "workout": {
-      "workoutId": 1557392140,
+      "workoutId": 1597606225,
       "ownerId": 137864769,
-      "workoutName": "Rodaje 6 km facil",
-      "description": "Rodaje facil para cerrar la semana sin fatiga residual. Mantener el esfuerzo muy comodo.",
-      "updatedDate": "2026-05-04T12:30:19.0",
-      "createdDate": "2026-05-04T12:30:19.0",
+      "workoutName": "Trote facil control 2 km",
+      "description": "Segunda exposicion de control, repitiendo la misma dosis del martes. Saltar la sesion si la tibia deja mas de 2 sobre 10 o reacciona peor al dia siguiente.",
+      "updatedDate": "2026-06-11T20:26:33.0",
+      "createdDate": "2026-06-11T20:26:33.0",
       "sportType": {
         "sportTypeId": 1,
         "sportTypeKey": "running",
@@ -146,8 +149,8 @@
       "trainingPlanId": null,
       "author": null,
       "sharedWithUsers": null,
-      "estimatedDurationInSecs": 2460,
-      "estimatedDistanceInMeters": 6000.0,
+      "estimatedDurationInSecs": 900,
+      "estimatedDistanceInMeters": 2000.0,
       "workoutSegments": [
         {
           "segmentOrder": 1,
@@ -167,7 +170,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13256217872,
+              "stepId": 13649542054,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 3,
@@ -175,14 +178,14 @@
                 "displayOrder": 3
               },
               "childStepId": null,
-              "description": "6 km en Z2 baja",
+              "description": "2 km muy faciles",
               "endCondition": {
                 "conditionTypeId": 3,
                 "conditionTypeKey": "distance",
                 "displayOrder": 3,
                 "displayable": true
               },
-              "endConditionValue": 6000.0,
+              "endConditionValue": 2000.0,
               "preferredEndConditionUnit": {
                 "unitId": 1,
                 "unitKey": "meter",
@@ -194,10 +197,10 @@
                 "workoutTargetTypeKey": "heart.rate.zone",
                 "displayOrder": 4
               },
-              "targetValueOne": null,
-              "targetValueTwo": null,
+              "targetValueOne": 132.0,
+              "targetValueTwo": 160.0,
               "targetValueUnit": null,
-              "zoneNumber": 2,
+              "zoneNumber": null,
               "secondaryTargetType": null,
               "secondaryTargetValueOne": null,
               "secondaryTargetValueTwo": null,
@@ -248,8 +251,8 @@
       "isSessionTransitionEnabled": null,
       "shared": false
     },
-    "calendarDate": "2026-05-30",
-    "createdDate": "2026-05-04",
+    "calendarDate": "2026-06-19",
+    "createdDate": "2026-06-11",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -258,9 +261,19 @@
     "priority": null,
     "associatedActivityDateTime": null,
     "tpType": null,
-    "itp": false,
     "race": false,
-    "protected": false,
-    "nameChanged": false
-  }
+    "itp": false,
+    "nameChanged": false,
+    "protected": false
+  },
+  "warning": null,
+  "replaced_uploads": [
+    {
+      "record": "training/planned/workouts/2026-06-19/2026-06-19_trote_control_2km.garmin_upload.json",
+      "scheduled_workout_id": 1678558776,
+      "unscheduled": true,
+      "workout_id": 1597295140,
+      "deleted": true
+    }
+  ]
 }

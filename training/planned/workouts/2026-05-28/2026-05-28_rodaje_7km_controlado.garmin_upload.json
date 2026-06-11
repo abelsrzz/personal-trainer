@@ -1,15 +1,16 @@
 {
-  "generated_at": "2026-05-24T14:08:13.374631Z",
+  "generated_at": "2026-06-11T11:35:11.238360Z",
   "status": "scheduled",
+  "workout_hash": "89c1ef71b0b213148c5cbebd89d97ed98594a1e412c2e86c3a93cbba44791dd7",
   "upload_mode": "structured_targets",
   "workout_file": "training/planned/workouts/2026-05-28_rodaje_7km_controlado.yaml",
   "uploaded_response": {
-    "workoutId": 1577547726,
+    "workoutId": 1597254582,
     "ownerId": 137864769,
     "workoutName": "Bicicleta aerobica continua 65 min",
     "description": "Base aerobica continua para sustituir el rodaje facil y preservar la adaptacion Z2 sin impacto.",
-    "updatedDate": "2026-05-24T14:08:10.0",
-    "createdDate": "2026-05-24T14:08:10.0",
+    "updatedDate": "2026-06-11T11:35:09.0",
+    "createdDate": "2026-06-11T11:35:09.0",
     "sportType": {
       "sportTypeId": 2,
       "sportTypeKey": "cycling",
@@ -49,7 +50,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13457225840,
+            "stepId": 13645683771,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 1,
@@ -101,7 +102,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13457225841,
+            "stepId": 13645683773,
             "stepOrder": 2,
             "stepType": {
               "stepTypeId": 3,
@@ -153,7 +154,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13457225842,
+            "stepId": 13645683774,
             "stepOrder": 3,
             "stepType": {
               "stepTypeId": 2,
@@ -231,14 +232,14 @@
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1659008520,
+    "workoutScheduleId": 1678519347,
     "workout": {
-      "workoutId": 1577547726,
+      "workoutId": 1597254582,
       "ownerId": 137864769,
       "workoutName": "Bicicleta aerobica continua 65 min",
       "description": "Base aerobica continua para sustituir el rodaje facil y preservar la adaptacion Z2 sin impacto.",
-      "updatedDate": "2026-05-24T14:08:10.0",
-      "createdDate": "2026-05-24T14:08:10.0",
+      "updatedDate": "2026-06-11T11:35:09.0",
+      "createdDate": "2026-06-11T11:35:09.0",
       "sportType": {
         "sportTypeId": 2,
         "sportTypeKey": "cycling",
@@ -269,7 +270,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13457225840,
+              "stepId": 13645683771,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 1,
@@ -321,7 +322,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13457225841,
+              "stepId": 13645683773,
               "stepOrder": 2,
               "stepType": {
                 "stepTypeId": 3,
@@ -373,7 +374,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13457225842,
+              "stepId": 13645683774,
               "stepOrder": 3,
               "stepType": {
                 "stepTypeId": 2,
@@ -451,7 +452,7 @@
       "shared": false
     },
     "calendarDate": "2026-05-28",
-    "createdDate": "2026-05-24",
+    "createdDate": "2026-06-11",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -460,18 +461,18 @@
     "priority": null,
     "associatedActivityDateTime": null,
     "tpType": null,
-    "itp": false,
     "race": false,
     "nameChanged": false,
+    "itp": false,
     "protected": false
   },
   "warning": null,
   "replaced_uploads": [
     {
       "record": "training/planned/workouts/2026-05-28/2026-05-28_rodaje_7km_controlado.garmin_upload.json",
-      "scheduled_workout_id": 1650784607,
+      "scheduled_workout_id": 1659008520,
       "unscheduled": true,
-      "workout_id": 1569255554,
+      "workout_id": 1577547726,
       "deleted": true
     }
   ]

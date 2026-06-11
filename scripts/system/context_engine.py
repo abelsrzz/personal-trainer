@@ -25,6 +25,7 @@ COACH_DECISION_PATH = ROOT / "planning" / "coach_decision.json"
 STATUS_DASHBOARD_PATH = ROOT / "athlete" / "status_dashboard.md"
 WEEKLY_PLANNING_STATE_PATH = ROOT / "system" / "state" / "weekly_planning_state.json"
 POST_WORKOUT_REFRESH_STATE_PATH = ROOT / "system" / "state" / "post_workout_refresh_state.json"
+GARMIN_RECONCILE_STATE_PATH = ROOT / "system" / "state" / "garmin_reconcile_state.json"
 ACTIVE_WEEK_PATH = ROOT / "planning" / "weeks" / "semana_actual.md"
 PLANNED_WORKOUTS_DIR = ROOT / "training" / "planned" / "workouts"
 RACES_DIR = ROOT / "races"
@@ -216,6 +217,7 @@ def build_context(name: str, *, refresh_capabilities: bool = True) -> dict[str, 
     coach_decision = load_optional_json(COACH_DECISION_PATH, {})
     weekly_state = load_optional_json(WEEKLY_PLANNING_STATE_PATH, {})
     post_workout = load_optional_json(POST_WORKOUT_REFRESH_STATE_PATH, {})
+    garmin_reconcile = load_optional_json(GARMIN_RECONCILE_STATE_PATH, {})
     today = date.today()
     races = upcoming_races(limit=8)
     race_today = next((item for item in races if item.get("date") == today.isoformat()), None)
@@ -247,6 +249,11 @@ def build_context(name: str, *, refresh_capabilities: bool = True) -> dict[str, 
                 "last_successful_run": post_workout.get("last_successful_run") if isinstance(post_workout, dict) else None,
                 "last_error": post_workout.get("last_error") if isinstance(post_workout, dict) else None,
                 "last_processed_activity_date": post_workout.get("last_processed_activity_date") if isinstance(post_workout, dict) else None,
+            },
+            "garmin_reconcile": {
+                "generated_at": garmin_reconcile.get("generated_at") if isinstance(garmin_reconcile, dict) else None,
+                "ok": garmin_reconcile.get("ok") if isinstance(garmin_reconcile, dict) else None,
+                "message": garmin_reconcile.get("message") if isinstance(garmin_reconcile, dict) else None,
             },
         },
     }

@@ -1,59 +1,27 @@
 workout:
-  name: Bicicleta tempo controlado 90 min
+  name: Bicicleta continua controlada 80 min
   schedule_date: 2026-06-11
   sport: cycling
-  description: Trabajo aerobico con emulacion de tempo rota algo mas larga, siempre por pulsaciones y sin convertirlo en un dia agresivo.
-  estimated_duration_s: 5400
+  description: Trabajo aerobico continuo y prudente en Z2 para cerrar la semana sin sumar tension extra antes de la reintroduccion.
+  estimated_duration_s: 4800
   steps:
   - order: 1
     step_type: warmup
-    description: 15 min suaves
-    duration_s: 900
+    description: 10 min suaves
+    duration_s: 600
     target:
       type: heart_rate_range
       min_bpm: 120
       max_bpm: 138
   - order: 2
     step_type: interval
-    description: 15 min Z2 estable para asentar pulso
-    duration_s: 900
+    description: 60 min Z2 estable y continua
+    duration_s: 3600
     target:
       type: heart_rate_range
       min_bpm: 145
       max_bpm: 155
   - order: 3
-    step_type: interval
-    description: 12 min tempo emulado controlado
-    duration_s: 720
-    target:
-      type: heart_rate_range
-      min_bpm: 162
-      max_bpm: 170
-  - order: 4
-    step_type: recovery
-    description: 5 min suaves entre bloques
-    duration_s: 300
-    target:
-      type: heart_rate_range
-      min_bpm: 145
-      max_bpm: 152
-  - order: 5
-    step_type: interval
-    description: 12 min tempo emulado controlado
-    duration_s: 720
-    target:
-      type: heart_rate_range
-      min_bpm: 162
-      max_bpm: 170
-  - order: 6
-    step_type: interval
-    description: 21 min Z2 estable para cerrar sin tension
-    duration_s: 1260
-    target:
-      type: heart_rate_range
-      min_bpm: 145
-      max_bpm: 155
-  - order: 7
     step_type: cooldown
     description: 10 min suaves
     duration_s: 600
@@ -61,4 +29,4 @@ workout:
       type: heart_rate_range
       min_bpm: 115
       max_bpm: 135
-  primary_goal: Tempo controlado
+  primary_goal: Base aerobica

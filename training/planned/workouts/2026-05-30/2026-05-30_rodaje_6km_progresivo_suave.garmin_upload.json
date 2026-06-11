@@ -1,15 +1,16 @@
 {
-  "generated_at": "2026-05-24T14:08:17.591007Z",
+  "generated_at": "2026-06-11T11:35:13.894824Z",
   "status": "scheduled",
+  "workout_hash": "41bd9dc08fad9f76952db6e2f31fa5d1e5f8e349f6f5edbc7e17e8a058a09618",
   "upload_mode": "structured_targets",
   "workout_file": "training/planned/workouts/2026-05-30_rodaje_6km_progresivo_suave.yaml",
   "uploaded_response": {
-    "workoutId": 1577547864,
+    "workoutId": 1597254621,
     "ownerId": 137864769,
     "workoutName": "Bicicleta base aerobica 85 min",
     "description": "Sesion suave y continua en Z2 para construir base aerobica sin impacto, con cadencia estable y sin apretar desarrollo.",
-    "updatedDate": "2026-05-24T14:08:14.0",
-    "createdDate": "2026-05-24T14:08:14.0",
+    "updatedDate": "2026-06-11T11:35:11.0",
+    "createdDate": "2026-06-11T11:35:11.0",
     "sportType": {
       "sportTypeId": 2,
       "sportTypeKey": "cycling",
@@ -49,7 +50,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13457227060,
+            "stepId": 13645684164,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 1,
@@ -101,7 +102,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13457227061,
+            "stepId": 13645684165,
             "stepOrder": 2,
             "stepType": {
               "stepTypeId": 3,
@@ -153,7 +154,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13457227062,
+            "stepId": 13645684166,
             "stepOrder": 3,
             "stepType": {
               "stepTypeId": 2,
@@ -231,14 +232,14 @@
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1659008649,
+    "workoutScheduleId": 1678519367,
     "workout": {
-      "workoutId": 1577547864,
+      "workoutId": 1597254621,
       "ownerId": 137864769,
       "workoutName": "Bicicleta base aerobica 85 min",
       "description": "Sesion suave y continua en Z2 para construir base aerobica sin impacto, con cadencia estable y sin apretar desarrollo.",
-      "updatedDate": "2026-05-24T14:08:14.0",
-      "createdDate": "2026-05-24T14:08:14.0",
+      "updatedDate": "2026-06-11T11:35:11.0",
+      "createdDate": "2026-06-11T11:35:11.0",
       "sportType": {
         "sportTypeId": 2,
         "sportTypeKey": "cycling",
@@ -269,7 +270,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13457227060,
+              "stepId": 13645684164,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 1,
@@ -321,7 +322,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13457227061,
+              "stepId": 13645684165,
               "stepOrder": 2,
               "stepType": {
                 "stepTypeId": 3,
@@ -373,7 +374,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13457227062,
+              "stepId": 13645684166,
               "stepOrder": 3,
               "stepType": {
                 "stepTypeId": 2,
@@ -451,7 +452,7 @@
       "shared": false
     },
     "calendarDate": "2026-05-30",
-    "createdDate": "2026-05-24",
+    "createdDate": "2026-06-11",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -460,18 +461,18 @@
     "priority": null,
     "associatedActivityDateTime": null,
     "tpType": null,
-    "nameChanged": false,
+    "protected": false,
     "itp": false,
     "race": false,
-    "protected": false
+    "nameChanged": false
   },
   "warning": null,
   "replaced_uploads": [
     {
       "record": "training/planned/workouts/2026-05-30/2026-05-30_rodaje_6km_progresivo_suave.garmin_upload.json",
-      "scheduled_workout_id": 1650784618,
+      "scheduled_workout_id": 1659008649,
       "unscheduled": true,
-      "workout_id": 1569255563,
+      "workout_id": 1577547864,
       "deleted": true
     }
   ]

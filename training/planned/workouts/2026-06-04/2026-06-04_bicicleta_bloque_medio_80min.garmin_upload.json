@@ -1,15 +1,16 @@
 {
-  "generated_at": "2026-05-27T18:45:25.088778Z",
+  "generated_at": "2026-06-11T11:35:23.921784Z",
   "status": "scheduled",
+  "workout_hash": "63c511f090cfd631d4a8f10557c439f8beb87dc628d41ed8fa79748e22e4af36",
   "upload_mode": "structured_targets",
   "workout_file": "training/planned/workouts/2026-06-04_bicicleta_bloque_medio_80min.yaml",
   "uploaded_response": {
-    "workoutId": 1581661623,
+    "workoutId": 1597254713,
     "ownerId": 137864769,
     "workoutName": "Bicicleta tempo controlado 80 min",
     "description": "Sesion aerobica con una emulacion de tempo rota y controlada por pulsaciones para sostener estimulo aerobico sin impacto ni coste alto.",
-    "updatedDate": "2026-05-27T18:45:21.0",
-    "createdDate": "2026-05-27T18:45:21.0",
+    "updatedDate": "2026-06-11T11:35:22.0",
+    "createdDate": "2026-06-11T11:35:22.0",
     "sportType": {
       "sportTypeId": 2,
       "sportTypeKey": "cycling",
@@ -49,7 +50,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13495047636,
+            "stepId": 13645684924,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 1,
@@ -101,7 +102,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13495047637,
+            "stepId": 13645684925,
             "stepOrder": 2,
             "stepType": {
               "stepTypeId": 3,
@@ -153,7 +154,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13495047638,
+            "stepId": 13645684926,
             "stepOrder": 3,
             "stepType": {
               "stepTypeId": 3,
@@ -205,7 +206,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13495047639,
+            "stepId": 13645684927,
             "stepOrder": 4,
             "stepType": {
               "stepTypeId": 4,
@@ -257,7 +258,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13495047640,
+            "stepId": 13645684928,
             "stepOrder": 5,
             "stepType": {
               "stepTypeId": 3,
@@ -309,7 +310,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13495047641,
+            "stepId": 13645684929,
             "stepOrder": 6,
             "stepType": {
               "stepTypeId": 4,
@@ -361,7 +362,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13495047642,
+            "stepId": 13645684930,
             "stepOrder": 7,
             "stepType": {
               "stepTypeId": 3,
@@ -413,7 +414,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13495047643,
+            "stepId": 13645684931,
             "stepOrder": 8,
             "stepType": {
               "stepTypeId": 3,
@@ -465,7 +466,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13495047644,
+            "stepId": 13645684932,
             "stepOrder": 9,
             "stepType": {
               "stepTypeId": 2,
@@ -543,14 +544,14 @@
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1663109031,
+    "workoutScheduleId": 1678519457,
     "workout": {
-      "workoutId": 1581661623,
+      "workoutId": 1597254713,
       "ownerId": 137864769,
       "workoutName": "Bicicleta tempo controlado 80 min",
       "description": "Sesion aerobica con una emulacion de tempo rota y controlada por pulsaciones para sostener estimulo aerobico sin impacto ni coste alto.",
-      "updatedDate": "2026-05-27T18:45:21.0",
-      "createdDate": "2026-05-27T18:45:21.0",
+      "updatedDate": "2026-06-11T11:35:22.0",
+      "createdDate": "2026-06-11T11:35:22.0",
       "sportType": {
         "sportTypeId": 2,
         "sportTypeKey": "cycling",
@@ -581,7 +582,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13495047636,
+              "stepId": 13645684924,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 1,
@@ -633,7 +634,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13495047637,
+              "stepId": 13645684925,
               "stepOrder": 2,
               "stepType": {
                 "stepTypeId": 3,
@@ -685,7 +686,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13495047638,
+              "stepId": 13645684926,
               "stepOrder": 3,
               "stepType": {
                 "stepTypeId": 3,
@@ -737,7 +738,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13495047639,
+              "stepId": 13645684927,
               "stepOrder": 4,
               "stepType": {
                 "stepTypeId": 4,
@@ -789,7 +790,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13495047640,
+              "stepId": 13645684928,
               "stepOrder": 5,
               "stepType": {
                 "stepTypeId": 3,
@@ -841,7 +842,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13495047641,
+              "stepId": 13645684929,
               "stepOrder": 6,
               "stepType": {
                 "stepTypeId": 4,
@@ -893,7 +894,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13495047642,
+              "stepId": 13645684930,
               "stepOrder": 7,
               "stepType": {
                 "stepTypeId": 3,
@@ -945,7 +946,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13495047643,
+              "stepId": 13645684931,
               "stepOrder": 8,
               "stepType": {
                 "stepTypeId": 3,
@@ -997,7 +998,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13495047644,
+              "stepId": 13645684932,
               "stepOrder": 9,
               "stepType": {
                 "stepTypeId": 2,
@@ -1075,7 +1076,7 @@
       "shared": false
     },
     "calendarDate": "2026-06-04",
-    "createdDate": "2026-05-27",
+    "createdDate": "2026-06-11",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -1084,18 +1085,18 @@
     "priority": null,
     "associatedActivityDateTime": null,
     "tpType": null,
+    "protected": false,
     "itp": false,
     "race": false,
-    "nameChanged": false,
-    "protected": false
+    "nameChanged": false
   },
   "warning": null,
   "replaced_uploads": [
     {
       "record": "training/planned/workouts/2026-06-04/2026-06-04_bicicleta_bloque_medio_80min.garmin_upload.json",
-      "scheduled_workout_id": 1659009058,
+      "scheduled_workout_id": 1663109031,
       "unscheduled": true,
-      "workout_id": 1577548260,
+      "workout_id": 1581661623,
       "deleted": true
     }
   ]

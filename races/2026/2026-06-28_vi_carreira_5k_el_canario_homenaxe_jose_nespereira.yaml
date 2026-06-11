@@ -1,0 +1,9 @@
+id: vi_carreira_5k_el_canario_homenaxe_jose_nespereira_2026
+name: VI CARREIRA 5K EL CANARIO - HOMENAXE JOSE NESPEREIRA
+date: 2026-06-28
+distance: 5k
+priority: C
+goal:
+  type: pacing_strategy
+  value: controlada_progresiva_4_55_a_4_40
+notes: 5K de referencia dentro de la vuelta progresiva al impacto; usar como test controlado, no como objetivo all-out.

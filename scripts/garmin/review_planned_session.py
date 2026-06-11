@@ -167,6 +167,21 @@ def load_local_matching_activities(day: str, planned: dict[str, Any]) -> list[di
     return imported
 
 
+def local_activity_dir_by_id(activity_id: int) -> Path:
+    matches = sorted(DEFAULT_IMPORT_ROOT.glob(f"activities/*_{activity_id}"))
+    if not matches:
+        raise FileNotFoundError(f"No local Garmin activity with id {activity_id} found")
+    return matches[0]
+
+
+def load_local_activity_by_id(activity_id: int) -> dict[str, Any]:
+    activity_dir = local_activity_dir_by_id(activity_id)
+    payload = json.loads((activity_dir / "summary.json").read_text(encoding="utf-8"))
+    if not isinstance(payload, dict):
+        raise FileNotFoundError(f"Invalid local Garmin summary for activity {activity_id}")
+    return payload
+
+
 def select_activity_by_id(activities: list[dict[str, Any]], activity_id: int) -> dict[str, Any]:
     match = next((item for item in activities if int(item.get("activityId") or 0) == activity_id), None)
     if match is None:
@@ -1336,12 +1351,15 @@ def main() -> None:
         raise FileExistsError(f"Review already exists at {review_path}; use --force to regenerate")
 
     planned = load_yaml(planned_workout_path)
-    if args.use_local_imports_only:
-        activities = load_local_matching_activities(args.date, planned)
+    if args.activity_id is not None and args.use_local_imports_only:
+        activity = load_local_activity_by_id(args.activity_id)
     else:
-        activities = import_recent_matching_activities(args.date, planned, args.credentials, args.days, args.limit)
-    activity = select_activity_by_id(activities, args.activity_id) if args.activity_id is not None else select_activity(activities, planned, args.date)
-    activity_dir = DEFAULT_IMPORT_ROOT / "activities" / f"{args.date}_{activity['activityId']}"
+        if args.use_local_imports_only:
+            activities = load_local_matching_activities(args.date, planned)
+        else:
+            activities = import_recent_matching_activities(args.date, planned, args.credentials, args.days, args.limit)
+        activity = select_activity_by_id(activities, args.activity_id) if args.activity_id is not None else select_activity(activities, planned, args.date)
+    activity_dir = local_activity_dir_by_id(int(activity["activityId"]))
     summary = json.loads((activity_dir / "summary.json").read_text(encoding="utf-8"))
     details = json.loads((activity_dir / "details.json").read_text(encoding="utf-8"))
     review = analyze_workout(planned, summary, details)

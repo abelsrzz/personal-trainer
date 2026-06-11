@@ -138,7 +138,7 @@
       "avg_vr": null,
       "avg_stride_cm": null,
       "avg_temp_c": 25.0,
-      "avg_elevation_m": 399.9832008496771,
+      "avg_elevation_m": 399.98320084967713,
       "avg_gap_pace_s_per_km": null
     },
     {
@@ -185,7 +185,7 @@
       "avg_vo_cm": null,
       "avg_vr": null,
       "avg_stride_cm": null,
-      "avg_temp_c": 26.642250939801933,
+      "avg_temp_c": 26.64225093980194,
       "avg_elevation_m": 367.16614984435716,
       "avg_gap_pace_s_per_km": null
     },
@@ -201,7 +201,7 @@
       "avg_vo_cm": null,
       "avg_vr": null,
       "avg_stride_cm": null,
-      "avg_temp_c": 27.759109539430387,
+      "avg_temp_c": 27.759109539430384,
       "avg_elevation_m": 345.3640020076361,
       "avg_gap_pace_s_per_km": null
     },
@@ -217,7 +217,7 @@
       "avg_vo_cm": null,
       "avg_vr": null,
       "avg_stride_cm": null,
-      "avg_temp_c": 27.739238536403537,
+      "avg_temp_c": 27.73923853640354,
       "avg_elevation_m": 343.6377818053921,
       "avg_gap_pace_s_per_km": null
     },
@@ -226,15 +226,15 @@
       "distance_m": 1000.0,
       "duration_s": 160.55645860586947,
       "pace_s_per_km": 160.55645860586947,
-      "avg_hr": 146.34942670062597,
+      "avg_hr": 146.349426700626,
       "avg_cadence_spm": null,
       "avg_power_w": null,
       "avg_gct_ms": null,
       "avg_vo_cm": null,
       "avg_vr": null,
       "avg_stride_cm": null,
-      "avg_temp_c": 26.373310435619274,
-      "avg_elevation_m": 368.53240035693193,
+      "avg_temp_c": 26.37331043561928,
+      "avg_elevation_m": 368.53240035693204,
       "avg_gap_pace_s_per_km": null
     },
     {
@@ -242,15 +242,15 @@
       "distance_m": 1000.0,
       "duration_s": 159.5519676406011,
       "pace_s_per_km": 159.5519676406011,
-      "avg_hr": 145.51744600691532,
+      "avg_hr": 145.51744600691535,
       "avg_cadence_spm": null,
       "avg_power_w": null,
       "avg_gct_ms": null,
       "avg_vo_cm": null,
       "avg_vr": null,
       "avg_stride_cm": null,
-      "avg_temp_c": 25.999999999999996,
-      "avg_elevation_m": 385.5755909545773,
+      "avg_temp_c": 26.0,
+      "avg_elevation_m": 385.57559095457736,
       "avg_gap_pace_s_per_km": null
     },
     {
@@ -266,7 +266,7 @@
       "avg_vr": null,
       "avg_stride_cm": null,
       "avg_temp_c": 26.0,
-      "avg_elevation_m": 383.93932696658055,
+      "avg_elevation_m": 383.9393269665805,
       "avg_gap_pace_s_per_km": null
     },
     {
@@ -282,7 +282,7 @@
       "avg_vr": null,
       "avg_stride_cm": null,
       "avg_temp_c": 26.733483445627552,
-      "avg_elevation_m": 360.5502735552676,
+      "avg_elevation_m": 360.55027355526755,
       "avg_gap_pace_s_per_km": null
     },
     {
@@ -329,8 +329,8 @@
       "avg_vo_cm": null,
       "avg_vr": null,
       "avg_stride_cm": null,
-      "avg_temp_c": 25.999999999999996,
-      "avg_elevation_m": 370.25071265035007,
+      "avg_temp_c": 26.0,
+      "avg_elevation_m": 370.2507126503501,
       "avg_gap_pace_s_per_km": null
     },
     {
@@ -345,8 +345,8 @@
       "avg_vo_cm": null,
       "avg_vr": null,
       "avg_stride_cm": null,
-      "avg_temp_c": 25.942642209020363,
-      "avg_elevation_m": 384.1194245361179,
+      "avg_temp_c": 25.942642209020367,
+      "avg_elevation_m": 384.11942453611795,
       "avg_gap_pace_s_per_km": null
     },
     {
@@ -354,15 +354,15 @@
       "distance_m": 1000.0,
       "duration_s": 148.37212252344034,
       "pace_s_per_km": 148.37212252344034,
-      "avg_hr": 150.5201486373614,
+      "avg_hr": 150.52014863736142,
       "avg_cadence_spm": null,
       "avg_power_w": null,
       "avg_gct_ms": null,
       "avg_vo_cm": null,
       "avg_vr": null,
       "avg_stride_cm": null,
-      "avg_temp_c": 25.48819400699654,
-      "avg_elevation_m": 389.0375820813961,
+      "avg_temp_c": 25.488194006996544,
+      "avg_elevation_m": 389.03758208139624,
       "avg_gap_pace_s_per_km": null
     },
     {
@@ -370,7 +370,7 @@
       "distance_m": 1000.0,
       "duration_s": 155.3350104312035,
       "pace_s_per_km": 155.3350104312035,
-      "avg_hr": 144.93697329350698,
+      "avg_hr": 144.93697329350695,
       "avg_cadence_spm": null,
       "avg_power_w": null,
       "avg_gct_ms": null,
@@ -378,7 +378,7 @@
       "avg_vr": null,
       "avg_stride_cm": null,
       "avg_temp_c": 26.0,
-      "avg_elevation_m": 381.8173515344641,
+      "avg_elevation_m": 381.81735153446397,
       "avg_gap_pace_s_per_km": null
     },
     {
@@ -386,15 +386,15 @@
       "distance_m": 1000.0,
       "duration_s": 146.587374861434,
       "pace_s_per_km": 146.58737486143397,
-      "avg_hr": 147.99561194347962,
+      "avg_hr": 147.99561194347964,
       "avg_cadence_spm": null,
       "avg_power_w": null,
       "avg_gct_ms": null,
       "avg_vo_cm": null,
       "avg_vr": null,
       "avg_stride_cm": null,
-      "avg_temp_c": 26.0,
-      "avg_elevation_m": 383.12007494154227,
+      "avg_temp_c": 25.999999999999996,
+      "avg_elevation_m": 383.1200749415423,
       "avg_gap_pace_s_per_km": null
     },
     {
@@ -410,7 +410,7 @@
       "avg_vr": null,
       "avg_stride_cm": null,
       "avg_temp_c": 25.247288578867316,
-      "avg_elevation_m": 407.32602824395923,
+      "avg_elevation_m": 407.3260282439592,
       "avg_gap_pace_s_per_km": null
     },
     {
@@ -425,7 +425,7 @@
       "avg_vo_cm": null,
       "avg_vr": null,
       "avg_stride_cm": null,
-      "avg_temp_c": 24.727096313321184,
+      "avg_temp_c": 24.72709631332118,
       "avg_elevation_m": 421.5748114382903,
       "avg_gap_pace_s_per_km": null
     },
@@ -458,7 +458,7 @@
       "avg_vr": null,
       "avg_stride_cm": null,
       "avg_temp_c": 24.860798508743983,
-      "avg_elevation_m": 416.3759781571745,
+      "avg_elevation_m": 416.37597815717453,
       "avg_gap_pace_s_per_km": null
     },
     {

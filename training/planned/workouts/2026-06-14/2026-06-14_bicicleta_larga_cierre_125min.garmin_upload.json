@@ -1,15 +1,16 @@
 {
-  "generated_at": "2026-05-24T14:08:53.521950Z",
+  "generated_at": "2026-06-11T11:35:39.697474Z",
   "status": "scheduled",
+  "workout_hash": "53fc757d23a16eaf22894170d06b08731586cab2fd0fc85eac8de9ca2b2b62f1",
   "upload_mode": "structured_targets",
   "workout_file": "training/planned/workouts/2026-06-14_bicicleta_larga_cierre_125min.yaml",
   "uploaded_response": {
-    "workoutId": 1577549259,
+    "workoutId": 1597254810,
     "ownerId": 137864769,
     "workoutName": "Bicicleta larga cierre 125 min",
     "description": "Cierre de la rehabilitacion sin impacto con trabajo largo, comodo y en Z2 de base aerobica.",
-    "updatedDate": "2026-05-24T14:08:50.0",
-    "createdDate": "2026-05-24T14:08:50.0",
+    "updatedDate": "2026-06-11T11:35:38.0",
+    "createdDate": "2026-06-11T11:35:38.0",
     "sportType": {
       "sportTypeId": 2,
       "sportTypeKey": "cycling",
@@ -49,7 +50,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13457235533,
+            "stepId": 13645686152,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 1,
@@ -101,7 +102,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13457235534,
+            "stepId": 13645686153,
             "stepOrder": 2,
             "stepType": {
               "stepTypeId": 3,
@@ -153,7 +154,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13457235535,
+            "stepId": 13645686154,
             "stepOrder": 3,
             "stepType": {
               "stepTypeId": 2,
@@ -231,14 +232,14 @@
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1659010060,
+    "workoutScheduleId": 1678519544,
     "workout": {
-      "workoutId": 1577549259,
+      "workoutId": 1597254810,
       "ownerId": 137864769,
       "workoutName": "Bicicleta larga cierre 125 min",
       "description": "Cierre de la rehabilitacion sin impacto con trabajo largo, comodo y en Z2 de base aerobica.",
-      "updatedDate": "2026-05-24T14:08:50.0",
-      "createdDate": "2026-05-24T14:08:50.0",
+      "updatedDate": "2026-06-11T11:35:38.0",
+      "createdDate": "2026-06-11T11:35:38.0",
       "sportType": {
         "sportTypeId": 2,
         "sportTypeKey": "cycling",
@@ -269,7 +270,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13457235533,
+              "stepId": 13645686152,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 1,
@@ -321,7 +322,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13457235534,
+              "stepId": 13645686153,
               "stepOrder": 2,
               "stepType": {
                 "stepTypeId": 3,
@@ -373,7 +374,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13457235535,
+              "stepId": 13645686154,
               "stepOrder": 3,
               "stepType": {
                 "stepTypeId": 2,
@@ -451,7 +452,7 @@
       "shared": false
     },
     "calendarDate": "2026-06-14",
-    "createdDate": "2026-05-24",
+    "createdDate": "2026-06-11",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -460,18 +461,18 @@
     "priority": null,
     "associatedActivityDateTime": null,
     "tpType": null,
-    "nameChanged": false,
     "itp": false,
     "race": false,
-    "protected": false
+    "protected": false,
+    "nameChanged": false
   },
   "warning": null,
   "replaced_uploads": [
     {
       "record": "training/planned/workouts/2026-06-14/2026-06-14_bicicleta_larga_cierre_125min.garmin_upload.json",
-      "scheduled_workout_id": 1650784647,
+      "scheduled_workout_id": 1659010060,
       "unscheduled": true,
-      "workout_id": 1569255594,
+      "workout_id": 1577549259,
       "deleted": true
     }
   ]

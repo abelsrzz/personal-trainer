@@ -1,0 +1,326 @@
+2026-06-11 13:55:03,855 INFO calendar race candidate date=2026-05-09 items=1
+2026-06-11 13:55:03,855 INFO calendar race candidate date=2026-05-24 items=1
+2026-06-11 13:55:03,855 INFO calendar race candidate date=2027-02-06 items=1
+2026-06-11 14:05:07,778 INFO calendar race candidate date=2026-05-09 items=1
+2026-06-11 14:05:07,778 INFO calendar race candidate date=2026-05-24 items=1
+2026-06-11 14:05:07,778 INFO calendar race candidate date=2027-02-06 items=1
+2026-06-11 14:05:40,348 INFO calendar race candidate date=2026-05-09 items=1
+2026-06-11 14:05:40,348 INFO calendar race candidate date=2026-05-24 items=1
+2026-06-11 14:05:40,348 INFO calendar race candidate date=2027-02-06 items=1
+2026-06-11 14:17:17,151 INFO calendar race candidate date=2026-05-09 items=1
+2026-06-11 14:17:17,151 INFO calendar race candidate date=2026-05-24 items=1
+2026-06-11 14:17:17,151 INFO calendar race candidate date=2027-02-06 items=1
+2026-06-11 14:33:18,581 INFO calendar race candidate date=2026-05-09 items=1
+2026-06-11 14:33:18,581 INFO calendar race candidate date=2026-05-24 items=1
+2026-06-11 14:33:18,581 INFO calendar race candidate date=2027-02-06 items=1
+2026-06-11 15:12:18,760 INFO calendar race candidate date=2026-05-09 items=1
+2026-06-11 15:12:18,760 INFO calendar race candidate date=2026-05-24 items=1
+2026-06-11 15:12:18,760 INFO calendar race candidate date=2027-02-06 items=1
+2026-06-11 15:21:59,951 ERROR calendar_month_data_combined failed month=None
+Traceback (most recent call last):
+  File "/home/abel/Documentos/Proyectos/personal-trainer/scripts/web_v2/legacy_support.py", line 4673, in calendar_month_data_combined
+    workout_events = calendar_events()
+  File "/home/abel/Documentos/Proyectos/personal-trainer/scripts/web_v2/legacy_support.py", line 4593, in calendar_events
+    planned_items = planned_workouts()
+  File "/home/abel/Documentos/Proyectos/personal-trainer/scripts/web_v2/legacy_support.py", line 3890, in planned_workouts
+    payload = load_yaml(path).get("workout", {})
+              ~~~~~~~~~^^^^^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/scripts/web_v2/legacy_support.py", line 148, in load_yaml
+    return _read_cached_file(path, "yaml")
+  File "/home/abel/Documentos/Proyectos/personal-trainer/scripts/web_v2/legacy_support.py", line 95, in _read_cached_file
+    payload = yaml.safe_load(handle) or {}
+              ~~~~~~~~~~~~~~^^^^^^^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/__init__.py", line 125, in safe_load
+    return load(stream, SafeLoader)
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/__init__.py", line 81, in load
+    return loader.get_single_data()
+           ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/constructor.py", line 49, in get_single_data
+    node = self.get_single_node()
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 36, in get_single_node
+    document = self.compose_document()
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 55, in compose_document
+    node = self.compose_node(None, None)
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 133, in compose_mapping_node
+    item_value = self.compose_node(node, item_key)
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 133, in compose_mapping_node
+    item_value = self.compose_node(node, item_key)
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 82, in compose_node
+    node = self.compose_sequence_node(anchor)
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 111, in compose_sequence_node
+    node.value.append(self.compose_node(node, index))
+                      ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 127, in compose_mapping_node
+    while not self.check_event(MappingEndEvent):
+              ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/parser.py", line 98, in check_event
+    self.current_event = self.state()
+                         ~~~~~~~~~~^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/parser.py", line 428, in parse_block_mapping_key
+    if self.check_token(KeyToken):
+       ~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/scanner.py", line 116, in check_token
+    self.fetch_more_tokens()
+    ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/scanner.py", line 227, in fetch_more_tokens
+    return self.fetch_alias()
+           ~~~~~~~~~~~~~~~~^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/scanner.py", line 610, in fetch_alias
+    self.tokens.append(self.scan_anchor(AliasToken))
+                       ~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/scanner.py", line 922, in scan_anchor
+    raise ScannerError("while scanning an %s" % name, start_mark,
+            "expected alphabetic or numeric character, but found %r"
+            % ch, self.get_mark())
+yaml.scanner.ScannerError: while scanning an alias
+  in "/home/abel/Documentos/Proyectos/personal-trainer/training/planned/workouts/2026-06-22_movilidad_pre_5k_20min.yaml", line 40, column 1
+expected alphabetic or numeric character, but found '*'
+  in "/home/abel/Documentos/Proyectos/personal-trainer/training/planned/workouts/2026-06-22_movilidad_pre_5k_20min.yaml", line 40, column 2
+2026-06-11 15:22:05,279 ERROR calendar_month_data_combined failed month=None
+Traceback (most recent call last):
+  File "/home/abel/Documentos/Proyectos/personal-trainer/scripts/web_v2/legacy_support.py", line 4673, in calendar_month_data_combined
+    workout_events = calendar_events()
+  File "/home/abel/Documentos/Proyectos/personal-trainer/scripts/web_v2/legacy_support.py", line 4593, in calendar_events
+    planned_items = planned_workouts()
+  File "/home/abel/Documentos/Proyectos/personal-trainer/scripts/web_v2/legacy_support.py", line 3890, in planned_workouts
+    payload = load_yaml(path).get("workout", {})
+              ~~~~~~~~~^^^^^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/scripts/web_v2/legacy_support.py", line 148, in load_yaml
+    return _read_cached_file(path, "yaml")
+  File "/home/abel/Documentos/Proyectos/personal-trainer/scripts/web_v2/legacy_support.py", line 95, in _read_cached_file
+    payload = yaml.safe_load(handle) or {}
+              ~~~~~~~~~~~~~~^^^^^^^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/__init__.py", line 125, in safe_load
+    return load(stream, SafeLoader)
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/__init__.py", line 81, in load
+    return loader.get_single_data()
+           ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/constructor.py", line 49, in get_single_data
+    node = self.get_single_node()
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 36, in get_single_node
+    document = self.compose_document()
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 55, in compose_document
+    node = self.compose_node(None, None)
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 133, in compose_mapping_node
+    item_value = self.compose_node(node, item_key)
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 133, in compose_mapping_node
+    item_value = self.compose_node(node, item_key)
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 82, in compose_node
+    node = self.compose_sequence_node(anchor)
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 111, in compose_sequence_node
+    node.value.append(self.compose_node(node, index))
+                      ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 127, in compose_mapping_node
+    while not self.check_event(MappingEndEvent):
+              ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/parser.py", line 98, in check_event
+    self.current_event = self.state()
+                         ~~~~~~~~~~^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/parser.py", line 428, in parse_block_mapping_key
+    if self.check_token(KeyToken):
+       ~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/scanner.py", line 116, in check_token
+    self.fetch_more_tokens()
+    ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/scanner.py", line 227, in fetch_more_tokens
+    return self.fetch_alias()
+           ~~~~~~~~~~~~~~~~^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/scanner.py", line 610, in fetch_alias
+    self.tokens.append(self.scan_anchor(AliasToken))
+                       ~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/scanner.py", line 922, in scan_anchor
+    raise ScannerError("while scanning an %s" % name, start_mark,
+            "expected alphabetic or numeric character, but found %r"
+            % ch, self.get_mark())
+yaml.scanner.ScannerError: while scanning an alias
+  in "/home/abel/Documentos/Proyectos/personal-trainer/training/planned/workouts/2026-06-22_movilidad_pre_5k_20min.yaml", line 40, column 1
+expected alphabetic or numeric character, but found '*'
+  in "/home/abel/Documentos/Proyectos/personal-trainer/training/planned/workouts/2026-06-22_movilidad_pre_5k_20min.yaml", line 40, column 2
+2026-06-11 15:22:06,160 ERROR calendar_month_data_combined failed month=None
+Traceback (most recent call last):
+  File "/home/abel/Documentos/Proyectos/personal-trainer/scripts/web_v2/legacy_support.py", line 4673, in calendar_month_data_combined
+    workout_events = calendar_events()
+  File "/home/abel/Documentos/Proyectos/personal-trainer/scripts/web_v2/legacy_support.py", line 4593, in calendar_events
+    planned_items = planned_workouts()
+  File "/home/abel/Documentos/Proyectos/personal-trainer/scripts/web_v2/legacy_support.py", line 3890, in planned_workouts
+    payload = load_yaml(path).get("workout", {})
+              ~~~~~~~~~^^^^^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/scripts/web_v2/legacy_support.py", line 148, in load_yaml
+    return _read_cached_file(path, "yaml")
+  File "/home/abel/Documentos/Proyectos/personal-trainer/scripts/web_v2/legacy_support.py", line 95, in _read_cached_file
+    payload = yaml.safe_load(handle) or {}
+              ~~~~~~~~~~~~~~^^^^^^^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/__init__.py", line 125, in safe_load
+    return load(stream, SafeLoader)
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/__init__.py", line 81, in load
+    return loader.get_single_data()
+           ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/constructor.py", line 49, in get_single_data
+    node = self.get_single_node()
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 36, in get_single_node
+    document = self.compose_document()
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 55, in compose_document
+    node = self.compose_node(None, None)
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 133, in compose_mapping_node
+    item_value = self.compose_node(node, item_key)
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 133, in compose_mapping_node
+    item_value = self.compose_node(node, item_key)
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 82, in compose_node
+    node = self.compose_sequence_node(anchor)
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 111, in compose_sequence_node
+    node.value.append(self.compose_node(node, index))
+                      ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 127, in compose_mapping_node
+    while not self.check_event(MappingEndEvent):
+              ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/parser.py", line 98, in check_event
+    self.current_event = self.state()
+                         ~~~~~~~~~~^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/parser.py", line 428, in parse_block_mapping_key
+    if self.check_token(KeyToken):
+       ~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/scanner.py", line 116, in check_token
+    self.fetch_more_tokens()
+    ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/scanner.py", line 227, in fetch_more_tokens
+    return self.fetch_alias()
+           ~~~~~~~~~~~~~~~~^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/scanner.py", line 610, in fetch_alias
+    self.tokens.append(self.scan_anchor(AliasToken))
+                       ~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/scanner.py", line 922, in scan_anchor
+    raise ScannerError("while scanning an %s" % name, start_mark,
+            "expected alphabetic or numeric character, but found %r"
+            % ch, self.get_mark())
+yaml.scanner.ScannerError: while scanning an alias
+  in "/home/abel/Documentos/Proyectos/personal-trainer/training/planned/workouts/2026-06-22_movilidad_pre_5k_20min.yaml", line 40, column 1
+expected alphabetic or numeric character, but found '*'
+  in "/home/abel/Documentos/Proyectos/personal-trainer/training/planned/workouts/2026-06-22_movilidad_pre_5k_20min.yaml", line 40, column 2
+2026-06-11 15:22:23,361 ERROR calendar_month_data_combined failed month=None
+Traceback (most recent call last):
+  File "/home/abel/Documentos/Proyectos/personal-trainer/scripts/web_v2/legacy_support.py", line 4673, in calendar_month_data_combined
+    workout_events = calendar_events()
+  File "/home/abel/Documentos/Proyectos/personal-trainer/scripts/web_v2/legacy_support.py", line 4593, in calendar_events
+    planned_items = planned_workouts()
+  File "/home/abel/Documentos/Proyectos/personal-trainer/scripts/web_v2/legacy_support.py", line 3890, in planned_workouts
+    payload = load_yaml(path).get("workout", {})
+              ~~~~~~~~~^^^^^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/scripts/web_v2/legacy_support.py", line 148, in load_yaml
+    return _read_cached_file(path, "yaml")
+  File "/home/abel/Documentos/Proyectos/personal-trainer/scripts/web_v2/legacy_support.py", line 95, in _read_cached_file
+    payload = yaml.safe_load(handle) or {}
+              ~~~~~~~~~~~~~~^^^^^^^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/__init__.py", line 125, in safe_load
+    return load(stream, SafeLoader)
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/__init__.py", line 81, in load
+    return loader.get_single_data()
+           ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/constructor.py", line 49, in get_single_data
+    node = self.get_single_node()
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 36, in get_single_node
+    document = self.compose_document()
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 55, in compose_document
+    node = self.compose_node(None, None)
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 133, in compose_mapping_node
+    item_value = self.compose_node(node, item_key)
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 133, in compose_mapping_node
+    item_value = self.compose_node(node, item_key)
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 82, in compose_node
+    node = self.compose_sequence_node(anchor)
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 111, in compose_sequence_node
+    node.value.append(self.compose_node(node, index))
+                      ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/composer.py", line 127, in compose_mapping_node
+    while not self.check_event(MappingEndEvent):
+              ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/parser.py", line 98, in check_event
+    self.current_event = self.state()
+                         ~~~~~~~~~~^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/parser.py", line 428, in parse_block_mapping_key
+    if self.check_token(KeyToken):
+       ~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/scanner.py", line 116, in check_token
+    self.fetch_more_tokens()
+    ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/scanner.py", line 227, in fetch_more_tokens
+    return self.fetch_alias()
+           ~~~~~~~~~~~~~~~~^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/scanner.py", line 610, in fetch_alias
+    self.tokens.append(self.scan_anchor(AliasToken))
+                       ~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "/home/abel/Documentos/Proyectos/personal-trainer/.venv/lib/python3.13/site-packages/yaml/scanner.py", line 922, in scan_anchor
+    raise ScannerError("while scanning an %s" % name, start_mark,
+            "expected alphabetic or numeric character, but found %r"
+            % ch, self.get_mark())
+yaml.scanner.ScannerError: while scanning an alias
+  in "/home/abel/Documentos/Proyectos/personal-trainer/training/planned/workouts/2026-06-22_movilidad_pre_5k_20min.yaml", line 40, column 1
+expected alphabetic or numeric character, but found '*'
+  in "/home/abel/Documentos/Proyectos/personal-trainer/training/planned/workouts/2026-06-22_movilidad_pre_5k_20min.yaml", line 40, column 2
+2026-06-11 15:37:15,588 INFO calendar race candidate date=2026-05-09 items=1
+2026-06-11 15:37:15,588 INFO calendar race candidate date=2026-05-24 items=1
+2026-06-11 15:37:15,588 INFO calendar race candidate date=2026-06-28 items=1
+2026-06-11 15:37:15,588 INFO calendar race candidate date=2027-02-06 items=1
+2026-06-11 16:10:04,903 INFO calendar race candidate date=2026-05-09 items=1
+2026-06-11 16:10:04,903 INFO calendar race candidate date=2026-05-24 items=1
+2026-06-11 16:10:04,903 INFO calendar race candidate date=2026-06-28 items=1
+2026-06-11 16:10:04,903 INFO calendar race candidate date=2027-02-06 items=1
+2026-06-11 19:11:00,223 INFO calendar race candidate date=2026-05-09 items=1
+2026-06-11 19:11:00,223 INFO calendar race candidate date=2026-05-24 items=1
+2026-06-11 19:11:00,224 INFO calendar race candidate date=2026-06-28 items=1
+2026-06-11 19:11:00,224 INFO calendar race candidate date=2027-02-06 items=1
+2026-06-11 20:50:16,023 INFO calendar race candidate date=2026-05-09 items=1
+2026-06-11 20:50:16,023 INFO calendar race candidate date=2026-05-24 items=1
+2026-06-11 20:50:16,023 INFO calendar race candidate date=2026-06-28 items=1
+2026-06-11 20:50:16,024 INFO calendar race candidate date=2027-02-06 items=1
+2026-06-11 21:33:44,723 INFO calendar race candidate date=2026-05-09 items=1
+2026-06-11 21:33:44,724 INFO calendar race candidate date=2026-05-24 items=1
+2026-06-11 21:33:44,724 INFO calendar race candidate date=2026-06-28 items=1
+2026-06-11 21:33:44,724 INFO calendar race candidate date=2027-02-06 items=1
+2026-06-11 21:34:01,626 INFO calendar race candidate date=2026-05-09 items=1
+2026-06-11 21:34:01,626 INFO calendar race candidate date=2026-05-24 items=1
+2026-06-11 21:34:01,626 INFO calendar race candidate date=2026-06-28 items=1
+2026-06-11 21:34:01,626 INFO calendar race candidate date=2027-02-06 items=1
+2026-06-11 21:34:22,644 INFO calendar race candidate date=2026-05-09 items=1
+2026-06-11 21:34:22,644 INFO calendar race candidate date=2026-05-24 items=1
+2026-06-11 21:34:22,644 INFO calendar race candidate date=2026-06-28 items=1
+2026-06-11 21:34:22,644 INFO calendar race candidate date=2027-02-06 items=1
+2026-06-11 22:24:04,924 INFO calendar race candidate date=2026-05-09 items=1
+2026-06-11 22:24:04,924 INFO calendar race candidate date=2026-05-24 items=1
+2026-06-11 22:24:04,924 INFO calendar race candidate date=2026-06-28 items=1
+2026-06-11 22:24:04,925 INFO calendar race candidate date=2027-02-06 items=1
+2026-06-11 22:30:56,545 INFO calendar race candidate date=2026-05-09 items=1
+2026-06-11 22:30:56,545 INFO calendar race candidate date=2026-05-24 items=1
+2026-06-11 22:30:56,546 INFO calendar race candidate date=2026-06-28 items=1
+2026-06-11 22:30:56,546 INFO calendar race candidate date=2027-02-06 items=1
+2026-06-11 22:42:15,083 INFO calendar race candidate date=2026-05-09 items=1
+2026-06-11 22:42:15,084 INFO calendar race candidate date=2026-05-24 items=1
+2026-06-11 22:42:15,084 INFO calendar race candidate date=2026-06-28 items=1
+2026-06-11 22:42:15,084 INFO calendar race candidate date=2027-02-06 items=1
+2026-06-11 22:42:50,314 INFO calendar race candidate date=2026-05-09 items=1
+2026-06-11 22:42:50,314 INFO calendar race candidate date=2026-05-24 items=1
+2026-06-11 22:42:50,314 INFO calendar race candidate date=2026-06-28 items=1
+2026-06-11 22:42:50,314 INFO calendar race candidate date=2027-02-06 items=1

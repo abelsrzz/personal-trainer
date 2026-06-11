@@ -1,13 +1,16 @@
 {
+  "generated_at": "2026-06-11T11:34:35.350950Z",
+  "status": "scheduled",
+  "workout_hash": "44852e91cc6394716aabc609f7da8d4378537a2379dbd9851d754d65d878fe0f",
   "upload_mode": "structured_targets",
   "workout_file": "training/planned/workouts/2026-05-05_rodaje_5km_reintroduccion.yaml",
   "uploaded_response": {
-    "workoutId": 1557407847,
+    "workoutId": 1597254262,
     "ownerId": 137864769,
     "workoutName": "Rodaje 5 km reintroduccion",
     "description": "Primer contacto de carrera tras la carga andando. Muy facil y sin buscar ritmo.",
-    "updatedDate": "2026-05-04T12:46:48.0",
-    "createdDate": "2026-05-04T12:46:48.0",
+    "updatedDate": "2026-06-11T11:34:34.0",
+    "createdDate": "2026-06-11T11:34:34.0",
     "sportType": {
       "sportTypeId": 1,
       "sportTypeKey": "running",
@@ -47,7 +50,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13256381822,
+            "stepId": 13645679709,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 3,
@@ -75,7 +78,7 @@
               "displayOrder": 4
             },
             "targetValueOne": 131.0,
-            "targetValueTwo": 145.0,
+            "targetValueTwo": 150.0,
             "targetValueUnit": null,
             "zoneNumber": null,
             "secondaryTargetType": null,
@@ -129,14 +132,14 @@
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1639075045,
+    "workoutScheduleId": 1678519026,
     "workout": {
-      "workoutId": 1557407847,
+      "workoutId": 1597254262,
       "ownerId": 137864769,
       "workoutName": "Rodaje 5 km reintroduccion",
       "description": "Primer contacto de carrera tras la carga andando. Muy facil y sin buscar ritmo.",
-      "updatedDate": "2026-05-04T12:46:48.0",
-      "createdDate": "2026-05-04T12:46:48.0",
+      "updatedDate": "2026-06-11T11:34:34.0",
+      "createdDate": "2026-06-11T11:34:34.0",
       "sportType": {
         "sportTypeId": 1,
         "sportTypeKey": "running",
@@ -167,7 +170,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13256381822,
+              "stepId": 13645679709,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 3,
@@ -195,7 +198,7 @@
                 "displayOrder": 4
               },
               "targetValueOne": 131.0,
-              "targetValueTwo": 145.0,
+              "targetValueTwo": 150.0,
               "targetValueUnit": null,
               "zoneNumber": null,
               "secondaryTargetType": null,
@@ -249,7 +252,7 @@
       "shared": false
     },
     "calendarDate": "2026-05-05",
-    "createdDate": "2026-05-04",
+    "createdDate": "2026-06-11",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -259,8 +262,18 @@
     "associatedActivityDateTime": null,
     "tpType": null,
     "protected": false,
-    "race": false,
     "itp": false,
+    "race": false,
     "nameChanged": false
-  }
+  },
+  "warning": null,
+  "replaced_uploads": [
+    {
+      "record": "training/planned/workouts/2026-05-05/2026-05-05_rodaje_5km_reintroduccion.garmin_upload.json",
+      "scheduled_workout_id": 1639075045,
+      "unscheduled": true,
+      "workout_id": 1557407847,
+      "deleted": true
+    }
+  ]
 }

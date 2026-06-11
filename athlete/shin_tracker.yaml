@@ -68,6 +68,15 @@ shin_tracker:
     shoes: null
     notes: Actualizacion manual. Primera semana de recuperacion cerrada con 0/10 en reposo; 1.5/10 si se intenta forzar a proposito y 2/10 al hacer presion fuerte en la zona lesionada del periostio.
     source: manual
+  - date: 2026-06-11
+    pain_during: 0
+    pain_after: 0
+    pain_next_morning: 1
+    location: left_shin
+    surface: null
+    shoes: null
+    notes: Actualizacion manual tras prueba de carrera de 2 km del 2026-06-10. Hoy no hay dolor en actividad normal, pero si tension y casi ligero dolor al colocar el pie en una postura exagerada girada hacia dentro. Entrada marcada como 1/10 por ser una molestia provocada, no dolor funcional en reposo o marcha normal.
+    source: manual
   entry_template:
     date: YYYY-MM-DD
     pain_during: 0

@@ -1,0 +1,39 @@
+workout:
+  name: Movilidad pre-5K 20 min
+  schedule_date: 2026-06-22
+  sport: mobility
+  description: Sesion corta de movilidad para llegar con tobillo, cadera y pie sueltos al pequeno bloque de carrera de la semana.
+  estimated_duration_s: 1200
+  steps:
+  - order: 1
+    step_type: warmup
+    description: Respiracion, movilidad suave y circulos de tobillo
+    duration_s: 180
+  - order: 2
+    type: repeat_group
+    iterations: 2
+    steps:
+    - order: 3
+      step_type: interval
+      description: Movilidad de tobillo en pared · 45 s por lado
+      duration_s: 90
+    - order: 4
+      step_type: interval
+      description: Tibial anterior en pared · 12 repeticiones
+      repetitions: 12
+  - order: 3
+    type: repeat_group
+    iterations: 2
+    steps:
+    - order: 5
+      step_type: interval
+      description: Sentadilla asistida profunda · 8 repeticiones controladas
+      repetitions: 8
+    - order: 6
+      step_type: interval
+      description: Movilidad activa de cadera y gluteo · 8 repeticiones por lado
+      repetitions: 8
+  - order: 4
+    step_type: cooldown
+    description: Estiramientos suaves y descarga final
+    duration_s: 240

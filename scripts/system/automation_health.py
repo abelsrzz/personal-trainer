@@ -23,6 +23,7 @@ POST_WORKOUT_REFRESH_STATE_PATH = ROOT / "system" / "state" / "post_workout_refr
 WEEKLY_PLANNING_STATE_PATH = ROOT / "system" / "state" / "weekly_planning_state.json"
 ATHLETE_STATE_PATH = ROOT / "system" / "state" / "athlete_state.json"
 COACH_DECISION_PATH = ROOT / "planning" / "coach_decision.json"
+GARMIN_RECONCILE_STATE_PATH = ROOT / "system" / "state" / "garmin_reconcile_state.json"
 
 
 def utcnow_iso() -> str:
@@ -76,6 +77,7 @@ def build_automation_health() -> dict[str, Any]:
     weekly = load_optional_json(WEEKLY_PLANNING_STATE_PATH, {})
     athlete_state = load_optional_json(ATHLETE_STATE_PATH, {})
     coach_decision = load_optional_json(COACH_DECISION_PATH, {})
+    garmin_reconcile = load_optional_json(GARMIN_RECONCILE_STATE_PATH, {})
     capabilities, warnings, errors = capabilities_status()
 
     if post_workout.get("last_error"):
@@ -89,6 +91,8 @@ def build_automation_health() -> dict[str, Any]:
         pdf = last_activation.get("pdf") if isinstance(last_activation.get("pdf"), dict) else {}
         if pdf and not pdf.get("ok"):
             warnings.append("Last weekly activation could not send PDF")
+    if isinstance(garmin_reconcile, dict) and garmin_reconcile and not garmin_reconcile.get("ok", True):
+        errors.append(f"Garmin reconcile: {garmin_reconcile.get('message') or 'unknown error'}")
 
     overall_status = "ok"
     if errors:
@@ -123,6 +127,11 @@ def build_automation_health() -> dict[str, Any]:
                 "coach_as_of": coach_decision.get("as_of") if isinstance(coach_decision, dict) else None,
                 "coach_status": (coach_decision.get("decision") or {}).get("status") if isinstance(coach_decision, dict) else None,
                 "athlete_state_generated_at": athlete_state.get("generated_at") if isinstance(athlete_state, dict) else None,
+            },
+            "garmin_reconcile": {
+                "generated_at": garmin_reconcile.get("generated_at") if isinstance(garmin_reconcile, dict) else None,
+                "ok": garmin_reconcile.get("ok") if isinstance(garmin_reconcile, dict) else None,
+                "message": garmin_reconcile.get("message") if isinstance(garmin_reconcile, dict) else None,
             },
         },
         "capabilities": capabilities,

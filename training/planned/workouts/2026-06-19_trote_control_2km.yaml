@@ -1,0 +1,16 @@
+workout:
+  name: Trote facil control 2 km
+  schedule_date: 2026-06-19
+  sport: running
+  description: Segunda exposicion de control, repitiendo la misma dosis del martes. Saltar la sesion si la tibia deja mas de 2 sobre 10 o reacciona peor al dia siguiente.
+  estimated_duration_s: 900
+  steps:
+  - order: 1
+    step_type: interval
+    description: 2 km muy faciles
+    distance_m: 2000
+    target:
+      type: heart_rate_range
+      min_bpm: 132
+      max_bpm: 160
+  primary_goal: Recuperacion

@@ -287,6 +287,59 @@ h2 {
   margin-bottom: 18px;
 }
 
+.chart-copy {
+  margin-bottom: 16px;
+}
+
+.trend-chart {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+  color: var(--text);
+}
+
+.trend-axis,
+.trend-grid {
+  stroke: rgba(239, 246, 255, 0.2);
+  stroke-width: 1;
+}
+
+.trend-grid {
+  stroke-dasharray: 4 6;
+}
+
+.trend-line {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.trend-dot {
+  stroke: #091423;
+  stroke-width: 2;
+}
+
+.trend-dot-latest {
+  stroke-width: 2.4;
+}
+
+.trend-label {
+  fill: #eff6ff;
+  font-size: 11px;
+}
+
+.trend-value {
+  fill: #eff6ff;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.trend-legend-text {
+  font-size: 12px;
+}
+
 .stack-list {
   display: flex;
   flex-direction: column;

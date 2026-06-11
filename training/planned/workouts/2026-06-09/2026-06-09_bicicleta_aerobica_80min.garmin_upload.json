@@ -1,15 +1,16 @@
 {
-  "generated_at": "2026-05-24T14:08:39.487745Z",
+  "generated_at": "2026-06-11T11:35:30.887657Z",
   "status": "scheduled",
+  "workout_hash": "3b02544e87429c0c4b44cc5d47d82c5d683de63d3feee4985a6fb2b14553fa60",
   "upload_mode": "structured_targets",
   "workout_file": "training/planned/workouts/2026-06-09_bicicleta_aerobica_80min.yaml",
   "uploaded_response": {
-    "workoutId": 1577548684,
+    "workoutId": 1597254757,
     "ownerId": 137864769,
     "workoutName": "Bicicleta aerobica 80 min",
     "description": "Carga estable de Z2 para abrir la tercera semana de rehabilitacion.",
-    "updatedDate": "2026-05-24T14:08:37.0",
-    "createdDate": "2026-05-24T14:08:37.0",
+    "updatedDate": "2026-06-11T11:35:29.0",
+    "createdDate": "2026-06-11T11:35:29.0",
     "sportType": {
       "sportTypeId": 2,
       "sportTypeKey": "cycling",
@@ -49,7 +50,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13457232220,
+            "stepId": 13645685511,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 1,
@@ -101,7 +102,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13457232221,
+            "stepId": 13645685512,
             "stepOrder": 2,
             "stepType": {
               "stepTypeId": 3,
@@ -153,7 +154,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13457232222,
+            "stepId": 13645685513,
             "stepOrder": 3,
             "stepType": {
               "stepTypeId": 2,
@@ -231,14 +232,14 @@
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1659009485,
+    "workoutScheduleId": 1678519492,
     "workout": {
-      "workoutId": 1577548684,
+      "workoutId": 1597254757,
       "ownerId": 137864769,
       "workoutName": "Bicicleta aerobica 80 min",
       "description": "Carga estable de Z2 para abrir la tercera semana de rehabilitacion.",
-      "updatedDate": "2026-05-24T14:08:37.0",
-      "createdDate": "2026-05-24T14:08:37.0",
+      "updatedDate": "2026-06-11T11:35:29.0",
+      "createdDate": "2026-06-11T11:35:29.0",
       "sportType": {
         "sportTypeId": 2,
         "sportTypeKey": "cycling",
@@ -269,7 +270,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13457232220,
+              "stepId": 13645685511,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 1,
@@ -321,7 +322,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13457232221,
+              "stepId": 13645685512,
               "stepOrder": 2,
               "stepType": {
                 "stepTypeId": 3,
@@ -373,7 +374,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13457232222,
+              "stepId": 13645685513,
               "stepOrder": 3,
               "stepType": {
                 "stepTypeId": 2,
@@ -451,7 +452,7 @@
       "shared": false
     },
     "calendarDate": "2026-06-09",
-    "createdDate": "2026-05-24",
+    "createdDate": "2026-06-11",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -461,17 +462,17 @@
     "associatedActivityDateTime": null,
     "tpType": null,
     "nameChanged": false,
-    "itp": false,
+    "protected": false,
     "race": false,
-    "protected": false
+    "itp": false
   },
   "warning": null,
   "replaced_uploads": [
     {
       "record": "training/planned/workouts/2026-06-09/2026-06-09_bicicleta_aerobica_80min.garmin_upload.json",
-      "scheduled_workout_id": 1650784639,
+      "scheduled_workout_id": 1659009485,
       "unscheduled": true,
-      "workout_id": 1569255587,
+      "workout_id": 1577548684,
       "deleted": true
     }
   ]

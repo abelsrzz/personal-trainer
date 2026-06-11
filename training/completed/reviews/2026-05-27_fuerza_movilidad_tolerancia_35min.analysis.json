@@ -145,8 +145,8 @@
       {
         "minute": 20,
         "timestamp_gmt": "2026-05-27T15:44:00+00:00",
-        "hr": 88,
-        "drop": 8
+        "hr": 91,
+        "drop": 5
       }
     ],
     "chart": {
@@ -203,8 +203,28 @@
         },
         {
           "minute": 19.38,
-          "hr": 88,
+          "hr": 91,
           "label": "19m"
+        },
+        {
+          "minute": 21.38,
+          "hr": 94,
+          "label": "21m"
+        },
+        {
+          "minute": 23.38,
+          "hr": 94,
+          "label": "23m"
+        },
+        {
+          "minute": 25.38,
+          "hr": 93,
+          "label": "25m"
+        },
+        {
+          "minute": 27.38,
+          "hr": 88,
+          "label": "27m"
         }
       ],
       "bars": [
@@ -271,6 +291,30 @@
         {
           "minute": 19.38,
           "label": "19m",
+          "hr": 91,
+          "height_pct": 81.4
+        },
+        {
+          "minute": 21.38,
+          "label": "21m",
+          "hr": 94,
+          "height_pct": 92.5
+        },
+        {
+          "minute": 23.38,
+          "label": "23m",
+          "hr": 94,
+          "height_pct": 92.5
+        },
+        {
+          "minute": 25.38,
+          "label": "25m",
+          "hr": 93,
+          "height_pct": 88.8
+        },
+        {
+          "minute": 27.38,
+          "label": "27m",
           "hr": 88,
           "height_pct": 70.2
         }

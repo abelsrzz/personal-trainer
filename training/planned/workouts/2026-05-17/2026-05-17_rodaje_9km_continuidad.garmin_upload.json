@@ -1,15 +1,16 @@
 {
-  "generated_at": "2026-05-16T13:06:40.516466Z",
+  "generated_at": "2026-06-11T11:34:48.401785Z",
   "status": "scheduled",
+  "workout_hash": "b850cad16c532c96aa7827dbe4b4f64405cecf8610b6610df85641b83e4e5cec",
   "upload_mode": "structured_targets",
   "workout_file": "training/planned/workouts/2026-05-17_rodaje_9km_continuidad.yaml",
   "uploaded_response": {
-    "workoutId": 1569255539,
+    "workoutId": 1597254333,
     "ownerId": 137864769,
     "workoutName": "Bicicleta Z2 continuidad 80 min",
     "description": "Sustituye el rodaje continuo por bici aerobica para mantener base sin impacto sobre la tibia.",
-    "updatedDate": "2026-05-16T13:06:40.0",
-    "createdDate": "2026-05-16T13:06:40.0",
+    "updatedDate": "2026-06-11T11:34:47.0",
+    "createdDate": "2026-06-11T11:34:47.0",
     "sportType": {
       "sportTypeId": 2,
       "sportTypeKey": "cycling",
@@ -49,7 +50,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13376476041,
+            "stepId": 13645680749,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 1,
@@ -101,7 +102,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13376476042,
+            "stepId": 13645680750,
             "stepOrder": 2,
             "stepType": {
               "stepTypeId": 3,
@@ -153,7 +154,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13376476043,
+            "stepId": 13645680751,
             "stepOrder": 3,
             "stepType": {
               "stepTypeId": 2,
@@ -231,14 +232,14 @@
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1650784595,
+    "workoutScheduleId": 1678519086,
     "workout": {
-      "workoutId": 1569255539,
+      "workoutId": 1597254333,
       "ownerId": 137864769,
       "workoutName": "Bicicleta Z2 continuidad 80 min",
       "description": "Sustituye el rodaje continuo por bici aerobica para mantener base sin impacto sobre la tibia.",
-      "updatedDate": "2026-05-16T13:06:40.0",
-      "createdDate": "2026-05-16T13:06:40.0",
+      "updatedDate": "2026-06-11T11:34:47.0",
+      "createdDate": "2026-06-11T11:34:47.0",
       "sportType": {
         "sportTypeId": 2,
         "sportTypeKey": "cycling",
@@ -269,7 +270,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13376476041,
+              "stepId": 13645680749,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 1,
@@ -321,7 +322,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13376476042,
+              "stepId": 13645680750,
               "stepOrder": 2,
               "stepType": {
                 "stepTypeId": 3,
@@ -373,7 +374,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13376476043,
+              "stepId": 13645680751,
               "stepOrder": 3,
               "stepType": {
                 "stepTypeId": 2,
@@ -451,7 +452,7 @@
       "shared": false
     },
     "calendarDate": "2026-05-17",
-    "createdDate": "2026-05-16",
+    "createdDate": "2026-06-11",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -460,9 +461,19 @@
     "priority": null,
     "associatedActivityDateTime": null,
     "tpType": null,
-    "nameChanged": false,
     "itp": false,
     "race": false,
-    "protected": false
-  }
+    "protected": false,
+    "nameChanged": false
+  },
+  "warning": null,
+  "replaced_uploads": [
+    {
+      "record": "training/planned/workouts/2026-05-17/2026-05-17_rodaje_9km_continuidad.garmin_upload.json",
+      "scheduled_workout_id": 1650784595,
+      "unscheduled": true,
+      "workout_id": 1569255539,
+      "deleted": true
+    }
+  ]
 }

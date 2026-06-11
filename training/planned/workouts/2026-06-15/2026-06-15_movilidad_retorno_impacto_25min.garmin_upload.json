@@ -1,15 +1,16 @@
 {
-  "generated_at": "2026-05-25T16:54:22.826434Z",
+  "generated_at": "2026-06-11T11:35:41.423676Z",
   "status": "scheduled",
+  "workout_hash": "d9cc9cfd4fd5fdba44d40fbfb07153f72d273c4051afc65f3ea658b2453fc9b0",
   "upload_mode": "structured_targets",
   "workout_file": "training/planned/workouts/2026-06-15_movilidad_retorno_impacto_25min.yaml",
   "uploaded_response": {
-    "workoutId": 1579702348,
+    "workoutId": 1597254820,
     "ownerId": 137864769,
     "workoutName": "Movilidad retorno al impacto 25 min",
     "description": "Sesion de movilidad para preparar tobillo, cadera y tronco en la fase de vuelta progresiva al impacto.",
-    "updatedDate": "2026-05-25T16:54:20.0",
-    "createdDate": "2026-05-25T16:54:20.0",
+    "updatedDate": "2026-06-11T11:35:40.0",
+    "createdDate": "2026-06-11T11:35:40.0",
     "sportType": {
       "sportTypeId": 11,
       "sportTypeKey": "mobility",
@@ -49,7 +50,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13473712750,
+            "stepId": 13645686264,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 1,
@@ -101,7 +102,7 @@
           },
           {
             "type": "RepeatGroupDTO",
-            "stepId": 13473712751,
+            "stepId": 13645686265,
             "stepOrder": 2,
             "stepType": {
               "stepTypeId": 6,
@@ -113,7 +114,7 @@
             "workoutSteps": [
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13473712752,
+                "stepId": 13645686266,
                 "stepOrder": 3,
                 "stepType": {
                   "stepTypeId": 3,
@@ -165,7 +166,7 @@
               },
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13473712753,
+                "stepId": 13645686267,
                 "stepOrder": 4,
                 "stepType": {
                   "stepTypeId": 3,
@@ -230,7 +231,7 @@
           },
           {
             "type": "RepeatGroupDTO",
-            "stepId": 13473712754,
+            "stepId": 13645686268,
             "stepOrder": 5,
             "stepType": {
               "stepTypeId": 6,
@@ -242,7 +243,7 @@
             "workoutSteps": [
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13473712755,
+                "stepId": 13645686269,
                 "stepOrder": 6,
                 "stepType": {
                   "stepTypeId": 3,
@@ -294,7 +295,7 @@
               },
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13473712756,
+                "stepId": 13645686270,
                 "stepOrder": 7,
                 "stepType": {
                   "stepTypeId": 3,
@@ -359,7 +360,7 @@
           },
           {
             "type": "RepeatGroupDTO",
-            "stepId": 13473712757,
+            "stepId": 13645686271,
             "stepOrder": 8,
             "stepType": {
               "stepTypeId": 6,
@@ -371,7 +372,7 @@
             "workoutSteps": [
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13473712758,
+                "stepId": 13645686272,
                 "stepOrder": 9,
                 "stepType": {
                   "stepTypeId": 3,
@@ -423,7 +424,7 @@
               },
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13473712759,
+                "stepId": 13645686273,
                 "stepOrder": 10,
                 "stepType": {
                   "stepTypeId": 3,
@@ -488,7 +489,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13473712760,
+            "stepId": 13645686274,
             "stepOrder": 11,
             "stepType": {
               "stepTypeId": 2,
@@ -566,14 +567,14 @@
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1661173848,
+    "workoutScheduleId": 1678519552,
     "workout": {
-      "workoutId": 1579702348,
+      "workoutId": 1597254820,
       "ownerId": 137864769,
       "workoutName": "Movilidad retorno al impacto 25 min",
       "description": "Sesion de movilidad para preparar tobillo, cadera y tronco en la fase de vuelta progresiva al impacto.",
-      "updatedDate": "2026-05-25T16:54:20.0",
-      "createdDate": "2026-05-25T16:54:20.0",
+      "updatedDate": "2026-06-11T11:35:40.0",
+      "createdDate": "2026-06-11T11:35:40.0",
       "sportType": {
         "sportTypeId": 11,
         "sportTypeKey": "mobility",
@@ -604,7 +605,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13473712750,
+              "stepId": 13645686264,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 1,
@@ -656,7 +657,7 @@
             },
             {
               "type": "RepeatGroupDTO",
-              "stepId": 13473712751,
+              "stepId": 13645686265,
               "stepOrder": 2,
               "stepType": {
                 "stepTypeId": 6,
@@ -668,7 +669,7 @@
               "workoutSteps": [
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13473712752,
+                  "stepId": 13645686266,
                   "stepOrder": 3,
                   "stepType": {
                     "stepTypeId": 3,
@@ -720,7 +721,7 @@
                 },
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13473712753,
+                  "stepId": 13645686267,
                   "stepOrder": 4,
                   "stepType": {
                     "stepTypeId": 3,
@@ -785,7 +786,7 @@
             },
             {
               "type": "RepeatGroupDTO",
-              "stepId": 13473712754,
+              "stepId": 13645686268,
               "stepOrder": 5,
               "stepType": {
                 "stepTypeId": 6,
@@ -797,7 +798,7 @@
               "workoutSteps": [
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13473712755,
+                  "stepId": 13645686269,
                   "stepOrder": 6,
                   "stepType": {
                     "stepTypeId": 3,
@@ -849,7 +850,7 @@
                 },
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13473712756,
+                  "stepId": 13645686270,
                   "stepOrder": 7,
                   "stepType": {
                     "stepTypeId": 3,
@@ -914,7 +915,7 @@
             },
             {
               "type": "RepeatGroupDTO",
-              "stepId": 13473712757,
+              "stepId": 13645686271,
               "stepOrder": 8,
               "stepType": {
                 "stepTypeId": 6,
@@ -926,7 +927,7 @@
               "workoutSteps": [
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13473712758,
+                  "stepId": 13645686272,
                   "stepOrder": 9,
                   "stepType": {
                     "stepTypeId": 3,
@@ -978,7 +979,7 @@
                 },
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13473712759,
+                  "stepId": 13645686273,
                   "stepOrder": 10,
                   "stepType": {
                     "stepTypeId": 3,
@@ -1043,7 +1044,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13473712760,
+              "stepId": 13645686274,
               "stepOrder": 11,
               "stepType": {
                 "stepTypeId": 2,
@@ -1121,7 +1122,7 @@
       "shared": false
     },
     "calendarDate": "2026-06-15",
-    "createdDate": "2026-05-25",
+    "createdDate": "2026-06-11",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -1131,17 +1132,17 @@
     "associatedActivityDateTime": null,
     "tpType": null,
     "protected": false,
-    "nameChanged": false,
     "itp": false,
-    "race": false
+    "race": false,
+    "nameChanged": false
   },
   "warning": null,
   "replaced_uploads": [
     {
       "record": "training/planned/workouts/2026-06-15/2026-06-15_movilidad_retorno_impacto_25min.garmin_upload.json",
-      "scheduled_workout_id": 1661140979,
+      "scheduled_workout_id": 1661173848,
       "unscheduled": true,
-      "workout_id": 1579669435,
+      "workout_id": 1579702348,
       "deleted": true
     }
   ]

@@ -1,15 +1,16 @@
 {
-  "generated_at": "2026-05-25T16:53:34.100026Z",
+  "generated_at": "2026-06-11T11:35:01.500310Z",
   "status": "scheduled",
+  "workout_hash": "6cb271f000c09dd69795a1cb4a2be06dee30c4e1c05ce7680f731b7a65a35fdf",
   "upload_mode": "structured_targets",
   "workout_file": "training/planned/workouts/2026-05-25_movilidad_descarga_post_ordes_25min.yaml",
   "uploaded_response": {
-    "workoutId": 1579701577,
+    "workoutId": 1597254451,
     "ownerId": 137864769,
     "workoutName": "Movilidad descarga post-Ordes 25 min",
     "description": "Sesion suave de movilidad para descargar gemelo, soleo, tobillo y cadera tras la carrera de Ordes.",
-    "updatedDate": "2026-05-25T16:53:31.0",
-    "createdDate": "2026-05-25T16:53:31.0",
+    "updatedDate": "2026-06-11T11:35:00.0",
+    "createdDate": "2026-06-11T11:35:00.0",
     "sportType": {
       "sportTypeId": 11,
       "sportTypeKey": "mobility",
@@ -49,7 +50,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13473702680,
+            "stepId": 13645682500,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 1,
@@ -101,7 +102,7 @@
           },
           {
             "type": "RepeatGroupDTO",
-            "stepId": 13473702681,
+            "stepId": 13645682501,
             "stepOrder": 2,
             "stepType": {
               "stepTypeId": 6,
@@ -113,7 +114,7 @@
             "workoutSteps": [
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13473702682,
+                "stepId": 13645682502,
                 "stepOrder": 3,
                 "stepType": {
                   "stepTypeId": 3,
@@ -165,7 +166,7 @@
               },
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13473702683,
+                "stepId": 13645682503,
                 "stepOrder": 4,
                 "stepType": {
                   "stepTypeId": 3,
@@ -230,7 +231,7 @@
           },
           {
             "type": "RepeatGroupDTO",
-            "stepId": 13473702684,
+            "stepId": 13645682504,
             "stepOrder": 5,
             "stepType": {
               "stepTypeId": 6,
@@ -242,7 +243,7 @@
             "workoutSteps": [
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13473702685,
+                "stepId": 13645682505,
                 "stepOrder": 6,
                 "stepType": {
                   "stepTypeId": 3,
@@ -294,7 +295,7 @@
               },
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13473702686,
+                "stepId": 13645682506,
                 "stepOrder": 7,
                 "stepType": {
                   "stepTypeId": 3,
@@ -359,7 +360,7 @@
           },
           {
             "type": "RepeatGroupDTO",
-            "stepId": 13473702687,
+            "stepId": 13645682507,
             "stepOrder": 8,
             "stepType": {
               "stepTypeId": 6,
@@ -371,7 +372,7 @@
             "workoutSteps": [
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13473702688,
+                "stepId": 13645682508,
                 "stepOrder": 9,
                 "stepType": {
                   "stepTypeId": 3,
@@ -423,7 +424,7 @@
               },
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13473702689,
+                "stepId": 13645682509,
                 "stepOrder": 10,
                 "stepType": {
                   "stepTypeId": 3,
@@ -488,7 +489,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13473702690,
+            "stepId": 13645682510,
             "stepOrder": 11,
             "stepType": {
               "stepTypeId": 2,
@@ -566,14 +567,14 @@
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1661173086,
+    "workoutScheduleId": 1678519203,
     "workout": {
-      "workoutId": 1579701577,
+      "workoutId": 1597254451,
       "ownerId": 137864769,
       "workoutName": "Movilidad descarga post-Ordes 25 min",
       "description": "Sesion suave de movilidad para descargar gemelo, soleo, tobillo y cadera tras la carrera de Ordes.",
-      "updatedDate": "2026-05-25T16:53:31.0",
-      "createdDate": "2026-05-25T16:53:31.0",
+      "updatedDate": "2026-06-11T11:35:00.0",
+      "createdDate": "2026-06-11T11:35:00.0",
       "sportType": {
         "sportTypeId": 11,
         "sportTypeKey": "mobility",
@@ -604,7 +605,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13473702680,
+              "stepId": 13645682500,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 1,
@@ -656,7 +657,7 @@
             },
             {
               "type": "RepeatGroupDTO",
-              "stepId": 13473702681,
+              "stepId": 13645682501,
               "stepOrder": 2,
               "stepType": {
                 "stepTypeId": 6,
@@ -668,7 +669,7 @@
               "workoutSteps": [
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13473702682,
+                  "stepId": 13645682502,
                   "stepOrder": 3,
                   "stepType": {
                     "stepTypeId": 3,
@@ -720,7 +721,7 @@
                 },
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13473702683,
+                  "stepId": 13645682503,
                   "stepOrder": 4,
                   "stepType": {
                     "stepTypeId": 3,
@@ -785,7 +786,7 @@
             },
             {
               "type": "RepeatGroupDTO",
-              "stepId": 13473702684,
+              "stepId": 13645682504,
               "stepOrder": 5,
               "stepType": {
                 "stepTypeId": 6,
@@ -797,7 +798,7 @@
               "workoutSteps": [
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13473702685,
+                  "stepId": 13645682505,
                   "stepOrder": 6,
                   "stepType": {
                     "stepTypeId": 3,
@@ -849,7 +850,7 @@
                 },
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13473702686,
+                  "stepId": 13645682506,
                   "stepOrder": 7,
                   "stepType": {
                     "stepTypeId": 3,
@@ -914,7 +915,7 @@
             },
             {
               "type": "RepeatGroupDTO",
-              "stepId": 13473702687,
+              "stepId": 13645682507,
               "stepOrder": 8,
               "stepType": {
                 "stepTypeId": 6,
@@ -926,7 +927,7 @@
               "workoutSteps": [
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13473702688,
+                  "stepId": 13645682508,
                   "stepOrder": 9,
                   "stepType": {
                     "stepTypeId": 3,
@@ -978,7 +979,7 @@
                 },
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13473702689,
+                  "stepId": 13645682509,
                   "stepOrder": 10,
                   "stepType": {
                     "stepTypeId": 3,
@@ -1043,7 +1044,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13473702690,
+              "stepId": 13645682510,
               "stepOrder": 11,
               "stepType": {
                 "stepTypeId": 2,
@@ -1121,7 +1122,7 @@
       "shared": false
     },
     "calendarDate": "2026-05-25",
-    "createdDate": "2026-05-25",
+    "createdDate": "2026-06-11",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -1131,17 +1132,17 @@
     "associatedActivityDateTime": null,
     "tpType": null,
     "protected": false,
-    "nameChanged": false,
     "itp": false,
-    "race": false
+    "race": false,
+    "nameChanged": false
   },
   "warning": null,
   "replaced_uploads": [
     {
       "record": "training/planned/workouts/2026-05-25/2026-05-25_movilidad_descarga_post_ordes_25min.garmin_upload.json",
-      "scheduled_workout_id": 1661140320,
+      "scheduled_workout_id": 1661173086,
       "unscheduled": true,
-      "workout_id": 1579668745,
+      "workout_id": 1579701577,
       "deleted": true
     }
   ]

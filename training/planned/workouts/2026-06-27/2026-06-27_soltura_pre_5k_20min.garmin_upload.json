@@ -1,17 +1,20 @@
 {
-  "upload_mode": "structured_targets",
-  "workout_file": "training/planned/workouts/2026-05-28_rodaje_8km_progresivo.yaml",
+  "generated_at": "2026-06-11T13:26:19.874759Z",
+  "status": "scheduled",
+  "workout_hash": "ee7a481ab2553af24491c17ec08a6cba2ab9411596dc6d46965dd2b7d8eb9514",
+  "upload_mode": "other_workout_direct",
+  "workout_file": "training/planned/workouts/2026-06-27_soltura_pre_5k_20min.yaml",
   "uploaded_response": {
-    "workoutId": 1557392122,
+    "workoutId": 1597320460,
     "ownerId": 137864769,
-    "workoutName": "Rodaje 8 km progresivo controlado",
-    "description": "Empezar estable en Z2 y terminar con progresion suave en Z3 baja, sin convertirlo en tempo duro.",
-    "updatedDate": "2026-05-04T12:30:17.0",
-    "createdDate": "2026-05-04T12:30:17.0",
+    "workoutName": "Soltura pre-5K 20 min",
+    "description": "Soltura muy suave para llegar con piernas despiertas a la carrera sin sumar impacto ni fatiga residual.",
+    "updatedDate": "2026-06-11T13:26:18.0",
+    "createdDate": "2026-06-11T13:26:18.0",
     "sportType": {
-      "sportTypeId": 1,
-      "sportTypeKey": "running",
-      "displayOrder": 1
+      "sportTypeId": 3,
+      "sportTypeKey": "other",
+      "displayOrder": 13
     },
     "subSportType": null,
     "trainingPlanId": null,
@@ -26,15 +29,15 @@
       "vivokidUser": false
     },
     "sharedWithUsers": null,
-    "estimatedDurationInSecs": 3180,
-    "estimatedDistanceInMeters": 8000.0,
+    "estimatedDurationInSecs": 1200,
+    "estimatedDistanceInMeters": null,
     "workoutSegments": [
       {
         "segmentOrder": 1,
         "sportType": {
-          "sportTypeId": 1,
-          "sportTypeKey": "running",
-          "displayOrder": 1
+          "sportTypeId": 3,
+          "sportTypeKey": "other",
+          "displayOrder": 13
         },
         "poolLengthUnit": null,
         "poolLength": null,
@@ -47,37 +50,33 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13256217537,
+            "stepId": 13646410129,
             "stepOrder": 1,
             "stepType": {
-              "stepTypeId": 3,
-              "stepTypeKey": "interval",
-              "displayOrder": 3
+              "stepTypeId": 1,
+              "stepTypeKey": "warmup",
+              "displayOrder": 1
             },
             "childStepId": null,
-            "description": "5 km en Z2",
+            "description": "5 min muy suaves",
             "endCondition": {
-              "conditionTypeId": 3,
-              "conditionTypeKey": "distance",
-              "displayOrder": 3,
+              "conditionTypeId": 2,
+              "conditionTypeKey": "time",
+              "displayOrder": 2,
               "displayable": true
             },
-            "endConditionValue": 5000.0,
-            "preferredEndConditionUnit": {
-              "unitId": 1,
-              "unitKey": "meter",
-              "factor": 100.0
-            },
+            "endConditionValue": 300.0,
+            "preferredEndConditionUnit": null,
             "endConditionCompare": null,
             "targetType": {
               "workoutTargetTypeId": 4,
               "workoutTargetTypeKey": "heart.rate.zone",
               "displayOrder": 4
             },
-            "targetValueOne": null,
-            "targetValueTwo": null,
+            "targetValueOne": 115.0,
+            "targetValueTwo": 130.0,
             "targetValueUnit": null,
-            "zoneNumber": 2,
+            "zoneNumber": null,
             "secondaryTargetType": null,
             "secondaryTargetValueOne": null,
             "secondaryTargetValueTwo": null,
@@ -103,7 +102,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13256217538,
+            "stepId": 13646410130,
             "stepOrder": 2,
             "stepType": {
               "stepTypeId": 3,
@@ -111,29 +110,77 @@
               "displayOrder": 3
             },
             "childStepId": null,
-            "description": "3 km en Z3 baja",
+            "description": "10 min fluidos y muy faciles",
             "endCondition": {
-              "conditionTypeId": 3,
-              "conditionTypeKey": "distance",
-              "displayOrder": 3,
+              "conditionTypeId": 2,
+              "conditionTypeKey": "time",
+              "displayOrder": 2,
               "displayable": true
             },
-            "endConditionValue": 3000.0,
-            "preferredEndConditionUnit": {
-              "unitId": 1,
-              "unitKey": "meter",
-              "factor": 100.0
-            },
+            "endConditionValue": 600.0,
+            "preferredEndConditionUnit": null,
             "endConditionCompare": null,
             "targetType": {
               "workoutTargetTypeId": 4,
               "workoutTargetTypeKey": "heart.rate.zone",
               "displayOrder": 4
             },
-            "targetValueOne": null,
-            "targetValueTwo": null,
+            "targetValueOne": 120.0,
+            "targetValueTwo": 136.0,
             "targetValueUnit": null,
-            "zoneNumber": 3,
+            "zoneNumber": null,
+            "secondaryTargetType": null,
+            "secondaryTargetValueOne": null,
+            "secondaryTargetValueTwo": null,
+            "secondaryTargetValueUnit": null,
+            "secondaryZoneNumber": null,
+            "endConditionZone": null,
+            "strokeType": {
+              "strokeTypeId": 0,
+              "strokeTypeKey": null,
+              "displayOrder": 0
+            },
+            "equipmentType": {
+              "equipmentTypeId": 0,
+              "equipmentTypeKey": null,
+              "displayOrder": 0
+            },
+            "category": null,
+            "exerciseName": null,
+            "workoutProvider": null,
+            "providerExerciseSourceId": null,
+            "weightValue": null,
+            "weightUnit": null
+          },
+          {
+            "type": "ExecutableStepDTO",
+            "stepId": 13646410131,
+            "stepOrder": 3,
+            "stepType": {
+              "stepTypeId": 2,
+              "stepTypeKey": "cooldown",
+              "displayOrder": 2
+            },
+            "childStepId": null,
+            "description": "5 min muy suaves para soltar",
+            "endCondition": {
+              "conditionTypeId": 2,
+              "conditionTypeKey": "time",
+              "displayOrder": 2,
+              "displayable": true
+            },
+            "endConditionValue": 300.0,
+            "preferredEndConditionUnit": null,
+            "endConditionCompare": null,
+            "targetType": {
+              "workoutTargetTypeId": 4,
+              "workoutTargetTypeKey": "heart.rate.zone",
+              "displayOrder": 4
+            },
+            "targetValueOne": 115.0,
+            "targetValueTwo": 128.0,
+            "targetValueUnit": null,
+            "zoneNumber": null,
             "secondaryTargetType": null,
             "secondaryTargetValueOne": null,
             "secondaryTargetValueTwo": null,
@@ -185,32 +232,32 @@
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1639059372,
+    "workoutScheduleId": 1678583391,
     "workout": {
-      "workoutId": 1557392122,
+      "workoutId": 1597320460,
       "ownerId": 137864769,
-      "workoutName": "Rodaje 8 km progresivo controlado",
-      "description": "Empezar estable en Z2 y terminar con progresion suave en Z3 baja, sin convertirlo en tempo duro.",
-      "updatedDate": "2026-05-04T12:30:17.0",
-      "createdDate": "2026-05-04T12:30:17.0",
+      "workoutName": "Soltura pre-5K 20 min",
+      "description": "Soltura muy suave para llegar con piernas despiertas a la carrera sin sumar impacto ni fatiga residual.",
+      "updatedDate": "2026-06-11T13:26:18.0",
+      "createdDate": "2026-06-11T13:26:18.0",
       "sportType": {
-        "sportTypeId": 1,
-        "sportTypeKey": "running",
-        "displayOrder": 1
+        "sportTypeId": 3,
+        "sportTypeKey": "other",
+        "displayOrder": 13
       },
       "subSportType": null,
       "trainingPlanId": null,
       "author": null,
       "sharedWithUsers": null,
-      "estimatedDurationInSecs": 3180,
-      "estimatedDistanceInMeters": 8000.0,
+      "estimatedDurationInSecs": 1200,
+      "estimatedDistanceInMeters": null,
       "workoutSegments": [
         {
           "segmentOrder": 1,
           "sportType": {
-            "sportTypeId": 1,
-            "sportTypeKey": "running",
-            "displayOrder": 1
+            "sportTypeId": 3,
+            "sportTypeKey": "other",
+            "displayOrder": 13
           },
           "poolLengthUnit": null,
           "poolLength": null,
@@ -223,37 +270,33 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13256217537,
+              "stepId": 13646410129,
               "stepOrder": 1,
               "stepType": {
-                "stepTypeId": 3,
-                "stepTypeKey": "interval",
-                "displayOrder": 3
+                "stepTypeId": 1,
+                "stepTypeKey": "warmup",
+                "displayOrder": 1
               },
               "childStepId": null,
-              "description": "5 km en Z2",
+              "description": "5 min muy suaves",
               "endCondition": {
-                "conditionTypeId": 3,
-                "conditionTypeKey": "distance",
-                "displayOrder": 3,
+                "conditionTypeId": 2,
+                "conditionTypeKey": "time",
+                "displayOrder": 2,
                 "displayable": true
               },
-              "endConditionValue": 5000.0,
-              "preferredEndConditionUnit": {
-                "unitId": 1,
-                "unitKey": "meter",
-                "factor": 100.0
-              },
+              "endConditionValue": 300.0,
+              "preferredEndConditionUnit": null,
               "endConditionCompare": null,
               "targetType": {
                 "workoutTargetTypeId": 4,
                 "workoutTargetTypeKey": "heart.rate.zone",
                 "displayOrder": 4
               },
-              "targetValueOne": null,
-              "targetValueTwo": null,
+              "targetValueOne": 115.0,
+              "targetValueTwo": 130.0,
               "targetValueUnit": null,
-              "zoneNumber": 2,
+              "zoneNumber": null,
               "secondaryTargetType": null,
               "secondaryTargetValueOne": null,
               "secondaryTargetValueTwo": null,
@@ -279,7 +322,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13256217538,
+              "stepId": 13646410130,
               "stepOrder": 2,
               "stepType": {
                 "stepTypeId": 3,
@@ -287,29 +330,77 @@
                 "displayOrder": 3
               },
               "childStepId": null,
-              "description": "3 km en Z3 baja",
+              "description": "10 min fluidos y muy faciles",
               "endCondition": {
-                "conditionTypeId": 3,
-                "conditionTypeKey": "distance",
-                "displayOrder": 3,
+                "conditionTypeId": 2,
+                "conditionTypeKey": "time",
+                "displayOrder": 2,
                 "displayable": true
               },
-              "endConditionValue": 3000.0,
-              "preferredEndConditionUnit": {
-                "unitId": 1,
-                "unitKey": "meter",
-                "factor": 100.0
-              },
+              "endConditionValue": 600.0,
+              "preferredEndConditionUnit": null,
               "endConditionCompare": null,
               "targetType": {
                 "workoutTargetTypeId": 4,
                 "workoutTargetTypeKey": "heart.rate.zone",
                 "displayOrder": 4
               },
-              "targetValueOne": null,
-              "targetValueTwo": null,
+              "targetValueOne": 120.0,
+              "targetValueTwo": 136.0,
               "targetValueUnit": null,
-              "zoneNumber": 3,
+              "zoneNumber": null,
+              "secondaryTargetType": null,
+              "secondaryTargetValueOne": null,
+              "secondaryTargetValueTwo": null,
+              "secondaryTargetValueUnit": null,
+              "secondaryZoneNumber": null,
+              "endConditionZone": null,
+              "strokeType": {
+                "strokeTypeId": 0,
+                "strokeTypeKey": null,
+                "displayOrder": 0
+              },
+              "equipmentType": {
+                "equipmentTypeId": 0,
+                "equipmentTypeKey": null,
+                "displayOrder": 0
+              },
+              "category": null,
+              "exerciseName": null,
+              "workoutProvider": null,
+              "providerExerciseSourceId": null,
+              "weightValue": null,
+              "weightUnit": null
+            },
+            {
+              "type": "ExecutableStepDTO",
+              "stepId": 13646410131,
+              "stepOrder": 3,
+              "stepType": {
+                "stepTypeId": 2,
+                "stepTypeKey": "cooldown",
+                "displayOrder": 2
+              },
+              "childStepId": null,
+              "description": "5 min muy suaves para soltar",
+              "endCondition": {
+                "conditionTypeId": 2,
+                "conditionTypeKey": "time",
+                "displayOrder": 2,
+                "displayable": true
+              },
+              "endConditionValue": 300.0,
+              "preferredEndConditionUnit": null,
+              "endConditionCompare": null,
+              "targetType": {
+                "workoutTargetTypeId": 4,
+                "workoutTargetTypeKey": "heart.rate.zone",
+                "displayOrder": 4
+              },
+              "targetValueOne": 115.0,
+              "targetValueTwo": 128.0,
+              "targetValueUnit": null,
+              "zoneNumber": null,
               "secondaryTargetType": null,
               "secondaryTargetValueOne": null,
               "secondaryTargetValueTwo": null,
@@ -360,8 +451,8 @@
       "isSessionTransitionEnabled": null,
       "shared": false
     },
-    "calendarDate": "2026-05-28",
-    "createdDate": "2026-05-04",
+    "calendarDate": "2026-06-27",
+    "createdDate": "2026-06-11",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -371,8 +462,18 @@
     "associatedActivityDateTime": null,
     "tpType": null,
     "protected": false,
-    "race": false,
     "itp": false,
+    "race": false,
     "nameChanged": false
-  }
+  },
+  "warning": null,
+  "replaced_uploads": [
+    {
+      "record": "training/planned/workouts/2026-06-27/2026-06-27_soltura_pre_5k_20min.garmin_upload.json",
+      "scheduled_workout_id": 1678581014,
+      "unscheduled": true,
+      "workout_id": 1597317985,
+      "deleted": true
+    }
+  ]
 }

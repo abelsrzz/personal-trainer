@@ -1,17 +1,20 @@
 {
+  "generated_at": "2026-06-11T13:26:16.878649Z",
+  "status": "scheduled",
+  "workout_hash": "24aff510bf29fef28bbc14abcf7e58210cb8cfdb93491a61668e8c7a8ae9fbbc",
   "upload_mode": "structured_targets",
-  "workout_file": "training/planned/workouts/2026-05-25_fuerza_general_40min.yaml",
+  "workout_file": "training/planned/workouts/2026-06-25_bicicleta_continua_70min.yaml",
   "uploaded_response": {
-    "workoutId": 1557392047,
+    "workoutId": 1597320429,
     "ownerId": 137864769,
-    "workoutName": "Fuerza general 40 min",
-    "description": "Fuerza general suave con foco en gemelo, soleo, tibial, gluteo medio y core. No buscar agujetas ni ir al fallo.",
-    "updatedDate": "2026-05-04T12:30:12.0",
-    "createdDate": "2026-05-04T12:30:12.0",
+    "workoutName": "Bicicleta continua 70 min",
+    "description": "Soporte aerobico continuo en bici para sumar carga sin aumentar el coste de impacto antes del 5K.",
+    "updatedDate": "2026-06-11T13:26:13.0",
+    "createdDate": "2026-06-11T13:26:13.0",
     "sportType": {
-      "sportTypeId": 6,
-      "sportTypeKey": "cardio_training",
-      "displayOrder": 6
+      "sportTypeId": 2,
+      "sportTypeKey": "cycling",
+      "displayOrder": 2
     },
     "subSportType": null,
     "trainingPlanId": null,
@@ -26,15 +29,15 @@
       "vivokidUser": false
     },
     "sharedWithUsers": null,
-    "estimatedDurationInSecs": 2400,
+    "estimatedDurationInSecs": 4200,
     "estimatedDistanceInMeters": null,
     "workoutSegments": [
       {
         "segmentOrder": 1,
         "sportType": {
-          "sportTypeId": 6,
-          "sportTypeKey": "cardio_training",
-          "displayOrder": 6
+          "sportTypeId": 2,
+          "sportTypeKey": "cycling",
+          "displayOrder": 2
         },
         "poolLengthUnit": null,
         "poolLength": null,
@@ -47,7 +50,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13256217003,
+            "stepId": 13646409832,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 1,
@@ -55,23 +58,23 @@
               "displayOrder": 1
             },
             "childStepId": null,
-            "description": "Calentamiento y activacion",
+            "description": "10 min suaves",
             "endCondition": {
               "conditionTypeId": 2,
               "conditionTypeKey": "time",
               "displayOrder": 2,
               "displayable": true
             },
-            "endConditionValue": 300.0,
+            "endConditionValue": 600.0,
             "preferredEndConditionUnit": null,
             "endConditionCompare": null,
             "targetType": {
-              "workoutTargetTypeId": 1,
-              "workoutTargetTypeKey": "no.target",
-              "displayOrder": 1
+              "workoutTargetTypeId": 4,
+              "workoutTargetTypeKey": "heart.rate.zone",
+              "displayOrder": 4
             },
-            "targetValueOne": null,
-            "targetValueTwo": null,
+            "targetValueOne": 120.0,
+            "targetValueTwo": 138.0,
             "targetValueUnit": null,
             "zoneNumber": null,
             "secondaryTargetType": null,
@@ -99,7 +102,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13256217004,
+            "stepId": 13646409833,
             "stepOrder": 2,
             "stepType": {
               "stepTypeId": 3,
@@ -107,23 +110,23 @@
               "displayOrder": 3
             },
             "childStepId": null,
-            "description": "Bloque principal de fuerza general",
+            "description": "50 min Z2 estable",
             "endCondition": {
               "conditionTypeId": 2,
               "conditionTypeKey": "time",
               "displayOrder": 2,
               "displayable": true
             },
-            "endConditionValue": 1800.0,
+            "endConditionValue": 3000.0,
             "preferredEndConditionUnit": null,
             "endConditionCompare": null,
             "targetType": {
-              "workoutTargetTypeId": 1,
-              "workoutTargetTypeKey": "no.target",
-              "displayOrder": 1
+              "workoutTargetTypeId": 4,
+              "workoutTargetTypeKey": "heart.rate.zone",
+              "displayOrder": 4
             },
-            "targetValueOne": null,
-            "targetValueTwo": null,
+            "targetValueOne": 145.0,
+            "targetValueTwo": 155.0,
             "targetValueUnit": null,
             "zoneNumber": null,
             "secondaryTargetType": null,
@@ -151,7 +154,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13256217005,
+            "stepId": 13646409834,
             "stepOrder": 3,
             "stepType": {
               "stepTypeId": 2,
@@ -159,23 +162,23 @@
               "displayOrder": 2
             },
             "childStepId": null,
-            "description": "Movilidad final",
+            "description": "10 min suaves",
             "endCondition": {
               "conditionTypeId": 2,
               "conditionTypeKey": "time",
               "displayOrder": 2,
               "displayable": true
             },
-            "endConditionValue": 300.0,
+            "endConditionValue": 600.0,
             "preferredEndConditionUnit": null,
             "endConditionCompare": null,
             "targetType": {
-              "workoutTargetTypeId": 1,
-              "workoutTargetTypeKey": "no.target",
-              "displayOrder": 1
+              "workoutTargetTypeId": 4,
+              "workoutTargetTypeKey": "heart.rate.zone",
+              "displayOrder": 4
             },
-            "targetValueOne": null,
-            "targetValueTwo": null,
+            "targetValueOne": 115.0,
+            "targetValueTwo": 135.0,
             "targetValueUnit": null,
             "zoneNumber": null,
             "secondaryTargetType": null,
@@ -224,37 +227,37 @@
       "unitKey": null,
       "factor": null
     },
-    "workoutThumbnailUrl": null,
+    "workoutThumbnailUrl": "https://connect.garmin.com/chart-service/workout?data=129,10,ch-150,50,ch-125,10,ch",
     "isSessionTransitionEnabled": null,
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1639059293,
+    "workoutScheduleId": 1678583367,
     "workout": {
-      "workoutId": 1557392047,
+      "workoutId": 1597320429,
       "ownerId": 137864769,
-      "workoutName": "Fuerza general 40 min",
-      "description": "Fuerza general suave con foco en gemelo, soleo, tibial, gluteo medio y core. No buscar agujetas ni ir al fallo.",
-      "updatedDate": "2026-05-04T12:30:12.0",
-      "createdDate": "2026-05-04T12:30:12.0",
+      "workoutName": "Bicicleta continua 70 min",
+      "description": "Soporte aerobico continuo en bici para sumar carga sin aumentar el coste de impacto antes del 5K.",
+      "updatedDate": "2026-06-11T13:26:13.0",
+      "createdDate": "2026-06-11T13:26:13.0",
       "sportType": {
-        "sportTypeId": 6,
-        "sportTypeKey": "cardio_training",
-        "displayOrder": 6
+        "sportTypeId": 2,
+        "sportTypeKey": "cycling",
+        "displayOrder": 2
       },
       "subSportType": null,
       "trainingPlanId": null,
       "author": null,
       "sharedWithUsers": null,
-      "estimatedDurationInSecs": 2400,
+      "estimatedDurationInSecs": 4200,
       "estimatedDistanceInMeters": null,
       "workoutSegments": [
         {
           "segmentOrder": 1,
           "sportType": {
-            "sportTypeId": 6,
-            "sportTypeKey": "cardio_training",
-            "displayOrder": 6
+            "sportTypeId": 2,
+            "sportTypeKey": "cycling",
+            "displayOrder": 2
           },
           "poolLengthUnit": null,
           "poolLength": null,
@@ -267,7 +270,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13256217003,
+              "stepId": 13646409832,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 1,
@@ -275,23 +278,23 @@
                 "displayOrder": 1
               },
               "childStepId": null,
-              "description": "Calentamiento y activacion",
+              "description": "10 min suaves",
               "endCondition": {
                 "conditionTypeId": 2,
                 "conditionTypeKey": "time",
                 "displayOrder": 2,
                 "displayable": true
               },
-              "endConditionValue": 300.0,
+              "endConditionValue": 600.0,
               "preferredEndConditionUnit": null,
               "endConditionCompare": null,
               "targetType": {
-                "workoutTargetTypeId": 1,
-                "workoutTargetTypeKey": "no.target",
-                "displayOrder": 1
+                "workoutTargetTypeId": 4,
+                "workoutTargetTypeKey": "heart.rate.zone",
+                "displayOrder": 4
               },
-              "targetValueOne": null,
-              "targetValueTwo": null,
+              "targetValueOne": 120.0,
+              "targetValueTwo": 138.0,
               "targetValueUnit": null,
               "zoneNumber": null,
               "secondaryTargetType": null,
@@ -319,7 +322,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13256217004,
+              "stepId": 13646409833,
               "stepOrder": 2,
               "stepType": {
                 "stepTypeId": 3,
@@ -327,23 +330,23 @@
                 "displayOrder": 3
               },
               "childStepId": null,
-              "description": "Bloque principal de fuerza general",
+              "description": "50 min Z2 estable",
               "endCondition": {
                 "conditionTypeId": 2,
                 "conditionTypeKey": "time",
                 "displayOrder": 2,
                 "displayable": true
               },
-              "endConditionValue": 1800.0,
+              "endConditionValue": 3000.0,
               "preferredEndConditionUnit": null,
               "endConditionCompare": null,
               "targetType": {
-                "workoutTargetTypeId": 1,
-                "workoutTargetTypeKey": "no.target",
-                "displayOrder": 1
+                "workoutTargetTypeId": 4,
+                "workoutTargetTypeKey": "heart.rate.zone",
+                "displayOrder": 4
               },
-              "targetValueOne": null,
-              "targetValueTwo": null,
+              "targetValueOne": 145.0,
+              "targetValueTwo": 155.0,
               "targetValueUnit": null,
               "zoneNumber": null,
               "secondaryTargetType": null,
@@ -371,7 +374,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13256217005,
+              "stepId": 13646409834,
               "stepOrder": 3,
               "stepType": {
                 "stepTypeId": 2,
@@ -379,23 +382,23 @@
                 "displayOrder": 2
               },
               "childStepId": null,
-              "description": "Movilidad final",
+              "description": "10 min suaves",
               "endCondition": {
                 "conditionTypeId": 2,
                 "conditionTypeKey": "time",
                 "displayOrder": 2,
                 "displayable": true
               },
-              "endConditionValue": 300.0,
+              "endConditionValue": 600.0,
               "preferredEndConditionUnit": null,
               "endConditionCompare": null,
               "targetType": {
-                "workoutTargetTypeId": 1,
-                "workoutTargetTypeKey": "no.target",
-                "displayOrder": 1
+                "workoutTargetTypeId": 4,
+                "workoutTargetTypeKey": "heart.rate.zone",
+                "displayOrder": 4
               },
-              "targetValueOne": null,
-              "targetValueTwo": null,
+              "targetValueOne": 115.0,
+              "targetValueTwo": 135.0,
               "targetValueUnit": null,
               "zoneNumber": null,
               "secondaryTargetType": null,
@@ -444,12 +447,12 @@
         "unitKey": null,
         "factor": null
       },
-      "workoutThumbnailUrl": null,
+      "workoutThumbnailUrl": "https://connect.garmin.com/chart-service/workout?data=129,10,ch-150,50,ch-125,10,ch",
       "isSessionTransitionEnabled": null,
       "shared": false
     },
-    "calendarDate": "2026-05-25",
-    "createdDate": "2026-05-04",
+    "calendarDate": "2026-06-25",
+    "createdDate": "2026-06-11",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -458,9 +461,19 @@
     "priority": null,
     "associatedActivityDateTime": null,
     "tpType": null,
-    "itp": false,
-    "race": false,
+    "nameChanged": false,
     "protected": false,
-    "nameChanged": false
-  }
+    "race": false,
+    "itp": false
+  },
+  "warning": null,
+  "replaced_uploads": [
+    {
+      "record": "training/planned/workouts/2026-06-25/2026-06-25_bicicleta_continua_70min.garmin_upload.json",
+      "scheduled_workout_id": 1678581006,
+      "unscheduled": true,
+      "workout_id": 1597317976,
+      "deleted": true
+    }
+  ]
 }

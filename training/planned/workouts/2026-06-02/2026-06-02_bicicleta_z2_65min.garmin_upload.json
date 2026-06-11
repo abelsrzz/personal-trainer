@@ -1,15 +1,16 @@
 {
-  "generated_at": "2026-05-24T14:08:25.130536Z",
+  "generated_at": "2026-06-11T11:35:20.239825Z",
   "status": "scheduled",
+  "workout_hash": "7ebceb6f629de377336022258b1f7c7410042399b90a7ddcce81bbabdccfc7c7",
   "upload_mode": "structured_targets",
   "workout_file": "training/planned/workouts/2026-06-02_bicicleta_z2_65min.yaml",
   "uploaded_response": {
-    "workoutId": 1577548133,
+    "workoutId": 1597254680,
     "ownerId": 137864769,
     "workoutName": "Bicicleta Z2 65 min",
     "description": "Base aerobica continua en bici para seguir construyendo eficiencia Z2 sin impacto.",
-    "updatedDate": "2026-05-24T14:08:22.0",
-    "createdDate": "2026-05-24T14:08:22.0",
+    "updatedDate": "2026-06-11T11:35:19.0",
+    "createdDate": "2026-06-11T11:35:19.0",
     "sportType": {
       "sportTypeId": 2,
       "sportTypeKey": "cycling",
@@ -49,7 +50,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13457228727,
+            "stepId": 13645684617,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 1,
@@ -101,7 +102,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13457228728,
+            "stepId": 13645684618,
             "stepOrder": 2,
             "stepType": {
               "stepTypeId": 3,
@@ -153,7 +154,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13457228729,
+            "stepId": 13645684619,
             "stepOrder": 3,
             "stepType": {
               "stepTypeId": 2,
@@ -231,14 +232,14 @@
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1659008918,
+    "workoutScheduleId": 1678519430,
     "workout": {
-      "workoutId": 1577548133,
+      "workoutId": 1597254680,
       "ownerId": 137864769,
       "workoutName": "Bicicleta Z2 65 min",
       "description": "Base aerobica continua en bici para seguir construyendo eficiencia Z2 sin impacto.",
-      "updatedDate": "2026-05-24T14:08:22.0",
-      "createdDate": "2026-05-24T14:08:22.0",
+      "updatedDate": "2026-06-11T11:35:19.0",
+      "createdDate": "2026-06-11T11:35:19.0",
       "sportType": {
         "sportTypeId": 2,
         "sportTypeKey": "cycling",
@@ -269,7 +270,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13457228727,
+              "stepId": 13645684617,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 1,
@@ -321,7 +322,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13457228728,
+              "stepId": 13645684618,
               "stepOrder": 2,
               "stepType": {
                 "stepTypeId": 3,
@@ -373,7 +374,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13457228729,
+              "stepId": 13645684619,
               "stepOrder": 3,
               "stepType": {
                 "stepTypeId": 2,
@@ -451,7 +452,7 @@
       "shared": false
     },
     "calendarDate": "2026-06-02",
-    "createdDate": "2026-05-24",
+    "createdDate": "2026-06-11",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -469,9 +470,9 @@
   "replaced_uploads": [
     {
       "record": "training/planned/workouts/2026-06-02/2026-06-02_bicicleta_z2_65min.garmin_upload.json",
-      "scheduled_workout_id": 1650784625,
+      "scheduled_workout_id": 1659008918,
       "unscheduled": true,
-      "workout_id": 1569255571,
+      "workout_id": 1577548133,
       "deleted": true
     }
   ]

@@ -9,9 +9,9 @@
 
 ## Rating
 
-- Numeric score: 6/10
+- Numeric score: 7/10
 - Traffic light: amarillo
-- Written review: El calentamiento cumplio la funcion de activar antes de la salida, pero lo hizo con un coste cardiaco demasiado alto para un bloque que debia ser conservador. Como activacion aislada seria exigente; dentro de una doble sesion con carrera posterior conviene contarla como carga real y no como simple tramite.
+- Written review: duracion 39:37, ritmo medio 4:41/km, FC 191.0 / 199.0 bpm, cadencia 171.1 spm, potencia 338.0 W, temperatura 28.0-35.0 C, desnivel +143.0 m. Sesion util, pero mas exigente de lo previsto para el objetivo del dia. La lectura correcta es ajustar el juicio del entreno, no dramatizarlo: solo conviene vigilar fatiga y sensaciones antes de la siguiente sesion importante.
 
 ## Execution Analysis
 
@@ -19,51 +19,59 @@
 - Template id: -
 - Knowledge id: -
 - Planned physiological goal: -
-- Stimulus alignment: El estimulo real se fue por encima del objetivo de activacion suave. Hubo activacion neuromuscular util, pero con carga aerobica y anaerobica mayor de la deseada para un pre-race corto.
-- What went well: Se llego activado a la salida, con rectas presentes y sin una duracion excesiva.
-- What missed the target: La FC media de 169 ppm y el pico de 187 ppm indican un calentamiento demasiado intenso para el objetivo conservador planteado.
-- Relevant signals: ritmo 7:16/km, FC media/max 169.0/187.0, cadencia 154.2, potencia 221.0 W, terreno +29.0 m, temperatura 27.0-29.0 C.
+- Stimulus alignment: El estimulo real se desvia del objetivo previsto. Previsto: base_aerobica. Real observado: vo2max, capacidad_anaerobica, ritmo_10k.
+- What went well: Se completo la sesion con estabilidad mecanica y una deriva cardiaca baja (-3.0%).
+- What missed the target: La intensidad quedo claramente por encima de lo prescrito: 99.9% del tiempo estuvo sobre el techo de FC objetivo.
+- Relevant signals: ritmo 4:41/km, FC media/max 191.0/199.0, cadencia 171.1, potencia 338, terreno +143.0 m, temperatura 28.0-35.0 C.
 
 ## Planned Vs Completed
 
 - Planned distance: -
-- Completed distance: 2427.3 m
+- Completed distance: 8447.3 m
 - Distance difference: -
 - Planned duration: 17:00
-- Completed duration: 17:38
-- Duration difference: 0:38
+- Completed duration: 39:37
+- Duration difference: 22:37
 - HR target: 135.0-150.0 bpm
-- Time in HR target: -
-- Time above HR target: -
-- Time to enter target zone: -
+- Time in HR target: 0:02 (0.1% de 30:18)
+- Time above HR target: 30:16 (99.9% de 30:18)
+- Time to enter target zone: 0:01
 
 ## Split Detail
 
-- 2.43 km: 7:16/km, 169.0 bpm, 221 W, 154.2 spm
+- 1 km: 4:13/km, 185.0 bpm, 349 W, 85.5 spm
+- 2 km: 4:48/km, 193.5 bpm, 364 W, 86.0 spm
+- 3 km: 4:46/km, 191.9 bpm, 352 W, 85.6 spm
+- 4 km: 4:35/km, 193.6 bpm, 352 W, 85.9 spm
+- 5 km: 4:57/km, 191.3 bpm, 339 W, 85.0 spm
+- 6 km: 4:41/km, 191.4 bpm, 313 W, 85.1 spm
+- 7 km: 4:45/km, 190.2 bpm, 317 W, 85.1 spm
+- 8 km: 5:03/km, 191.6 bpm, 323 W, 84.7 spm
+- 0.45 km: 4:02/km, 193.5 bpm, 336 W, 86.8 spm
 
 ## Advanced Signals
 
-- Pace variability: -
-- HR variability: -
-- Cadence variability: -
-- Power variability: -
-- First half: -
-- Second half: -
-- Decoupling: -
-- Avg stride length: 89.7 cm
-- Avg ground contact time: 277.5 ms
-- Avg vertical oscillation: 8.29 cm
-- Avg vertical ratio: 9.53
-- Aerobic training effect: 2.8
-- Anaerobic training effect: 2.3
+- Pace variability: 32.3 s/km
+- HR variability: 4.5 bpm
+- Cadence variability: 3.9 spm
+- Power variability: 50.5 W
+- First half: 4:39/km, 191.4 bpm, 355 W
+- Second half: 4:47/km, 191.1 bpm, 322 W
+- Decoupling: -3.0%
+- Avg stride length: 123.8 cm
+- Avg ground contact time: 246.2 ms
+- Avg vertical oscillation: 9.71 cm
+- Avg vertical ratio: 7.89
+- Aerobic training effect: 5.0
+- Anaerobic training effect: 3.200000047683716
 
 ## Progression Markers
 
-- Trend: neutral
-- Summary: Activacion valida pero demasiado alta de pulso para tratarla como calentamiento muy conservador. Debe leerse en conjunto con la carrera posterior.
+- Trend: insufficient_data
+- Summary: Aun no hay sesiones comparables previas para medir progresion o regresion.
 
 ## Coaching Decision
 
-- Keep the week as planned: no
-- If not, what changes: Mantener la recuperacion posterior y no sumar mas intensidad oculta en los dias siguientes.
-- Risk level: medio
+- Keep the week as planned: yes
+- If not, what changes: none
+- Risk level: alto

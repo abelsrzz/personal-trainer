@@ -15,6 +15,8 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
 
+from scripts.system.automation_health import load_automation_health
+from scripts.system.context_engine import load_context_artifact
 from scripts.web_v2 import legacy_support as portal_core
 
 
@@ -269,6 +271,8 @@ def auth_guard(request: Request) -> RedirectResponse | None:
 
 def template_context(request: Request, **values: Any) -> dict[str, Any]:
     config = portal_core.env_config()
+    automation_health = load_automation_health()
+    today_context = load_context_artifact("today_context")
     context = {
         "request": request,
         "portal_configured": config["configured"],
@@ -278,6 +282,8 @@ def template_context(request: Request, **values: Any) -> dict[str, Any]:
         "flash": request.session.pop("flash", None),
         "garmin_sync": dict(_garmin_sync_state),
         "garmin_sync_status_text": garmin_sync_status_text(),
+        "automation_health": automation_health,
+        "today_context": today_context,
     }
     context.update(values)
     return context
@@ -868,6 +874,8 @@ def planned_workout_page_data(slug: str) -> dict[str, Any] | None:
 
 def completed_workout_page_data(slug: str) -> dict[str, Any] | None:
     review = portal_core.completed_review_detail(slug)
+    if not review and slug.startswith("garmin-import-"):
+        review = portal_core.imported_garmin_activity_detail(slug.removeprefix("garmin-import-"))
     if not review:
         return None
     review["garmin_feedback"] = portal_core.garmin_feedback_metrics(review.get("garmin_activity_id"))
@@ -1081,8 +1089,9 @@ async def completed_workout_detail(slug: str, request: Request) -> HTMLResponse:
 
 
 @app.get("/healthz")
-async def healthz() -> dict[str, str]:
-    return {"status": "ok"}
+async def healthz() -> dict[str, Any]:
+    automation_health = load_automation_health()
+    return {"status": "ok", "automation_status": automation_health.get("overall_status"), "summary": automation_health.get("summary")}
 
 
 @app.post("/garmin/sync")
@@ -1102,6 +1111,22 @@ async def garmin_sync_status(request: Request) -> JSONResponse:
     if guard:
         return JSONResponse({"ok": False, "error": "Sesion no valida."}, status_code=401)
     return JSONResponse({"ok": True, "sync": dict(_garmin_sync_state), "status_text": garmin_sync_status_text()}, status_code=200)
+
+
+@app.get("/api/automation/health")
+async def automation_health_api(request: Request) -> JSONResponse:
+    guard = auth_guard(request)
+    if guard:
+        return JSONResponse({"ok": False, "error": "Sesion no valida."}, status_code=401)
+    return JSONResponse({"ok": True, "health": load_automation_health()}, status_code=200)
+
+
+@app.get("/api/context/today")
+async def today_context_api(request: Request) -> JSONResponse:
+    guard = auth_guard(request)
+    if guard:
+        return JSONResponse({"ok": False, "error": "Sesion no valida."}, status_code=401)
+    return JSONResponse({"ok": True, "context": load_context_artifact("today_context")}, status_code=200)
 
 
 if hasattr(app, "on_event"):

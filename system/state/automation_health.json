@@ -1,0 +1,186 @@
+{
+  "generated_at": "2026-06-11T14:31:39.604968+00:00",
+  "overall_status": "warning",
+  "summary": "Sistema usable con advertencias o datos potencialmente stale.",
+  "warnings": [
+    "Capability stale: athlete_profile",
+    "Capability stale: athlete_state",
+    "Capability stale: daily_readiness",
+    "Capability stale: post_workout_refresh",
+    "Capability stale: progression_state",
+    "Capability stale: shoes_mileage",
+    "Capability stale: training_paces"
+  ],
+  "errors": [],
+  "services": {
+    "post_workout_refresh": {
+      "last_successful_run": "2026-06-11T14:29:28.337664+00:00",
+      "last_processed_activity_date": "2026-03-29",
+      "last_error": null
+    },
+    "weekly_planning": {
+      "active_week": {
+        "start_date": "2026-06-08",
+        "end_date": "2026-06-14",
+        "path": "planning/weeks/semana_actual.md",
+        "activated_at": "2026-06-11T15:09:10.635509"
+      },
+      "last_plan": {
+        "status": "prepared",
+        "target_start": "2026-05-25",
+        "target_end": "2026-05-31",
+        "updated_at": "2026-05-16T14:43:04+02:00",
+        "source": "manual",
+        "garmin_sync": {
+          "items": [
+            {
+              "file": "training/planned/workouts/2026-05-26_rodaje_6km_recuperacion_post_ordes.yaml",
+              "status": "ok",
+              "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569255550,\n  \"schedule_date\": \"2026-05-26\",\n  \"workout_name\": \"Bicicleta recuperacion post-Ordes 50 min\",\n  \"sport\": \"cycling\"\n}"
+            },
+            {
+              "file": "training/planned/workouts/2026-05-27_fuerza_movilidad_tolerancia_35min.yaml",
+              "status": "ok",
+              "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569240267,\n  \"schedule_date\": \"2026-05-27\",\n  \"workout_name\": \"Fuerza rehabilitadora A 35 min\",\n  \"sport\": \"strength\"\n}"
+            },
+            {
+              "file": "training/planned/workouts/2026-05-28_rodaje_7km_controlado.yaml",
+              "status": "ok",
+              "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569255554,\n  \"schedule_date\": \"2026-05-28\",\n  \"workout_name\": \"Bicicleta aerobica continua 65 min\",\n  \"sport\": \"cycling\"\n}"
+            },
+            {
+              "file": "training/planned/workouts/2026-05-30_rodaje_6km_progresivo_suave.yaml",
+              "status": "ok",
+              "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569255563,\n  \"schedule_date\": \"2026-05-30\",\n  \"workout_name\": \"Bicicleta base aerobica 85 min\",\n  \"sport\": \"cycling\"\n}"
+            },
+            {
+              "file": "training/planned/workouts/2026-06-01_bicicleta_larga_comoda_100min.yaml",
+              "status": "ok",
+              "message": "{\n  \"upload_mode\": \"structured_targets\",\n  \"workout_id\": 1569255569,\n  \"schedule_date\": \"2026-06-01\",\n  \"workout_name\": \"Eliptica larga comoda 100 min\",\n  \"sport\": \"elliptical\"\n}"
+            }
+          ],
+          "synced": 5,
+          "failed": 0,
+          "skipped": 0
+        }
+      },
+      "last_activation": {
+        "status": "activated",
+        "target_start": "2026-06-08",
+        "target_end": "2026-06-14",
+        "updated_at": "2026-06-11T15:09:10.635517",
+        "source": "manual",
+        "archived_path": "planning/weeks/archived/2026/2026-05-04_2026-05-24_puente_excepcional.md",
+        "pdf": {
+          "ok": true,
+          "message": "Sent /home/abel/Documentos/Proyectos/personal-trainer/planning/weeks/generated/semana_actual.pdf"
+        },
+        "garmin_sync": {
+          "items": [
+            {
+              "file": "training/planned/workouts/2026-06-08_movilidad_control_articular_25min.yaml",
+              "status": "skipped",
+              "message": "Sin cambios frente al ultimo upload registrado."
+            },
+            {
+              "file": "training/planned/workouts/2026-06-09_bicicleta_aerobica_80min.yaml",
+              "status": "skipped",
+              "message": "Sin cambios frente al ultimo upload registrado."
+            },
+            {
+              "file": "training/planned/workouts/2026-06-10_fuerza_rehabilitadora_a_35min.yaml",
+              "status": "skipped",
+              "message": "Sin cambios frente al ultimo upload registrado."
+            },
+            {
+              "file": "training/planned/workouts/2026-06-11_bicicleta_continua_90min.yaml",
+              "status": "skipped",
+              "message": "Sin cambios frente al ultimo upload registrado."
+            },
+            {
+              "file": "training/planned/workouts/2026-06-12_bicicleta_muy_suave_40min.yaml",
+              "status": "skipped",
+              "message": "Sin cambios frente al ultimo upload registrado."
+            },
+            {
+              "file": "training/planned/workouts/2026-06-13_bicicleta_larga_110min.yaml",
+              "status": "skipped",
+              "message": "Sin cambios frente al ultimo upload registrado."
+            },
+            {
+              "file": "training/planned/workouts/2026-06-14_bicicleta_larga_cierre_125min.yaml",
+              "status": "skipped",
+              "message": "Sin cambios frente al ultimo upload registrado."
+            }
+          ],
+          "synced": 0,
+          "failed": 0,
+          "skipped": 7
+        }
+      }
+    },
+    "coach_state": {
+      "coach_as_of": "2026-06-11",
+      "coach_status": "yellow",
+      "athlete_state_generated_at": "2026-06-11T14:29:28.403070+00:00"
+    }
+  },
+  "capabilities": [
+    {
+      "name": "athlete_profile",
+      "stale": true,
+      "last_successful_sync": "2026-06-10T19:48:07.117429+00:00",
+      "last_attempted_sync": "2026-06-10T19:48:07.117429+00:00",
+      "last_error": null
+    },
+    {
+      "name": "athlete_state",
+      "stale": true,
+      "last_successful_sync": null,
+      "last_attempted_sync": null,
+      "last_error": null
+    },
+    {
+      "name": "coach_decision",
+      "stale": false,
+      "last_successful_sync": "2026-06-11T11:45:28.585849+00:00",
+      "last_attempted_sync": "2026-06-11T11:45:28.585849+00:00",
+      "last_error": null
+    },
+    {
+      "name": "daily_readiness",
+      "stale": true,
+      "last_successful_sync": null,
+      "last_attempted_sync": null,
+      "last_error": null
+    },
+    {
+      "name": "post_workout_refresh",
+      "stale": true,
+      "last_successful_sync": null,
+      "last_attempted_sync": null,
+      "last_error": null
+    },
+    {
+      "name": "progression_state",
+      "stale": true,
+      "last_successful_sync": null,
+      "last_attempted_sync": null,
+      "last_error": null
+    },
+    {
+      "name": "shoes_mileage",
+      "stale": true,
+      "last_successful_sync": "2026-05-10T16:19:02.572994+00:00",
+      "last_attempted_sync": "2026-05-10T16:19:02.572994+00:00",
+      "last_error": null
+    },
+    {
+      "name": "training_paces",
+      "stale": true,
+      "last_successful_sync": null,
+      "last_attempted_sync": null,
+      "last_error": null
+    }
+  ]
+}

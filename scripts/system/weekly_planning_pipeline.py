@@ -16,10 +16,16 @@ from typing import Any
 import yaml
 
 try:
+    from scripts.system.automation_health import write_automation_health
+    from scripts.system.context_engine import write_all_contexts
     from scripts.system.planning_validator import validate_prepared_week
+    from scripts.system.policy_gate import PolicyGateError, enforce
 except ModuleNotFoundError:  # pragma: no cover - direct script execution path fix
     sys.path.append(str(Path(__file__).resolve().parents[2]))
+    from scripts.system.automation_health import write_automation_health
+    from scripts.system.context_engine import write_all_contexts
     from scripts.system.planning_validator import validate_prepared_week
+    from scripts.system.policy_gate import PolicyGateError, enforce
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -256,6 +262,11 @@ def enrich_workouts_with_knowledge(target_start: date, target_end: date) -> tupl
     return True, payload if isinstance(payload, dict) else {}
 
 
+def refresh_operational_artifacts() -> None:
+    write_all_contexts(refresh_capabilities=False)
+    write_automation_health()
+
+
 def send_active_week_pdf() -> tuple[bool, str]:
     command = [sys.executable, str(PDF_SCRIPT), "send-now", "--force"]
     result = run_command(command, timeout=300)
@@ -283,6 +294,11 @@ def ensure_prepared_entry(state: dict[str, Any], target_start: date, target_end:
 
 
 def plan_next_week(force: bool, source: str) -> dict[str, Any]:
+    try:
+        if force:
+            enforce("regenerate_prepared_week", source=source)
+    except PolicyGateError as exc:
+        return {"ok": False, "message": str(exc), "code": "policy_blocked"}
     state = load_state()
     active = current_active_week_info()
     active_end = parse_iso_date(active.get("end_date"))
@@ -313,10 +329,15 @@ def plan_next_week(force: bool, source: str) -> dict[str, Any]:
     entry["planner_detail"] = {k: v for k, v in detail.items() if k != "stdout"}
     state["last_plan"] = {"status": "prepared", "target_start": target_start.isoformat(), "target_end": target_end.isoformat(), "updated_at": datetime.now().isoformat(), "source": source, "knowledge_enrichment": {"ok": enrich_ok, **enrich_detail}, "garmin_sync": garmin_sync, "validation": validation}
     save_state(state)
+    refresh_operational_artifacts()
     return {"ok": True, "message": message, "code": "prepared", "prepared_week": entry, "garmin_sync": garmin_sync, "validation": validation}
 
 
 def activate_prepared_week(source: str, week_start: str = "") -> dict[str, Any]:
+    try:
+        enforce("activate_prepared_week", source=source)
+    except PolicyGateError as exc:
+        return {"ok": False, "message": str(exc), "code": "policy_blocked"}
     state = load_state()
     active = current_active_week_info()
     active_start = parse_iso_date(active.get("start_date"))
@@ -338,6 +359,9 @@ def activate_prepared_week(source: str, week_start: str = "") -> dict[str, Any]:
     prepared_path = prepared_week_path(target_start, target_end)
     if not prepared_path.exists():
         return {"ok": False, "message": "No se encontro el archivo de la semana preparada.", "code": "prepared_file_missing"}
+    validation = validate_prepared_week(prepared_path)
+    if not validation.get("ok"):
+        return {"ok": False, "message": "La semana preparada no pasa la validacion operativa.", "code": "prepared_week_invalid", "validation": validation}
     if active_start and active_end and (active_start.isoformat(), active_end.isoformat()) == (target_start.isoformat(), target_end.isoformat()):
         return {"ok": True, "message": "La semana objetivo ya es la activa; no se ha cambiado nada.", "code": "already_active"}
     archived_path = None
@@ -365,6 +389,7 @@ def activate_prepared_week(source: str, week_start: str = "") -> dict[str, Any]:
     state["active_week"] = {"start_date": target_start.isoformat(), "end_date": target_end.isoformat(), "path": display_path(ACTIVE_WEEK_PATH), "activated_at": datetime.now().isoformat()}
     state["last_activation"] = {"status": "activated", "target_start": target_start.isoformat(), "target_end": target_end.isoformat(), "updated_at": datetime.now().isoformat(), "source": source, "archived_path": display_path(archived_path) if archived_path else None, "pdf": {"ok": pdf_ok, "message": pdf_message}, "garmin_sync": garmin_sync}
     save_state(state)
+    refresh_operational_artifacts()
     return {"ok": True, "message": "Semana preparada activada.", "code": "activated", "archived_path": display_path(archived_path) if archived_path else None, "pdf": {"ok": pdf_ok, "message": pdf_message}, "garmin_sync": garmin_sync}
 
 

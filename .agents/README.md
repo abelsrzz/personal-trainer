@@ -75,6 +75,6 @@ Coach automation files:
 - Use `planning/context_automation_policy.md` to decide which athlete, race, block, zone, shoe and goal files are mandatory for the current task.
 - Include fueling context when preparing race execution, hydration strategy or supplementation around hard training.
 - In the web portal, treat `web_v2` as the primary product surface.
-- Treat `web` v1 as deprecated/legacy and use it only when a specific feature has not yet been ported or when cross-checking old behavior.
+- Treat `web_v2` as the only maintained web surface.
 - For remote Telegram operation, run `opencode serve` locally and then `python scripts/telegram/opencode_bot.py`.
 - Remote Telegram operation defaults to `openai/gpt-5.4` with default reasoning; `/model` changes the per-chat model override.

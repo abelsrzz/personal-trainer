@@ -6,7 +6,7 @@ from unittest.mock import patch
 from scripts.system import workout_knowledge as shared_knowledge
 
 try:
-    from scripts.web import app as web_app
+    from scripts.web_v2 import legacy_support as web_app
 except ModuleNotFoundError as exc:  # pragma: no cover - environment dependent
     web_app = None
     IMPORT_ERROR = exc

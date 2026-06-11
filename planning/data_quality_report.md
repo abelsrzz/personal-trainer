@@ -1,8 +1,8 @@
 # Garmin Data Quality Report
 
 - Fecha de analisis: `2026-05-19`
-- Ultima actividad importada: `2026-05-24`
-- Ultimo daily importado: `2026-06-01`
+- Ultima actividad importada: `2026-06-10`
+- Ultimo daily importado: `2026-06-11`
 
 ## Cobertura
 

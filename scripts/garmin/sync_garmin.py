@@ -417,6 +417,37 @@ def activity_matches_date(activity: dict[str, Any], start_date: str) -> bool:
     return day >= start_date
 
 
+def fetch_recent_activities(client: Garmin, start_date: str, limit: int, activity_type_filter: str | None) -> list[dict[str, Any]]:
+    collected: list[dict[str, Any]] = []
+    start = 0
+    page_size = max(1, min(int(limit or 1), 100))
+
+    while len(collected) < limit:
+        if activity_type_filter is None:
+            try:
+                batch = client.get_activities(start, page_size)
+            except TypeError:
+                batch = client.get_activities(start, page_size, None)
+        else:
+            batch = client.get_activities(start, page_size, activity_type_filter)
+        if not batch:
+            break
+
+        saw_older_activity = False
+        for activity in batch:
+            if activity_matches_date(activity, start_date):
+                collected.append(activity)
+                if len(collected) >= limit:
+                    break
+            else:
+                saw_older_activity = True
+        if len(batch) < page_size or saw_older_activity or len(collected) >= limit:
+            break
+        start += len(batch)
+
+    return collected[:limit]
+
+
 def maybe_download_activity(client: Garmin, activity_id: int, fmt: str | None, target_dir: Path) -> None:
     if not fmt:
         return
@@ -979,14 +1010,7 @@ def import_activities(client: Garmin, days: int, limit: int, activity_type: str 
     start_date = iso_date_days_ago(days)
     normalized_activity_type = str(activity_type or "").strip().lower()
     activity_type_filter = None if normalized_activity_type in {"", "all", "*", "any"} else normalized_activity_type
-    if activity_type_filter is None:
-        try:
-            activities = client.get_activities(0, limit)
-        except TypeError:
-            activities = client.get_activities(0, limit, None)
-    else:
-        activities = client.get_activities(0, limit, activity_type_filter)
-    kept = [activity for activity in activities if activity_matches_date(activity, start_date)]
+    kept = fetch_recent_activities(client, start_date, limit, activity_type_filter)
 
     imported_ids: list[int] = []
     for activity in kept:

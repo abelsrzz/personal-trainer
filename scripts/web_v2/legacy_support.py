@@ -44,8 +44,8 @@ from starlette.middleware.sessions import SessionMiddleware
 
 
 ROOT = Path(__file__).resolve().parents[2]
-TEMPLATES_DIR = ROOT / "web" / "templates"
-STATIC_DIR = ROOT / "web" / "static"
+TEMPLATES_DIR = ROOT / "web_v2" / "templates"
+STATIC_DIR = ROOT / "web_v2" / "static"
 PLANNED_WORKOUTS_DIR = ROOT / "training" / "planned" / "workouts"
 COMPLETED_REVIEW_DIR = ROOT / "training" / "completed" / "reviews"
 COMPLETED_FEEDBACK_DIR = ROOT / "training" / "completed" / "feedback"
@@ -54,8 +54,8 @@ GARMIN_DAILY_DIR = ROOT / "training" / "completed" / "imports" / "garmin" / "dai
 RACES_DIR = ROOT / "races"
 MASTER_PLAN_PATH = ROOT / "planning" / "master_plan.md"
 ACTIVE_CYCLE_PATH = ROOT / "planning" / "cycles" / "active.yaml"
-WEB_CONFIG_PATH = ROOT / "web" / "web_config.yaml"
-WEB_LOG_PATH = ROOT / "web" / "web_debug.log"
+WEB_CONFIG_PATH = ROOT / "web_v2" / "web_config.yaml"
+WEB_LOG_PATH = ROOT / "web_v2" / "web_debug.log"
 ACTIVE_WEEK_PATH = ROOT / "planning" / "weeks" / "semana_actual.md"
 COACH_DECISION_PATH = ROOT / "planning" / "coach_decision.json"
 PLANNED_ACTIONS_PATH = ROOT / "system" / "state" / "planned_workout_actions.json"
@@ -100,7 +100,7 @@ def _read_cached_file(path: Path, kind: str) -> Any:
     return copy.deepcopy(payload) if kind in {"json", "yaml"} else payload
 
 
-logger = logging.getLogger("running_coach_web")
+logger = logging.getLogger("running_coach_web_support")
 if not logger.handlers:
     logger.setLevel(logging.INFO)
     file_handler = logging.FileHandler(WEB_LOG_PATH, encoding="utf-8")

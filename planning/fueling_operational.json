@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-01T07:19:00.509058+00:00",
+  "generated_at": "2026-06-11T11:31:57.686586+00:00",
   "athlete": {
     "weight_kg": 64.199
   },
@@ -1048,6 +1048,88 @@
         ],
         "is_recommended": true,
         "intensity": "hard"
+      }
+    },
+    {
+      "slug": "2026-06-01_bicicleta_larga_comoda_100min",
+      "name": "Eliptica larga comoda 100 min",
+      "date": "2026-06-01",
+      "plan": {
+        "entries": [
+          {
+            "context_type": "workout",
+            "context_id": "2026-06-01_bicicleta_larga_comoda_100min",
+            "date": "2026-06-01",
+            "time_label": "T-90m",
+            "phase": "pre",
+            "recommendation": "Llegar con hidratos disponibles y sin pesadez antes de la sesion exigente.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa",
+            "quantity": "30-60 g CHO",
+            "reason": "Mejora la calidad del entrenamiento y evita recortarlo por falta de energia."
+          },
+          {
+            "context_type": "workout",
+            "context_id": "2026-06-01_bicicleta_larga_comoda_100min",
+            "date": "2026-06-01",
+            "time_label": "Durante",
+            "phase": "during",
+            "recommendation": "Mantener energia y sodio durante la sesion si el coste es alto o se alarga mucho.",
+            "products": [
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              },
+              {
+                "id": "fructose",
+                "name": "Fructosa"
+              },
+              {
+                "id": "evolytes",
+                "name": "Evolytes Powder"
+              }
+            ],
+            "products_label": "Maltodextrina + Fructosa + Evolytes Powder",
+            "quantity": "60-75 g CHO/h + sodio",
+            "reason": "Reduce la deriva final y mejora la tolerancia al bloque completo."
+          },
+          {
+            "context_type": "workout",
+            "context_id": "2026-06-01_bicicleta_larga_comoda_100min",
+            "date": "2026-06-01",
+            "time_label": "T+30m",
+            "phase": "post",
+            "recommendation": "Recuperacion corta con proteina, creatina y algo de hidratos tras la sesion dura.",
+            "products": [
+              {
+                "id": "whey_protein",
+                "name": "Evowhey Protein"
+              },
+              {
+                "id": "creatine_monohydrate",
+                "name": "Creatina"
+              },
+              {
+                "id": "maltodextrin",
+                "name": "Maltodextrina"
+              }
+            ],
+            "products_label": "Evowhey Protein + Creatina + Maltodextrina",
+            "quantity": "20-30 g proteina + 3-5 g creatina + 30-60 g CHO",
+            "reason": "Acelera recuperacion y ayuda a llegar mejor al siguiente dia util."
+          }
+        ],
+        "is_recommended": true,
+        "intensity": "very_hard"
       }
     },
     {

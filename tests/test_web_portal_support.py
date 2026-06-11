@@ -77,7 +77,7 @@ def _install_web_framework_stubs() -> None:
 
 _install_web_framework_stubs()
 
-from scripts.web import app
+from scripts.web_v2 import legacy_support as app
 from scripts.garmin.recovery_analysis import build_recovery_analysis
 
 

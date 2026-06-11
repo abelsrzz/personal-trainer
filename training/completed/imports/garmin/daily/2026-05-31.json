@@ -3442,15 +3442,15 @@
         "previousHeatAcclimationDate": "2026-05-30",
         "altitudeAcclimation": 0,
         "previousAltitudeAcclimation": 0,
-        "heatAcclimationPercentage": 40,
+        "heatAcclimationPercentage": 36,
         "previousHeatAcclimationPercentage": 40,
-        "heatTrend": "ACCLIMATIZED",
+        "heatTrend": "DEACCLIMATIZING",
         "altitudeTrend": null,
-        "currentAltitude": 290,
-        "previousAltitude": 0,
-        "acclimationPercentage": 0,
-        "previousAcclimationPercentage": 0,
-        "altitudeAcclimationLocalTimestamp": "2026-05-31T23:56:38.0"
+        "currentAltitude": null,
+        "previousAltitude": null,
+        "acclimationPercentage": null,
+        "previousAcclimationPercentage": null,
+        "altitudeAcclimationLocalTimestamp": "2026-06-01T00:00:00.0"
       }
     },
     "mostRecentTrainingLoadBalance": {

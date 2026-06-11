@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-06-01T12:34:09.653553+00:00",
+  "generated_at": "2026-06-11T11:29:44.679229+00:00",
   "as_of": "2026-05-19",
   "lookback_days": 28,
-  "activity_count_total": 67,
+  "activity_count_total": 68,
   "review_count_total": 17,
   "decision": {
     "as_of": "2026-05-19",
@@ -614,8 +614,8 @@
       "sleep",
       "running_tolerance"
     ],
-    "latest_daily_date": "2026-06-01",
-    "latest_activity_date": "2026-05-24",
+    "latest_daily_date": "2026-06-11",
+    "latest_activity_date": "2026-06-10",
     "daily_snapshot": {
       "hrv": 137864769.0,
       "training_readiness": 137864769.0,

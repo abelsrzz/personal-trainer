@@ -3,6 +3,7 @@ from __future__ import annotations
 import sys
 import types
 import unittest
+from unittest import mock
 from pathlib import Path
 
 
@@ -33,6 +34,14 @@ def _install_web_framework_stubs() -> None:
             return decorator
 
         def post(self, *args, **kwargs):
+            _ = args, kwargs
+
+            def decorator(func):
+                return func
+
+            return decorator
+
+        def on_event(self, *args, **kwargs):
             _ = args, kwargs
 
             def decorator(func):
@@ -81,10 +90,6 @@ from scripts.web_v2 import app
 
 
 class WebV2Tests(unittest.TestCase):
-    def test_legacy_url_normalizes_relative_paths(self) -> None:
-        self.assertEqual(app.legacy_url("/calendar"), "http://127.0.0.1:8090/calendar")
-        self.assertEqual(app.legacy_url("completed-workouts/demo"), "http://127.0.0.1:8090/completed-workouts/demo")
-
     def test_home_page_prioritizes_race_review_when_race_exists(self) -> None:
         payload = {
             "today_plan": {
@@ -108,16 +113,16 @@ class WebV2Tests(unittest.TestCase):
         }
 
         with (
-            unittest.mock.patch.object(app.legacy_app, "home_page_data", return_value=payload),
-            unittest.mock.patch.object(app.legacy_app, "calendar_day_data", return_value={"planned_items": [{"slug": "2026-05-24_calentamiento_precarrera_ordes", "name": "Calentamiento pre-carrera Ordes", "session_kind_label": "Rodaje facil", "estimated_duration": "17:00"}], "completed_items": []}),
-            unittest.mock.patch.object(app.legacy_app, "races_by_day", return_value={"2026-05-24": [{"name": "XXIX CARREIRA POPULAR CONCELLO DE ORDES"}]}),
-            unittest.mock.patch.object(app.legacy_app, "completed_reviews", return_value=[{
+            mock.patch.object(app.portal_core, "home_page_data", return_value=payload),
+            mock.patch.object(app.portal_core, "calendar_day_data", return_value={"planned_items": [{"slug": "2026-05-24_calentamiento_precarrera_ordes", "name": "Calentamiento pre-carrera Ordes", "session_kind_label": "Rodaje facil", "estimated_duration": "17:00"}], "completed_items": []}),
+            mock.patch.object(app.portal_core, "races_by_day", return_value={"2026-05-24": [{"name": "XXIX CARREIRA POPULAR CONCELLO DE ORDES"}]}),
+            mock.patch.object(app.portal_core, "completed_reviews", return_value=[{
                 "slug": "2026-05-24_xxix_carreira_popular_concello_de_ordes",
                 "date": "2026-05-24",
                 "activity_name": "Ordes race",
                 "session_kind": "race",
             }]),
-            unittest.mock.patch.object(app.legacy_app, "review_matches_planned_workout", return_value=False),
+            mock.patch.object(app.portal_core, "review_matches_planned_workout", return_value=False),
         ):
             data = app.home_page_data()
 
@@ -151,10 +156,10 @@ class WebV2Tests(unittest.TestCase):
         }
 
         with (
-            unittest.mock.patch.object(app.legacy_app, "home_page_data", return_value=payload),
-            unittest.mock.patch.object(app.legacy_app, "calendar_day_data", return_value=day_payload),
-            unittest.mock.patch.object(app.legacy_app, "races_by_day", return_value={"2026-05-24": [{"name": "Race event", "distance_km": "8.5k", "goal": "4:10-4:20/km"}]}),
-            unittest.mock.patch.object(app.legacy_app, "completed_reviews", return_value=[]),
+            mock.patch.object(app.portal_core, "home_page_data", return_value=payload),
+            mock.patch.object(app.portal_core, "calendar_day_data", return_value=day_payload),
+            mock.patch.object(app.portal_core, "races_by_day", return_value={"2026-05-24": [{"name": "Race event", "distance_km": "8.5k", "goal": "4:10-4:20/km"}]}),
+            mock.patch.object(app.portal_core, "completed_reviews", return_value=[]),
         ):
             data = app.home_page_data()
 
@@ -185,13 +190,56 @@ class WebV2Tests(unittest.TestCase):
             "payload": {"compliance": {"pct_in_hr_zone": 0.0}, "progression": {"summary": "Informative", "trend": "informative"}},
         }
         with (
-            unittest.mock.patch.object(app.legacy_app, "completed_review_detail", return_value=review),
-            unittest.mock.patch.object(app.legacy_app, "garmin_feedback_metrics", return_value=[{"label": "Calorías", "value": "513 kcal"}]),
+            mock.patch.object(app.portal_core, "completed_review_detail", return_value=review),
+            mock.patch.object(app.portal_core, "garmin_feedback_metrics", return_value=[{"label": "Calorías", "value": "513 kcal"}]),
         ):
             page = app.completed_workout_page_data("race-review")
         self.assertEqual(page["review"]["slug"], "race-review")
         self.assertIsNone(page["review"]["payload"]["compliance"].get("duration_diff_s_vs_est"))
         self.assertEqual(page["review"]["garmin_feedback"][0]["label"], "Calorías")
+
+    def test_start_garmin_auto_sync_respects_disabled_flag(self) -> None:
+        with mock.patch.object(app, "GARMIN_AUTO_SYNC_ENABLED", False), mock.patch("threading.Thread") as thread_mock:
+            app._garmin_auto_sync_started = False
+            app.start_garmin_auto_sync()
+        thread_mock.assert_not_called()
+
+    def test_garmin_sync_status_text_formats_finished_state(self) -> None:
+        message = app.garmin_sync_status_text(
+            {
+                "running": False,
+                "last_ok": True,
+                "last_finished_at": "2026-06-11T10:00:00",
+                "last_message": "Sincronizacion Garmin bidireccional completada.",
+            }
+        )
+        self.assertEqual(message, "Sincronizacion Garmin bidireccional completada. (OK)")
+
+    def test_launch_garmin_bidirectional_sync_starts_background_thread(self) -> None:
+        app._garmin_sync_state["running"] = False
+        with mock.patch("threading.Thread") as thread_mock:
+            thread_instance = thread_mock.return_value
+            ok, message = app.launch_garmin_bidirectional_sync("manual")
+        self.assertTrue(ok)
+        self.assertEqual(message, "Sincronizacion Garmin lanzada en segundo plano.")
+        thread_mock.assert_called_once()
+        thread_instance.start.assert_called_once()
+
+    def test_run_garmin_bidirectional_sync_runs_expected_steps(self) -> None:
+        responses = [(True, "ok")] * 7
+        with mock.patch.object(app, "run_project_command", side_effect=responses) as run_mock:
+            app._garmin_sync_state.update({"running": False, "last_ok": None, "last_message": None})
+            ok, message = app.run_garmin_bidirectional_sync("manual")
+        self.assertTrue(ok)
+        self.assertEqual(message, "Sincronizacion Garmin bidireccional completada.")
+        self.assertEqual(run_mock.call_count, 7)
+        first_command = run_mock.call_args_list[0].args[0]
+        self.assertEqual(first_command[1], str(app.GARMIN_SYNC_SCRIPT))
+        self.assertEqual(first_command[2], "import-activities")
+        self.assertEqual(first_command[-2:], ["--activity-type", app.GARMIN_SYNC_ACTIVITY_TYPE])
+        refresh_command = run_mock.call_args_list[5].args[0]
+        self.assertIn("--skip-activity-import", refresh_command)
+        self.assertTrue(app._garmin_sync_state["last_ok"])
 
 
 if __name__ == "__main__":

@@ -169,7 +169,7 @@
       <p class="eyebrow">Semana activa</p>
       <h2>{{ page.week.executive_summary.goal_sentence if page.week.executive_summary else 'Resumen semanal' }}</h2>
     </div>
-    <a class="text-link" href="{{ legacy_base_url }}/planned-workouts?view=week">Abrir semana operativa</a>
+    <a class="text-link" href="/calendar?focus=week">Abrir semana operativa</a>
   </div>
   <div class="stack-list">
     {% for row in page.week.rows[:7] %}

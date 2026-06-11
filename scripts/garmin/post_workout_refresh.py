@@ -38,6 +38,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--daily-days", type=int, default=14, help="Days back for Garmin daily metrics when new activity appears")
     parser.add_argument("--limit", type=int, default=20, help="Maximum Garmin activities to inspect per poll")
     parser.add_argument("--dashboard-days", type=int, default=28, help="Lookback window for coach dashboard rebuild")
+    parser.add_argument("--skip-activity-import", action="store_true", help="Reuse existing imported Garmin activities instead of importing them again")
     parser.add_argument("--skip-daily", action="store_true", help="Skip Garmin daily metrics refresh when new activity is found")
     parser.add_argument("--skip-athlete-profile", action="store_true", help="Skip Garmin athlete profile refresh when new activity is found")
     parser.add_argument("--skip-trigger", action="store_true", help="Only detect new activities and update state without launching the pipeline")
@@ -314,22 +315,23 @@ def main() -> None:
         if isinstance(item, dict) and item.get("result") == "success"
     }
 
-    ok, error = run_step(
-        [
-            sys.executable,
-            str(SYNC_SCRIPT),
-            "import-activities",
-            "--days",
-            str(args.activity_days),
-            "--limit",
-            str(args.limit),
-        ]
-    )
-    if not ok:
-        state["last_error"] = error
-        remember_run(state, [], launched=False, error=error)
-        save_json(STATE_PATH, state)
-        raise SystemExit(error)
+    if not args.skip_activity_import:
+        ok, error = run_step(
+            [
+                sys.executable,
+                str(SYNC_SCRIPT),
+                "import-activities",
+                "--days",
+                str(args.activity_days),
+                "--limit",
+                str(args.limit),
+            ]
+        )
+        if not ok:
+            state["last_error"] = error
+            remember_run(state, [], launched=False, error=error)
+            save_json(STATE_PATH, state)
+            raise SystemExit(error)
 
     summaries = activity_summaries()
     new_activities = [item for item in summaries if item["activity_id"] not in processed_success_ids]

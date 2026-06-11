@@ -53,10 +53,12 @@ from scripts.garmin import sync_garmin
 class FakeImportClient:
     def __init__(self) -> None:
         self.requested_activity_type = None
+        self.calls: list[tuple[int, int, str | None]] = []
 
-    def get_activities(self, start: int, limit: int, activity_type: str):
-        _ = start, limit
+    def get_activities(self, start: int, limit: int, activity_type: str | None = None):
+        _ = limit
         self.requested_activity_type = activity_type
+        self.calls.append((start, limit, activity_type))
         today = date.today().isoformat()
         return [
             {
@@ -301,6 +303,34 @@ class GarminSyncTests(unittest.TestCase):
                 manifest = json.loads((import_root / "activities" / "last_import_manifest.json").read_text(encoding="utf-8"))
                 self.assertEqual(manifest["activity_type"], "all")
                 self.assertIsNone(client.requested_activity_type)
+            finally:
+                sync_garmin.DEFAULT_IMPORT_ROOT = original_import_root
+
+    def test_import_activities_fetches_multiple_pages_until_older_entries(self) -> None:
+        class PagedImportClient(FakeImportClient):
+            def get_activities(self, start: int, limit: int, activity_type: str | None = None):
+                self.requested_activity_type = activity_type
+                self.calls.append((start, limit, activity_type))
+                today = date.today().isoformat()
+                old_day = sync_garmin.iso_date_days_ago(10)
+                activities = [
+                    {"activityId": 101, "startTimeLocal": f"{today} 08:00:00", "activityName": "Run"},
+                    {"activityId": 102, "startTimeLocal": f"{today} 18:00:00", "activityName": "Gym"},
+                    {"activityId": 103, "startTimeLocal": f"{today} 19:00:00", "activityName": "Bike"},
+                    {"activityId": 104, "startTimeLocal": f"{old_day} 06:00:00", "activityName": "Old"},
+                ]
+                return activities[start : start + limit]
+
+        client = PagedImportClient()
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            import_root = Path(tmp_dir)
+            original_import_root = sync_garmin.DEFAULT_IMPORT_ROOT
+            sync_garmin.DEFAULT_IMPORT_ROOT = import_root
+            try:
+                sync_garmin.import_activities(client, days=3, limit=3, activity_type="all", download_format=None)
+                manifest = json.loads((import_root / "activities" / "last_import_manifest.json").read_text(encoding="utf-8"))
+                self.assertEqual(manifest["imported_activity_ids"], [101, 102, 103])
+                self.assertEqual(client.calls, [(0, 3, None), (3, 3, None)])
             finally:
                 sync_garmin.DEFAULT_IMPORT_ROOT = original_import_root
 

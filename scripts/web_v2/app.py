@@ -1,36 +1,239 @@
 from __future__ import annotations
 
+import logging
 import os
+import subprocess
+import sys
+import threading
+import time
 from pathlib import Path
 from typing import Any
 
 from fastapi import FastAPI, Form, Request
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
 
-from scripts.web import app as legacy_app
+from scripts.web_v2 import legacy_support as portal_core
 
 
 ROOT = Path(__file__).resolve().parents[2]
 TEMPLATES_DIR = ROOT / "web_v2" / "templates"
 STATIC_DIR = ROOT / "web_v2" / "static"
-LEGACY_WEB_BASE_URL = str(os.getenv("RUNNING_WEB_LEGACY_BASE_URL") or "http://127.0.0.1:8090").rstrip("/")
+GARMIN_SYNC_SCRIPT = ROOT / "scripts" / "garmin" / "sync_garmin.py"
+POST_WORKOUT_REFRESH_SCRIPT = ROOT / "scripts" / "garmin" / "post_workout_refresh.py"
+ATHLETE_SYNC_SCRIPT = ROOT / "scripts" / "garmin" / "athlete_sync.py"
+COACH_ENGINE_SCRIPT = ROOT / "scripts" / "garmin" / "coach_engine.py"
+GARMIN_AUTO_SYNC_ENABLED = str(os.getenv("RUNNING_WEB_V2_GARMIN_AUTO_SYNC") or "1").strip().lower() not in {"0", "false", "no", "off"}
+GARMIN_AUTO_SYNC_INTERVAL_SECONDS = max(300, int(os.getenv("RUNNING_WEB_V2_GARMIN_SYNC_INTERVAL_SECONDS") or "900"))
+GARMIN_SYNC_ACTIVITY_DAYS = max(1, int(os.getenv("RUNNING_WEB_V2_GARMIN_ACTIVITY_DAYS") or "14"))
+GARMIN_SYNC_DAILY_DAYS = max(1, int(os.getenv("RUNNING_WEB_V2_GARMIN_DAILY_DAYS") or "14"))
+GARMIN_SYNC_ACTIVITY_LIMIT = max(1, int(os.getenv("RUNNING_WEB_V2_GARMIN_ACTIVITY_LIMIT") or "40"))
+GARMIN_SYNC_ACTIVITY_TYPE = str(os.getenv("RUNNING_WEB_V2_GARMIN_ACTIVITY_TYPE") or "all").strip() or "all"
+GARMIN_SYNC_DASHBOARD_DAYS = max(1, int(os.getenv("RUNNING_WEB_V2_GARMIN_DASHBOARD_DAYS") or "28"))
+
+logger = logging.getLogger("web_v2.garmin_sync")
 
 app = FastAPI(title="RunPilot Next")
 app.add_middleware(
     SessionMiddleware,
-    secret_key=legacy_app.env_config()["secret"],
+    secret_key=portal_core.env_config()["secret"],
     same_site="lax",
     session_cookie="runpilot_v2_session",
 )
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
 
-templates.env.filters["format_duration"] = legacy_app.format_duration
-templates.env.filters["format_pace"] = legacy_app.format_pace
-templates.env.filters["format_datetime"] = legacy_app.format_datetime
+templates.env.filters["format_duration"] = portal_core.format_duration
+templates.env.filters["format_pace"] = portal_core.format_pace
+templates.env.filters["format_datetime"] = portal_core.format_datetime
+
+_garmin_sync_lock = threading.Lock()
+_garmin_sync_state: dict[str, Any] = {
+    "running": False,
+    "last_started_at": None,
+    "last_finished_at": None,
+    "last_trigger": None,
+    "last_ok": None,
+    "last_message": None,
+}
+_garmin_auto_sync_started = False
+
+
+def run_project_command(command: list[str], timeout: int) -> tuple[bool, str]:
+    result = subprocess.run(command, cwd=ROOT, capture_output=True, text=True, timeout=timeout, check=False)
+    output = (result.stdout or result.stderr or "").strip()
+    if result.returncode == 0:
+        return True, output
+    return False, output or f"Command failed with exit code {result.returncode}"
+
+
+def garmin_sync_status_text(sync_state: dict[str, Any] | None = None) -> str:
+    state = sync_state if isinstance(sync_state, dict) else _garmin_sync_state
+    if state.get("running"):
+        return str(state.get("last_message") or "Sincronizacion Garmin en curso.")
+    if state.get("last_finished_at"):
+        status_label = "OK" if state.get("last_ok") else "Error"
+        return f"{state.get('last_message') or 'Sincronizacion Garmin finalizada.'} ({status_label})"
+    return "Pendiente de primera sincronizacion automatica."
+
+
+def run_garmin_bidirectional_sync(trigger: str) -> tuple[bool, str]:
+    if not _garmin_sync_lock.acquire(blocking=False):
+        return False, "Ya hay una sincronizacion Garmin en curso."
+
+    started_at = portal_core.datetime.now().isoformat()
+    _garmin_sync_state.update(
+        {
+            "running": True,
+            "last_started_at": started_at,
+            "last_finished_at": None,
+            "last_trigger": trigger,
+            "last_message": "Sincronizacion Garmin en curso.",
+        }
+    )
+
+    commands = [
+        (
+            "import-activities",
+            [
+                sys.executable,
+                str(GARMIN_SYNC_SCRIPT),
+                "import-activities",
+                "--days",
+                str(GARMIN_SYNC_ACTIVITY_DAYS),
+                "--limit",
+                str(GARMIN_SYNC_ACTIVITY_LIMIT),
+                "--activity-type",
+                GARMIN_SYNC_ACTIVITY_TYPE,
+            ],
+            2400,
+        ),
+        (
+            "sync-planned-workouts",
+            [sys.executable, str(GARMIN_SYNC_SCRIPT), "sync-planned-workouts"],
+            1800,
+        ),
+        (
+            "import-daily",
+            [sys.executable, str(GARMIN_SYNC_SCRIPT), "import-daily", "--days", str(GARMIN_SYNC_DAILY_DAYS)],
+            1800,
+        ),
+        (
+            "import-athlete-profile",
+            [sys.executable, str(GARMIN_SYNC_SCRIPT), "import-athlete-profile"],
+            900,
+        ),
+        (
+            "athlete-sync",
+            [sys.executable, str(ATHLETE_SYNC_SCRIPT)],
+            900,
+        ),
+        (
+            "post-workout-refresh",
+            [
+                sys.executable,
+                str(POST_WORKOUT_REFRESH_SCRIPT),
+                "--activity-days",
+                str(GARMIN_SYNC_ACTIVITY_DAYS),
+                "--daily-days",
+                str(GARMIN_SYNC_DAILY_DAYS),
+                "--limit",
+                str(GARMIN_SYNC_ACTIVITY_LIMIT),
+                "--skip-activity-import",
+                "--skip-daily",
+                "--skip-athlete-profile",
+            ],
+            2400,
+        ),
+        (
+            "coach-engine",
+            [
+                sys.executable,
+                str(COACH_ENGINE_SCRIPT),
+                "--as-of",
+                portal_core.date.today().isoformat(),
+                "--days",
+                str(GARMIN_SYNC_DASHBOARD_DAYS),
+            ],
+            1800,
+        ),
+    ]
+
+    try:
+        for label, command, timeout in commands:
+            ok, message = run_project_command(command, timeout=timeout)
+            if not ok:
+                final_message = f"Fallo en {label}: {message.splitlines()[-1] if message else label}"
+                _garmin_sync_state.update(
+                    {
+                        "running": False,
+                        "last_finished_at": portal_core.datetime.now().isoformat(),
+                        "last_ok": False,
+                        "last_message": final_message,
+                    }
+                )
+                logger.error("Garmin sync failed trigger=%s step=%s message=%s", trigger, label, message)
+                return False, final_message
+        final_message = "Sincronizacion Garmin bidireccional completada."
+        _garmin_sync_state.update(
+            {
+                "running": False,
+                "last_finished_at": portal_core.datetime.now().isoformat(),
+                "last_ok": True,
+                "last_message": final_message,
+            }
+        )
+        logger.info("Garmin sync completed trigger=%s", trigger)
+        return True, final_message
+    except subprocess.TimeoutExpired as exc:
+        final_message = f"Timeout en la sincronizacion Garmin: {exc.cmd[1] if isinstance(exc.cmd, list) and len(exc.cmd) > 1 else 'comando'}"
+        _garmin_sync_state.update(
+            {
+                "running": False,
+                "last_finished_at": portal_core.datetime.now().isoformat(),
+                "last_ok": False,
+                "last_message": final_message,
+            }
+        )
+        logger.exception("Garmin sync timeout trigger=%s", trigger)
+        return False, final_message
+    finally:
+        _garmin_sync_lock.release()
+
+
+def launch_garmin_bidirectional_sync(trigger: str) -> tuple[bool, str]:
+    with _garmin_sync_lock:
+        if _garmin_sync_state.get("running"):
+            return False, "Ya hay una sincronizacion Garmin en curso."
+
+        def runner() -> None:
+            run_garmin_bidirectional_sync(trigger)
+
+        thread = threading.Thread(target=runner, name=f"garmin-sync-{trigger}", daemon=True)
+        thread.start()
+    return True, "Sincronizacion Garmin lanzada en segundo plano."
+
+
+def garmin_auto_sync_loop() -> None:
+    ok, message = run_garmin_bidirectional_sync("startup")
+    if not ok:
+        logger.warning("Initial Garmin auto sync failed: %s", message)
+    while True:
+        time.sleep(GARMIN_AUTO_SYNC_INTERVAL_SECONDS)
+        ok, message = run_garmin_bidirectional_sync("interval")
+        if not ok:
+            logger.warning("Periodic Garmin auto sync failed: %s", message)
+
+
+def start_garmin_auto_sync() -> None:
+    global _garmin_auto_sync_started
+    if _garmin_auto_sync_started or not GARMIN_AUTO_SYNC_ENABLED:
+        return
+    thread = threading.Thread(target=garmin_auto_sync_loop, name="garmin-auto-sync", daemon=True)
+    thread.start()
+    _garmin_auto_sync_started = True
 
 
 def svg_smooth_path(points: list[dict[str, Any]]) -> str:
@@ -54,12 +257,6 @@ def svg_smooth_path(points: list[dict[str, Any]]) -> str:
     return " ".join(commands)
 
 
-def legacy_url(path: str | None) -> str:
-    if not path:
-        return LEGACY_WEB_BASE_URL
-    return f"{LEGACY_WEB_BASE_URL}{path if path.startswith('/') else '/' + path}"
-
-
 def authenticated(request: Request) -> bool:
     return bool(request.session.get("authenticated"))
 
@@ -71,15 +268,16 @@ def auth_guard(request: Request) -> RedirectResponse | None:
 
 
 def template_context(request: Request, **values: Any) -> dict[str, Any]:
-    config = legacy_app.env_config()
+    config = portal_core.env_config()
     context = {
         "request": request,
         "portal_configured": config["configured"],
         "authenticated": authenticated(request),
-        "today": legacy_app.date.today().isoformat(),
+        "today": portal_core.date.today().isoformat(),
         "current_path": request.url.path,
         "flash": request.session.pop("flash", None),
-        "legacy_base_url": LEGACY_WEB_BASE_URL,
+        "garmin_sync": dict(_garmin_sync_state),
+        "garmin_sync_status_text": garmin_sync_status_text(),
     }
     context.update(values)
     return context
@@ -103,8 +301,8 @@ def today_fueling_entries(today_plan: dict[str, Any]) -> list[dict[str, Any]]:
     planned = today_plan.get("planned_workout") if isinstance(today_plan.get("planned_workout"), dict) else None
     if not planned or not planned.get("slug"):
         return []
-    payload = legacy_app.load_or_build_fueling_payload()
-    workout_fueling = legacy_app.workout_fueling_lookup(payload, str(planned.get("slug")))
+    payload = portal_core.load_or_build_fueling_payload()
+    workout_fueling = portal_core.workout_fueling_lookup(payload, str(planned.get("slug")))
     if isinstance(workout_fueling, dict):
         entries = workout_fueling.get("entries")
         if isinstance(entries, list):
@@ -328,13 +526,13 @@ def decorate_calendar_entry(item: dict[str, Any] | None, source: str | None = No
 
 
 def home_page_data() -> dict[str, Any]:
-    payload = legacy_app.home_page_data()
+    payload = portal_core.home_page_data()
     today_plan = payload.get("today_plan", {}) if isinstance(payload.get("today_plan"), dict) else {}
     today_date = str(today_plan.get("date") or "").strip()
-    day_payload = legacy_app.calendar_day_data(today_date) if today_date else {"planned_items": [], "completed_items": []}
+    day_payload = portal_core.calendar_day_data(today_date) if today_date else {"planned_items": [], "completed_items": []}
     planned_items = day_payload.get("planned_items", []) if isinstance(day_payload.get("planned_items"), list) else []
     completed_items = day_payload.get("completed_items", []) if isinstance(day_payload.get("completed_items"), list) else []
-    race_items = legacy_app.races_by_day().get(today_date, []) if today_date else []
+    race_items = portal_core.races_by_day().get(today_date, []) if today_date else []
     workouts = [item for item in [compact_workout(workout, today_date) for workout in planned_items] if item]
     workouts.extend(item for item in [compact_race(race, today_date) for race in race_items] if item)
     reviews = [item for item in [compact_today_review(review) for review in completed_items] if item]
@@ -346,7 +544,7 @@ def home_page_data() -> dict[str, Any]:
         race_review = next(
             (
                 item
-                for item in legacy_app.completed_reviews()
+                for item in portal_core.completed_reviews()
                 if item.get("date") == today_date and str(item.get("session_kind") or "").strip().lower() == "race"
             ),
             None,
@@ -355,7 +553,7 @@ def home_page_data() -> dict[str, Any]:
             review = compact_today_review(race_review)
             reviews = [review_item for review_item in reviews if review_item.get("slug") != review.get("slug")]
             reviews.insert(0, review)
-        elif completed_review and planned_workout and not legacy_app.review_matches_planned_workout(completed_review, planned_workout):
+        elif completed_review and planned_workout and not portal_core.review_matches_planned_workout(completed_review, planned_workout):
             workout = None
     fueling_entries = today_fueling_entries(today_plan)
     decision = payload.get("dashboard", {}).get("decision", {}) if isinstance(payload.get("dashboard"), dict) else {}
@@ -386,7 +584,7 @@ def home_page_data() -> dict[str, Any]:
 
 
 def calendar_page_data(month: str | None, focus: str = "all") -> dict[str, Any]:
-    payload = legacy_app.calendar_month_data_combined(month)
+    payload = portal_core.calendar_month_data_combined(month)
 
     def session_priority(item: dict[str, Any]) -> tuple[int, int, str]:
         intensity_order = {"race": 0, "hard": 1, "moderate": 2, "easy": 3, "neutral": 4, "empty": 5}
@@ -547,7 +745,7 @@ def calendar_page_data(month: str | None, focus: str = "all") -> dict[str, Any]:
         (
             day["summary"]["primary"]
             for day in month_days
-            if day["summary"]["has_race"] and day["summary"]["primary"] and day.get("date", "") >= legacy_app.date.today().isoformat()
+            if day["summary"]["has_race"] and day["summary"]["primary"] and day.get("date", "") >= portal_core.date.today().isoformat()
         ),
         None,
     )
@@ -566,16 +764,16 @@ def calendar_page_data(month: str | None, focus: str = "all") -> dict[str, Any]:
 
 
 def plan_page_data() -> dict[str, Any]:
-    workouts = legacy_app.planned_workouts()
-    reviews = legacy_app.completed_reviews()
-    cycle = legacy_app.cycle_page_data()
+    workouts = portal_core.planned_workouts()
+    reviews = portal_core.completed_reviews()
+    cycle = portal_core.cycle_page_data()
     master_plan = cycle.get("master_plan", {}) if isinstance(cycle.get("master_plan"), dict) else {}
     blocks = master_plan.get("blocks", []) if isinstance(master_plan.get("blocks"), list) else []
     current_block = cycle.get("current_block") if isinstance(cycle.get("current_block"), dict) else None
     current_index = int(current_block.get("index") or 0) if current_block else 0
     completed_blocks = [block for block in blocks if int(block.get("index") or 0) < current_index]
     future_blocks = [block for block in blocks if int(block.get("index") or 0) > current_index]
-    week = legacy_app.week_page_data(dashboard=cycle.get("dashboard"), workouts=workouts, reviews=reviews)
+    week = portal_core.week_page_data(dashboard=cycle.get("dashboard"), workouts=workouts, reviews=reviews)
     dashboard = cycle.get("dashboard", {}) if isinstance(cycle.get("dashboard"), dict) else {}
     decision = dashboard.get("decision", {}) if isinstance(dashboard.get("decision"), dict) else {}
     return {
@@ -595,14 +793,14 @@ def plan_page_data() -> dict[str, Any]:
 
 
 def events_page_data() -> dict[str, Any]:
-    payload = legacy_app.races_operational_page_data()
+    payload = portal_core.races_operational_page_data()
     payload["active_nav"] = "eventos"
     return payload
 
 
 def athlete_page_data() -> dict[str, Any]:
-    athlete = legacy_app.athlete_page_data()
-    fueling = legacy_app.fueling_page_data()
+    athlete = portal_core.athlete_page_data()
+    fueling = portal_core.fueling_page_data()
     return {
         "athlete": athlete,
         "impact_return": athlete.get("impact_return", {}),
@@ -619,7 +817,7 @@ def athlete_page_data() -> dict[str, Any]:
 
 
 def calendar_day_page_data(day: str) -> dict[str, Any]:
-    payload = legacy_app.calendar_day_data(day)
+    payload = portal_core.calendar_day_data(day)
     for item in payload.get("planned_items", []):
         item["detail_url"] = f"/planned-workouts/{item.get('slug')}"
         item.update(decorate_calendar_entry(item, source="planned", completed=bool(item.get("is_completed"))))
@@ -657,7 +855,7 @@ def calendar_day_page_data(day: str) -> dict[str, Any]:
 
 
 def planned_workout_page_data(slug: str) -> dict[str, Any] | None:
-    workout = legacy_app.planned_workout_detail(slug)
+    workout = portal_core.planned_workout_detail(slug)
     if not workout:
         return None
     linked_review = workout.get("linked_review") if isinstance(workout.get("linked_review"), dict) else None
@@ -669,10 +867,10 @@ def planned_workout_page_data(slug: str) -> dict[str, Any] | None:
 
 
 def completed_workout_page_data(slug: str) -> dict[str, Any] | None:
-    review = legacy_app.completed_review_detail(slug)
+    review = portal_core.completed_review_detail(slug)
     if not review:
         return None
-    review["garmin_feedback"] = legacy_app.garmin_feedback_metrics(review.get("garmin_activity_id"))
+    review["garmin_feedback"] = portal_core.garmin_feedback_metrics(review.get("garmin_activity_id"))
     recovery = review.get("recovery_analysis") if isinstance(review.get("recovery_analysis"), dict) else None
     if recovery and recovery.get("status") == "complete":
         chart = recovery.get("chart") if isinstance(recovery.get("chart"), dict) else {}
@@ -778,7 +976,7 @@ async def login_page(request: Request) -> HTMLResponse:
 
 @app.post("/login", response_class=HTMLResponse)
 async def login_submit(request: Request, username: str = Form(...), password: str = Form(...)) -> HTMLResponse:
-    config = legacy_app.env_config()
+    config = portal_core.env_config()
     if not config["configured"]:
         return templates.TemplateResponse(
             request,
@@ -885,3 +1083,28 @@ async def completed_workout_detail(slug: str, request: Request) -> HTMLResponse:
 @app.get("/healthz")
 async def healthz() -> dict[str, str]:
     return {"status": "ok"}
+
+
+@app.post("/garmin/sync")
+async def garmin_sync_submit(request: Request, return_to: str = Form("/")) -> RedirectResponse:
+    redirect = auth_guard(request)
+    if redirect:
+        return redirect
+    ok, message = launch_garmin_bidirectional_sync("manual")
+    request.session["flash"] = {"level": "ok" if ok else "error", "message": message}
+    target = return_to if str(return_to or "").startswith("/") else "/"
+    return RedirectResponse(url=target, status_code=303)
+
+
+@app.get("/api/garmin/sync")
+async def garmin_sync_status(request: Request) -> JSONResponse:
+    guard = auth_guard(request)
+    if guard:
+        return JSONResponse({"ok": False, "error": "Sesion no valida."}, status_code=401)
+    return JSONResponse({"ok": True, "sync": dict(_garmin_sync_state), "status_text": garmin_sync_status_text()}, status_code=200)
+
+
+if hasattr(app, "on_event"):
+    @app.on_event("startup")
+    async def garmin_sync_startup_event() -> None:
+        start_garmin_auto_sync()

@@ -26,7 +26,14 @@
         <a class="{{ 'active' if active_nav == 'atleta' else '' }}" href="/atleta">Atleta</a>
       </nav>
       <div class="topbar-actions">
-        <a class="ghost-button" href="{{ legacy_base_url }}" target="_blank" rel="noreferrer">Abrir UI v1 deprecada</a>
+        <div class="garmin-sync-chip {{ 'is-running' if garmin_sync.running else '' }} {{ 'is-error' if garmin_sync.last_ok is sameas false else '' }}" data-garmin-sync-chip>
+          <strong>Garmin</strong>
+          <span data-garmin-sync-message>{{ garmin_sync_status_text }}</span>
+        </div>
+        <form method="post" action="/garmin/sync" data-garmin-sync-form>
+          <input type="hidden" name="return_to" value="{{ current_path }}">
+          <button class="ghost-button" type="submit" data-garmin-sync-button {{ 'disabled' if garmin_sync.running else '' }}>{{ 'Sincronizando Garmin...' if garmin_sync.running else 'Sincronizar Garmin' }}</button>
+        </form>
         <a class="ghost-button" href="/logout">Salir</a>
       </div>
       {% endif %}
@@ -38,5 +45,50 @@
       {% block content %}{% endblock %}
     </main>
   </div>
+  {% if authenticated %}
+  <script>
+    (() => {
+      const chip = document.querySelector('[data-garmin-sync-chip]');
+      const message = document.querySelector('[data-garmin-sync-message]');
+      const button = document.querySelector('[data-garmin-sync-button]');
+      const form = document.querySelector('[data-garmin-sync-form]');
+      if (!chip || !message || !button || !form) {
+        return;
+      }
+
+      const renderState = (sync, statusText) => {
+        const isRunning = Boolean(sync && sync.running);
+        const isError = sync && sync.last_ok === false;
+        chip.classList.toggle('is-running', isRunning);
+        chip.classList.toggle('is-error', Boolean(isError));
+        message.textContent = statusText || 'Pendiente de primera sincronizacion automatica.';
+        button.disabled = isRunning;
+        button.textContent = isRunning ? 'Sincronizando Garmin...' : 'Sincronizar Garmin';
+      };
+
+      const refreshStatus = async () => {
+        try {
+          const response = await fetch('/api/garmin/sync', { credentials: 'same-origin' });
+          if (!response.ok) {
+            return;
+          }
+          const payload = await response.json();
+          if (!payload || payload.ok !== true) {
+            return;
+          }
+          renderState(payload.sync || {}, payload.status_text || '');
+        } catch (_error) {
+        }
+      };
+
+      form.addEventListener('submit', () => {
+        renderState({ running: true, last_ok: null }, 'Sincronizacion Garmin en curso.');
+      });
+
+      refreshStatus();
+      window.setInterval(refreshStatus, 10000);
+    })();
+  </script>
+  {% endif %}
 </body>
 </html>

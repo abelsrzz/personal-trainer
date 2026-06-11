@@ -21,17 +21,17 @@ athlete:
     - Work schedule 07:30-15:00
     garmin_training_days:
     - MONDAY
-    - TUESDAY
+    - FRIDAY
+    - SATURDAY
     - WEDNESDAY
     - THURSDAY
-    - FRIDAY
     - SUNDAY
-    - SATURDAY
+    - TUESDAY
     garmin_preferred_long_training_days:
     - SUNDAY
   current_context:
     strength_sessions_per_week: 1
   data_sources:
     garmin:
-      last_sync: '2026-06-01T12:34:06.105304Z'
+      last_sync: '2026-06-11T11:29:43.442078Z'
       profile_snapshot: training/completed/imports/garmin/profile/athlete_profile_snapshot.json

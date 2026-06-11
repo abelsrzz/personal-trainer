@@ -283,7 +283,7 @@ Notas de estructura:
 - `/planned-workouts` concentra la planificación futura.
 - `/planned-workouts?view=week` es la vista semanal integrada.
 - `/week` redirige a la vista semanal dentro de planificados.
-- `/dashboard` integra tambien la antigua lectura de `decision` y `progress`.
+- `/dashboard` integra tambien la lectura de `decision` y `progress`.
 - `/decision` redirige a `/dashboard`.
 - `/progress` redirige a `/dashboard`.
 
@@ -297,7 +297,7 @@ pip install -r requirements.txt
 Credenciales minimas en archivo local del proyecto:
 
 ```bash
-cp web/web_config.yaml.example web/web_config.yaml
+cp web_v2/web_config.yaml.example web_v2/web_config.yaml
 ```
 
 Contenido esperado:
@@ -317,18 +317,11 @@ export RUNNING_WEB_PASSWORD='cambia-esto'
 export RUNNING_WEB_SECRET='una-clave-de-sesion-larga'
 ```
 
-Lanzar solo la web:
+Lanzar la web:
 
 ```bash
 source .venv/bin/activate
-python -m uvicorn app:app --app-dir scripts/web --host 127.0.0.1 --port 8090
-```
-
-Lanzar la nueva web paralela:
-
-```bash
-source .venv/bin/activate
-python -m uvicorn scripts.web_v2.app:app --app-dir . --host 127.0.0.1 --port 8091
+python -m uvicorn scripts.web_v2.app:app --app-dir . --host 127.0.0.1 --port 8090
 ```
 
 Healthcheck:
@@ -340,7 +333,7 @@ curl http://127.0.0.1:8090/healthz
 Integracion en el arranque global:
 
 ```bash
-cp web/web_config.yaml.example web/web_config.yaml
+cp web_v2/web_config.yaml.example web_v2/web_config.yaml
 ./start_server.sh start
 ```
 
@@ -348,7 +341,6 @@ Variables opcionales:
 
 - `RUNNING_WEB_HOST` por defecto `127.0.0.1`
 - `RUNNING_WEB_PORT` por defecto `8090`
-- `RUNNING_WEB_V2_PORT` por defecto `8091`
 - `RUNNING_WEB_ENABLED=0` para no arrancar la web desde `start_server.sh`
 - `POST_WORKOUT_REFRESH_ENABLED=1` para arrancar el detector automatico de nuevas actividades Garmin
 - `POST_WORKOUT_REFRESH_INTERVAL_SECONDS=300` para controlar cada cuanto se consulta Garmin

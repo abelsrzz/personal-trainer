@@ -8,7 +8,6 @@ HOST="${OPENCODE_HOST:-127.0.0.1}"
 PORT="${OPENCODE_PORT:-4096}"
 WEB_HOST="${RUNNING_WEB_HOST:-127.0.0.1}"
 WEB_PORT="${RUNNING_WEB_PORT:-8090}"
-WEB_V2_PORT="${RUNNING_WEB_V2_PORT:-8091}"
 WEB_ENABLED="${RUNNING_WEB_ENABLED:-1}"
 POST_WORKOUT_REFRESH_ENABLED="${POST_WORKOUT_REFRESH_ENABLED:-1}"
 POST_WORKOUT_REFRESH_INTERVAL_SECONDS="${POST_WORKOUT_REFRESH_INTERVAL_SECONDS:-300}"
@@ -20,14 +19,12 @@ INSTALL_OPENCODE="${INSTALL_OPENCODE:-1}"
 SERVER_PID_FILE="$LOG_DIR/personal-trainer-opencode-serve.pid"
 BOT_PID_FILE="$LOG_DIR/personal-trainer-telegram-bot.pid"
 WEB_PID_FILE="$LOG_DIR/personal-trainer-web.pid"
-WEB_V2_PID_FILE="$LOG_DIR/personal-trainer-web-v2.pid"
 POST_WORKOUT_REFRESH_PID_FILE="$LOG_DIR/personal-trainer-post-workout-refresh.pid"
 SERVER_LOG="$LOG_DIR/personal-trainer-opencode-serve.log"
 BOT_LOG="$LOG_DIR/personal-trainer-telegram-bot.log"
 WEB_LOG="$LOG_DIR/personal-trainer-web.log"
-WEB_V2_LOG="$LOG_DIR/personal-trainer-web-v2.log"
 POST_WORKOUT_REFRESH_LOG="$LOG_DIR/personal-trainer-post-workout-refresh.log"
-WEB_CONFIG_FILE="$ROOT_DIR/web/web_config.yaml"
+WEB_CONFIG_FILE="$ROOT_DIR/web_v2/web_config.yaml"
 
 usage() {
   cat <<EOF
@@ -46,7 +43,6 @@ Environment overrides:
   OPENCODE_PORT=$PORT
   RUNNING_WEB_HOST=$WEB_HOST
   RUNNING_WEB_PORT=$WEB_PORT
-  RUNNING_WEB_V2_PORT=$WEB_V2_PORT
   RUNNING_WEB_ENABLED=$WEB_ENABLED
   POST_WORKOUT_REFRESH_ENABLED=$POST_WORKOUT_REFRESH_ENABLED
   POST_WORKOUT_REFRESH_INTERVAL_SECONDS=$POST_WORKOUT_REFRESH_INTERVAL_SECONDS
@@ -55,7 +51,7 @@ Environment overrides:
   PYTHON_BIN=$PYTHON_BIN
   PYTHON_BOOTSTRAP=$PYTHON_BOOTSTRAP
   INSTALL_OPENCODE=$INSTALL_OPENCODE  # set to 0 to skip automatic OpenCode install
-  web/web_config.yaml                 # local file with username/password/secret
+  web_v2/web_config.yaml              # local file with username/password/secret
   RUNNING_WEB_USERNAME=...            # optional override for username
   RUNNING_WEB_PASSWORD=...            # optional override for password
   RUNNING_WEB_SECRET=...              # optional override for session secret
@@ -192,7 +188,7 @@ install_runtime() {
     if web_config_ready; then
       echo "Web config OK"
     else
-      echo "Web portal credentials not set yet. Create web/web_config.yaml from web/web_config.yaml.example or define RUNNING_WEB_USERNAME and RUNNING_WEB_PASSWORD." >&2
+      echo "Web portal credentials not set yet. Create web_v2/web_config.yaml from web_v2/web_config.yaml.example or define RUNNING_WEB_USERNAME and RUNNING_WEB_PASSWORD." >&2
     fi
   fi
 
@@ -203,8 +199,6 @@ install_runtime() {
 start_server() {
   require_runtime
   cd "$ROOT_DIR"
-  local web_running=0
-
   "$PYTHON_BIN" scripts/telegram/opencode_bot.py --check-config >/dev/null
 
   if is_running "$SERVER_PID_FILE"; then
@@ -228,32 +222,16 @@ start_server() {
   if [[ "$WEB_ENABLED" != "1" ]]; then
     echo "Web portal disabled (RUNNING_WEB_ENABLED=$WEB_ENABLED)"
   elif ! web_config_ready; then
-    echo "Web portal skipped: create web/web_config.yaml from web/web_config.yaml.example or define RUNNING_WEB_USERNAME and RUNNING_WEB_PASSWORD first." >&2
+    echo "Web portal skipped: create web_v2/web_config.yaml from web_v2/web_config.yaml.example or define RUNNING_WEB_USERNAME and RUNNING_WEB_PASSWORD first." >&2
   elif is_running "$WEB_PID_FILE"; then
     echo "Web portal already running (pid $(<"$WEB_PID_FILE"))"
-    web_running=1
   else
-    nohup "$PYTHON_BIN" -m uvicorn app:app --app-dir "$ROOT_DIR/scripts/web" --host "$WEB_HOST" --port "$WEB_PORT" >"$WEB_LOG" 2>&1 &
+    nohup "$PYTHON_BIN" -m uvicorn scripts.web_v2.app:app --app-dir "$ROOT_DIR" --host "$WEB_HOST" --port "$WEB_PORT" >"$WEB_LOG" 2>&1 &
     echo "$!" >"$WEB_PID_FILE"
     if is_running "$WEB_PID_FILE" && wait_for_http "http://$WEB_HOST:$WEB_PORT/login"; then
       echo "Started web portal (pid $(<"$WEB_PID_FILE"))"
-      web_running=1
     else
       echo "Web portal failed to start. Check $WEB_LOG" >&2
-    fi
-  fi
-
-  if [[ "$WEB_ENABLED" != "1" ]]; then
-    :
-  elif is_running "$WEB_V2_PID_FILE"; then
-    echo "Web portal v2 already running (pid $(<"$WEB_V2_PID_FILE"))"
-  else
-    nohup "$PYTHON_BIN" -m uvicorn scripts.web_v2.app:app --app-dir "$ROOT_DIR" --host "$WEB_HOST" --port "$WEB_V2_PORT" >"$WEB_V2_LOG" 2>&1 &
-    echo "$!" >"$WEB_V2_PID_FILE"
-    if is_running "$WEB_V2_PID_FILE" && wait_for_http "http://$WEB_HOST:$WEB_V2_PORT/healthz"; then
-      echo "Started web portal v2 (pid $(<"$WEB_V2_PID_FILE"))"
-    else
-      echo "Web portal v2 failed to start. Check $WEB_V2_LOG" >&2
     fi
   fi
 
@@ -274,18 +252,14 @@ start_server() {
 
   echo ""
   echo "OpenCode server: http://$HOST:$PORT"
-  if [[ "$web_running" == "1" ]]; then
+  if is_running "$WEB_PID_FILE"; then
     echo "Web portal: http://$WEB_HOST:$WEB_PORT"
-  fi
-  if is_running "$WEB_V2_PID_FILE"; then
-    echo "Web portal v2: http://$WEB_HOST:$WEB_V2_PORT"
   fi
   echo "Logs:"
   echo "  $SERVER_LOG"
   echo "  $BOT_LOG"
   if [[ "$WEB_ENABLED" == "1" ]]; then
     echo "  $WEB_LOG"
-    echo "  $WEB_V2_LOG"
   fi
   if [[ "$POST_WORKOUT_REFRESH_ENABLED" == "1" ]]; then
     echo "  $POST_WORKOUT_REFRESH_LOG"
@@ -315,7 +289,6 @@ ensure_runtime_or_install() {
 
 stop_server() {
   stop_process "Post-workout refresh daemon" "$POST_WORKOUT_REFRESH_PID_FILE"
-  stop_process "Web portal v2" "$WEB_V2_PID_FILE"
   stop_process "Web portal" "$WEB_PID_FILE"
   stop_process "Telegram bot" "$BOT_PID_FILE"
   stop_process "OpenCode server" "$SERVER_PID_FILE"
@@ -340,12 +313,6 @@ status_server() {
     echo "Web portal: stopped"
   fi
 
-  if is_running "$WEB_V2_PID_FILE"; then
-    echo "Web portal v2: running (pid $(<"$WEB_V2_PID_FILE"))"
-  else
-    echo "Web portal v2: stopped"
-  fi
-
   if is_running "$POST_WORKOUT_REFRESH_PID_FILE"; then
     echo "Post-workout refresh daemon: running (pid $(<"$POST_WORKOUT_REFRESH_PID_FILE"))"
   else
@@ -355,8 +322,8 @@ status_server() {
 
 logs_server() {
   mkdir -p "$LOG_DIR"
-  touch "$SERVER_LOG" "$BOT_LOG" "$WEB_LOG" "$WEB_V2_LOG" "$POST_WORKOUT_REFRESH_LOG"
-  tail -f "$SERVER_LOG" "$BOT_LOG" "$WEB_LOG" "$WEB_V2_LOG" "$POST_WORKOUT_REFRESH_LOG"
+  touch "$SERVER_LOG" "$BOT_LOG" "$WEB_LOG" "$POST_WORKOUT_REFRESH_LOG"
+  tail -f "$SERVER_LOG" "$BOT_LOG" "$WEB_LOG" "$POST_WORKOUT_REFRESH_LOG"
 }
 
 command="${1:-start}"

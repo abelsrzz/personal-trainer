@@ -18,7 +18,7 @@
 - Training paces engine added to derive family-specific pace bands from recent evidence
 - Week replanner added to express structured replace/hold/reduce actions after pain, fatigue or risky execution
 - Planning validator added to check prepared weeks before activation
-- Web v2 promoted as the primary web surface; web v1 now treated as legacy/deprecated
+- Web v2 is the maintained web surface.
 - Telegram remote OpenCode bridge added for self-hosted access
 - First Garmin workout upload and scheduling already proven
 - Fueling engine added for races and hard workouts, with automatic hydration/carb-load/supplement plans
@@ -74,7 +74,7 @@
 - Hybrid planning is now first-class: bike support can carry aerobic, tempo or VO2 stimulus when it protects the tibia better than running.
 - Training paces should now evolve from recent evidence by family rather than staying frozen from a single old reference.
 - For web interpretation, treat `web_v2` as the primary product surface.
-- Treat `web` v1 as deprecated/legacy even if some compatibility routes still exist.
+- Treat `web_v2` as the maintained web surface.
 - The old progress page is also only a redirect; analysis now lives in the dashboard/Estado surface.
 - Read `planning/coaching_playbook.md` as the default prescription policy.
 - Read `planning/session_selection_matrix.yaml` before selecting workout families.

@@ -102,6 +102,52 @@ img {
   background: rgba(255, 255, 255, 0.02);
 }
 
+button.ghost-button,
+button.link-button {
+  font: inherit;
+  cursor: pointer;
+}
+
+button.ghost-button:disabled,
+button.link-button:disabled {
+  cursor: progress;
+  opacity: 0.7;
+}
+
+.topbar-actions form {
+  margin: 0;
+}
+
+.garmin-sync-chip {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 240px;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.garmin-sync-chip strong {
+  font-size: 0.84rem;
+}
+
+.garmin-sync-chip span {
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 1.35;
+}
+
+.garmin-sync-chip.is-running {
+  border-color: rgba(114, 240, 194, 0.28);
+  background: var(--accent-soft);
+}
+
+.garmin-sync-chip.is-error {
+  border-color: rgba(255, 128, 120, 0.28);
+}
+
 .topnav a.active,
 .topnav a:hover,
 .ghost-button:hover,

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-11T20:57:50.519250+00:00",
+  "generated_at": "2026-06-11T21:28:58.395270+00:00",
   "source_of_truth": "system/state/athlete_state.json",
   "identity": {
     "id": "main",
@@ -35,13 +35,13 @@
           "Work schedule 07:30-15:00"
         ],
         "garmin_training_days": [
-          "THURSDAY",
-          "SATURDAY",
-          "WEDNESDAY",
-          "FRIDAY",
+          "TUESDAY",
           "SUNDAY",
+          "THURSDAY",
+          "FRIDAY",
           "MONDAY",
-          "TUESDAY"
+          "WEDNESDAY",
+          "SATURDAY"
         ],
         "garmin_preferred_long_training_days": [
           "SUNDAY"
@@ -52,7 +52,7 @@
       },
       "data_sources": {
         "garmin": {
-          "last_sync": "2026-06-11T20:57:49.494501Z",
+          "last_sync": "2026-06-11T21:28:57.476681Z",
           "profile_snapshot": "training/completed/imports/garmin/profile/athlete_profile_snapshot.json"
         }
       }
@@ -69,7 +69,7 @@
       "stress_notes": null,
       "recovery_notes": "General sensations recently poor, but the 2026-06-10 2 km test run did not leave next-day pain; only mild provoked tension remains in the left shin area.",
       "garmin_metrics": {
-        "last_sync": "2026-06-11T20:57:49.494501Z",
+        "last_sync": "2026-06-11T21:28:57.476681Z",
         "resting_hr": 53,
         "max_hr": 199,
         "vo2max": 46.0,
@@ -123,7 +123,7 @@
       },
       "data_sources": {
         "garmin": {
-          "last_sync": "2026-06-11T20:57:49.494501Z",
+          "last_sync": "2026-06-11T21:28:57.476681Z",
           "profile_snapshot": "training/completed/imports/garmin/profile/athlete_profile_snapshot.json"
         }
       }
@@ -440,9 +440,9 @@
     }
   },
   "garmin": {
-    "profile_synced_at": "2026-06-11T20:57:49.494501Z",
-    "latest_activity_import_at": "2026-06-11T20:57:25.007512Z",
-    "latest_daily_import_at": "2026-06-11T20:57:47.729065Z",
+    "profile_synced_at": "2026-06-11T21:28:57.476681Z",
+    "latest_activity_import_at": "2026-06-11T21:28:32.342659Z",
+    "latest_daily_import_at": "2026-06-11T21:28:55.561745Z",
     "latest_activity_ids": [
       23216229033,
       23203823134,
@@ -603,7 +603,7 @@
       "last_processed_activity_id": 22335799805,
       "last_processed_activity_date": "2026-03-29",
       "last_processed_at": "2026-06-11T12:25:08.864637+00:00",
-      "last_successful_run": "2026-06-11T20:57:49.838512+00:00",
+      "last_successful_run": "2026-06-11T21:28:57.815967+00:00",
       "last_error": null,
       "next_action": "wait_for_new_activity_or_feedback",
       "timer_interval_minutes": 5

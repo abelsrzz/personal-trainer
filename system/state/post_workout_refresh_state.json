@@ -4,9 +4,9 @@
   "last_processed_activity_id": 22335799805,
   "last_processed_activity_date": "2026-03-29",
   "last_processed_at": "2026-06-11T12:25:08.864637+00:00",
-  "last_successful_run": "2026-06-11T20:57:49.838512+00:00",
+  "last_successful_run": "2026-06-11T21:28:57.815967+00:00",
   "last_error": null,
-  "last_activity_import_at": "2026-06-11T20:57:49.838483+00:00",
+  "last_activity_import_at": "2026-06-11T21:28:57.815940+00:00",
   "last_daily_import_at": "2026-06-11T12:25:04.927142+00:00",
   "last_profile_sync_at": "2026-06-11T12:25:07.861934+00:00",
   "next_action": "wait_for_new_activity_or_feedback",
@@ -852,62 +852,6 @@
   ],
   "runs": [
     {
-      "run_at": "2026-06-11T18:02:22.874315+00:00",
-      "detected_count": 0,
-      "detected_activity_ids": [],
-      "triggered_pipeline": false,
-      "error": null
-    },
-    {
-      "run_at": "2026-06-11T18:06:37.723961+00:00",
-      "detected_count": 0,
-      "detected_activity_ids": [],
-      "triggered_pipeline": false,
-      "error": null
-    },
-    {
-      "run_at": "2026-06-11T18:07:26.110371+00:00",
-      "detected_count": 0,
-      "detected_activity_ids": [],
-      "triggered_pipeline": false,
-      "error": null
-    },
-    {
-      "run_at": "2026-06-11T18:12:30.054779+00:00",
-      "detected_count": 0,
-      "detected_activity_ids": [],
-      "triggered_pipeline": false,
-      "error": null
-    },
-    {
-      "run_at": "2026-06-11T18:17:33.666090+00:00",
-      "detected_count": 0,
-      "detected_activity_ids": [],
-      "triggered_pipeline": false,
-      "error": null
-    },
-    {
-      "run_at": "2026-06-11T18:22:10.554392+00:00",
-      "detected_count": 0,
-      "detected_activity_ids": [],
-      "triggered_pipeline": false,
-      "error": null
-    },
-    {
-      "run_at": "2026-06-11T18:22:36.588918+00:00",
-      "detected_count": 0,
-      "detected_activity_ids": [],
-      "triggered_pipeline": false,
-      "error": null
-    },
-    {
-      "run_at": "2026-06-11T18:27:40.257740+00:00",
-      "detected_count": 0,
-      "detected_activity_ids": [],
-      "triggered_pipeline": false,
-      "error": null
-    },
-    {
       "run_at": "2026-06-11T18:32:43.404105+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
@@ -1196,6 +1140,62 @@
     },
     {
       "run_at": "2026-06-11T20:57:49.838518+00:00",
+      "detected_count": 0,
+      "detected_activity_ids": [],
+      "triggered_pipeline": false,
+      "error": null
+    },
+    {
+      "run_at": "2026-06-11T21:02:23.408427+00:00",
+      "detected_count": 0,
+      "detected_activity_ids": [],
+      "triggered_pipeline": false,
+      "error": null
+    },
+    {
+      "run_at": "2026-06-11T21:07:28.401188+00:00",
+      "detected_count": 0,
+      "detected_activity_ids": [],
+      "triggered_pipeline": false,
+      "error": null
+    },
+    {
+      "run_at": "2026-06-11T21:12:31.510590+00:00",
+      "detected_count": 0,
+      "detected_activity_ids": [],
+      "triggered_pipeline": false,
+      "error": null
+    },
+    {
+      "run_at": "2026-06-11T21:13:23.257274+00:00",
+      "detected_count": 0,
+      "detected_activity_ids": [],
+      "triggered_pipeline": false,
+      "error": null
+    },
+    {
+      "run_at": "2026-06-11T21:17:36.377171+00:00",
+      "detected_count": 0,
+      "detected_activity_ids": [],
+      "triggered_pipeline": false,
+      "error": null
+    },
+    {
+      "run_at": "2026-06-11T21:22:40.932688+00:00",
+      "detected_count": 0,
+      "detected_activity_ids": [],
+      "triggered_pipeline": false,
+      "error": null
+    },
+    {
+      "run_at": "2026-06-11T21:27:44.172389+00:00",
+      "detected_count": 0,
+      "detected_activity_ids": [],
+      "triggered_pipeline": false,
+      "error": null
+    },
+    {
+      "run_at": "2026-06-11T21:28:57.815972+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,

@@ -1,0 +1,9 @@
+stages:
+  - deploy
+
+deploy_main:
+  stage: deploy
+  script:
+    - bash deploy/gitlab/deploy_via_ssh.sh
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'

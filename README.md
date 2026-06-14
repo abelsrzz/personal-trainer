@@ -257,6 +257,36 @@ Ejemplos de servicios `systemd`:
 - `deploy/systemd/post-workout-refresh.service.example`
 - `deploy/systemd/post-workout-refresh.timer.example`
 
+## Despliegue Desde GitLab
+
+El repositorio incluye `.gitlab-ci.yml` para desplegar automaticamente cada cambio en `main` a una maquina remota por SSH.
+
+Comportamiento del pipeline:
+
+- copia el repositorio al destino con `rsync`
+- lo deja en `DEPLOY_PATH` con valor por defecto `/opt/personal-trainer`
+- ejecuta un comando opcional post-copia
+- reinicia la aplicacion con el comando que definas
+
+Variables CI/CD que debes configurar en GitLab:
+
+- `DEPLOY_HOST`: IP o nombre DNS de la maquina destino
+- `DEPLOY_PORT`: puerto SSH, opcional, por defecto `22`
+- `DEPLOY_USER`: usuario SSH con permisos sobre `DEPLOY_PATH` y el reinicio
+- `DEPLOY_SSH_PRIVATE_KEY`: clave privada usada por el runner para conectarse
+- `DEPLOY_SSH_KNOWN_HOSTS`: opcional pero recomendado; salida de `ssh-keyscan -H <host>`
+- `DEPLOY_PATH`: opcional; por defecto `/opt/personal-trainer`
+- `DEPLOY_POST_SYNC_COMMAND`: opcional; por ejemplo `./start_server.sh install`
+- `DEPLOY_RESTART_COMMAND`: obligatorio; por ejemplo `systemctl restart opencode-server` o `./start_server.sh restart`
+
+Ejemplos de reinicio:
+
+```bash
+systemctl restart opencode-server
+systemctl restart opencode-web
+./start_server.sh restart
+```
+
 Polling automatico post-entreno:
 
 ```bash

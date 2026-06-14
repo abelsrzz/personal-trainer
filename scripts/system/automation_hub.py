@@ -60,6 +60,13 @@ JOBS: dict[str, JobSpec] = {
         payload={},
         interval_minutes=15,
     ),
+    "refresh_workout_family_response": JobSpec(
+        name="refresh_workout_family_response",
+        description="Refresh workout-family response memory from completed reviews.",
+        action="refresh_workout_family_response",
+        payload={},
+        interval_minutes=60,
+    ),
     "rebuild_coach_state": JobSpec(
         name="rebuild_coach_state",
         description="Refresh dashboard and coach decision from local data.",

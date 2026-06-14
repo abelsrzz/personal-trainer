@@ -1,6 +1,6 @@
 # Coach Decision
 
-- Fecha de analisis: `2026-06-11`
+- Fecha de analisis: `2026-06-14`
 - Estado: `yellow`
 - Accion: `maintain_with_caution`
 - Decision: Mantener estructura, pero sin subir volumen ni intensidad hasta ver 2-3 sesiones faciles estables.

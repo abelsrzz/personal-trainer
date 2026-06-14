@@ -11,22 +11,28 @@ from pathlib import Path
 from typing import Any, Callable
 
 try:
+    from scripts.notifications.coach_messages import send_morning_brief
     from scripts.system.automation_health import write_automation_health
     from scripts.system.capability_engine import record_capabilities
     from scripts.system.context_engine import write_all_contexts, write_context
     from scripts.system.policy_gate import PolicyGateError
+    from scripts.system.service_sync import service_sync
     from scripts.system.today_feed import write_today_feed
     from scripts.system.weekly_planning_pipeline import activate_prepared_week, plan_next_week
     from scripts.system.athlete_state import write_athlete_state
+    from scripts.system.workout_family_response import write_workout_family_response
 except ModuleNotFoundError:  # pragma: no cover - direct script execution path fix
     sys.path.append(str(Path(__file__).resolve().parents[2]))
+    from scripts.notifications.coach_messages import send_morning_brief
     from scripts.system.automation_health import write_automation_health
     from scripts.system.capability_engine import record_capabilities
     from scripts.system.context_engine import write_all_contexts, write_context
     from scripts.system.policy_gate import PolicyGateError
+    from scripts.system.service_sync import service_sync
     from scripts.system.today_feed import write_today_feed
     from scripts.system.weekly_planning_pipeline import activate_prepared_week, plan_next_week
     from scripts.system.athlete_state import write_athlete_state
+    from scripts.system.workout_family_response import write_workout_family_response
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -54,6 +60,7 @@ POST_SUCCESS_CAPABILITIES: dict[str, list[str]] = {
     "rebuild_coach_state": ["coach_decision"],
     "sync_planned_workouts": [],
     "refresh_today_feed": [],
+    "service_sync": ["coach_decision", "athlete_state", "post_workout_refresh"],
 }
 
 
@@ -68,6 +75,9 @@ REFRESH_ARTIFACT_ACTIONS = {
     "refresh_contexts",
     "refresh_automation_health",
     "refresh_today_feed",
+    "refresh_workout_family_response",
+    "send_morning_brief",
+    "service_sync",
 }
 
 
@@ -114,6 +124,11 @@ def action_refresh_automation_health(**_: Any) -> dict[str, Any]:
 def action_refresh_today_feed(**_: Any) -> dict[str, Any]:
     payload = write_today_feed()
     return {"ok": True, "message": "Today feed refreshed.", "payload": payload}
+
+
+def action_refresh_workout_family_response(**_: Any) -> dict[str, Any]:
+    payload = write_workout_family_response()
+    return {"ok": True, "message": "Workout family response refreshed.", "payload": payload}
 
 
 def action_prepare_next_week(*, source: str = "manual", force: bool = False, **_: Any) -> dict[str, Any]:
@@ -194,6 +209,16 @@ def action_rebuild_coach_state(*, as_of: str = "", days: int = 28, **_: Any) -> 
     return {"ok": ok, "message": message, "payload": parsed or {"raw_output": message}}
 
 
+def action_send_morning_brief(*, force: bool = False, **_: Any) -> dict[str, Any]:
+    payload = send_morning_brief(force=bool(force))
+    return {"ok": True, "message": str(payload.get("message") or "Morning brief processed."), "payload": payload}
+
+
+def action_service_sync(*, as_of: str = "", skip_garmin: bool = False, **_: Any) -> dict[str, Any]:
+    payload = service_sync(as_of or str(__import__("datetime").date.today().isoformat()), skip_garmin=bool(skip_garmin))
+    return {"ok": bool(payload.get("ok")), "message": str(payload.get("summary") or "Service sync finished."), "payload": payload}
+
+
 ACTIONS: dict[str, ActionSpec] = {
     "refresh_athlete_state": ActionSpec(
         name="refresh_athlete_state",
@@ -217,6 +242,12 @@ ACTIONS: dict[str, ActionSpec] = {
         name="refresh_today_feed",
         description="Rebuild the web-first today feed artifact",
         handler=action_refresh_today_feed,
+        payload_schema={},
+    ),
+    "refresh_workout_family_response": ActionSpec(
+        name="refresh_workout_family_response",
+        description="Rebuild workout-family response memory from completed reviews",
+        handler=action_refresh_workout_family_response,
         payload_schema={},
     ),
     "prepare_next_week": ActionSpec(
@@ -262,6 +293,18 @@ ACTIONS: dict[str, ActionSpec] = {
         description="Rebuild dashboard and coach decision from local data",
         handler=action_rebuild_coach_state,
         payload_schema={"as_of": "Reference date YYYY-MM-DD", "days": "Lookback window"},
+    ),
+    "send_morning_brief": ActionSpec(
+        name="send_morning_brief",
+        description="Send the Telegram morning coach briefing",
+        handler=action_send_morning_brief,
+        payload_schema={"force": "Boolean flag"},
+    ),
+    "service_sync": ActionSpec(
+        name="service_sync",
+        description="Full Garmin plus coach sync for service and Telegram",
+        handler=action_service_sync,
+        payload_schema={"as_of": "Reference date YYYY-MM-DD", "skip_garmin": "Boolean flag"},
     ),
 }
 

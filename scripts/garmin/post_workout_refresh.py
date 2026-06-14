@@ -13,12 +13,16 @@ from typing import Any
 import yaml
 
 try:
+    from scripts.notifications.coach_messages import send_post_workout_message
     from scripts.system.athlete_state import write_athlete_state
+    from scripts.system.workout_family_response import write_workout_family_response
 except ModuleNotFoundError:  # pragma: no cover - direct script execution path fix
     import sys
 
     sys.path.append(str(Path(__file__).resolve().parents[2]))
+    from scripts.notifications.coach_messages import send_post_workout_message
     from scripts.system.athlete_state import write_athlete_state
+    from scripts.system.workout_family_response import write_workout_family_response
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -430,6 +434,14 @@ def main() -> None:
                 state["last_processed_activity_id"] = activity["activity_id"]
                 state["last_processed_activity_date"] = activity["activity_date"]
                 state["last_processed_at"] = utcnow_iso()
+                try:
+                    send_post_workout_message(
+                        activity_date=activity["activity_date"],
+                        activity_id=str(activity["activity_id"]),
+                        review_slug=review_slug or "",
+                    )
+                except Exception:
+                    pass
         if ok:
             for item in pending_feedback_updates:
                 maybe_promote_feedback_to_shin_tracker(item)
@@ -465,6 +477,7 @@ def main() -> None:
     remember_run(state, new_activities, launched=not args.skip_trigger, error=pipeline_error)
     save_json(STATE_PATH, state)
     write_athlete_state()
+    write_workout_family_response()
 
     if pipeline_error:
         raise SystemExit(pipeline_error)

@@ -1,0 +1,11 @@
+[Unit]
+Description=Run Running Coach automation jobs periodically
+
+[Timer]
+OnBootSec=3min
+OnUnitActiveSec=5min
+Unit=running-coach-automation.service
+Persistent=true
+
+[Install]
+WantedBy=timers.target

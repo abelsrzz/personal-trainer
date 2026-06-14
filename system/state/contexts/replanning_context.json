@@ -1,32 +1,40 @@
 {
-  "generated_at": "2026-06-11T18:40:10.917703+00:00",
+  "generated_at": "2026-06-14T13:00:09.857555+00:00",
   "context": "replanning_context",
-  "today": "2026-06-11",
-  "warnings": [],
-  "stale_capabilities": [],
+  "today": "2026-06-14",
+  "warnings": [
+    "athlete_state: datos potencialmente desactualizados.",
+    "progression_state: datos potencialmente desactualizados.",
+    "training_paces: datos potencialmente desactualizados."
+  ],
+  "stale_capabilities": [
+    "athlete_state",
+    "progression_state",
+    "training_paces"
+  ],
   "capabilities": [
     {
       "name": "athlete_state",
       "attempted_refresh": false,
       "refreshed": false,
-      "stale": false,
-      "warning": null,
+      "stale": true,
+      "warning": "athlete_state: datos potencialmente desactualizados.",
       "error": null
     },
     {
       "name": "progression_state",
       "attempted_refresh": false,
       "refreshed": false,
-      "stale": false,
-      "warning": null,
+      "stale": true,
+      "warning": "progression_state: datos potencialmente desactualizados.",
       "error": null
     },
     {
       "name": "training_paces",
       "attempted_refresh": false,
       "refreshed": false,
-      "stale": false,
-      "warning": null,
+      "stale": true,
+      "warning": "training_paces: datos potencialmente desactualizados.",
       "error": null
     },
     {
@@ -179,13 +187,13 @@
   ],
   "race_today": null,
   "coach": {
-    "as_of": "2026-06-11",
+    "as_of": "2026-06-14",
     "status": "yellow",
     "action": "maintain_with_caution",
     "recommendation": "Mantener estructura, pero sin subir volumen ni intensidad hasta ver 2-3 sesiones faciles estables."
   },
   "athlete_state": {
-    "generated_at": "2026-06-11T18:37:46.441693+00:00",
+    "generated_at": "2026-06-14T12:57:05.511722+00:00",
     "source_of_truth": "system/state/athlete_state.json",
     "identity": {
       "id": "main",
@@ -221,13 +229,13 @@
             "Work schedule 07:30-15:00"
           ],
           "garmin_training_days": [
-            "WEDNESDAY",
             "FRIDAY",
-            "SATURDAY",
-            "THURSDAY",
             "SUNDAY",
+            "THURSDAY",
+            "SATURDAY",
+            "MONDAY",
             "TUESDAY",
-            "MONDAY"
+            "WEDNESDAY"
           ],
           "garmin_preferred_long_training_days": [
             "SUNDAY"
@@ -238,7 +246,7 @@
         },
         "data_sources": {
           "garmin": {
-            "last_sync": "2026-06-11T18:37:45.251542Z",
+            "last_sync": "2026-06-14T12:56:37.942266Z",
             "profile_snapshot": "training/completed/imports/garmin/profile/athlete_profile_snapshot.json"
           }
         }
@@ -255,8 +263,8 @@
         "stress_notes": null,
         "recovery_notes": "General sensations recently poor, but the 2026-06-10 2 km test run did not leave next-day pain; only mild provoked tension remains in the left shin area.",
         "garmin_metrics": {
-          "last_sync": "2026-06-11T18:37:45.251542Z",
-          "resting_hr": 53,
+          "last_sync": "2026-06-14T12:56:37.942266Z",
+          "resting_hr": 57,
           "max_hr": 199,
           "vo2max": 46.0,
           "lactate_threshold_hr": 191
@@ -264,7 +272,7 @@
       },
       "zones": {
         "heart_rate": {
-          "resting_hr": 53,
+          "resting_hr": 57,
           "max_hr": 199,
           "threshold_hr": 191,
           "z0": "<132",
@@ -309,7 +317,7 @@
         },
         "data_sources": {
           "garmin": {
-            "last_sync": "2026-06-11T18:37:45.251542Z",
+            "last_sync": "2026-06-14T12:56:37.942266Z",
             "profile_snapshot": "training/completed/imports/garmin/profile/athlete_profile_snapshot.json"
           }
         }
@@ -556,7 +564,7 @@
       }
     },
     "coach": {
-      "as_of": "2026-06-11",
+      "as_of": "2026-06-14",
       "status": "yellow",
       "action": "maintain_with_caution",
       "recommendation": "Mantener estructura, pero sin subir volumen ni intensidad hasta ver 2-3 sesiones faciles estables.",
@@ -623,22 +631,17 @@
           }
         ],
         "next_workouts": []
-      }
+      },
+      "workout_family_response": []
     },
     "garmin": {
-      "profile_synced_at": "2026-06-11T18:37:45.251542Z",
-      "latest_activity_import_at": "2026-06-11T18:37:46.293139Z",
-      "latest_daily_import_at": "2026-06-11T18:37:43.063739Z",
+      "profile_synced_at": "2026-06-14T12:56:37.942266Z",
+      "latest_activity_import_at": "2026-06-14T12:57:05.361710Z",
+      "latest_daily_import_at": "2026-06-14T12:56:36.255016Z",
       "latest_activity_ids": [
-        23203823134,
-        23201148301,
-        23192634658,
-        23178472430
+        23216229033
       ],
       "latest_daily_days": [
-        "2026-05-28",
-        "2026-05-29",
-        "2026-05-30",
         "2026-05-31",
         "2026-06-01",
         "2026-06-02",
@@ -650,13 +653,16 @@
         "2026-06-08",
         "2026-06-09",
         "2026-06-10",
-        "2026-06-11"
+        "2026-06-11",
+        "2026-06-12",
+        "2026-06-13",
+        "2026-06-14"
       ],
       "daily_metrics": {
-        "latest_date": "2026-06-11",
+        "latest_date": "2026-06-14",
         "latest_hrv": 137864769.0,
         "latest_training_readiness": 137864769.0,
-        "latest_resting_heart_rate": 53.0,
+        "latest_resting_heart_rate": 57.0,
         "latest_training_status": {
           "userId": 137864769,
           "mostRecentVO2Max": {
@@ -671,33 +677,33 @@
             },
             "cycling": null,
             "heatAltitudeAcclimation": {
-              "calendarDate": "2026-06-11",
-              "altitudeAcclimationDate": "2026-06-10",
-              "previousAltitudeAcclimationDate": "2026-06-10",
-              "heatAcclimationDate": "2026-06-10",
-              "previousHeatAcclimationDate": "2026-06-10",
+              "calendarDate": "2026-06-14",
+              "altitudeAcclimationDate": "2026-06-13",
+              "previousAltitudeAcclimationDate": "2026-06-13",
+              "heatAcclimationDate": "2026-06-13",
+              "previousHeatAcclimationDate": "2026-06-12",
               "altitudeAcclimation": 0,
               "previousAltitudeAcclimation": 0,
               "heatAcclimationPercentage": 1,
-              "previousHeatAcclimationPercentage": 2,
-              "heatTrend": "DEACCLIMATIZING",
+              "previousHeatAcclimationPercentage": 1,
+              "heatTrend": "ACCLIMATIZED",
               "altitudeTrend": null,
               "currentAltitude": 0,
               "previousAltitude": 0,
               "acclimationPercentage": 0,
               "previousAcclimationPercentage": 0,
-              "altitudeAcclimationLocalTimestamp": "2026-06-11T00:03:27.0"
+              "altitudeAcclimationLocalTimestamp": "2026-06-14T00:03:27.0"
             }
           },
           "mostRecentTrainingLoadBalance": {
             "userId": 137864769,
             "metricsTrainingLoadBalanceDTOMap": {
               "3621896103": {
-                "calendarDate": "2026-06-11",
+                "calendarDate": "2026-06-14",
                 "deviceId": 3621896103,
-                "monthlyLoadAerobicLow": 940.39075,
-                "monthlyLoadAerobicHigh": 711.74243,
-                "monthlyLoadAnaerobic": 311.98096,
+                "monthlyLoadAerobicLow": 873.93115,
+                "monthlyLoadAerobicHigh": 571.0513,
+                "monthlyLoadAnaerobic": 232.5163,
                 "monthlyLoadAerobicLowTargetMin": 396,
                 "monthlyLoadAerobicLowTargetMax": 1048,
                 "monthlyLoadAerobicHighTargetMin": 800,
@@ -721,11 +727,11 @@
             "userId": 137864769,
             "latestTrainingStatusData": {
               "3621896103": {
-                "calendarDate": "2026-06-11",
+                "calendarDate": "2026-06-14",
                 "sinceDate": "2026-06-02",
                 "weeklyTrainingLoad": null,
                 "trainingStatus": 5,
-                "timestamp": 1781156080000,
+                "timestamp": 1781430417000,
                 "deviceId": 3621896103,
                 "loadTunnelMin": null,
                 "loadTunnelMax": null,
@@ -737,14 +743,14 @@
                 "trainingStatusFeedbackPhrase": "RECOVERY_2",
                 "trainingPaused": false,
                 "acuteTrainingLoadDTO": {
-                  "acwrPercent": 16,
+                  "acwrPercent": 8,
                   "acwrStatus": "LOW",
                   "acwrStatusFeedback": "FEEDBACK_1",
-                  "dailyTrainingLoadAcute": 200,
-                  "maxTrainingLoadChronic": 684.0,
-                  "minTrainingLoadChronic": 364.8,
-                  "dailyTrainingLoadChronic": 456,
-                  "dailyAcuteChronicWorkloadRatio": 0.4
+                  "dailyTrainingLoadAcute": 108,
+                  "maxTrainingLoadChronic": 573.0,
+                  "minTrainingLoadChronic": 305.6,
+                  "dailyTrainingLoadChronic": 382,
+                  "dailyAcuteChronicWorkloadRatio": 0.2
                 },
                 "primaryTrainingDevice": true
               }
@@ -758,7 +764,7 @@
               }
             ],
             "showSelector": false,
-            "lastPrimarySyncDate": "2026-06-11"
+            "lastPrimarySyncDate": "2026-06-14"
           },
           "heatAltitudeAcclimationDTO": null
         }
@@ -781,7 +787,7 @@
         "last_processed_activity_id": 22335799805,
         "last_processed_activity_date": "2026-03-29",
         "last_processed_at": "2026-06-11T12:25:08.864637+00:00",
-        "last_successful_run": "2026-06-11T18:37:46.383891+00:00",
+        "last_successful_run": "2026-06-14T12:57:05.453008+00:00",
         "last_error": null,
         "next_action": "wait_for_new_activity_or_feedback",
         "timer_interval_minutes": 5
@@ -954,7 +960,7 @@
       }
     },
     "post_workout_refresh": {
-      "last_successful_run": "2026-06-11T18:37:46.383891+00:00",
+      "last_successful_run": "2026-06-14T12:57:05.453008+00:00",
       "last_error": null,
       "last_processed_activity_date": "2026-03-29"
     },

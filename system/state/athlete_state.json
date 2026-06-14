@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-11T21:28:58.395270+00:00",
+  "generated_at": "2026-06-14T14:02:34.753064+00:00",
   "source_of_truth": "system/state/athlete_state.json",
   "identity": {
     "id": "main",
@@ -52,7 +52,7 @@
       },
       "data_sources": {
         "garmin": {
-          "last_sync": "2026-06-11T21:28:57.476681Z",
+          "last_sync": "2026-06-14T13:58:43.710505Z",
           "profile_snapshot": "training/completed/imports/garmin/profile/athlete_profile_snapshot.json"
         }
       }
@@ -69,8 +69,8 @@
       "stress_notes": null,
       "recovery_notes": "General sensations recently poor, but the 2026-06-10 2 km test run did not leave next-day pain; only mild provoked tension remains in the left shin area.",
       "garmin_metrics": {
-        "last_sync": "2026-06-11T21:28:57.476681Z",
-        "resting_hr": 53,
+        "last_sync": "2026-06-14T13:58:43.710505Z",
+        "resting_hr": 57,
         "max_hr": 199,
         "vo2max": 46.0,
         "lactate_threshold_hr": 191
@@ -78,7 +78,7 @@
     },
     "zones": {
       "heart_rate": {
-        "resting_hr": 53,
+        "resting_hr": 57,
         "max_hr": 199,
         "threshold_hr": 191,
         "z0": "<132",
@@ -123,7 +123,7 @@
       },
       "data_sources": {
         "garmin": {
-          "last_sync": "2026-06-11T21:28:57.476681Z",
+          "last_sync": "2026-06-14T13:58:43.710505Z",
           "profile_snapshot": "training/completed/imports/garmin/profile/athlete_profile_snapshot.json"
         }
       }
@@ -370,7 +370,7 @@
     }
   },
   "coach": {
-    "as_of": "2026-06-11",
+    "as_of": "2026-06-14",
     "status": "yellow",
     "action": "maintain_with_caution",
     "recommendation": "Mantener estructura, pero sin subir volumen ni intensidad hasta ver 2-3 sesiones faciles estables.",
@@ -437,30 +437,17 @@
         }
       ],
       "next_workouts": []
-    }
+    },
+    "workout_family_response": []
   },
   "garmin": {
-    "profile_synced_at": "2026-06-11T21:28:57.476681Z",
-    "latest_activity_import_at": "2026-06-11T21:28:32.342659Z",
-    "latest_daily_import_at": "2026-06-11T21:28:55.561745Z",
+    "profile_synced_at": "2026-06-14T13:58:43.710505Z",
+    "latest_activity_import_at": "2026-06-14T14:02:34.593685Z",
+    "latest_daily_import_at": "2026-06-14T13:58:42.059532Z",
     "latest_activity_ids": [
-      23216229033,
-      23203823134,
-      23201148301,
-      23192634658,
-      23178472430,
-      23141074036,
-      23117118586,
-      23108592340,
-      23083515075,
-      23070751559,
-      23060084660,
-      23045517009
+      23216229033
     ],
     "latest_daily_days": [
-      "2026-05-28",
-      "2026-05-29",
-      "2026-05-30",
       "2026-05-31",
       "2026-06-01",
       "2026-06-02",
@@ -472,13 +459,16 @@
       "2026-06-08",
       "2026-06-09",
       "2026-06-10",
-      "2026-06-11"
+      "2026-06-11",
+      "2026-06-12",
+      "2026-06-13",
+      "2026-06-14"
     ],
     "daily_metrics": {
-      "latest_date": "2026-06-11",
+      "latest_date": "2026-06-14",
       "latest_hrv": 137864769.0,
       "latest_training_readiness": 137864769.0,
-      "latest_resting_heart_rate": 53.0,
+      "latest_resting_heart_rate": 57.0,
       "latest_training_status": {
         "userId": 137864769,
         "mostRecentVO2Max": {
@@ -493,33 +483,33 @@
           },
           "cycling": null,
           "heatAltitudeAcclimation": {
-            "calendarDate": "2026-06-11",
-            "altitudeAcclimationDate": "2026-06-11",
-            "previousAltitudeAcclimationDate": "2026-06-11",
-            "heatAcclimationDate": "2026-06-11",
-            "previousHeatAcclimationDate": "2026-06-10",
+            "calendarDate": "2026-06-14",
+            "altitudeAcclimationDate": "2026-06-13",
+            "previousAltitudeAcclimationDate": "2026-06-13",
+            "heatAcclimationDate": "2026-06-13",
+            "previousHeatAcclimationDate": "2026-06-12",
             "altitudeAcclimation": 0,
             "previousAltitudeAcclimation": 0,
             "heatAcclimationPercentage": 1,
-            "previousHeatAcclimationPercentage": 2,
-            "heatTrend": "DEACCLIMATIZING",
+            "previousHeatAcclimationPercentage": 1,
+            "heatTrend": "ACCLIMATIZED",
             "altitudeTrend": null,
             "currentAltitude": 0,
             "previousAltitude": 0,
             "acclimationPercentage": 0,
             "previousAcclimationPercentage": 0,
-            "altitudeAcclimationLocalTimestamp": "2026-06-11T22:19:24.0"
+            "altitudeAcclimationLocalTimestamp": "2026-06-14T00:03:27.0"
           }
         },
         "mostRecentTrainingLoadBalance": {
           "userId": 137864769,
           "metricsTrainingLoadBalanceDTOMap": {
             "3621896103": {
-              "calendarDate": "2026-06-11",
+              "calendarDate": "2026-06-14",
               "deviceId": 3621896103,
-              "monthlyLoadAerobicLow": 955.29346,
-              "monthlyLoadAerobicHigh": 711.74243,
-              "monthlyLoadAnaerobic": 311.98096,
+              "monthlyLoadAerobicLow": 873.93115,
+              "monthlyLoadAerobicHigh": 571.0513,
+              "monthlyLoadAnaerobic": 232.5163,
               "monthlyLoadAerobicLowTargetMin": 396,
               "monthlyLoadAerobicLowTargetMax": 1048,
               "monthlyLoadAerobicHighTargetMin": 800,
@@ -543,11 +533,11 @@
           "userId": 137864769,
           "latestTrainingStatusData": {
             "3621896103": {
-              "calendarDate": "2026-06-11",
+              "calendarDate": "2026-06-14",
               "sinceDate": "2026-06-02",
               "weeklyTrainingLoad": null,
               "trainingStatus": 5,
-              "timestamp": 1781209164000,
+              "timestamp": 1781430417000,
               "deviceId": 3621896103,
               "loadTunnelMin": null,
               "loadTunnelMax": null,
@@ -559,14 +549,14 @@
               "trainingStatusFeedbackPhrase": "RECOVERY_2",
               "trainingPaused": false,
               "acuteTrainingLoadDTO": {
-                "acwrPercent": 16,
+                "acwrPercent": 8,
                 "acwrStatus": "LOW",
                 "acwrStatusFeedback": "FEEDBACK_1",
-                "dailyTrainingLoadAcute": 219,
-                "maxTrainingLoadChronic": 690.0,
-                "minTrainingLoadChronic": 368.0,
-                "dailyTrainingLoadChronic": 460,
-                "dailyAcuteChronicWorkloadRatio": 0.4
+                "dailyTrainingLoadAcute": 108,
+                "maxTrainingLoadChronic": 573.0,
+                "minTrainingLoadChronic": 305.6,
+                "dailyTrainingLoadChronic": 382,
+                "dailyAcuteChronicWorkloadRatio": 0.2
               },
               "primaryTrainingDevice": true
             }
@@ -580,7 +570,7 @@
             }
           ],
           "showSelector": false,
-          "lastPrimarySyncDate": "2026-06-11"
+          "lastPrimarySyncDate": "2026-06-14"
         },
         "heatAltitudeAcclimationDTO": null
       }
@@ -603,7 +593,7 @@
       "last_processed_activity_id": 22335799805,
       "last_processed_activity_date": "2026-03-29",
       "last_processed_at": "2026-06-11T12:25:08.864637+00:00",
-      "last_successful_run": "2026-06-11T21:28:57.815967+00:00",
+      "last_successful_run": "2026-06-14T14:02:34.684808+00:00",
       "last_error": null,
       "next_action": "wait_for_new_activity_or_feedback",
       "timer_interval_minutes": 5

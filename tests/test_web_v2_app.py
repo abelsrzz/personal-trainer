@@ -90,6 +90,10 @@ from scripts.web_v2 import app
 
 
 class WebV2Tests(unittest.TestCase):
+    def test_humanize_ui_label_translates_internal_states(self) -> None:
+        self.assertEqual(app.humanize_ui_label("hold_or_reduce"), "Mantener o reducir")
+        self.assertEqual(app.clean_ui_text("`Bloque actual`"), "Bloque actual")
+
     def test_aerobic_target_hr_values_derive_from_z2_band(self) -> None:
         with mock.patch.object(app.portal_core, "load_yaml", return_value={"zones": {"heart_rate": {"z2": "145-160"}}}):
             self.assertEqual(app.aerobic_target_hr_values(), [145, 153, 160])
@@ -300,6 +304,25 @@ class WebV2Tests(unittest.TestCase):
         ):
             payload = app.plan_page_data()
         self.assertEqual(payload["aerobic_trend_chart"]["target_hrs"], [145, 153, 160])
+
+    def test_athlete_page_data_exposes_zones_for_ui(self) -> None:
+        athlete_payload = {
+            "profile": {"name": "A", "age": 1, "city": "C", "availability": {"days_per_week": 4}},
+            "health": {},
+            "shoes": [],
+            "impact_return": {},
+            "hybrid_training": {},
+            "training_paces": {},
+            "coach_permissions": {},
+            "replanning": {},
+        }
+        with (
+            mock.patch.object(app.portal_core, "athlete_page_data", return_value=athlete_payload),
+            mock.patch.object(app.portal_core, "fueling_page_data", return_value={"supplements": [], "generated_at": None}),
+            mock.patch.object(app.portal_core, "load_optional_yaml", return_value={"zones": {"heart_rate": {"z2": "145-160"}}}),
+        ):
+            payload = app.athlete_page_data()
+        self.assertEqual(payload["zones"]["heart_rate"]["z2"], "145-160")
 
 
 if __name__ == "__main__":

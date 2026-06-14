@@ -1,0 +1,10 @@
+[Unit]
+Description=Send the Running Coach morning brief every day
+
+[Timer]
+OnCalendar=*-*-* 07:30:00
+Unit=running-coach-morning-brief.service
+Persistent=true
+
+[Install]
+WantedBy=timers.target

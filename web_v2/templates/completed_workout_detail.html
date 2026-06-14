@@ -7,8 +7,8 @@
 <section class="hero-card">
   <div>
     <p class="eyebrow">Completado</p>
-    <h1>{{ page.review.name }}</h1>
-    <p class="lede">{{ page.review.feedback_summary or page.review.compliance_note }}</p>
+    <h1>{{ page.review.name|clean_text }}</h1>
+    <p class="lede">{{ (page.review.feedback_summary or page.review.compliance_note)|clean_text }}</p>
   </div>
   <div class="hero-badges">
     <span class="badge">{{ page.review.date }}</span>
@@ -20,7 +20,7 @@
 
 <section class="grid grid-4">
   <article class="panel"><p class="eyebrow">Score</p><h2>{{ page.review.score }}/10</h2></article>
-  <article class="panel"><p class="eyebrow">Riesgo</p><h2>{{ page.review.risk_level }}</h2></article>
+  <article class="panel"><p class="eyebrow">Riesgo</p><h2>{{ page.review.risk_level|humanize }}</h2></article>
   <article class="panel"><p class="eyebrow">FC media</p><h2>{{ page.review.avg_hr }}</h2></article>
   <article class="panel"><p class="eyebrow">Garmin</p>{% if page.review.garmin_activity_url %}<a class="text-link" href="{{ page.review.garmin_activity_url }}" target="_blank" rel="noreferrer">Abrir actividad</a>{% else %}<p class="muted">Sin enlace</p>{% endif %}</article>
 </section>
@@ -31,7 +31,7 @@
     <div class="recovery-copy">
       <p class="eyebrow">Recovery Pulse</p>
       <h2>Recuperación de pulso</h2>
-      <p class="recovery-summary">{{ recovery.get('summary') }}</p>
+      <p class="recovery-summary">{{ recovery.get('summary')|clean_text }}</p>
     </div>
     <div class="recovery-kpis">
       <article class="recovery-kpi-card is-primary">
@@ -87,7 +87,7 @@
   <article class="panel">
     <p class="eyebrow">Revisión automática</p>
     <h2>Qué salió bien, qué no y cómo afecta</h2>
-    <p class="review-paragraph">{{ page.review.automated_review_summary or page.review.compliance_note }}</p>
+    <p class="review-paragraph">{{ (page.review.automated_review_summary or page.review.compliance_note)|clean_text }}</p>
   </article>
 
   <article class="panel">
@@ -106,7 +106,7 @@
     <p class="eyebrow">Lectura rápida</p>
     <h2>Resumen y cumplimiento</h2>
     <div class="stack-list">
-      <div class="detail-row-card static-row"><strong>Semáforo</strong><span class="calendar-metric">{{ page.review.traffic_light }}</span></div>
+      <div class="detail-row-card static-row"><strong>Semáforo</strong><span class="calendar-metric">{{ page.review.traffic_light|humanize }}</span></div>
       <div class="detail-row-card static-row"><strong>Dentro de zona</strong><span class="calendar-metric">{{ ("%.1f"|format(compliance.get('pct_in_hr_zone')) ~ "%") if compliance.get('pct_in_hr_zone') is not none else "-" }}</span></div>
       <div class="detail-row-card static-row"><strong>Por encima</strong><span class="calendar-metric">{{ ("%.1f"|format(compliance.get('pct_above_hr_zone')) ~ "%") if compliance.get('pct_above_hr_zone') is not none else "-" }}</span></div>
       <div class="detail-row-card static-row"><strong>Diff distancia</strong><span class="calendar-metric">{{ (compliance.get('distance_diff_m') ~ " m") if compliance.get('distance_diff_m') is not none else "-" }}</span></div>
@@ -118,9 +118,9 @@
 <section class="panel">
   <p class="eyebrow">Análisis</p>
   <h2>Progresión detectada</h2>
-  <p>{{ progression.get('summary') or 'Sin comparación suficiente.' }}</p>
+  <p>{{ (progression.get('summary') or 'Sin comparación suficiente.')|clean_text }}</p>
   <div class="tag-row">
-    <span class="mini-tag">Tendencia {{ progression.get('trend') or '-' }}</span>
+    <span class="mini-tag">Tendencia {{ progression.get('trend')|humanize }}</span>
     <span class="mini-tag">Comparables {{ progression.get('comparable_count') if progression.get('comparable_count') is not none else '-' }}</span>
   </div>
 </section>

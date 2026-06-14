@@ -5,6 +5,15 @@ telegram:
   allowed_chat_ids:
     - 123456789
 
+notifications:
+  enabled: true
+  timezone: Europe/Madrid
+  morning_brief_time: "07:30"
+  quiet_hours_start: "23:00"
+  quiet_hours_end: "07:00"
+  status_chat_ids:
+    - 123456789
+
 opencode_remote:
   enabled: true
   server_url: http://127.0.0.1:4096

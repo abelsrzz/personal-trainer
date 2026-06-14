@@ -228,11 +228,17 @@ Comandos utiles desde Telegram:
 
 - `/status`: muestra `planning/coach_decision.md`.
 - `/dashboard`: muestra `athlete/status_dashboard.md`.
+- `/today`: devuelve el briefing actual del dia.
+- `/brief`: devuelve el briefing del entrenador bajo demanda.
+- `/pre`: devuelve la decision pre-entreno de hoy.
 - `/model`: muestra el modelo activo.
 - `/model openai/gpt-5.4`: cambia el modelo del chat.
 - `/model reset`: vuelve al modelo por defecto.
-- `/sync`: ejecuta `coach_sync.py` contactando Garmin.
-- `/sync_local`: ejecuta `coach_sync.py --skip-garmin`.
+- `/sync`: ejecuta sincronizacion completa Garmin + estado del entrenador.
+- `/sync_local`: recalcula estado local sin contactar Garmin.
+- `/sync_planned`: reconcilia entrenamientos futuros con Garmin.
+- `/health`: muestra `system/state/automation_health.md`.
+- `/jobs`: muestra el estado de las automatizaciones.
 - `/week`: muestra la semana activa; en la web redirige a `planned-workouts?view=week`.
 - `/pdf_week`: genera y envia el PDF semanal.
 - `/git`: muestra `git status --short`.
@@ -244,6 +250,10 @@ Ejemplos de servicios `systemd`:
 
 - `deploy/systemd/opencode-server.service.example`
 - `deploy/systemd/opencode-telegram-bot.service.example`
+- `deploy/systemd/running-coach-automation.service.example`
+- `deploy/systemd/running-coach-automation.timer.example`
+- `deploy/systemd/running-coach-morning-brief.service.example`
+- `deploy/systemd/running-coach-morning-brief.timer.example`
 - `deploy/systemd/post-workout-refresh.service.example`
 - `deploy/systemd/post-workout-refresh.timer.example`
 
@@ -262,6 +272,24 @@ Este comando:
 - dispara el pipeline post-entreno para cada fecha nueva detectada
 
 En despliegue local, la via recomendada es usar el timer `systemd` de ejemplo para ejecutarlo cada `5 min`.
+
+Modo servicio recomendado:
+
+```bash
+source .venv/bin/activate
+python scripts/system/automation_hub.py status
+python scripts/system/action_runtime.py run service_sync --payload-json '{}'
+python scripts/notifications/coach_messages.py send-morning-brief --force
+```
+
+El servicio continuo esperado combina:
+
+- `opencode serve` para el canal remoto
+- bot de Telegram
+- `automation_hub.py run-due` cada pocos minutos
+- briefing diario por Telegram cada manana
+- sincronizacion recurrente Garmin y reconciliacion de entrenos futuros
+- mensaje post-entreno cuando se detecta actividad nueva y se actualiza el estado
 
 ## Portal Web
 

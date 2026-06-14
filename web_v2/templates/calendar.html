@@ -1,9 +1,9 @@
 {% extends "base.html" %}
-{% block title %}Calendar | RunPilot Next{% endblock %}
+{% block title %}Calendario | RunPilot Next{% endblock %}
 {% block content %}
 <section class="hero-card compact-hero">
   <div>
-    <p class="eyebrow">Calendar</p>
+    <p class="eyebrow">Calendario</p>
     <h1>{{ page.selected_label }}</h1>
     <p class="lede">Un mes resumido por estado de día: qué importa, qué está resuelto y dónde hay conflicto.</p>
   </div>
@@ -11,6 +11,13 @@
     <a class="link-button subtle" href="/calendar?month={{ page.prev_month }}&focus={{ page.focus }}">Mes anterior</a>
     <a class="link-button subtle" href="/calendar?month={{ page.next_month }}&focus={{ page.focus }}">Mes siguiente</a>
   </div>
+</section>
+
+<section class="grid grid-4 metric-grid">
+  <article class="panel"><p class="eyebrow">Planificadas</p><h2>{{ page.month_summary.planned if page.month_summary else '-' }}</h2><p class="muted">sesiones en el mes</p></article>
+  <article class="panel"><p class="eyebrow">Hechas</p><h2>{{ page.month_summary.completed if page.month_summary else '-' }}</h2><p class="muted">actividades registradas</p></article>
+  <article class="panel"><p class="eyebrow">Carreras</p><h2>{{ page.month_summary.races if page.month_summary else '-' }}</h2><p class="muted">eventos competitivos</p></article>
+  <article class="panel"><p class="eyebrow">Conflictos</p><h2>{{ page.month_summary.conflicts if page.month_summary else '-' }}</h2><p class="muted">días a revisar</p></article>
 </section>
 
 <section class="panel calendar-toolbar-panel">
@@ -24,6 +31,13 @@
     {% for item in page.focus_options %}
     <a class="focus-tab {{ 'active' if page.focus == item.key else '' }}" href="/calendar?month={{ page.selected }}&focus={{ item.key }}">{{ item.label }}</a>
     {% endfor %}
+  </div>
+  <div class="legend-row compact-legend">
+    <span class="legend-chip">Fácil</span>
+    <span class="legend-chip">Moderado</span>
+    <span class="legend-chip">Intenso</span>
+    <span class="legend-chip">Carrera</span>
+    <span class="legend-chip">Hecho ✓</span>
   </div>
 </section>
 

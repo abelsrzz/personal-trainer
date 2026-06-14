@@ -17,6 +17,14 @@ from telegram import Update
 from telegram.constants import ChatAction
 from telegram.ext import Application, ApplicationBuilder, CommandHandler, ContextTypes, MessageHandler, filters
 
+try:
+    from scripts.notifications.coach_messages import build_morning_brief_text
+    from scripts.system.pre_workout_decision import build_pre_workout_decision, format_pre_workout_decision
+except ModuleNotFoundError:  # pragma: no cover - direct script execution path fix
+    sys.path.append(str(Path(__file__).resolve().parents[2]))
+    from scripts.notifications.coach_messages import build_morning_brief_text
+    from scripts.system.pre_workout_decision import build_pre_workout_decision, format_pre_workout_decision
+
 from opencode_bridge import (
     DEFAULT_CONFIG_PATH,
     DEFAULT_OPENCODE_MODEL,
@@ -120,6 +128,18 @@ async def run_project_command(command: list[str], timeout_s: int = 1800) -> str:
     return prefix + output
 
 
+async def run_project_json_command(command: list[str], timeout_s: int = 1800) -> tuple[bool, dict[str, object], str]:
+    returncode, stdout, stderr = await run_command(command, ROOT, timeout_s)
+    raw = stdout or stderr or "(sin salida)"
+    if returncode != 0:
+        return False, {}, raw
+    try:
+        payload = json.loads(stdout or "{}")
+    except json.JSONDecodeError:
+        return True, {}, raw
+    return True, payload if isinstance(payload, dict) else {}, raw
+
+
 async def keep_chat_action(chat, action: ChatAction, interval_s: float = 4.0) -> None:
     while True:
         await chat.send_action(action)
@@ -155,8 +175,14 @@ Comandos disponibles:
 /model [modelo|reset] - ver o cambiar modelo OpenCode del chat
 /status - mostrar planning/coach_decision.md
 /dashboard - mostrar athlete/status_dashboard.md
-/sync [YYYY-MM-DD] - ejecutar coach_sync con Garmin
-/sync_local [YYYY-MM-DD] - ejecutar coach_sync sin contactar Garmin
+/today - briefing actual del dia
+/brief - enviar o reenviar briefing del entrenador
+/pre - decision pre-entreno de hoy
+/sync [YYYY-MM-DD] - sincronizacion completa Garmin + estado entrenador
+/sync_local [YYYY-MM-DD] - recalculo local sin contactar Garmin
+/sync_planned - reconciliar entrenos futuros con Garmin
+/health - estado operativo del servicio
+/jobs - estado de automatizaciones
 /week - mostrar planning/weeks/semana_actual.md
 /pdf_week - generar y enviar PDF semanal
 /git - git status --short
@@ -248,13 +274,40 @@ def command_date(context: ContextTypes.DEFAULT_TYPE) -> str:
     return date.today().isoformat()
 
 
+async def today(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if await reject_if_unauthorized(update, context):
+        return
+    await send_long_text(update, build_morning_brief_text())
+
+
+async def brief(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if await reject_if_unauthorized(update, context):
+        return
+    await send_long_text(update, build_morning_brief_text())
+
+
+async def pre(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if await reject_if_unauthorized(update, context):
+        return
+    await send_long_text(update, format_pre_workout_decision(build_pre_workout_decision(command_date(context))))
+
+
+def sync_summary_text(payload: dict[str, object], fallback: str) -> str:
+    if payload.get("summary"):
+        return str(payload.get("summary"))
+    return fallback
+
+
 async def sync(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if await reject_if_unauthorized(update, context):
         return
     day = command_date(context)
     await update.effective_chat.send_action(ChatAction.TYPING)
-    output = await run_project_command([sys.executable, "scripts/garmin/coach_sync.py", "--date", day], timeout_s=2400)
-    await send_long_text(update, output)
+    ok, payload, fallback = await run_project_json_command([sys.executable, "scripts/system/service_sync.py", "--date", day], timeout_s=3600)
+    text = sync_summary_text(payload, fallback)
+    if not ok:
+        text = f"Sync con errores.\n\n{text}"
+    await send_long_text(update, text)
 
 
 async def sync_local(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -262,9 +315,38 @@ async def sync_local(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
         return
     day = command_date(context)
     await update.effective_chat.send_action(ChatAction.TYPING)
-    output = await run_project_command(
-        [sys.executable, "scripts/garmin/coach_sync.py", "--date", day, "--skip-garmin"], timeout_s=1800
+    ok, payload, fallback = await run_project_json_command(
+        [sys.executable, "scripts/system/service_sync.py", "--date", day, "--skip-garmin"], timeout_s=2400
     )
+    text = sync_summary_text(payload, fallback)
+    if not ok:
+        text = f"Sync local con errores.\n\n{text}"
+    await send_long_text(update, text)
+
+
+async def sync_planned(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if await reject_if_unauthorized(update, context):
+        return
+    await update.effective_chat.send_action(ChatAction.TYPING)
+    ok, payload, fallback = await run_project_json_command(
+        [sys.executable, "scripts/system/action_runtime.py", "run", "sync_planned_workouts", "--payload-json", "{}"], timeout_s=2400
+    )
+    text = str((((payload.get("payload") or {}) if isinstance(payload.get("payload"), dict) else {}).get("raw_output")) or payload.get("message") or fallback)
+    if not ok:
+        text = f"Sync de planificados con errores.\n\n{text}"
+    await send_long_text(update, text)
+
+
+async def health(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if await reject_if_unauthorized(update, context):
+        return
+    await send_long_text(update, read_text_file(ROOT / "system" / "state" / "automation_health.md"))
+
+
+async def jobs(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if await reject_if_unauthorized(update, context):
+        return
+    output = await run_project_command([sys.executable, "scripts/system/automation_hub.py", "status"], timeout_s=120)
     await send_long_text(update, output)
 
 
@@ -420,10 +502,16 @@ def add_handlers(application: Application) -> None:
     application.add_handler(CommandHandler("model", model))
     application.add_handler(CommandHandler("status", status))
     application.add_handler(CommandHandler("dashboard", dashboard))
+    application.add_handler(CommandHandler("today", today))
+    application.add_handler(CommandHandler("brief", brief))
+    application.add_handler(CommandHandler("pre", pre))
     application.add_handler(CommandHandler("week", week))
     application.add_handler(CommandHandler("git", git_status))
     application.add_handler(CommandHandler("sync", sync))
     application.add_handler(CommandHandler("sync_local", sync_local))
+    application.add_handler(CommandHandler("sync_planned", sync_planned))
+    application.add_handler(CommandHandler("health", health))
+    application.add_handler(CommandHandler("jobs", jobs))
     application.add_handler(CommandHandler("pdf_week", pdf_week))
     application.add_handler(CommandHandler("confirm", confirm))
     application.add_handler(CommandHandler("cancel", cancel))

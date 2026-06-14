@@ -5,24 +5,24 @@
   <div>
     <p class="eyebrow">Día</p>
     <h1>{{ page.date_label }}</h1>
-    <p class="lede">{{ page.daily_summary.status_label }} · {{ page.links.planned_count }} plan · {{ page.links.completed_count }} hecho · {{ page.links.race_count }} carrera</p>
+    <p class="lede">{{ page.daily_summary.status_label|humanize }} · {{ page.links.planned_count }} plan · {{ page.links.completed_count }} hecho · {{ page.links.race_count }} carrera</p>
   </div>
   <div class="hero-badges">
-    <a class="link-button subtle" href="/calendar?month={{ page.date[:7] }}">Volver al calendar</a>
+    <a class="link-button subtle" href="/calendar?month={{ page.date[:7] }}">Volver al calendario</a>
   </div>
 </section>
 
 {% if page.today_plan %}
 <section class="panel emphasis-panel">
   <p class="eyebrow">Lectura del día</p>
-  <h2>{{ page.today_plan.status_label }}</h2>
-  <p>{{ page.today_plan.why_today }}</p>
+  <h2>{{ page.today_plan.status_label|humanize }}</h2>
+  <p>{{ page.today_plan.why_today|clean_text }}</p>
   <div class="tag-row">
     {% for item in page.today_plan.watchouts %}
-    <span class="mini-tag warn">{{ item }}</span>
+    <span class="mini-tag warn">{{ item|clean_text }}</span>
     {% endfor %}
     {% for item in page.today_plan.priorities %}
-    <span class="mini-tag">{{ item }}</span>
+    <span class="mini-tag">{{ item|clean_text }}</span>
     {% endfor %}
   </div>
 </section>
@@ -46,10 +46,10 @@
             </span>
             <span class="calendar-check {{ 'is-done' if workout.is_completed else '' }}">{{ '✓' if workout.is_completed else '' }}</span>
           </p>
-          <strong>{{ workout.name }}</strong>
-          <p>{{ workout.description or 'Sin descripción.' }}</p>
+          <strong>{{ workout.name|clean_text }}</strong>
+          <p>{{ (workout.description or 'Sin descripción.')|clean_text }}</p>
           {% if workout.replan and workout.replan.is_changed %}
-          <p class="muted">{{ workout.replan.summary }}</p>
+          <p class="muted">{{ workout.replan.summary|clean_text }}</p>
           {% endif %}
         </div>
         <div class="detail-row-meta">
@@ -81,9 +81,9 @@
             </span>
             <span class="calendar-check is-done">✓</span>
           </p>
-          <strong>{{ review.activity_name }}</strong>
+          <strong>{{ review.activity_name|clean_text }}</strong>
           <p>{{ review.distance_km }} km · {{ review.duration }} · {{ review.pace }}</p>
-          <p class="muted">{{ review.feedback_summary or review.compliance_note }}</p>
+          <p class="muted">{{ (review.feedback_summary or review.compliance_note)|clean_text }}</p>
         </div>
         <div class="detail-row-meta">
           <span class="calendar-metric">{{ review.sport_label }}</span>
@@ -109,21 +109,21 @@
     {% for item in page.comparison %}
     <div class="detail-row-card {{ 'status-green' if item.status == 'matched' else 'status-yellow' }} static-row">
       <div>
-        <strong>{{ item.planned_name }}</strong>
-        <p>Plan: {{ item.planned_kind_label }} · {{ item.planned_distance }} · {{ item.planned_duration }}</p>
-        <p><strong>Real:</strong> {{ item.actual_name }}</p>
-        <p class="muted">{{ item.result_note }}</p>
+        <strong>{{ item.planned_name|clean_text }}</strong>
+        <p>Plan: {{ item.planned_kind_label|humanize }} · {{ item.planned_distance }} · {{ item.planned_duration }}</p>
+        <p><strong>Real:</strong> {{ item.actual_name|clean_text }}</p>
+        <p class="muted">{{ item.result_note|clean_text }}</p>
         {% if item.deltas %}
         <div class="tag-row">
           {% for delta in item.deltas %}
-          <span class="mini-tag">{{ delta }}</span>
+          <span class="mini-tag">{{ delta|clean_text }}</span>
           {% endfor %}
         </div>
         {% endif %}
       </div>
       <div class="detail-row-meta">
-        <span class="calendar-metric">{{ item.badge.label }}</span>
-        <span class="calendar-metric">{{ item.result }}</span>
+        <span class="calendar-metric">{{ item.badge.label|humanize }}</span>
+        <span class="calendar-metric">{{ item.result|humanize }}</span>
       </div>
     </div>
     {% else %}
@@ -140,9 +140,9 @@
       {% for review in page.reviews %}
       <div class="detail-row-card static-row">
         <div>
-          <strong>{{ review.score }}/10 · {{ review.traffic_light }}</strong>
-          <p>Riesgo {{ review.risk_level }}</p>
-          <p class="muted">{{ review.compliance_note }}</p>
+          <strong>{{ review.score }}/10 · {{ review.traffic_light|humanize }}</strong>
+          <p>Riesgo {{ review.risk_level|humanize }}</p>
+          <p class="muted">{{ review.compliance_note|clean_text }}</p>
         </div>
       </div>
       {% else %}
@@ -164,9 +164,9 @@
             </span>
             <span class="calendar-check {{ 'is-done' if race.is_completed else '' }}">{{ '✓' if race.is_completed else '' }}</span>
           </p>
-          <strong>{{ race.name }}</strong>
+          <strong>{{ race.name|clean_text }}</strong>
           <p>{{ race.distance_km }} km · {{ race.location }}</p>
-          <p class="muted">{{ race.goal }}</p>
+          <p class="muted">{{ race.goal|clean_text }}</p>
         </div>
       </div>
       {% else %}

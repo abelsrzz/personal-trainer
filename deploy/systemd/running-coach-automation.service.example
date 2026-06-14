@@ -1,0 +1,12 @@
+[Unit]
+Description=Running Coach automation hub
+After=network.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/abel/Documentos/Proyectos/personal-trainer
+ExecStart=/home/abel/Documentos/Proyectos/personal-trainer/.venv/bin/python scripts/system/automation_hub.py run-due
+Environment=PATH=/home/abel/.opencode/bin:/home/abel/Documentos/Proyectos/personal-trainer/.venv/bin:/usr/local/bin:/usr/bin:/bin
+
+[Install]
+WantedBy=multi-user.target

@@ -7,15 +7,16 @@
 {% set training_pace_labels = training_paces.get('labels', {}) if training_paces else {} %}
 {% set bike_paces = training_paces.get('bike', {}) if training_paces else {} %}
 {% set hybrid_training = page.get('hybrid_training', {}) %}
+{% set heart_rate_zones = page.get('zones', {}).get('heart_rate', {}) if page.get('zones') else {} %}
 <section class="hero-card">
   <div>
     <p class="eyebrow">Atleta</p>
-    <h1>{{ page.athlete.profile.name }}</h1>
-    <p class="lede">Ficha compacta con perfil, material y catálogo de fueling, separada de la operativa diaria.</p>
+    <h1>{{ page.athlete.profile.name|clean_text }}</h1>
+    <p class="lede">Perfil operativo: disponibilidad, salud, zonas, ritmos y material útil para planificar sin ruido.</p>
   </div>
   <div class="hero-badges">
     <span class="badge">{{ page.athlete.profile.age }} años</span>
-    <span class="badge">{{ page.athlete.profile.weight_kg }} kg</span>
+    <span class="badge">Z2 {{ heart_rate_zones.get('z2', '145-160') }} ppm</span>
     <span class="badge">{{ page.athlete.profile.city }}</span>
   </div>
 </section>
@@ -24,22 +25,22 @@
   <article class="panel">
     <p class="eyebrow">Disponibilidad</p>
     <h2>{{ page.athlete.profile.availability.days_per_week }} d/sem</h2>
-    <p class="muted">{{ page.athlete.health.recovery_notes or 'Sin notas de recuperación.' }}</p>
+    <p class="muted">{{ (page.athlete.health.recovery_notes or 'Sin notas de recuperación.')|clean_text }}</p>
   </article>
   <article class="panel">
-    <p class="eyebrow">Salud</p>
+    <p class="eyebrow">Estado físico</p>
     <div class="tag-row">
       {% for item in page.athlete.health.current_issues %}
-      <span class="mini-tag warn">{{ item }}</span>
+      <span class="mini-tag warn">{{ item|clean_text }}</span>
       {% else %}
       <span class="mini-tag">Sin incidencias actuales</span>
       {% endfor %}
     </div>
   </article>
   <article class="panel">
-    <p class="eyebrow">Fueling</p>
-    <h2>{{ page.fueling.supplements|length }} productos</h2>
-    <p class="muted">Actualizado {{ page.fueling.generated_at|format_datetime }}</p>
+    <p class="eyebrow">Zona aeróbica</p>
+    <h2>{{ heart_rate_zones.get('z2', '145-160') }} ppm</h2>
+    <p class="muted">Techo Z2 usado para rodajes y gráfica aeróbica.</p>
   </article>
 </section>
 
@@ -48,13 +49,13 @@
     <div class="section-head">
       <div>
         <p class="eyebrow">Vuelta al impacto</p>
-        <h2>{{ impact_return.get('status') or '-' }}</h2>
+        <h2>{{ impact_return.get('status')|humanize }}</h2>
       </div>
     </div>
     <div class="stack-list">
       <div class="list-row static-row"><div><strong>Semana absorbida</strong><p>{{ impact_return.get('last_absorbed_week', {}).get('week', '-') }}</p></div><span>{{ impact_return.get('baseline_running_km') or 0 }} km</span></div>
       <div class="list-row static-row"><div><strong>Objetivo siguiente</strong><p>{{ impact_return.get('next_running_target_range_km', {}).get('min', '-') }} - {{ impact_return.get('next_running_target_range_km', {}).get('max', '-') }} km</p></div><span>+5%</span></div>
-      <div class="list-row static-row"><div><strong>Bloqueos</strong><p>{{ coach_permissions.get('blocked_dimensions', [])|join(', ') if coach_permissions.get('blocked_dimensions') else '-' }}</p></div><span>{{ coach_permissions.get('fartlek_frequency') or '-' }}</span></div>
+      <div class="list-row static-row"><div><strong>Bloqueos</strong><p>{{ coach_permissions.get('blocked_dimensions', [])|join(', ')|humanize if coach_permissions.get('blocked_dimensions') else '-' }}</p></div><span>{{ coach_permissions.get('fartlek_frequency')|humanize }}</span></div>
     </div>
   </article>
   <article class="panel">
@@ -107,8 +108,8 @@
       {% for shoe in page.athlete.shoes %}
       <div class="list-row static-row">
         <div>
-          <strong>{{ shoe.model }}</strong>
-          <p>{{ shoe.usage or '-' }}</p>
+          <strong>{{ shoe.model|clean_text }}</strong>
+          <p>{{ (shoe.usage or '-')|clean_text }}</p>
         </div>
         <span>{{ shoe.distance_km or 0 }} km</span>
       </div>
@@ -124,14 +125,14 @@
         <p class="eyebrow">Catálogo</p>
         <h2>Suplementación</h2>
       </div>
-      <a class="text-link" href="/atleta">Vista actual</a>
+      <span class="badge">{{ page.fueling.supplements|length }} productos</span>
     </div>
     <div class="stack-list">
       {% for item in page.fueling.supplements %}
       <div class="list-row static-row">
         <div>
-          <strong>{{ item.name }}</strong>
-          <p>{{ item.category }} · CHO {{ item.carbs_per_serving_g }} g · Na {{ item.sodium_mg }} mg</p>
+          <strong>{{ item.name|clean_text }}</strong>
+          <p>{{ item.category|humanize }} · CHO {{ item.carbs_per_serving_g }} g · Na {{ item.sodium_mg }} mg</p>
         </div>
         <span>{{ item.caffeine_mg }} mg</span>
       </div>

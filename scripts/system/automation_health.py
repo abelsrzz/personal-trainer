@@ -24,6 +24,7 @@ WEEKLY_PLANNING_STATE_PATH = ROOT / "system" / "state" / "weekly_planning_state.
 ATHLETE_STATE_PATH = ROOT / "system" / "state" / "athlete_state.json"
 COACH_DECISION_PATH = ROOT / "planning" / "coach_decision.json"
 GARMIN_RECONCILE_STATE_PATH = ROOT / "system" / "state" / "garmin_reconcile_state.json"
+TELEGRAM_NOTIFICATION_STATE_PATH = ROOT / "telegram" / "coach_notifications_state.json"
 
 
 def utcnow_iso() -> str:
@@ -78,6 +79,7 @@ def build_automation_health() -> dict[str, Any]:
     athlete_state = load_optional_json(ATHLETE_STATE_PATH, {})
     coach_decision = load_optional_json(COACH_DECISION_PATH, {})
     garmin_reconcile = load_optional_json(GARMIN_RECONCILE_STATE_PATH, {})
+    telegram_notifications = load_optional_json(TELEGRAM_NOTIFICATION_STATE_PATH, {})
     capabilities, warnings, errors = capabilities_status()
 
     if post_workout.get("last_error"):
@@ -132,6 +134,11 @@ def build_automation_health() -> dict[str, Any]:
                 "generated_at": garmin_reconcile.get("generated_at") if isinstance(garmin_reconcile, dict) else None,
                 "ok": garmin_reconcile.get("ok") if isinstance(garmin_reconcile, dict) else None,
                 "message": garmin_reconcile.get("message") if isinstance(garmin_reconcile, dict) else None,
+            },
+            "telegram_notifications": {
+                "last_morning_brief_date": telegram_notifications.get("last_morning_brief_date") if isinstance(telegram_notifications, dict) else None,
+                "last_morning_brief_at": telegram_notifications.get("last_morning_brief_at") if isinstance(telegram_notifications, dict) else None,
+                "post_workout_sent": len((telegram_notifications.get("post_workout_notifications") or {})) if isinstance(telegram_notifications, dict) else 0,
             },
         },
         "capabilities": capabilities,

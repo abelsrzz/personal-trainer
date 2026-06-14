@@ -186,6 +186,17 @@ button.link-button:disabled {
   background: linear-gradient(145deg, rgba(12, 24, 42, 0.98), rgba(8, 17, 30, 0.9));
 }
 
+.operational-hero {
+  background:
+    radial-gradient(circle at top right, rgba(114, 240, 194, 0.16), transparent 26%),
+    linear-gradient(145deg, rgba(12, 24, 42, 0.98), rgba(8, 17, 30, 0.92));
+}
+
+.priority-panel,
+.emphasis-panel {
+  border-color: rgba(114, 240, 194, 0.22);
+}
+
 .compact-hero {
   align-items: center;
 }
@@ -270,6 +281,15 @@ h2 {
   grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
+.metric-grid .panel h2 {
+  font-size: clamp(1.35rem, 2.8vw, 2rem);
+  letter-spacing: -0.04em;
+}
+
+.action-grid {
+  align-items: stretch;
+}
+
 .detail-grid,
 .compact-grid {
   align-items: start;
@@ -289,6 +309,15 @@ h2 {
 
 .chart-copy {
   margin-bottom: 16px;
+}
+
+.compact-legend {
+  margin-top: 16px;
+}
+
+.week-list .list-row:first-child {
+  border-color: rgba(114, 240, 194, 0.18);
+  background: rgba(114, 240, 194, 0.06);
 }
 
 .trend-chart {
@@ -355,6 +384,11 @@ h2 {
   border-radius: 18px;
   border: 1px solid rgba(255, 255, 255, 0.06);
   background: rgba(255, 255, 255, 0.02);
+}
+
+.status-chip {
+  border-color: rgba(114, 240, 194, 0.26);
+  background: var(--accent-soft);
 }
 
 .recovery-section {
@@ -1113,6 +1147,11 @@ h2 {
   .topbar {
     flex-wrap: wrap;
   }
+
+  .topnav {
+    order: 3;
+    width: 100%;
+  }
 }
 
 @media (max-width: 720px) {
@@ -1127,6 +1166,38 @@ h2 {
   .detail-row-card {
     flex-direction: column;
     align-items: start;
+  }
+
+  .topbar-actions {
+    width: 100%;
+  }
+
+  .garmin-sync-chip {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .topnav {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 2px;
+  }
+
+  .topnav a {
+    flex: 0 0 auto;
+  }
+
+  .hero-badges,
+  .tag-row {
+    width: 100%;
+  }
+
+  .trend-chart {
+    min-width: 620px;
+  }
+
+  .panel:has(.trend-chart) {
+    overflow-x: auto;
   }
 
   .detail-row-meta {

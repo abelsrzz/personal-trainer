@@ -4,8 +4,8 @@
 <section class="hero-card">
   <div>
     <p class="eyebrow">Eventos</p>
-    <h1>{{ page.next_race.name if page.next_race else 'Sin carrera próxima' }}</h1>
-    <p class="lede">{% if page.next_race %}{{ page.next_race.countdown }} · {{ page.next_race.date }} · {{ page.next_race.strategy.note }}{% else %}No hay carreras futuras cargadas ahora mismo.{% endif %}</p>
+    <h1>{{ (page.next_race.name if page.next_race else 'Sin carrera próxima')|clean_text }}</h1>
+    <p class="lede">{% if page.next_race %}{{ page.next_race.countdown }} · {{ page.next_race.date }} · {{ page.next_race.strategy.note|clean_text }}{% else %}No hay carreras futuras cargadas ahora mismo.{% endif %}</p>
   </div>
   <div class="hero-badges">
     <span class="badge">{{ page.upcoming|length }} futuras</span>
@@ -18,11 +18,12 @@
   <article class="panel"><p class="eyebrow">Countdown</p><h2>{{ page.next_race.countdown }}</h2><p class="muted">{{ page.next_race.date }}</p></article>
   <article class="panel"><p class="eyebrow">Predicción</p><h2>{{ page.next_race.predicted_time }}</h2><p class="muted">{{ page.next_race.predicted_pace }}</p></article>
   <article class="panel"><p class="eyebrow">Ancla</p><h2>{{ page.next_race.strategy.anchor }}</h2><p class="muted">Ritmo de referencia</p></article>
-  <article class="panel"><p class="eyebrow">Taper</p><h2>{{ page.next_race.taper.label }}</h2><p class="muted">{{ page.next_race.taper.summary }}</p></article>
+  <article class="panel"><p class="eyebrow">Taper</p><h2>{{ page.next_race.taper.label|humanize }}</h2><p class="muted">{{ page.next_race.taper.summary|clean_text }}</p></article>
 </section>
 {% endif %}
 
-<section class="panel">
+<section class="grid grid-2 detail-grid">
+<article class="panel">
   <div class="section-head">
     <div>
       <p class="eyebrow">Próximas</p>
@@ -33,19 +34,43 @@
     {% for race in page.upcoming %}
     <div class="list-row static-row race-row">
       <div>
-        <strong>{{ race.name }}</strong>
+        <strong>{{ race.name|clean_text }}</strong>
         <p>{{ race.date }} · {{ race.distance_km }} · prioridad {{ race.priority }}</p>
-        <p class="muted">{{ race.notes or race.coaching_note or 'Sin nota operativa adicional.' }}</p>
+        <p class="muted">{{ (race.notes or race.coaching_note or 'Sin nota operativa adicional.')|clean_text }}</p>
       </div>
       <div class="tag-row">
         <span class="mini-tag">{{ race.countdown }}</span>
         <span class="mini-tag">{{ race.predicted_time }}</span>
-        <span class="mini-tag warn">{{ race.taper.label }}</span>
+        <span class="mini-tag warn">{{ race.taper.label|humanize }}</span>
       </div>
     </div>
     {% else %}
     <div class="list-row static-row"><p class="muted">No hay carreras futuras registradas.</p></div>
     {% endfor %}
   </div>
+</article>
+
+<article class="panel">
+  <div class="section-head">
+    <div>
+      <p class="eyebrow">Cerradas</p>
+      <h2>Carreras ya ejecutadas</h2>
+    </div>
+  </div>
+  <div class="stack-list">
+    {% for race in page.completed %}
+    <div class="list-row static-row race-row">
+      <div>
+        <strong>{{ race.name|clean_text }}</strong>
+        <p>{{ race.date }} · {{ race.distance_km }} · prioridad {{ race.priority }}</p>
+        <p class="muted">{{ (race.notes or race.coaching_note or 'Sin nota final registrada.')|clean_text }}</p>
+      </div>
+      <span class="mini-tag">Cerrada</span>
+    </div>
+    {% else %}
+    <div class="list-row static-row"><p class="muted">Aún no hay carreras cerradas en esta vista.</p></div>
+    {% endfor %}
+  </div>
+</article>
 </section>
 {% endblock %}

@@ -1,16 +1,20 @@
 {
-  "generated_at": "2026-06-11T18:40:10.960671+00:00",
+  "generated_at": "2026-06-14T13:00:09.883606+00:00",
   "overall_status": "warning",
   "summary": "Sistema usable con advertencias o datos potencialmente stale.",
   "warnings": [
+    "Capability stale: athlete_profile",
+    "Capability stale: athlete_state",
     "Capability stale: daily_readiness",
     "Capability stale: post_workout_refresh",
-    "Capability stale: shoes_mileage"
+    "Capability stale: progression_state",
+    "Capability stale: shoes_mileage",
+    "Capability stale: training_paces"
   ],
   "errors": [],
   "services": {
     "post_workout_refresh": {
-      "last_successful_run": "2026-06-11T18:37:46.383891+00:00",
+      "last_successful_run": "2026-06-14T12:57:05.453008+00:00",
       "last_processed_activity_date": "2026-03-29",
       "last_error": null
     },
@@ -84,27 +88,32 @@
       }
     },
     "coach_state": {
-      "coach_as_of": "2026-06-11",
+      "coach_as_of": "2026-06-14",
       "coach_status": "yellow",
-      "athlete_state_generated_at": "2026-06-11T18:37:46.441693+00:00"
+      "athlete_state_generated_at": "2026-06-14T12:57:05.511722+00:00"
     },
     "garmin_reconcile": {
       "generated_at": "2026-06-11T17:42:27.959842Z",
       "ok": true,
       "message": "{\n  \"items\": [\n    {\n      \"file\": \"training/planned/workouts/2026-05-04_fuerza_general_suave_35min.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-05-05_rodaje_5km_reintroduccion.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-05-07_rodaje_6km_rectas_controladas.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-05-08_movilidad_estiramientos_30min.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-05-12_rodaje_6km_recuperacion.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-05-13_rodaje_7km_rectas_controladas.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-05-15_especifica_controlada_ordes.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-05-16_rodaje_5km_facil.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-05-17_rodaje_9km_continuidad.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-05-18_fuerza_general_suave_35min.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-05-19_rodaje_5km_reintroduccion.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-05-20_rodaje_6km_rectas_suaves.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-05-22_activacion_ritmo_carrera.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-05-23_shakeout_precarrera_4km.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-05-24_calentamiento_precarrera_ordes.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-05-25_movilidad_descarga_post_ordes_25min.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-05-26_rodaje_6km_recuperacion_post_ordes.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-05-27_fuerza_movilidad_tolerancia_35min.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-05-28_rodaje_7km_controlado.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-05-30_rodaje_6km_progresivo_suave.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-06-01_bicicleta_larga_comoda_100min.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-06-01_movilidad_tobillo_cadera_25min.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-06-02_bicicleta_z2_65min.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-06-03_fuerza_rehabilitadora_b_35min.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-06-04_bicicleta_bloque_medio_80min.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-06-06_bicicleta_aerobica_95min.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-06-07_bicicleta_larga_115min.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-06-08_movilidad_control_articular_25min.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-06-09_bicicleta_aerobica_80min.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-06-10_fuerza_rehabilitadora_a_35min.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-06-11_bicicleta_continua_90min.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-06-12_bicicleta_muy_suave_40min.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-06-13_bicicleta_larga_110min.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-06-14_bicicleta_larga_cierre_125min.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-06-15_movilidad_retorno_impacto_25min.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-06-16_trote_reintroduccion_2km.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-06-17_fuerza_rehabilitadora_b_35min.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-06-18_bicicleta_continua_80min.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-06-19_trote_control_2km.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-06-20_bicicleta_aerobica_95min_retorno.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-06-21_bicicleta_larga_110min_retorno.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-06-22_movilidad_pre_5k_20min.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-06-23_trote_consolidacion_2_5km.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-06-24_fuerza_rehabilitadora_b_35min.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-06-25_bicicleta_continua_70min.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-06-27_soltura_pre_5k_20min.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-06-28_calentamiento_pre_5k_el_canario.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    },\n    {\n      \"file\": \"training/planned/workouts/2026-06-28_vi_carreira_5k_el_canario_controlada.yaml\",\n      \"status\": \"skipped\",\n      \"message\": \"Sin cambios frente al ultimo upload registrado.\"\n    }\n  ],\n  \"synced\": 0,\n  \"deleted\": 0,\n  \"failed\": 0,\n  \"skipped\": 48\n}"
+    },
+    "telegram_notifications": {
+      "last_morning_brief_date": null,
+      "last_morning_brief_at": null,
+      "post_workout_sent": 0
     }
   },
   "capabilities": [
     {
       "name": "athlete_profile",
-      "stale": false,
-      "last_successful_sync": "2026-06-11T17:12:11.981236+00:00",
-      "last_attempted_sync": "2026-06-11T17:12:11.981236+00:00",
+      "stale": true,
+      "last_successful_sync": "2026-06-11T20:31:06.509486+00:00",
+      "last_attempted_sync": "2026-06-11T20:31:06.509486+00:00",
       "last_error": null
     },
     {
       "name": "athlete_state",
-      "stale": false,
+      "stale": true,
       "last_successful_sync": "2026-06-11T17:26:43.373175+00:00",
       "last_attempted_sync": "2026-06-11T17:26:43.373175+00:00",
       "last_error": null
@@ -112,8 +121,8 @@
     {
       "name": "coach_decision",
       "stale": false,
-      "last_successful_sync": "2026-06-11T17:47:06.480179+00:00",
-      "last_attempted_sync": "2026-06-11T17:47:06.480179+00:00",
+      "last_successful_sync": "2026-06-14T12:51:30.038417+00:00",
+      "last_attempted_sync": "2026-06-14T12:51:30.038417+00:00",
       "last_error": null
     },
     {
@@ -132,7 +141,7 @@
     },
     {
       "name": "progression_state",
-      "stale": false,
+      "stale": true,
       "last_successful_sync": "2026-06-11T17:26:43.373411+00:00",
       "last_attempted_sync": "2026-06-11T17:26:43.373411+00:00",
       "last_error": null
@@ -146,7 +155,7 @@
     },
     {
       "name": "training_paces",
-      "stale": false,
+      "stale": true,
       "last_successful_sync": "2026-06-11T17:26:43.373590+00:00",
       "last_attempted_sync": "2026-06-11T17:26:43.373590+00:00",
       "last_error": null

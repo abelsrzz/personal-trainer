@@ -52,9 +52,80 @@ app.add_middleware(
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
 
+
+TECHNICAL_LABELS = {
+    "hold_or_reduce": "Mantener o reducir",
+    "hold_running_progression": "Pausar progresión running",
+    "convert_second_quality_to_easy_or_bike": "Convertir calidad extra en fácil o bici",
+    "every_7_to_14_days_when_tolerated": "Cada 7-14 días si hay tolerancia",
+    "ready": "Listo",
+    "green": "Verde",
+    "yellow": "Precaución",
+    "red": "Alto riesgo",
+    "no_quality": "Sin calidad",
+    "sin calidad": "Sin calidad",
+    "easy": "Fácil",
+    "recovery": "Recuperación",
+    "moderate": "Moderado",
+    "hard": "Intenso",
+    "race": "Carrera",
+    "bike": "Bici",
+    "run": "Run",
+    "running progression": "Progresión running",
+    "cruise intervals": "Intervalos cruise",
+    "final recovery and controlled impact return": "Recuperación final y vuelta controlada al impacto",
+    "warmup": "Calentamiento",
+    "interval": "Bloque principal",
+    "cooldown": "Vuelta a la calma",
+    "recuperacion": "Recuperación",
+}
+
+
+def clean_ui_text(value: Any) -> str:
+    text = str(value or "").strip()
+    if not text:
+        return "-"
+    text = portal_core.strip_markdown_ticks(text)
+    text = text.replace("`", "").strip()
+    replacements = {
+        "Final recovery and controlled impact return": "Recuperación final y vuelta controlada al impacto",
+        "absorb Ordes, complete the final low-impact phase, then restart running from 2026-06-16 with conservative but real progression.": "Asimilar Ordes, cerrar la fase de bajo impacto y volver a correr desde 2026-06-16 con progresión conservadora pero real.",
+        "General sensations recently poor, but the 2026-06-10 2 km test run did not leave next-day pain; only mild provoked tension remains in the left shin area.": "Sensaciones generales recientes bajas, pero el test de 2 km del 2026-06-10 no dejó dolor al día siguiente; solo queda tensión leve provocada en la tibia izquierda.",
+        "Left shin periosteum improving; no pain after 2 km test run, but mild tension remains with exaggerated inward foot rotation": "Periostio tibial izquierdo mejorando; sin dolor tras el test de 2 km, con tensión leve solo al forzar rotación interna del pie.",
+        " to ": " a ",
+        "aerobico": "aeróbico",
+        "Aerobico": "Aeróbico",
+        "recuperacion": "recuperación",
+        "Recuperacion": "Recuperación",
+        "sesion": "sesión",
+        "Sesion": "Sesión",
+        "tension": "tensión",
+        "Tension": "Tensión",
+        "reintroduccion": "reintroducción",
+        "Reintroduccion": "Reintroducción",
+        "progresion": "progresión",
+        "Progresion": "Progresión",
+    }
+    for source, target in replacements.items():
+        text = text.replace(source, target)
+    return text or "-"
+
+
+def humanize_ui_label(value: Any) -> str:
+    text = clean_ui_text(value)
+    normalized = text.strip().lower()
+    if normalized in TECHNICAL_LABELS:
+        return TECHNICAL_LABELS[normalized]
+    if "_" in text and " " not in text:
+        text = text.replace("_", " ").strip()
+    return text[:1].upper() + text[1:] if text else "-"
+
+
 templates.env.filters["format_duration"] = portal_core.format_duration
 templates.env.filters["format_pace"] = portal_core.format_pace
 templates.env.filters["format_datetime"] = portal_core.format_datetime
+templates.env.filters["clean_text"] = clean_ui_text
+templates.env.filters["humanize"] = humanize_ui_label
 
 _garmin_sync_lock = threading.Lock()
 _garmin_sync_state: dict[str, Any] = {
@@ -998,8 +1069,10 @@ def events_page_data() -> dict[str, Any]:
 def athlete_page_data() -> dict[str, Any]:
     athlete = portal_core.athlete_page_data()
     fueling = portal_core.fueling_page_data()
+    zones = portal_core.load_optional_yaml(ROOT / "athlete" / "zones.yaml").get("zones", {})
     return {
         "athlete": athlete,
+        "zones": zones,
         "impact_return": athlete.get("impact_return", {}),
         "hybrid_training": athlete.get("hybrid_training", {}),
         "training_paces": athlete.get("training_paces", {}),

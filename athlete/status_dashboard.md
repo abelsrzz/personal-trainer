@@ -1,6 +1,6 @@
 # Athlete Status Dashboard
 
-- Fecha de analisis: `2026-06-11`
+- Fecha de analisis: `2026-06-14`
 - Estado: `yellow`
 - Accion recomendada: `maintain_with_caution`
 - Recomendacion: Mantener estructura, pero sin subir volumen ni intensidad hasta ver 2-3 sesiones faciles estables.
@@ -9,7 +9,7 @@
 
 - Ultimos 7 dias: `2.0 km`, `1` carreras, `0` exigentes, tirada larga `2.0 km`.
 - Ultima semana completa: `0.0 km` vs semana previa `0.0 km` (`-`).
-- Ultimos 28 dias: `32.0 km`, `6` carreras, media `8.0 km/sem`.
+- Ultimos 28 dias: `19.4 km`, `4` carreras, media `4.8 km/sem`.
 - Ritmo medio 7d: `6:33/km`, FC media `154.0`.
 - Ventana movil 7d vs 7d previos: `-`.
 
@@ -41,18 +41,18 @@
 - Resumen: Con la evidencia actual, 35:00 sigue siendo aspiracional y no prescribe ritmos.
 - Gates cumplidos: `0/4`
 
-- `NO` Base estable: Media 4 semanas 8.0 km/sem, tirada larga 8.4 km, alertas 4, periostio 1.
+- `NO` Base estable: Media 4 semanas 4.8 km/sem, tirada larga 8.4 km, alertas 3, periostio 1.
 - `NO` Umbral competitivo: Mejor 5k reciente: 22:16.
-- `NO` Precondicion 35:00: Media 8.0 km/sem, tirada 8.4 km, 5k 22:16, alertas 4.
+- `NO` Precondicion 35:00: Media 4.8 km/sem, tirada 8.4 km, 5k 22:16, alertas 3.
 - `NO` Seleccion 35:00: 5k 22:16, 10k 44:23.
 
 ## Checkpoints De Bloque
 
-- `OK` Fin rehabilitacion sin impacto: Volumen 8.0 km/sem, periostio 1, 5k 22:16.
-- `NO` Vuelta al impacto estable: Volumen 8.0 km/sem, periostio 1, 5k 22:16.
-- `NO` Base inicial repetible: Volumen 8.0 km/sem, periostio 1, 5k 22:16.
-- `NO` Umbral ya entrenable: Volumen 8.0 km/sem, periostio 1, 5k 22:16.
-- `NO` 35:00 todavia vivo: Volumen 8.0 km/sem, periostio 1, 5k 22:16.
+- `OK` Fin rehabilitacion sin impacto: Volumen 4.8 km/sem, periostio 1, 5k 22:16.
+- `NO` Vuelta al impacto estable: Volumen 4.8 km/sem, periostio 1, 5k 22:16.
+- `NO` Base inicial repetible: Volumen 4.8 km/sem, periostio 1, 5k 22:16.
+- `NO` Umbral ya entrenable: Volumen 4.8 km/sem, periostio 1, 5k 22:16.
+- `NO` 35:00 todavia vivo: Volumen 4.8 km/sem, periostio 1, 5k 22:16.
 
 ## Bandas Actuales
 
@@ -63,11 +63,10 @@
 
 ## Volumen Semanal
 
-- `2026-W20`: `12.6 km`, `2` carreras, `1` exigentes, tirada `7.6 km`.
 - `2026-W21`: `17.3 km`, `3` carreras, `3` exigentes, tirada `8.4 km`.
 - `2026-W24`: `2.0 km`, `1` carreras, `0` exigentes, tirada `2.0 km`.
 
 ## Datos Garmin Daily
 
 - Dias disponibles en ventana: `28`.
-- Ultimo dia diario importado: `2026-06-11`.
+- Ultimo dia diario importado: `2026-06-14`.

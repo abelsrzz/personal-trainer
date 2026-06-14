@@ -8,8 +8,8 @@
     "typeKey": "road_biking",
     "parentTypeId": 2,
     "isHidden": false,
-    "restricted": false,
-    "trimmable": true
+    "trimmable": true,
+    "restricted": false
   },
   "eventType": {
     "typeId": 9,
@@ -167,13 +167,13 @@
   "endTimeGMT": "2026-05-30 17:24:17",
   "qualifyingDive": false,
   "activityUUID": "e9e0d047-616f-4697-8b7b-69d58eb982be",
-  "autoCalcCalories": false,
-  "favorite": false,
-  "decoDive": false,
-  "elevationCorrected": false,
-  "atpActivity": false,
-  "purposeful": false,
-  "manualActivity": false,
   "pr": false,
-  "parent": false
+  "favorite": false,
+  "purposeful": false,
+  "parent": false,
+  "decoDive": false,
+  "manualActivity": false,
+  "autoCalcCalories": false,
+  "elevationCorrected": false,
+  "atpActivity": false
 }

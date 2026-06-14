@@ -1,0 +1,56 @@
+return_to_run_ladder:
+  version: 1
+  purpose: Structured impact reintroduction when recent absorbed running volume is still zero or fragile.
+  hard_gate:
+    max_shin_pain_green_band: 2
+    stop_if:
+      - pain rises above 2/10 during the run
+      - gait changes to protect the shin
+      - next-morning response is worse than the previous step
+  steps:
+    - id: test_run_10_15min
+      label: Test run 10-15 min easy
+      target:
+        duration_min: 15
+        intensity: easy_hr_cap_or_low_z2
+      progress_when:
+        - no pain during
+        - no pain after
+        - next morning remains 0-2/10
+    - id: run_2km_easy
+      label: 2 km easy continuous
+      target:
+        distance_km: 2
+        intensity: easy_hr_cap_or_low_z2
+      progress_when:
+        - no pain during
+        - no pain after
+        - next morning remains 0-2/10
+    - id: run_20min_easy
+      label: 20 min easy continuous
+      target:
+        duration_min: 20
+        intensity: easy_hr_cap_or_low_z2
+      progress_when:
+        - mechanics stay clean
+        - next morning remains 0-2/10
+    - id: run_25min_easy
+      label: 25 min easy continuous
+      target:
+        duration_min: 25
+        intensity: easy_hr_cap_or_low_z2
+      progress_when:
+        - mechanics stay clean
+        - next morning remains 0-2/10
+    - id: run_30min_easy
+      label: 30 min easy continuous
+      target:
+        duration_min: 30
+        intensity: easy_hr_cap_or_low_z2
+      progress_when:
+        - mechanics stay clean
+        - next morning remains 0-2/10
+    - id: normal_easy_return
+      label: Normal easy return week
+      target:
+        note: Resume standard easy-running progression with bike support and no automatic quality jump.

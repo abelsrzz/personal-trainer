@@ -31,6 +31,7 @@ SHOES_PATH = ROOT / "athlete" / "shoes.yaml"
 SHIN_TRACKER_PATH = ROOT / "athlete" / "shin_tracker.yaml"
 COACH_DECISION_PATH = ROOT / "planning" / "coach_decision.json"
 ACTIVE_CYCLE_PATH = ROOT / "planning" / "cycles" / "active.yaml"
+WORKOUT_FAMILY_RESPONSE_PATH = ROOT / "system" / "state" / "workout_family_response.json"
 GARMIN_PROFILE_PATH = ROOT / "training" / "completed" / "imports" / "garmin" / "profile" / "athlete_profile_snapshot.json"
 GARMIN_ACTIVITIES_MANIFEST_PATH = ROOT / "training" / "completed" / "imports" / "garmin" / "activities" / "last_import_manifest.json"
 GARMIN_DAILY_MANIFEST_PATH = ROOT / "training" / "completed" / "imports" / "garmin" / "daily" / "last_import_manifest.json"
@@ -127,6 +128,7 @@ def build_athlete_state() -> dict[str, Any]:
     daily_manifest = load_optional_json(GARMIN_DAILY_MANIFEST_PATH, {})
     post_workout_state = load_optional_json(POST_WORKOUT_REFRESH_STATE_PATH, {})
     weekly_planning_state = load_optional_json(WEEKLY_PLANNING_STATE_PATH, {})
+    workout_family_response = load_optional_json(WORKOUT_FAMILY_RESPONSE_PATH, {})
     automation_safety = load_optional_yaml(AUTOMATION_SAFETY_PATH).get("automation_safety", {})
     latest_shin = last_shin_entry()
     reviews = load_review_payloads()
@@ -188,6 +190,7 @@ def build_athlete_state() -> dict[str, Any]:
                 "fartlek_frequency": progression.get("fartlek_frequency"),
             },
             "replanning": replanning,
+            "workout_family_response": workout_family_response.get("families", [])[:8] if isinstance(workout_family_response, dict) else [],
         },
         "garmin": {
             "profile_synced_at": garmin_profile.get("synced_at"),

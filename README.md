@@ -379,7 +379,7 @@ Lanzar la web:
 
 ```bash
 source .venv/bin/activate
-python -m uvicorn scripts.web_v2.app:app --app-dir . --host 127.0.0.1 --port 8090
+python -m uvicorn scripts.web_v2.app:app --app-dir . --host 0.0.0.0 --port 8090
 ```
 
 Healthcheck:
@@ -397,7 +397,7 @@ cp web_v2/web_config.yaml.example web_v2/web_config.yaml
 
 Variables opcionales:
 
-- `RUNNING_WEB_HOST` por defecto `127.0.0.1`
+- `RUNNING_WEB_HOST` por defecto `0.0.0.0`
 - `RUNNING_WEB_PORT` por defecto `8090`
 - `RUNNING_WEB_ENABLED=0` para no arrancar la web desde `start_server.sh`
 - `POST_WORKOUT_REFRESH_ENABLED=1` para arrancar el detector automatico de nuevas actividades Garmin

@@ -6,7 +6,7 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LOG_DIR="${OPENCODE_LOG_DIR:-/tmp/opencode}"
 HOST="${OPENCODE_HOST:-127.0.0.1}"
 PORT="${OPENCODE_PORT:-4096}"
-WEB_HOST="${RUNNING_WEB_HOST:-127.0.0.1}"
+WEB_HOST="${RUNNING_WEB_HOST:-0.0.0.0}"
 WEB_PORT="${RUNNING_WEB_PORT:-8090}"
 WEB_ENABLED="${RUNNING_WEB_ENABLED:-1}"
 POST_WORKOUT_REFRESH_ENABLED="${POST_WORKOUT_REFRESH_ENABLED:-1}"
@@ -199,7 +199,12 @@ install_runtime() {
 start_server() {
   require_runtime
   cd "$ROOT_DIR"
+  local web_probe_host="$WEB_HOST"
   "$PYTHON_BIN" scripts/telegram/opencode_bot.py --check-config >/dev/null
+
+  if [[ "$web_probe_host" == "0.0.0.0" ]]; then
+    web_probe_host="127.0.0.1"
+  fi
 
   if is_running "$SERVER_PID_FILE"; then
     echo "OpenCode server already running (pid $(<"$SERVER_PID_FILE"))"
@@ -228,7 +233,7 @@ start_server() {
   else
     nohup "$PYTHON_BIN" -m uvicorn scripts.web_v2.app:app --app-dir "$ROOT_DIR" --host "$WEB_HOST" --port "$WEB_PORT" >"$WEB_LOG" 2>&1 &
     echo "$!" >"$WEB_PID_FILE"
-    if is_running "$WEB_PID_FILE" && wait_for_http "http://$WEB_HOST:$WEB_PORT/login"; then
+    if is_running "$WEB_PID_FILE" && wait_for_http "http://$web_probe_host:$WEB_PORT/login"; then
       echo "Started web portal (pid $(<"$WEB_PID_FILE"))"
     else
       echo "Web portal failed to start. Check $WEB_LOG" >&2

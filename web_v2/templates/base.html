@@ -35,7 +35,7 @@
       <div class="topbar-actions">
         <form method="post" action="{{ app_path('/garmin/sync') }}" data-garmin-sync-form>
           <input type="hidden" name="return_to" value="{{ current_path }}">
-          <button class="topbar-button garmin-sync-button{% if garmin_sync.running %} is-running{% elif garmin_sync.last_ok is sameas false %} is-error{% elif garmin_sync.last_ok is sameas true %} is-ok{% endif %}" type="submit" data-garmin-sync-button {{ 'disabled' if garmin_sync.running else '' }}>
+          <button class="garmin-sync-button{% if garmin_sync.running %} is-running{% elif garmin_sync.last_ok is sameas false %} is-error{% elif garmin_sync.last_ok is sameas true %} is-ok{% endif %}" type="submit" data-garmin-sync-button {{ 'disabled' if garmin_sync.running else '' }}>
             <span class="sync-dot" data-garmin-sync-dot></span>
             <span data-garmin-sync-label>{{ 'Sincronizando…' if garmin_sync.running else 'Garmin' }}</span>
           </button>

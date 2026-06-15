@@ -156,34 +156,80 @@ button.topbar-button:disabled {
   opacity: 0.6;
 }
 
+/* Garmin sync button */
+.garmin-sync-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font: inherit;
+  font-size: 0.9rem;
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.02);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.garmin-sync-button:hover:not(:disabled) {
+  color: var(--text);
+  border-color: rgba(114, 240, 194, 0.28);
+  background: var(--accent-soft);
+}
+
+.garmin-sync-button:disabled {
+  cursor: progress;
+  opacity: 0.75;
+}
+
+.garmin-sync-button.is-ok {
+  color: var(--text);
+  border-color: rgba(74, 222, 128, 0.35);
+  background: rgba(74, 222, 128, 0.1);
+}
+
+.garmin-sync-button.is-error {
+  border-color: rgba(248, 113, 113, 0.35);
+  background: rgba(248, 113, 113, 0.08);
+  color: #fca5a5;
+}
+
+.garmin-sync-button.is-running {
+  border-color: rgba(114, 240, 194, 0.28);
+  background: var(--accent-soft);
+  color: var(--text);
+}
+
 /* Garmin sync dot */
 .sync-dot {
-  width: 7px;
-  height: 7px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.18);
   flex-shrink: 0;
   transition: background 0.2s;
 }
 
 .garmin-sync-button.is-ok .sync-dot {
   background: #4ade80;
-  box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.2);
+  box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.18);
 }
 
 .garmin-sync-button.is-error .sync-dot {
   background: #f87171;
-  box-shadow: 0 0 0 2px rgba(248, 113, 113, 0.2);
+  box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.18);
 }
 
 .garmin-sync-button.is-running .sync-dot {
-  background: rgba(114, 240, 194, 0.6);
+  background: var(--accent, #72f0c2);
   animation: dotPulse 1s ease-in-out infinite;
 }
 
 @keyframes dotPulse {
-  0%, 100% { opacity: 0.4; transform: scale(0.9); }
-  50%       { opacity: 1;   transform: scale(1.15); }
+  0%, 100% { opacity: 0.4; transform: scale(0.85); }
+  50%       { opacity: 1;   transform: scale(1.2); }
 }
 
 .topnav a.active,

@@ -1150,6 +1150,10 @@ h2 {
   backdrop-filter: blur(8px);
 }
 
+.modal-shell[hidden] {
+  display: none;
+}
+
 .modal-card {
   width: min(100%, 720px);
   max-height: min(100vh - 48px, 760px);
@@ -1177,6 +1181,10 @@ h2 {
   padding: 24px;
   background: rgba(4, 10, 18, 0.82);
   backdrop-filter: blur(10px);
+}
+
+.planner-busy-overlay[hidden] {
+  display: none;
 }
 
 .planner-busy-card {

@@ -973,19 +973,151 @@ def web_chat_ui_store() -> dict[str, Any]:
     return payload
 
 
-def web_chat_history(user_key: str) -> list[dict[str, Any]]:
+def _make_conv_id() -> str:
+    import secrets
+    return f"conv_{secrets.token_hex(8)}"
+
+
+def _migrate_user_state(user_state: dict[str, Any]) -> dict[str, Any]:
+    """Migrate old flat messages list to conversation-threaded structure."""
+    if "conversations" in user_state:
+        return user_state
+    old_messages = user_state.get("messages") if isinstance(user_state.get("messages"), list) else []
+    conv_id = _make_conv_id()
+    title = "Chat anterior"
+    if old_messages:
+        first_user = next((m.get("text", "") for m in old_messages if m.get("role") == "user"), "")
+        if first_user:
+            title = first_user[:50].rstrip() + ("…" if len(first_user) > 50 else "")
+    now = datetime.now().isoformat()
+    user_state["conversations"] = {
+        conv_id: {
+            "id": conv_id,
+            "title": title,
+            "messages": old_messages[-80:],
+            "created_at": now,
+            "updated_at": now,
+        }
+    } if old_messages else {}
+    user_state["active_conversation_id"] = conv_id if old_messages else None
+    user_state.pop("messages", None)
+    return user_state
+
+
+def _get_user_state(user_key: str) -> tuple[dict[str, Any], dict[str, Any]]:
     payload = web_chat_ui_store()
-    user_state = payload["users"].get(user_key, {})
-    messages = user_state.get("messages") if isinstance(user_state, dict) else []
+    raw = payload["users"].get(user_key, {})
+    user_state = _migrate_user_state(dict(raw) if isinstance(raw, dict) else {})
+    return payload, user_state
+
+
+def _save_user_state(payload: dict[str, Any], user_key: str, user_state: dict[str, Any]) -> None:
+    payload["users"][user_key] = user_state
+    write_json(WEB_CHAT_UI_STATE_PATH, payload)
+
+
+def get_active_conv_id(user_key: str, user_state: dict[str, Any]) -> str | None:
+    return user_state.get("active_conversation_id")
+
+
+def ensure_active_conversation(user_key: str) -> str:
+    """Return active conversation ID, creating one if none exists."""
+    payload, user_state = _get_user_state(user_key)
+    active_id = user_state.get("active_conversation_id")
+    convs = user_state.setdefault("conversations", {})
+    if active_id and active_id in convs:
+        return active_id
+    conv_id = _make_conv_id()
+    now = datetime.now().isoformat()
+    convs[conv_id] = {"id": conv_id, "title": "Nueva conversación", "messages": [], "created_at": now, "updated_at": now}
+    user_state["active_conversation_id"] = conv_id
+    _save_user_state(payload, user_key, user_state)
+    return conv_id
+
+
+def list_chat_conversations(user_key: str) -> list[dict[str, Any]]:
+    _, user_state = _get_user_state(user_key)
+    convs = user_state.get("conversations", {})
+    result = []
+    for conv in convs.values():
+        if not isinstance(conv, dict):
+            continue
+        messages = conv.get("messages") or []
+        preview = ""
+        for m in reversed(messages):
+            if m.get("role") == "assistant" and m.get("text"):
+                preview = str(m["text"])[:80]
+                break
+        result.append({
+            "id": conv.get("id", ""),
+            "title": conv.get("title", "Conversación"),
+            "updated_at": conv.get("updated_at", ""),
+            "created_at": conv.get("created_at", ""),
+            "preview": preview,
+            "message_count": len(messages),
+        })
+    result.sort(key=lambda x: x.get("updated_at", ""), reverse=True)
+    return result
+
+
+def create_chat_conversation(user_key: str) -> str:
+    payload, user_state = _get_user_state(user_key)
+    conv_id = _make_conv_id()
+    now = datetime.now().isoformat()
+    user_state.setdefault("conversations", {})[conv_id] = {
+        "id": conv_id,
+        "title": "Nueva conversación",
+        "messages": [],
+        "created_at": now,
+        "updated_at": now,
+    }
+    user_state["active_conversation_id"] = conv_id
+    _save_user_state(payload, user_key, user_state)
+    return conv_id
+
+
+def switch_chat_conversation(user_key: str, conv_id: str) -> bool:
+    payload, user_state = _get_user_state(user_key)
+    if conv_id not in user_state.get("conversations", {}):
+        return False
+    user_state["active_conversation_id"] = conv_id
+    _save_user_state(payload, user_key, user_state)
+    return True
+
+
+def delete_chat_conversation(user_key: str, conv_id: str) -> str | None:
+    payload, user_state = _get_user_state(user_key)
+    convs = user_state.get("conversations", {})
+    convs.pop(conv_id, None)
+    active_id = user_state.get("active_conversation_id")
+    if active_id == conv_id:
+        remaining = list(convs.keys())
+        user_state["active_conversation_id"] = remaining[0] if remaining else None
+    _save_user_state(payload, user_key, user_state)
+    return user_state.get("active_conversation_id")
+
+
+def web_chat_history(user_key: str) -> list[dict[str, Any]]:
+    _, user_state = _get_user_state(user_key)
+    active_id = user_state.get("active_conversation_id")
+    conv = user_state.get("conversations", {}).get(active_id or "", {})
+    messages = conv.get("messages") if isinstance(conv, dict) else []
     return messages if isinstance(messages, list) else []
 
 
 def save_web_chat_history(user_key: str, messages: list[dict[str, Any]]) -> None:
-    payload = web_chat_ui_store()
-    user_state = payload["users"].setdefault(user_key, {})
-    user_state["messages"] = messages[-80:]
-    user_state["updated_at"] = datetime.now().isoformat()
-    write_json(WEB_CHAT_UI_STATE_PATH, payload)
+    payload, user_state = _get_user_state(user_key)
+    active_id = ensure_active_conversation(user_key)
+    payload, user_state = _get_user_state(user_key)
+    conv = user_state["conversations"][active_id]
+    conv["messages"] = messages[-80:]
+    now = datetime.now().isoformat()
+    conv["updated_at"] = now
+    if conv.get("title") == "Nueva conversación":
+        first_user = next((m.get("text", "") for m in messages if m.get("role") == "user"), "")
+        if first_user:
+            conv["title"] = first_user[:50].rstrip() + ("…" if len(first_user) > 50 else "")
+    _save_user_state(payload, user_key, user_state)
 
 
 def append_web_chat_message(user_key: str, role: str, text: str, *, model: str | None = None, error: bool = False) -> None:
@@ -1003,11 +1135,14 @@ def append_web_chat_message(user_key: str, role: str, text: str, *, model: str |
 
 
 def clear_web_chat_history(user_key: str) -> None:
-    payload = web_chat_ui_store()
-    user_state = payload["users"].setdefault(user_key, {})
-    user_state["messages"] = []
-    user_state["updated_at"] = datetime.now().isoformat()
-    write_json(WEB_CHAT_UI_STATE_PATH, payload)
+    payload, user_state = _get_user_state(user_key)
+    active_id = user_state.get("active_conversation_id")
+    if active_id and active_id in user_state.get("conversations", {}):
+        conv = user_state["conversations"][active_id]
+        conv["messages"] = []
+        conv["title"] = "Nueva conversación"
+        conv["updated_at"] = datetime.now().isoformat()
+    _save_user_state(payload, user_key, user_state)
 
 
 def clear_web_chat_confirmation(store: SessionStore, user_key: str) -> None:
@@ -1049,6 +1184,8 @@ def web_chat_state(request: Request, config: OpenCodeRemoteConfig | None, config
     store = SessionStore(config.session_store) if config else None
     active_model = (store.get_model(user_key) if store else None) or (config.model if config else DEFAULT_OPENCODE_MODEL)
     session_id = store.get_session(user_key) if store else None
+    _, user_state = _get_user_state(user_key)
+    active_conv_id = user_state.get("active_conversation_id")
     return {
         "available": bool(config and not config_error),
         "error": config_error,
@@ -1058,6 +1195,8 @@ def web_chat_state(request: Request, config: OpenCodeRemoteConfig | None, config
         "session_id": session_id,
         "pending_confirmation": web_chat_pending_confirmation(store, user_key) if store else None,
         "config_path": str(OPENCODE_REMOTE_CONFIG_PATH.relative_to(ROOT)),
+        "conversations": list_chat_conversations(user_key),
+        "active_conversation_id": active_conv_id,
     }
 
 

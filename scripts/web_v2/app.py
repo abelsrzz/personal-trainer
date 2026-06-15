@@ -1474,10 +1474,12 @@ def safe_return_to(value: str | None, fallback: str) -> str:
 
 def chat_state_payload(request: Request, state: dict[str, Any]) -> dict[str, Any]:
     payload = dict(state)
-    payload["selectable_sessions"] = chat_selectable_sessions()
     payload["send_url"] = request_app_path(request, "/api/chat/message")
     payload["reset_url"] = request_app_path(request, "/api/chat/reset")
     payload["confirm_url"] = request_app_path(request, "/api/chat/confirm")
+    payload["new_conversation_url"] = request_app_path(request, "/api/chat/conversations")
+    payload["switch_conversation_url"] = request_app_path(request, "/api/chat/conversations/switch")
+    payload["delete_conversation_base_url"] = request_app_path(request, "/api/chat/conversations")
     return payload
 
 
@@ -1811,6 +1813,56 @@ async def chat_confirm_api(request: Request) -> JSONResponse:
         body["state"] = chat_state_payload(request, body.get("state") if isinstance(body.get("state"), dict) else {})
         return JSONResponse(body, status_code=response.status_code)
     return response
+
+
+@app.get("/api/chat/conversations")
+async def chat_conversations_api(request: Request) -> JSONResponse:
+    guard = auth_guard(request)
+    if guard:
+        return JSONResponse({"ok": False, "error": "Sesion no valida."}, status_code=401)
+    user_key = portal_core.web_chat_identity(request)
+    return JSONResponse({"ok": True, "conversations": portal_core.list_chat_conversations(user_key)})
+
+
+@app.post("/api/chat/conversations")
+async def chat_new_conversation_api(request: Request) -> JSONResponse:
+    guard = auth_guard(request)
+    if guard:
+        return JSONResponse({"ok": False, "error": "Sesion no valida."}, status_code=401)
+    user_key = portal_core.web_chat_identity(request)
+    portal_core.create_chat_conversation(user_key)
+    config, config_error, state = portal_core.chat_state_response(request)
+    return JSONResponse({"ok": True, "state": chat_state_payload(request, state)})
+
+
+@app.post("/api/chat/conversations/switch")
+async def chat_switch_conversation_api(request: Request) -> JSONResponse:
+    guard = auth_guard(request)
+    if guard:
+        return JSONResponse({"ok": False, "error": "Sesion no valida."}, status_code=401)
+    try:
+        payload = await request.json()
+    except json.JSONDecodeError:
+        payload = {}
+    conv_id = str(payload.get("conversation_id") or "").strip()
+    if not conv_id:
+        return JSONResponse({"ok": False, "error": "Falta conversation_id."}, status_code=400)
+    user_key = portal_core.web_chat_identity(request)
+    if not portal_core.switch_chat_conversation(user_key, conv_id):
+        return JSONResponse({"ok": False, "error": "Conversacion no encontrada."}, status_code=404)
+    config, config_error, state = portal_core.chat_state_response(request)
+    return JSONResponse({"ok": True, "state": chat_state_payload(request, state)})
+
+
+@app.delete("/api/chat/conversations/{conv_id}")
+async def chat_delete_conversation_api(request: Request, conv_id: str) -> JSONResponse:
+    guard = auth_guard(request)
+    if guard:
+        return JSONResponse({"ok": False, "error": "Sesion no valida."}, status_code=401)
+    user_key = portal_core.web_chat_identity(request)
+    portal_core.delete_chat_conversation(user_key, conv_id)
+    config, config_error, state = portal_core.chat_state_response(request)
+    return JSONResponse({"ok": True, "state": chat_state_payload(request, state)})
 
 
 @app.post("/api/actions/run")

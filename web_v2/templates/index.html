@@ -32,9 +32,9 @@
     <p class="muted">Suma km planificados esta semana</p>
   </article>
   <article class="panel">
-    <p class="eyebrow">Sesiones semana</p>
-    <h2>{{ page.current_week_completed }}/{{ page.current_week_sessions }}</h2>
-    <p class="muted">Completadas de {{ page.current_week_sessions }} planificadas</p>
+    <p class="eyebrow">Próxima carrera</p>
+    <h2>{% if page.next_race_days is not none %}{% if page.next_race_days == 0 %}Hoy{% else %}{{ page.next_race_days }} días{% endif %}{% else %}—{% endif %}</h2>
+    <p class="muted">{{ page.next_race_name|clean_text if page.next_race_name else 'Sin carreras planificadas' }}</p>
   </article>
   <article class="panel">
     <p class="eyebrow">Ritmo tempo</p>

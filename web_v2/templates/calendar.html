@@ -41,11 +41,29 @@
   </div>
 </section>
 
-<section class="grid grid-2 detail-grid">
-  <article class="panel">
-    <p class="eyebrow">Planificación</p>
-    <h2>Generar plan por rango</h2>
-    <form class="stack-form planner-form" method="post" action="/calendar/plan-range">
+<section class="panel planner-actions-panel">
+  <div class="section-head">
+    <div>
+      <p class="eyebrow">Planificación</p>
+      <h2>Acciones de calendario</h2>
+    </div>
+  </div>
+  <div class="planner-action-row">
+    <button class="link-button" type="button" data-modal-open="calendar-plan-modal">Generar plan</button>
+    <button class="ghost-button" type="button" data-modal-open="calendar-replan-modal">Replanificar rango</button>
+  </div>
+</section>
+
+<div class="modal-shell" id="calendar-plan-modal" hidden data-modal-shell>
+  <div class="modal-card">
+    <div class="modal-head">
+      <div>
+        <p class="eyebrow">Planificación</p>
+        <h2>Generar plan por rango</h2>
+      </div>
+      <button class="ghost-button" type="button" data-modal-close>Cerrar</button>
+    </div>
+    <form class="stack-form planner-form" method="post" action="/calendar/plan-range" data-planner-form data-busy-title="Generando plan" data-busy-message="El sistema está construyendo el plan y validando Garmin. Puede tardar un poco.">
       <input type="hidden" name="return_to" value="{{ page.plan_range_form.return_to }}">
       <label>
         <span>Desde</span>
@@ -61,12 +79,19 @@
       </label>
       <button class="link-button" type="submit">Generar plan</button>
     </form>
-  </article>
+  </div>
+</div>
 
-  <article class="panel">
-    <p class="eyebrow">Replanificación</p>
-    <h2>Replanificar rango con IA</h2>
-    <form class="stack-form planner-form" method="post" action="/calendar/replan-range">
+<div class="modal-shell" id="calendar-replan-modal" hidden data-modal-shell>
+  <div class="modal-card">
+    <div class="modal-head">
+      <div>
+        <p class="eyebrow">Replanificación</p>
+        <h2>Replanificar rango con IA</h2>
+      </div>
+      <button class="ghost-button" type="button" data-modal-close>Cerrar</button>
+    </div>
+    <form class="stack-form planner-form" method="post" action="/calendar/replan-range" data-planner-form data-busy-title="Replanificando rango" data-busy-message="La IA está replanificando el rango y después comprobará la sincronización Garmin.">
       <input type="hidden" name="return_to" value="{{ page.replan_range_form.return_to }}">
       <label>
         <span>Desde</span>
@@ -82,8 +107,8 @@
       </label>
       <button class="link-button" type="submit">Replanificar rango</button>
     </form>
-  </article>
-</section>
+  </div>
+</div>
 
 <section class="calendar-board calendar-board-v2">
   <div class="calendar-weekdays">

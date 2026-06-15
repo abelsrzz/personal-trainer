@@ -8,6 +8,13 @@
   <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
 </head>
 <body>
+  <div class="planner-busy-overlay" hidden data-planner-busy>
+    <div class="planner-busy-card">
+      <div class="planner-spinner" aria-hidden="true"></div>
+      <strong data-planner-busy-title>Procesando acción</strong>
+      <p data-planner-busy-message>La operación está en curso. Esta página se actualizará cuando termine.</p>
+    </div>
+  </div>
   <div class="app-shell">
     <header class="topbar">
       <a class="brand" href="/">
@@ -87,6 +94,87 @@
 
       refreshStatus();
       window.setInterval(refreshStatus, 10000);
+    })();
+
+    (() => {
+      const busyOverlay = document.querySelector('[data-planner-busy]');
+      const busyTitle = document.querySelector('[data-planner-busy-title]');
+      const busyMessage = document.querySelector('[data-planner-busy-message]');
+      const modalTriggers = document.querySelectorAll('[data-modal-open]');
+      const modalClosers = document.querySelectorAll('[data-modal-close]');
+      const modalShells = document.querySelectorAll('[data-modal-shell]');
+      const plannerForms = document.querySelectorAll('[data-planner-form]');
+
+      const closeModal = (shell) => {
+        if (!shell) {
+          return;
+        }
+        shell.setAttribute('hidden', 'hidden');
+        document.body.classList.remove('modal-open');
+      };
+
+      const openModal = (shell) => {
+        if (!shell) {
+          return;
+        }
+        modalShells.forEach((item) => item.setAttribute('hidden', 'hidden'));
+        shell.removeAttribute('hidden');
+        document.body.classList.add('modal-open');
+      };
+
+      modalTriggers.forEach((trigger) => {
+        trigger.addEventListener('click', () => {
+          const target = document.getElementById(trigger.getAttribute('data-modal-open') || '');
+          openModal(target);
+        });
+      });
+
+      modalClosers.forEach((closer) => {
+        closer.addEventListener('click', () => {
+          const shell = closer.closest('[data-modal-shell]');
+          closeModal(shell);
+        });
+      });
+
+      modalShells.forEach((shell) => {
+        shell.addEventListener('click', (event) => {
+          if (event.target === shell) {
+            closeModal(shell);
+          }
+        });
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key !== 'Escape') {
+          return;
+        }
+        modalShells.forEach((shell) => {
+          if (!shell.hasAttribute('hidden')) {
+            closeModal(shell);
+          }
+        });
+      });
+
+      plannerForms.forEach((form) => {
+        form.addEventListener('submit', () => {
+          const label = form.getAttribute('data-busy-title') || 'Procesando acción';
+          const message = form.getAttribute('data-busy-message') || 'La operación está en curso. Esta página se actualizará cuando termine.';
+          if (busyTitle) {
+            busyTitle.textContent = label;
+          }
+          if (busyMessage) {
+            busyMessage.textContent = message;
+          }
+          if (busyOverlay) {
+            busyOverlay.removeAttribute('hidden');
+          }
+          document.body.classList.remove('modal-open');
+          const button = form.querySelector('button[type="submit"]');
+          if (button) {
+            button.disabled = true;
+          }
+        });
+      });
     })();
   </script>
   {% endif %}

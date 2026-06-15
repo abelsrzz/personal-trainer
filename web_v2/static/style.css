@@ -1122,6 +1122,98 @@ h2 {
   margin-top: 14px;
 }
 
+.planner-actions-panel {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: center;
+}
+
+.planner-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.modal-open {
+  overflow: hidden;
+}
+
+.modal-shell {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(4, 10, 18, 0.78);
+  backdrop-filter: blur(8px);
+}
+
+.modal-card {
+  width: min(100%, 720px);
+  max-height: min(100vh - 48px, 760px);
+  overflow: auto;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(12, 24, 42, 0.98), rgba(8, 17, 30, 0.98));
+  box-shadow: var(--shadow);
+}
+
+.modal-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: start;
+}
+
+.planner-busy-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(4, 10, 18, 0.82);
+  backdrop-filter: blur(10px);
+}
+
+.planner-busy-card {
+  width: min(100%, 420px);
+  padding: 26px;
+  border: 1px solid rgba(114, 240, 194, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(12, 24, 42, 0.98), rgba(8, 17, 30, 0.98));
+  box-shadow: var(--shadow);
+}
+
+.planner-busy-card strong,
+.planner-busy-card p {
+  display: block;
+}
+
+.planner-busy-card p {
+  margin: 10px 0 0;
+  color: var(--muted);
+}
+
+.planner-spinner {
+  width: 28px;
+  height: 28px;
+  margin-bottom: 14px;
+  border: 3px solid rgba(114, 240, 194, 0.18);
+  border-top-color: var(--accent);
+  border-radius: 999px;
+  animation: planner-spin 0.9s linear infinite;
+}
+
+@keyframes planner-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .stack-form button,
 .link-button {
   color: #03131d;
@@ -1166,6 +1258,16 @@ h2 {
 }
 
 @media (max-width: 720px) {
+  .planner-actions-panel,
+  .modal-head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .modal-card {
+    padding: 20px;
+  }
+
   .page-wrap,
   .topbar {
     padding: 18px;

@@ -233,7 +233,7 @@ start_server() {
   elif is_running "$WEB_PID_FILE"; then
     echo "Web portal already running (pid $(<"$WEB_PID_FILE"))"
   else
-    nohup "$PYTHON_BIN" -m uvicorn scripts.web_v2.app:app --app-dir "$ROOT_DIR" --host "$WEB_HOST" --port "$WEB_PORT" >"$WEB_LOG" 2>&1 &
+    nohup "$PYTHON_BIN" -m uvicorn scripts.web_v2.app:app --app-dir "$ROOT_DIR" --host "$WEB_HOST" --port "$WEB_PORT" --proxy-headers --forwarded-allow-ips='*' >"$WEB_LOG" 2>&1 &
     echo "$!" >"$WEB_PID_FILE"
     if is_running "$WEB_PID_FILE" && wait_for_http "http://$web_probe_host:$WEB_PORT/login"; then
       echo "Started web portal (pid $(<"$WEB_PID_FILE"))"

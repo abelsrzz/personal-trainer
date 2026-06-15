@@ -97,7 +97,7 @@ img {
 .link-button {
   border: 1px solid var(--line);
   border-radius: 999px;
-  padding: 10px 14px;
+  padding: 8px 14px;
   color: var(--muted);
   background: rgba(255, 255, 255, 0.02);
 }
@@ -118,34 +118,72 @@ button.link-button:disabled {
   margin: 0;
 }
 
-.garmin-sync-chip {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 240px;
-  padding: 10px 14px;
+/* Topbar action buttons */
+.topbar-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 13px;
   border: 1px solid var(--line);
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.03);
-}
-
-.garmin-sync-chip strong {
-  font-size: 0.84rem;
-}
-
-.garmin-sync-chip span {
+  border-radius: 8px;
+  font: inherit;
+  font-size: 0.83rem;
   color: var(--muted);
-  font-size: 0.8rem;
-  line-height: 1.35;
+  background: rgba(255, 255, 255, 0.03);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
 }
 
-.garmin-sync-chip.is-running {
-  border-color: rgba(114, 240, 194, 0.28);
-  background: var(--accent-soft);
+.topbar-button:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.15);
 }
 
-.garmin-sync-chip.is-error {
-  border-color: rgba(255, 128, 120, 0.28);
+.topbar-button--muted {
+  border-color: transparent;
+  background: transparent;
+}
+
+.topbar-button--muted:hover {
+  border-color: var(--line);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+button.topbar-button:disabled {
+  cursor: progress;
+  opacity: 0.6;
+}
+
+/* Garmin sync dot */
+.sync-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+
+.garmin-sync-button.is-ok .sync-dot {
+  background: #4ade80;
+  box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.2);
+}
+
+.garmin-sync-button.is-error .sync-dot {
+  background: #f87171;
+  box-shadow: 0 0 0 2px rgba(248, 113, 113, 0.2);
+}
+
+.garmin-sync-button.is-running .sync-dot {
+  background: rgba(114, 240, 194, 0.6);
+  animation: dotPulse 1s ease-in-out infinite;
+}
+
+@keyframes dotPulse {
+  0%, 100% { opacity: 0.4; transform: scale(0.9); }
+  50%       { opacity: 1;   transform: scale(1.15); }
 }
 
 .topnav a.active,
@@ -1742,10 +1780,6 @@ h2 {
     right: 16px;
   }
 
-  .settings-action {
-    bottom: 88px;
-  }
-
   .chat-sidebar {
     width: 180px;
   }
@@ -1759,11 +1793,6 @@ h2 {
   }
 
   .topbar-actions {
-    width: 100%;
-  }
-
-  .garmin-sync-chip {
-    min-width: 0;
     width: 100%;
   }
 

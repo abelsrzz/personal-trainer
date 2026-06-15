@@ -33,16 +33,18 @@
         <a class="{{ 'active' if active_nav == 'atleta' else '' }}" href="{{ app_path('/atleta') }}">Atleta</a>
       </nav>
       <div class="topbar-actions">
-        <div class="garmin-sync-chip {{ 'is-running' if garmin_sync.running else '' }} {{ 'is-error' if garmin_sync.last_ok is sameas false else '' }}" data-garmin-sync-chip>
-          <strong>Garmin</strong>
-          <span data-garmin-sync-message>{{ garmin_sync_status_text }}</span>
-        </div>
         <form method="post" action="{{ app_path('/garmin/sync') }}" data-garmin-sync-form>
           <input type="hidden" name="return_to" value="{{ current_path }}">
-          <button class="ghost-button" type="submit" data-garmin-sync-button {{ 'disabled' if garmin_sync.running else '' }}>{{ 'Sincronizando Garmin...' if garmin_sync.running else 'Sincronizar Garmin' }}</button>
+          <button class="topbar-button garmin-sync-button{% if garmin_sync.running %} is-running{% elif garmin_sync.last_ok is sameas false %} is-error{% elif garmin_sync.last_ok is sameas true %} is-ok{% endif %}" type="submit" data-garmin-sync-button {{ 'disabled' if garmin_sync.running else '' }}>
+            <span class="sync-dot" data-garmin-sync-dot></span>
+            <span data-garmin-sync-label>{{ 'Sincronizando…' if garmin_sync.running else 'Garmin' }}</span>
+          </button>
         </form>
-        <a class="ghost-button" href="{{ app_path('/settings') }}">Ajustes</a>
-        <a class="ghost-button" href="{{ app_path('/logout') }}">Salir</a>
+        <a class="topbar-button" href="{{ app_path('/settings') }}">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Ajustes
+        </a>
+        <a class="topbar-button topbar-button--muted" href="{{ app_path('/logout') }}">Salir</a>
       </div>
       {% endif %}
     </header>
@@ -54,9 +56,6 @@
     </main>
   </div>
   {% if authenticated %}
-  <a class="floating-action settings-action" href="{{ app_path('/settings') }}" aria-label="Abrir ajustes">
-    <span aria-hidden="true">&#9881;</span>
-  </a>
   <button class="floating-action chat-action" type="button" data-chat-toggle aria-label="Abrir chat del entrenador">
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="M4 5.5C4 4.12 5.12 3 6.5 3h11C18.88 3 20 4.12 20 5.5v8C20 14.88 18.88 16 17.5 16H9l-4.2 4.2c-.31.31-.8.09-.8-.35V5.5Z" fill="currentColor"></path>
@@ -106,42 +105,35 @@
   </div>
   <script>
     (() => {
-      const chip = document.querySelector('[data-garmin-sync-chip]');
-      const message = document.querySelector('[data-garmin-sync-message]');
       const button = document.querySelector('[data-garmin-sync-button]');
+      const label = document.querySelector('[data-garmin-sync-label]');
       const form = document.querySelector('[data-garmin-sync-form]');
-      if (!chip || !message || !button || !form) {
+      if (!button || !form) {
         return;
       }
 
-      const renderState = (sync, statusText) => {
+      const renderState = (sync) => {
         const isRunning = Boolean(sync && sync.running);
+        const isOk = sync && sync.last_ok === true;
         const isError = sync && sync.last_ok === false;
-        chip.classList.toggle('is-running', isRunning);
-        chip.classList.toggle('is-error', Boolean(isError));
-        message.textContent = statusText || 'Pendiente de primera sincronizacion automatica.';
         button.disabled = isRunning;
-        button.textContent = isRunning ? 'Sincronizando Garmin...' : 'Sincronizar Garmin';
+        button.classList.toggle('is-running', isRunning);
+        button.classList.toggle('is-ok', !isRunning && isOk);
+        button.classList.toggle('is-error', !isRunning && isError);
+        if (label) label.textContent = isRunning ? 'Sincronizando…' : 'Garmin';
       };
 
       const refreshStatus = async () => {
         try {
           const response = await fetch('{{ app_path('/api/garmin/sync') }}', { credentials: 'same-origin' });
-          if (!response.ok) {
-            return;
-          }
+          if (!response.ok) return;
           const payload = await response.json();
-          if (!payload || payload.ok !== true) {
-            return;
-          }
-          renderState(payload.sync || {}, payload.status_text || '');
-        } catch (_error) {
-        }
+          if (!payload || payload.ok !== true) return;
+          renderState(payload.sync || {});
+        } catch (_) {}
       };
 
-      form.addEventListener('submit', () => {
-        renderState({ running: true, last_ok: null }, 'Sincronizacion Garmin en curso.');
-      });
+      form.addEventListener('submit', () => renderState({ running: true }));
 
       refreshStatus();
       window.setInterval(refreshStatus, 10000);

@@ -44,6 +44,14 @@ def _install_web_framework_stubs() -> None:
 
             return decorator
 
+        def delete(self, *args, **kwargs):
+            _ = args, kwargs
+
+            def decorator(func):
+                return func
+
+            return decorator
+
     fastapi_module.FastAPI = DummyFastAPI
     fastapi_module.Form = lambda *args, **kwargs: None
     fastapi_module.Request = object

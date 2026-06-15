@@ -41,6 +41,14 @@ def _install_web_framework_stubs() -> None:
 
             return decorator
 
+        def delete(self, *args, **kwargs):
+            _ = args, kwargs
+
+            def decorator(func):
+                return func
+
+            return decorator
+
         def on_event(self, *args, **kwargs):
             _ = args, kwargs
 

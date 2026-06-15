@@ -199,6 +199,7 @@ python scripts/garmin/coach_engine.py --as-of YYYY-MM-DD --days 28
 - Prefer validating the automatic pipeline health instead of manually rerunning imports after Garmin-linked training.
 - Remote Telegram access uses `opencode serve` plus `scripts/telegram/opencode_bot.py`; only commit or push when explicitly requested.
 - Remote Telegram access defaults to model `openai/gpt-5.4` with OpenCode default reasoning; use `/model` in Telegram to override per chat.
+- When `openai/gpt-5.4` is unavailable (quota, credits or provider error), the system automatically falls back to the Gemini free API with a full agentic loop (read/write files, execute commands, Garmin sync — full feature parity with OpenCode). Model cascade: `gemini-2.5-pro` → `gemini-2.5-flash` → `gemini-2.0-flash`. A Telegram warning is sent each time the fallback activates. Fallback config: `telegram/bot_config.yaml` under `opencode_remote.gemini_fallback`; bridge module: `scripts/telegram/gemini_fallback.py`.
 
 ## Web Portal Notes
 

@@ -57,6 +57,10 @@ class OpenCodeRemoteConfig:
     model: str | None
     max_response_chars: int
     require_confirmation_patterns: tuple[str, ...]
+    # Gemini fallback — activated when opencode/GPT-5.4 is unavailable
+    gemini_fallback_enabled: bool = False
+    gemini_api_key: str | None = None
+    gemini_models: tuple[str, ...] = ("gemini-2.5-pro",)
 
 
 @dataclass(frozen=True)
@@ -117,6 +121,9 @@ def load_config(path: Path = DEFAULT_CONFIG_PATH) -> RemoteBotConfig:
     project_dir = normalize_path(opencode_data.get("project_dir") or ROOT)
     session_store = normalize_path(opencode_data.get("session_store") or "telegram/opencode_sessions.json")
 
+    gemini_data = opencode_data.get("gemini_fallback") or {}
+    gemini_api_key = str(os.getenv("GEMINI_API_KEY") or gemini_data.get("api_key") or "").strip() or None
+
     return RemoteBotConfig(
         telegram=TelegramConfig(
             bot_token=bot_token,
@@ -138,6 +145,13 @@ def load_config(path: Path = DEFAULT_CONFIG_PATH) -> RemoteBotConfig:
             require_confirmation_patterns=tuple(
                 str(item).lower() for item in opencode_data.get("require_confirmation_patterns", [])
             ),
+            gemini_fallback_enabled=bool(gemini_data.get("enabled", bool(gemini_api_key))),
+            gemini_api_key=gemini_api_key,
+            gemini_models=tuple(
+                str(m).strip() for m in (
+                    gemini_data.get("models") or [gemini_data.get("model") or "gemini-2.5-pro"]
+                ) if str(m).strip()
+            ) or ("gemini-2.5-pro",),
         ),
     )
 
@@ -159,6 +173,9 @@ def sanitized_config(config: RemoteBotConfig) -> dict[str, Any]:
             "allow_push": config.opencode.allow_push,
             "dangerously_skip_permissions": config.opencode.dangerously_skip_permissions,
             "model": config.opencode.model,
+            "gemini_fallback_enabled": config.opencode.gemini_fallback_enabled,
+            "gemini_api_key": "set" if config.opencode.gemini_api_key else "missing",
+            "gemini_models": list(config.opencode.gemini_models),
         },
     }
 
@@ -264,6 +281,50 @@ class SessionStore:
 
 def strip_ansi(value: str) -> str:
     return ANSI_RE.sub("", value).strip()
+
+
+_PROVIDER_FAILURE_PATTERNS = [
+    "insufficient_quota",
+    "insufficient_credits",
+    "billing_hard_limit",
+    "rate_limit_exceeded",
+    "quota_exceeded",
+    "quota exceeded",
+    "credit limit",
+    "no credits",
+    "out of credits",
+    "payment required",
+    "over_capacity",
+    "over capacity",
+    "error 429",
+    "status 429",
+    "http 429",
+    "too many requests",
+    "daily limit",
+    "weekly limit",
+    "usage limit",
+    "request limit",
+    "model_not_found",
+    "model not found",
+    "no model available",
+]
+
+
+def _is_provider_unavailable(returncode: int, stdout: str, stderr: str) -> bool:
+    """Return True when the failure looks like a provider/quota issue (not a local config error)."""
+    if returncode == 0:
+        return False
+    combined = (stdout + " " + stderr).lower()
+    return any(p in combined for p in _PROVIDER_FAILURE_PATTERNS)
+
+
+def _send_gemini_alert_nowait(reason: str, model: str) -> None:
+    """Send Telegram alert when Gemini fallback activates. Called in executor (sync)."""
+    try:
+        from scripts.telegram.gemini_fallback import send_gemini_fallback_alert
+        send_gemini_fallback_alert(reason, model)
+    except Exception as exc:
+        logger.warning("Gemini alert send failed: %s", exc)
 
 
 def normalize_model_name(value: Any) -> str:
@@ -525,6 +586,70 @@ class OpenCodeBridge:
                 return session_id_from_item(item)
         return session_id_from_item(sessions[0]) if sessions else None
 
+    async def _try_gemini_fallback(
+        self,
+        message: str,
+        channel: str,
+        failure_reason: str,
+    ) -> BridgeResult:
+        """Fall back to Gemini API when opencode/GPT-5.4 is unavailable."""
+        if not self.config.gemini_fallback_enabled or not self.config.gemini_api_key:
+            logger.warning("Gemini fallback not configured; returning provider error.")
+            return BridgeResult(
+                text=(
+                    "OpenCode no pudo procesar la respuesta y el fallback Gemini no esta configurado.\n"
+                    f"Motivo: {failure_reason[:200]}"
+                ),
+                session_id=None,
+                model=self.config.model or DEFAULT_OPENCODE_MODEL,
+                returncode=1,
+                stderr=failure_reason,
+            )
+
+        models_chain = list(self.config.gemini_models)
+        logger.warning(
+            "Activating Gemini fallback chain=%s reason=%s",
+            models_chain,
+            failure_reason[:150],
+        )
+
+        try:
+            from scripts.telegram.gemini_fallback import gemini_respond_async
+
+            text, model_used = await gemini_respond_async(
+                message, self.config.gemini_api_key, models_chain, channel
+            )
+
+            # Send Telegram alert with the model that actually responded (fire and forget)
+            loop = asyncio.get_running_loop()
+            loop.run_in_executor(
+                None,
+                _send_gemini_alert_nowait,
+                failure_reason[:200],
+                model_used,
+            )
+
+            header = "[Respuesta en modo fallback Gemini]\n\n"
+            return BridgeResult(
+                text=header + text,
+                session_id=None,
+                model=f"google/{model_used}",
+                returncode=0,
+                stderr="",
+            )
+        except Exception as exc:
+            logger.error("Gemini fallback chain exhausted: %s", exc)
+            return BridgeResult(
+                text=(
+                    f"Tanto OpenCode ({failure_reason[:100]}) como todos los modelos Gemini fallaron: {exc}\n"
+                    "Inténtalo de nuevo en unos minutos."
+                ),
+                session_id=None,
+                model=models_chain[0] if models_chain else "gemini",
+                returncode=1,
+                stderr=str(exc),
+            )
+
     async def send(
         self,
         chat_id: int | str,
@@ -673,6 +798,17 @@ class OpenCodeBridge:
                 logger.info("Session stored chat_id=%s session_id=%s title=%s", str(chat_id), session_id, title)
             else:
                 logger.warning("Could not discover session id for title=%s", title)
+
+        # Gemini fallback: trigger when opencode fails with a provider/quota error.
+        if _is_provider_unavailable(returncode, stdout, stderr):
+            failure_reason = preview_text(stderr or stdout or "unknown provider error", 200)
+            logger.warning(
+                "Provider unavailable; activating Gemini fallback trace_id=%s chat_id=%s reason=%s",
+                trace_id,
+                str(chat_id),
+                failure_reason,
+            )
+            return await self._try_gemini_fallback(message, channel, failure_reason)
 
         text = (stdout or "").strip()
         if not text:

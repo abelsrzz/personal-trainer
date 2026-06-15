@@ -915,6 +915,10 @@ def load_web_chat_remote_config() -> tuple[OpenCodeRemoteConfig | None, str | No
     if not isinstance(opencode_data, dict) or not opencode_data:
         return None, "No existe el bloque `opencode_remote` en la configuracion del bridge."
 
+    gemini_data = opencode_data.get("gemini_fallback") or {}
+    import os as _os
+    gemini_api_key = str(_os.getenv("GEMINI_API_KEY") or gemini_data.get("api_key") or "").strip() or None
+
     try:
         return (
             OpenCodeRemoteConfig(
@@ -931,6 +935,13 @@ def load_web_chat_remote_config() -> tuple[OpenCodeRemoteConfig | None, str | No
                 require_confirmation_patterns=tuple(
                     str(item).lower() for item in opencode_data.get("require_confirmation_patterns", []) if str(item).strip()
                 ),
+                gemini_fallback_enabled=bool(gemini_data.get("enabled", bool(gemini_api_key))),
+                gemini_api_key=gemini_api_key,
+                gemini_models=tuple(
+                    str(m).strip() for m in (
+                        gemini_data.get("models") or [gemini_data.get("model") or "gemini-2.5-pro"]
+                    ) if str(m).strip()
+                ) or ("gemini-2.5-pro",),
             ),
             None,
         )

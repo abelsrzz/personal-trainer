@@ -170,6 +170,25 @@ def login(credentials: dict[str, str]) -> Garmin:
         credentials["token_store"],
     )
     mfa_code = os.getenv("GARMIN_MFA_CODE")
+
+    # When no MFA code is available, refuse to attempt SSO login if the token
+    # file is missing.  SSO triggers Garmin to send an MFA email even if we
+    # cannot supply the code, so a missing token file would cause the daemon to
+    # flood the inbox with MFA emails on every 5-minute retry cycle.
+    # Set GARMIN_MFA_CODE and run once manually to create the initial token file.
+    if not mfa_code:
+        token_store_p = Path(credentials["token_store"]).expanduser()
+        token_file = (
+            token_store_p / "garmin_tokens.json"
+            if token_store_p.is_dir() or not str(token_store_p).endswith(".json")
+            else token_store_p
+        )
+        if not token_file.exists():
+            raise FileNotFoundError(
+                f"Garmin token file not found: {token_file}. "
+                "Set GARMIN_MFA_CODE and run sync_garmin.py once manually to create initial tokens."
+            )
+
     client = Garmin(
         credentials["email"],
         credentials["password"],

@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
+import os
 from collections import defaultdict
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
@@ -611,6 +613,76 @@ def garmin_data_quality_report(daily: list[dict[str, Any]], activities: list[dic
     }
 
 
+CAPABILITY_REGISTRY_PATH = ROOT / "system" / "capabilities" / "registry.yaml"
+
+
+def _registry_max_age_days(capability: str, default_days: int) -> int:
+    """Read a capability's max_age_minutes from the registry, as whole days."""
+    try:
+        data = load_yaml(CAPABILITY_REGISTRY_PATH)
+        minutes = (
+            data.get("capabilities", {})
+            .get(capability, {})
+            .get("freshness", {})
+            .get("max_age_minutes")
+        )
+        if minutes:
+            return max(1, math.ceil(float(minutes) / (60 * 24)))
+    except Exception:  # noqa: BLE001 - registry is advisory; fall back to default
+        pass
+    return default_days
+
+
+def garmin_freshness(daily: list[dict[str, Any]], activities: list[dict[str, Any]], as_of: date) -> dict[str, Any]:
+    """Assess whether Garmin-derived data is fresh enough to coach on.
+
+    The coaching decision leans on daily readiness/HRV/sleep and recent activity
+    load. If those are stale the decision is unreliable, so we surface a hard
+    ``stale`` flag (and reasons) that the caller uses to guard the decision and
+    tell the athlete to sync. Thresholds come from the capability registry, with
+    env overrides ``COACH_DAILY_MAX_AGE_DAYS`` / ``COACH_ACTIVITY_MAX_AGE_DAYS``.
+    """
+    daily_override = int(os.getenv("COACH_DAILY_MAX_AGE_DAYS", "0") or 0)
+    activity_override = int(os.getenv("COACH_ACTIVITY_MAX_AGE_DAYS", "0") or 0)
+    max_daily_age = daily_override or _registry_max_age_days("daily_readiness", 1)
+    max_activity_age = activity_override or 3
+
+    latest_daily = daily[-1]["date"] if daily else None
+    latest_activity = activities[-1]["date"] if activities else None
+    daily_age = (as_of - latest_daily).days if latest_daily else None
+    activity_age = (as_of - latest_activity).days if latest_activity else None
+
+    reasons: list[str] = []
+    daily_stale = daily_age is None or daily_age > max_daily_age
+    activity_stale = activity_age is None or activity_age > max_activity_age
+    if daily_age is None:
+        reasons.append("No hay daily metrics de Garmin importados; sincroniza antes de confiar en readiness/HRV/sueno.")
+    elif daily_stale:
+        reasons.append(
+            f"Daily metrics de Garmin con {daily_age} dias de antiguedad (>{max_daily_age}); readiness/HRV/sueno pueden no reflejar tu estado actual."
+        )
+    if activity_age is None:
+        reasons.append("No hay actividades de Garmin importadas; sincroniza antes de analizar carga.")
+    elif activity_stale:
+        reasons.append(
+            f"Ultima actividad importada hace {activity_age} dias (>{max_activity_age}); puede faltar carga reciente por sincronizar."
+        )
+
+    return {
+        "as_of": as_of.isoformat(),
+        "latest_daily_date": latest_daily.isoformat() if latest_daily else None,
+        "latest_activity_date": latest_activity.isoformat() if latest_activity else None,
+        "daily_age_days": daily_age,
+        "activity_age_days": activity_age,
+        "max_daily_age_days": max_daily_age,
+        "max_activity_age_days": max_activity_age,
+        "daily_stale": daily_stale,
+        "activity_stale": activity_stale,
+        "stale": bool(daily_stale or activity_stale),
+        "reasons": reasons,
+    }
+
+
 def load_shin_entries() -> list[dict[str, Any]]:
     data = load_yaml(SHIN_TRACKER_PATH)
     entries = data.get("shin_tracker", {}).get("entries", [])
@@ -974,6 +1046,14 @@ def build_decision(activities: list[dict[str, Any]], reviews: list[dict[str, Any
         reasons.append("El feedback subjetivo reciente repite señales de mala tolerancia o dolor; no toca progresar.")
         status = "red" if status == "red" else "yellow"
 
+    freshness = garmin_freshness(load_daily_metrics(), activities, as_of)
+    data_stale = freshness["stale"]
+    if data_stale:
+        reasons.extend(freshness["reasons"])
+        # Guard, never progress on stale data: cap an otherwise-green call at yellow.
+        if status == "green":
+            status = "yellow"
+
     active_block_name = str(context.get("active_block", {}).get("name") or "").lower()
     if "reset" in active_block_name or "consistency" in active_block_name:
         reasons.append("El bloque activo prioriza reconstruccion, consistencia y tolerancia tisular antes de ritmos agresivos.")
@@ -1002,6 +1082,10 @@ def build_decision(activities: list[dict[str, Any]], reviews: list[dict[str, Any
     else:
         recommendation = "Mantener plan y permitir progresion pequena si el periostio sigue en 0-2/10."
 
+    if data_stale:
+        action = "maintain_with_caution" if action == "maintain_or_progress_carefully" else action
+        recommendation = "Datos de Garmin desactualizados: sincroniza antes de confiar en esta decision. " + recommendation
+
     if not reasons:
         reasons.append("Sin banderas rojas objetivas en los datos locales disponibles.")
 
@@ -1014,6 +1098,8 @@ def build_decision(activities: list[dict[str, Any]], reviews: list[dict[str, Any
         "status": status,
         "action": action,
         "recommendation": recommendation,
+        "data_stale": data_stale,
+        "freshness": freshness,
         "progression": progression,
         "replanning": replanning,
         "reasons": reasons,
@@ -1195,6 +1281,13 @@ def render_decision(payload: dict[str, Any]) -> str:
     lines = [
         "# Coach Decision",
         "",
+    ]
+    if decision.get("data_stale"):
+        lines.extend([
+            "> ⚠️ **Datos de Garmin desactualizados.** Sincroniza antes de confiar en esta decision.",
+            "",
+        ])
+    lines.extend([
         f"- Fecha de analisis: `{payload['as_of']}`",
         f"- Estado: `{decision['status']}`",
         f"- Accion: `{decision['action']}`",
@@ -1202,7 +1295,7 @@ def render_decision(payload: dict[str, Any]) -> str:
         "",
         "## Motivos",
         "",
-    ]
+    ])
     lines.extend([f"- {reason}" for reason in decision["reasons"]])
     lines.extend(
         [
@@ -1241,6 +1334,7 @@ def build_payload(as_of: date, days: int) -> dict[str, Any]:
         "lookback_days": days,
         "activity_count_total": len(activities),
         "review_count_total": len(reviews),
+        "data_stale": decision.get("data_stale", False),
         "decision": decision,
         "goal_gates": evaluate_goal_gates(activities, reviews, feedback_items, shin_entries, as_of),
         "performance_estimate": performance_estimate(activities, as_of),

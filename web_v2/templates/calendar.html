@@ -8,8 +8,8 @@
     <p class="lede">Un mes resumido por estado de día: qué importa, qué está resuelto y dónde hay conflicto.</p>
   </div>
   <div class="hero-badges">
-    <a class="link-button subtle" href="/calendar?month={{ page.prev_month }}&focus={{ page.focus }}">Mes anterior</a>
-    <a class="link-button subtle" href="/calendar?month={{ page.next_month }}&focus={{ page.focus }}">Mes siguiente</a>
+    <a class="link-button subtle" href="{{ app_path('/calendar?month=' ~ page.prev_month ~ '&focus=' ~ page.focus) }}">Mes anterior</a>
+    <a class="link-button subtle" href="{{ app_path('/calendar?month=' ~ page.next_month ~ '&focus=' ~ page.focus) }}">Mes siguiente</a>
   </div>
 </section>
 
@@ -29,7 +29,7 @@
   </div>
   <div class="calendar-focus-tabs">
     {% for item in page.focus_options %}
-    <a class="focus-tab {{ 'active' if page.focus == item.key else '' }}" href="/calendar?month={{ page.selected }}&focus={{ item.key }}">{{ item.label }}</a>
+    <a class="focus-tab {{ 'active' if page.focus == item.key else '' }}" href="{{ app_path('/calendar?month=' ~ page.selected ~ '&focus=' ~ item.key) }}">{{ item.label }}</a>
     {% endfor %}
   </div>
   <div class="legend-row compact-legend">
@@ -63,7 +63,7 @@
       </div>
       <button class="ghost-button" type="button" data-modal-close>Cerrar</button>
     </div>
-    <form class="stack-form planner-form" method="post" action="/calendar/plan-range" data-planner-form data-busy-title="Generando plan" data-busy-message="El sistema está construyendo el plan y validando Garmin. Puede tardar un poco.">
+    <form class="stack-form planner-form" method="post" action="{{ app_path('/calendar/plan-range') }}" data-planner-form data-busy-title="Generando plan" data-busy-message="El sistema está construyendo el plan y validando Garmin. Puede tardar un poco.">
       <input type="hidden" name="return_to" value="{{ page.plan_range_form.return_to }}">
       <label>
         <span>Desde</span>
@@ -91,7 +91,7 @@
       </div>
       <button class="ghost-button" type="button" data-modal-close>Cerrar</button>
     </div>
-    <form class="stack-form planner-form" method="post" action="/calendar/replan-range" data-planner-form data-busy-title="Replanificando rango" data-busy-message="La IA está replanificando el rango y después comprobará la sincronización Garmin.">
+    <form class="stack-form planner-form" method="post" action="{{ app_path('/calendar/replan-range') }}" data-planner-form data-busy-title="Replanificando rango" data-busy-message="La IA está replanificando el rango y después comprobará la sincronización Garmin.">
       <input type="hidden" name="return_to" value="{{ page.replan_range_form.return_to }}">
       <label>
         <span>Desde</span>
@@ -123,7 +123,7 @@
   {% for week in page.weeks %}
   <div class="calendar-week">
     {% for day in week %}
-    <a class="calendar-day calendar-day-v2 {{ day.summary.dominant_class }} {{ 'is-muted' if not day.in_month else '' }} {{ 'is-today' if day.is_today else '' }} {{ 'is-dimmed' if day.is_dimmed else '' }}" href="{{ day.v2_detail_url }}" style="{{ day.summary.day_inline_style }}">
+    <a class="calendar-day calendar-day-v2 {{ day.summary.dominant_class }} {{ 'is-muted' if not day.in_month else '' }} {{ 'is-today' if day.is_today else '' }} {{ 'is-dimmed' if day.is_dimmed else '' }}" href="{{ app_path(day.v2_detail_url) }}" style="{{ day.summary.day_inline_style }}">
       <div class="calendar-day-head">
         <div class="calendar-day-head-main">
           <strong>{{ day.day }}</strong>

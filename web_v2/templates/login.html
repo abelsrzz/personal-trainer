@@ -9,7 +9,7 @@
     {% if error %}
     <p class="alert">{{ error }}</p>
     {% endif %}
-    <form class="stack-form" method="post" action="/login">
+    <form class="stack-form" method="post" action="{{ app_path('/login') }}">
       <label>
         <span>Usuario</span>
         <input type="text" name="username" autocomplete="username" required autofocus>

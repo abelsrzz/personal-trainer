@@ -55,7 +55,7 @@
     {% if page.today_workouts %}
     <div class="stack-list">
       {% for item in page.today_workouts %}
-      <a class="list-row" href="{{ item.detail_url }}">
+      <a class="list-row" href="{{ app_path(item.detail_url) }}">
         <div>
           <strong>{{ item.name|clean_text }}</strong>
           <p>{{ item.session_kind_label }} · {{ item.estimated_duration }}</p>
@@ -90,7 +90,7 @@
     {% if page.today_reviews %}
     <div class="stack-list">
       {% for item in page.today_reviews %}
-      <a class="list-row" href="{{ item.detail_url }}">
+      <a class="list-row" href="{{ app_path(item.detail_url) }}">
         <div>
           <strong>{{ item.activity_name|clean_text }}</strong>
           <p>{{ item.distance_km }} km · {{ item.duration }} · {{ item.pace }}</p>
@@ -136,11 +136,11 @@
       <p class="eyebrow">Próximo bloque</p>
         <h2>Lo siguiente en calendario</h2>
       </div>
-      <a class="text-link" href="/calendar">Abrir calendario</a>
+      <a class="text-link" href="{{ app_path('/calendar') }}">Abrir calendario</a>
     </div>
     <div class="stack-list">
       {% for item in page.upcoming %}
-      <a class="list-row" href="{{ item.detail_url }}">
+      <a class="list-row" href="{{ app_path(item.detail_url) }}">
         <div>
           <strong>{{ item.name|clean_text }}</strong>
           <p>{{ item.date }} · {{ item.session_kind_label }}</p>
@@ -159,7 +159,7 @@
     </div>
     <div class="stack-list">
       {% for item in page.recent_reviews %}
-      <a class="list-row" href="{{ item.detail_url }}">
+      <a class="list-row" href="{{ app_path(item.detail_url) }}">
         <div>
           <strong>{{ item.activity_name|clean_text }}</strong>
           <p>{{ item.date }} · {{ item.score }}/10</p>

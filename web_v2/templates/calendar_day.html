@@ -8,7 +8,7 @@
     <p class="lede">{{ page.daily_summary.status_label|humanize }} · {{ page.links.planned_count }} plan · {{ page.links.completed_count }} hecho · {{ page.links.race_count }} carrera</p>
   </div>
   <div class="hero-badges">
-    <a class="link-button subtle" href="/calendar?month={{ page.date[:7] }}">Volver al calendario</a>
+    <a class="link-button subtle" href="{{ app_path('/calendar?month=' ~ page.date[:7]) }}">Volver al calendario</a>
   </div>
 </section>
 
@@ -38,7 +38,7 @@
     </div>
       <div class="stack-list">
       {% for workout in page.planned_items %}
-      <a class="detail-row-card {{ workout.calendar_color_class }} calendar-detail-card" href="{{ workout.detail_url }}" style="{{ workout.calendar_inline_style }}">
+      <a class="detail-row-card {{ workout.calendar_color_class }} calendar-detail-card" href="{{ app_path(workout.detail_url) }}" style="{{ workout.calendar_inline_style }}">
         <div>
           <p class="calendar-entry-topline">
             <span class="calendar-entry-icons">
@@ -73,7 +73,7 @@
     </div>
     <div class="stack-list">
       {% for review in page.completed_items %}
-      <a class="detail-row-card {{ review.calendar_color_class }} calendar-detail-card" {% if review.detail_url %}href="{{ review.detail_url }}"{% endif %} style="{{ review.calendar_inline_style }}">
+      <a class="detail-row-card {{ review.calendar_color_class }} calendar-detail-card" {% if review.detail_url %}href="{{ app_path(review.detail_url) }}"{% endif %} style="{{ review.calendar_inline_style }}">
         <div>
           <p class="calendar-entry-topline">
             <span class="calendar-entry-icons">

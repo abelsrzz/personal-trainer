@@ -1,10 +1,11 @@
 {
-  "generated_at": "2026-06-14T13:00:09.883606+00:00",
+  "generated_at": "2026-06-15T13:25:29.373423+00:00",
   "overall_status": "warning",
   "summary": "Sistema usable con advertencias o datos potencialmente stale.",
   "warnings": [
     "Capability stale: athlete_profile",
     "Capability stale: athlete_state",
+    "Capability stale: coach_decision",
     "Capability stale: daily_readiness",
     "Capability stale: post_workout_refresh",
     "Capability stale: progression_state",
@@ -14,7 +15,7 @@
   "errors": [],
   "services": {
     "post_workout_refresh": {
-      "last_successful_run": "2026-06-14T12:57:05.453008+00:00",
+      "last_successful_run": "2026-06-15T08:02:27.681764+00:00",
       "last_processed_activity_date": "2026-03-29",
       "last_error": null
     },
@@ -88,9 +89,9 @@
       }
     },
     "coach_state": {
-      "coach_as_of": "2026-06-14",
+      "coach_as_of": "2026-06-15",
       "coach_status": "yellow",
-      "athlete_state_generated_at": "2026-06-14T12:57:05.511722+00:00"
+      "athlete_state_generated_at": "2026-06-15T08:02:29.382667+00:00"
     },
     "garmin_reconcile": {
       "generated_at": "2026-06-11T17:42:27.959842Z",
@@ -120,9 +121,9 @@
     },
     {
       "name": "coach_decision",
-      "stale": false,
-      "last_successful_sync": "2026-06-14T12:51:30.038417+00:00",
-      "last_attempted_sync": "2026-06-14T12:51:30.038417+00:00",
+      "stale": true,
+      "last_successful_sync": "2026-06-14T19:21:49.518637+00:00",
+      "last_attempted_sync": "2026-06-14T19:21:49.518637+00:00",
       "last_error": null
     },
     {

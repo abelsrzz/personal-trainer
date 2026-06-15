@@ -44,7 +44,7 @@
     </div>
     {% endif %}
     {% if page.linked_review_url %}
-    <p><a class="text-link" href="{{ page.linked_review_url }}">Ver ejecución enlazada</a></p>
+    <p><a class="text-link" href="{{ app_path(page.linked_review_url) }}">Ver ejecución enlazada</a></p>
     {% endif %}
   </article>
 
@@ -78,7 +78,7 @@
       </div>
       <button class="ghost-button" type="button" data-modal-close>Cerrar</button>
     </div>
-    <form class="stack-form planner-form" method="post" action="/planned-workouts/{{ page.replan_form.slug }}/replan" data-planner-form data-busy-title="Replanificando sesión" data-busy-message="La IA está ajustando esta sesión y verificará Garmin antes de devolver la respuesta.">
+    <form class="stack-form planner-form" method="post" action="{{ app_path('/planned-workouts/' ~ page.replan_form.slug ~ '/replan') }}" data-planner-form data-busy-title="Replanificando sesión" data-busy-message="La IA está ajustando esta sesión y verificará Garmin antes de devolver la respuesta.">
       <input type="hidden" name="return_to" value="{{ page.replan_form.return_to }}">
       <label>
         <span>Premisa libre</span>

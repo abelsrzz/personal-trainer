@@ -7,6 +7,7 @@ import hashlib
 import json
 import logging
 import os
+import random
 import time
 from datetime import date, datetime, timedelta
 from pathlib import Path
@@ -194,9 +195,94 @@ def login(credentials: dict[str, str]) -> Garmin:
         credentials["password"],
         prompt_mfa=(lambda: mfa_code) if mfa_code else None,
     )
-    client.login(credentials["token_store"])
+    _with_retry(lambda: client.login(credentials["token_store"]), what="login")
     logger.info("Garmin login successful")
     return client
+
+
+GARMIN_API_RETRIES = int(os.getenv("GARMIN_API_RETRIES", "4"))
+GARMIN_API_RETRY_BASE_S = float(os.getenv("GARMIN_API_RETRY_BASE_S", "2"))
+
+_AUTH_ERROR_PATTERNS = (
+    "401",
+    "403",
+    "unauthorized",
+    "forbidden",
+    "invalid credentials",
+    "authentication",
+    "mfa",
+)
+_TRANSIENT_ERROR_PATTERNS = (
+    "timeout",
+    "timed out",
+    "temporarily",
+    "connection",
+    "rate limit",
+    "too many requests",
+    "429",
+    "500",
+    "502",
+    "503",
+    "504",
+)
+
+
+def _is_transient_error(exc: BaseException) -> bool:
+    """True for network/server hiccups worth retrying. Never retry auth errors."""
+    name = type(exc).__name__.lower()
+    message = str(exc).lower()
+    if any(pattern in message for pattern in _AUTH_ERROR_PATTERNS):
+        return False
+    status = getattr(exc, "status_code", None)
+    if status is None:
+        response = getattr(exc, "response", None)
+        status = getattr(response, "status_code", None)
+    if status in {429, 500, 502, 503, 504}:
+        return True
+    if "toomanyrequests" in name or "connectionerror" in name or "timeout" in name:
+        return True
+    return any(pattern in name or pattern in message for pattern in _TRANSIENT_ERROR_PATTERNS)
+
+
+def _with_retry(fn, *, what: str, retries: int = GARMIN_API_RETRIES, base_delay: float = GARMIN_API_RETRY_BASE_S):
+    """Run ``fn`` retrying transient Garmin errors with exponential backoff + jitter.
+
+    Auth/MFA errors are re-raised immediately so the caller can alert instead of
+    hammering Garmin. Gives up cleanly after ``retries`` attempts.
+    """
+    attempt = 0
+    while True:
+        try:
+            return fn()
+        except Exception as exc:  # noqa: BLE001 - classified by _is_transient_error
+            if attempt >= retries or not _is_transient_error(exc):
+                raise
+            delay = base_delay * (2 ** attempt) + random.uniform(0, base_delay)
+            attempt += 1
+            logger.warning(
+                "Transient Garmin error on %s (attempt %d/%d): %s; retrying in %.1fs",
+                what,
+                attempt,
+                retries,
+                exc,
+                delay,
+            )
+            time.sleep(delay)
+
+
+def _fetch_metric(name: str, fn, errors: dict[str, str]):
+    """Fetch a single daily metric resiliently.
+
+    Returns the value, or ``None`` (recording the cause in ``errors``) when it
+    cannot be retrieved. Never stores an ``{"error": ...}`` blob as if it were
+    real data, so downstream freshness/quality checks count it as missing.
+    """
+    try:
+        return _with_retry(fn, what=name)
+    except Exception as exc:  # noqa: BLE001 - degrade to "missing", don't crash the day
+        logger.warning("Garmin metric %s unavailable: %s", name, exc)
+        errors[name] = str(exc)
+        return None
 
 
 def json_default(value: Any) -> str:
@@ -442,13 +528,19 @@ def fetch_recent_activities(client: Garmin, start_date: str, limit: int, activit
     page_size = max(1, min(int(limit or 1), 100))
 
     while len(collected) < limit:
+        page_start = start
         if activity_type_filter is None:
-            try:
-                batch = client.get_activities(start, page_size)
-            except TypeError:
-                batch = client.get_activities(start, page_size, None)
+            def _get_page() -> Any:
+                try:
+                    return client.get_activities(page_start, page_size)
+                except TypeError:
+                    return client.get_activities(page_start, page_size, None)
+            batch = _with_retry(_get_page, what=f"get_activities:{page_start}")
         else:
-            batch = client.get_activities(start, page_size, activity_type_filter)
+            batch = _with_retry(
+                lambda: client.get_activities(page_start, page_size, activity_type_filter),
+                what=f"get_activities:{page_start}",
+            )
         if not batch:
             break
 
@@ -1034,7 +1126,7 @@ def import_activities(client: Garmin, days: int, limit: int, activity_type: str 
     imported_ids: list[int] = []
     for activity in kept:
         activity_id = activity["activityId"]
-        detail = client.get_activity_details(activity_id)
+        detail = _with_retry(lambda: client.get_activity_details(activity_id), what=f"activity_details:{activity_id}")
         target_dir = activity_dir(activity)
         save_json(target_dir / "summary.json", activity)
         save_json(target_dir / "details.json", detail)
@@ -1058,26 +1150,27 @@ def import_daily_metrics(client: Garmin, days: int) -> None:
     start = date.today() - timedelta(days=days)
     for offset in range(days + 1):
         current = (start + timedelta(days=offset)).isoformat()
-        sleep_payload = None
+        errors: dict[str, str] = {}
         sleep_method = getattr(client, "get_sleep_data", None)
-        if sleep_method is not None:
-            try:
-                sleep_payload = sleep_method(current)
-            except Exception as exc:
-                sleep_payload = {"error": str(exc)}
         payload = {
             "date": current,
-            "heart_rates": client.get_heart_rates(current),
-            "hrv": client.get_hrv_data(current),
-            "training_readiness": client.get_training_readiness(current),
-            "training_status": client.get_training_status(current),
-            "max_metrics": client.get_max_metrics(current),
-            "sleep": sleep_payload,
+            "heart_rates": _fetch_metric("heart_rates", lambda: client.get_heart_rates(current), errors),
+            "hrv": _fetch_metric("hrv", lambda: client.get_hrv_data(current), errors),
+            "training_readiness": _fetch_metric("training_readiness", lambda: client.get_training_readiness(current), errors),
+            "training_status": _fetch_metric("training_status", lambda: client.get_training_status(current), errors),
+            "max_metrics": _fetch_metric("max_metrics", lambda: client.get_max_metrics(current), errors),
+            "sleep": _fetch_metric("sleep", lambda: sleep_method(current), errors) if sleep_method is not None else None,
         }
+        if errors:
+            payload["_errors"] = errors
         save_json(DEFAULT_IMPORT_ROOT / "daily" / f"{current}.json", payload)
         imported_days.append(current)
 
-    running_tolerance = client.get_running_tolerance(start.isoformat(), date.today().isoformat(), aggregation="weekly")
+    running_tolerance = _fetch_metric(
+        "running_tolerance",
+        lambda: client.get_running_tolerance(start.isoformat(), date.today().isoformat(), aggregation="weekly"),
+        {},
+    )
     save_json(DEFAULT_IMPORT_ROOT / "daily" / "running_tolerance_weekly.json", running_tolerance)
 
     manifest = {

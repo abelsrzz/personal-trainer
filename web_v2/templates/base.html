@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}RunPilot Next{% endblock %}</title>
-  <link rel="icon" type="image/svg+xml" href="/static/logo-mark.svg">
-  <link rel="stylesheet" href="/static/style.css">
+  <link rel="icon" type="image/svg+xml" href="{{ app_path('/static/logo-mark.svg') }}">
+  <link rel="stylesheet" href="{{ app_path('/static/style.css') }}">
 </head>
 <body>
   <div class="planner-busy-overlay" hidden data-planner-busy>
@@ -17,8 +17,8 @@
   </div>
   <div class="app-shell">
     <header class="topbar">
-      <a class="brand" href="/">
-        <img src="/static/logo-mark.svg" alt="RunPilot Next">
+      <a class="brand" href="{{ app_path('/') }}">
+        <img src="{{ app_path('/static/logo-mark.svg') }}" alt="RunPilot Next">
         <div>
           <strong>RunPilot Next</strong>
           <span>Entrenamiento, recuperación y carrera.</span>
@@ -26,22 +26,22 @@
       </a>
       {% if authenticated %}
       <nav class="topnav">
-        <a class="{{ 'active' if active_nav == 'hoy' else '' }}" href="/">Hoy</a>
-        <a class="{{ 'active' if active_nav == 'plan' else '' }}" href="/plan">Plan</a>
-        <a class="{{ 'active' if active_nav == 'calendar' else '' }}" href="/calendar">Calendario</a>
-        <a class="{{ 'active' if active_nav == 'eventos' else '' }}" href="/eventos">Eventos</a>
-        <a class="{{ 'active' if active_nav == 'atleta' else '' }}" href="/atleta">Atleta</a>
+        <a class="{{ 'active' if active_nav == 'hoy' else '' }}" href="{{ app_path('/') }}">Hoy</a>
+        <a class="{{ 'active' if active_nav == 'plan' else '' }}" href="{{ app_path('/plan') }}">Plan</a>
+        <a class="{{ 'active' if active_nav == 'calendar' else '' }}" href="{{ app_path('/calendar') }}">Calendario</a>
+        <a class="{{ 'active' if active_nav == 'eventos' else '' }}" href="{{ app_path('/eventos') }}">Eventos</a>
+        <a class="{{ 'active' if active_nav == 'atleta' else '' }}" href="{{ app_path('/atleta') }}">Atleta</a>
       </nav>
       <div class="topbar-actions">
         <div class="garmin-sync-chip {{ 'is-running' if garmin_sync.running else '' }} {{ 'is-error' if garmin_sync.last_ok is sameas false else '' }}" data-garmin-sync-chip>
           <strong>Garmin</strong>
           <span data-garmin-sync-message>{{ garmin_sync_status_text }}</span>
         </div>
-        <form method="post" action="/garmin/sync" data-garmin-sync-form>
+        <form method="post" action="{{ app_path('/garmin/sync') }}" data-garmin-sync-form>
           <input type="hidden" name="return_to" value="{{ current_path }}">
           <button class="ghost-button" type="submit" data-garmin-sync-button {{ 'disabled' if garmin_sync.running else '' }}>{{ 'Sincronizando Garmin...' if garmin_sync.running else 'Sincronizar Garmin' }}</button>
         </form>
-        <a class="ghost-button" href="/logout">Salir</a>
+        <a class="ghost-button" href="{{ app_path('/logout') }}">Salir</a>
       </div>
       {% endif %}
     </header>
@@ -75,7 +75,7 @@
 
       const refreshStatus = async () => {
         try {
-          const response = await fetch('/api/garmin/sync', { credentials: 'same-origin' });
+          const response = await fetch('{{ app_path('/api/garmin/sync') }}', { credentials: 'same-origin' });
           if (!response.ok) {
             return;
           }

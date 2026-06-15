@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import subprocess
 import sys
 from datetime import datetime, timezone
@@ -14,6 +15,7 @@ import yaml
 
 try:
     from scripts.notifications.coach_messages import send_post_workout_message
+    from scripts.notifications.sync_alerts import looks_like_auth_error, notify_sync_gap, notify_token_problem
     from scripts.system.athlete_state import write_athlete_state
     from scripts.system.workout_family_response import write_workout_family_response
 except ModuleNotFoundError:  # pragma: no cover - direct script execution path fix
@@ -21,6 +23,7 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path f
 
     sys.path.append(str(Path(__file__).resolve().parents[2]))
     from scripts.notifications.coach_messages import send_post_workout_message
+    from scripts.notifications.sync_alerts import looks_like_auth_error, notify_sync_gap, notify_token_problem
     from scripts.system.athlete_state import write_athlete_state
     from scripts.system.workout_family_response import write_workout_family_response
 
@@ -62,8 +65,21 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+SYNC_GAP_ALERT_HOURS = float(os.getenv("GARMIN_SYNC_GAP_ALERT_HOURS", "18"))
+
+
 def utcnow_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
+
+
+def _parse_iso(value: Any) -> datetime | None:
+    if not value:
+        return None
+    try:
+        parsed = datetime.fromisoformat(str(value))
+    except ValueError:
+        return None
+    return parsed if parsed.tzinfo else parsed.replace(tzinfo=timezone.utc)
 
 
 def load_json(path: Path, default: Any) -> Any:
@@ -347,6 +363,17 @@ def main() -> None:
         if isinstance(item, dict) and item.get("result") == "success"
     }
 
+    # Detect a sync gap (daemon down / Garmin unreachable for a while): alert and
+    # widen the import window so missed activities are recovered rather than lost.
+    now = datetime.now(timezone.utc)
+    last_success = _parse_iso(state.get("last_successful_sync_at")) or _parse_iso(state.get("last_activity_import_at"))
+    activity_days = args.activity_days
+    if last_success is not None:
+        gap_hours = (now - last_success).total_seconds() / 3600
+        if gap_hours > SYNC_GAP_ALERT_HOURS:
+            notify_sync_gap(gap_hours)
+            activity_days = max(args.activity_days, min(int(gap_hours / 24) + 2, 30))
+
     if not args.skip_activity_import:
         ok, error = run_step(
             [
@@ -354,16 +381,19 @@ def main() -> None:
                 str(SYNC_SCRIPT),
                 "import-activities",
                 "--days",
-                str(args.activity_days),
+                str(activity_days),
                 "--limit",
                 str(args.limit),
             ]
         )
         if not ok:
             state["last_error"] = error
+            if looks_like_auth_error(error):
+                notify_token_problem(error)
             remember_run(state, [], launched=False, error=error)
             save_json(STATE_PATH, state)
             raise SystemExit(error)
+        state["last_successful_sync_at"] = utcnow_iso()
 
     summaries = activity_summaries()
     new_activities = [item for item in summaries if item["activity_id"] not in processed_success_ids]

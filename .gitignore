@@ -1,0 +1,16 @@
+# Python bytecode / caches
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtualenv
+.venv/
+venv/
+
+# Logs
+*.log
+scripts/web_v2/web_debug.log
+/tmp/opencode/
+
+# OS noise
+.DS_Store

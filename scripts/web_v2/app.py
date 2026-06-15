@@ -518,10 +518,33 @@ def authenticated(request: Request) -> bool:
     return bool(request.session.get("authenticated"))
 
 
+def request_root_path(request: Request) -> str:
+    scope = getattr(request, "scope", {}) or {}
+    root_path = str(scope.get("root_path") or "").strip()
+    if not root_path:
+        return ""
+    root_path = f"/{root_path.lstrip('/')}"
+    return root_path.rstrip("/")
+
+
+def request_app_path(request: Request, path: str | None = "/") -> str:
+    target = str(path or "").strip()
+    if not target:
+        target = "/"
+    if "://" in target:
+        return target
+    if not target.startswith("/"):
+        target = f"/{target}"
+    root_path = request_root_path(request)
+    if target == "/":
+        return root_path or "/"
+    return f"{root_path}{target}"
+
+
 def auth_guard(request: Request) -> RedirectResponse | None:
     if authenticated(request):
         return None
-    return RedirectResponse(url="/login", status_code=303)
+    return RedirectResponse(url=request_app_path(request, "/login"), status_code=303)
 
 
 def template_context(request: Request, **values: Any) -> dict[str, Any]:
@@ -534,6 +557,8 @@ def template_context(request: Request, **values: Any) -> dict[str, Any]:
         "authenticated": authenticated(request),
         "today": portal_core.date.today().isoformat(),
         "current_path": request.url.path,
+        "app_root": request_root_path(request),
+        "app_path": lambda path="/": request_app_path(request, path),
         "flash": request.session.pop("flash", None),
         "garmin_sync": dict(_garmin_sync_state),
         "garmin_sync_status_text": garmin_sync_status_text(),
@@ -1286,7 +1311,7 @@ async def login_submit(request: Request, username: str = Form(...), password: st
     if username == config["username"] and password == config["password"]:
         request.session["authenticated"] = True
         request.session["username"] = username
-        return RedirectResponse(url="/", status_code=303)
+        return RedirectResponse(url=request_app_path(request, "/"), status_code=303)
     return templates.TemplateResponse(
         request,
         "login.html",
@@ -1298,7 +1323,7 @@ async def login_submit(request: Request, username: str = Form(...), password: st
 @app.get("/logout")
 async def logout(request: Request) -> RedirectResponse:
     request.session.clear()
-    return RedirectResponse(url="/login", status_code=303)
+    return RedirectResponse(url=request_app_path(request, "/login"), status_code=303)
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -1342,7 +1367,7 @@ async def calendar_plan_range_submit(
         },
     )
     request.session["flash"] = {"level": "ok" if result.get("ok") else "error", "message": str(result.get("message") or "Operacion finalizada.")}
-    return RedirectResponse(url=safe_return_to(return_to, "/calendar"), status_code=303)
+    return RedirectResponse(url=request_app_path(request, safe_return_to(return_to, "/calendar")), status_code=303)
 
 
 @app.post("/calendar/replan-range")
@@ -1366,7 +1391,7 @@ async def calendar_replan_range_submit(
         },
     )
     request.session["flash"] = {"level": "ok" if result.get("ok") else "error", "message": str(result.get("message") or "Operacion finalizada.")}
-    return RedirectResponse(url=safe_return_to(return_to, "/calendar"), status_code=303)
+    return RedirectResponse(url=request_app_path(request, safe_return_to(return_to, "/calendar")), status_code=303)
 
 
 @app.get("/plan", response_class=HTMLResponse)
@@ -1435,7 +1460,7 @@ async def planned_workout_replan_submit(
         },
     )
     request.session["flash"] = {"level": "ok" if result.get("ok") else "error", "message": str(result.get("message") or "Operacion finalizada.")}
-    return RedirectResponse(url=safe_return_to(return_to, f"/planned-workouts/{slug}"), status_code=303)
+    return RedirectResponse(url=request_app_path(request, safe_return_to(return_to, f"/planned-workouts/{slug}")), status_code=303)
 
 
 @app.get("/completed-workouts/{slug}", response_class=HTMLResponse)
@@ -1463,7 +1488,7 @@ async def garmin_sync_submit(request: Request, return_to: str = Form("/")) -> Re
     ok, message = launch_garmin_bidirectional_sync("manual")
     request.session["flash"] = {"level": "ok" if ok else "error", "message": message}
     target = return_to if str(return_to or "").startswith("/") else "/"
-    return RedirectResponse(url=target, status_code=303)
+    return RedirectResponse(url=request_app_path(request, target), status_code=303)
 
 
 @app.get("/api/garmin/sync")

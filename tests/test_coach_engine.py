@@ -61,5 +61,39 @@ class CoachEngineTests(unittest.TestCase):
         self.assertEqual(decision["daily_signals"]["running_tolerance_flag"], "high")
 
 
+class GarminFreshnessTests(unittest.TestCase):
+    def test_stale_daily_flags_stale(self) -> None:
+        as_of = date(2026, 6, 15)
+        freshness = coach_engine.garmin_freshness([{"date": date(2026, 6, 1)}], [{"date": date(2026, 6, 14)}], as_of)
+        self.assertTrue(freshness["daily_stale"])
+        self.assertTrue(freshness["stale"])
+        self.assertTrue(freshness["reasons"])
+
+    def test_missing_data_is_stale(self) -> None:
+        freshness = coach_engine.garmin_freshness([], [], date(2026, 6, 15))
+        self.assertTrue(freshness["stale"])
+        self.assertIsNone(freshness["latest_daily_date"])
+
+    def test_fresh_data_not_stale(self) -> None:
+        as_of = date(2026, 6, 15)
+        freshness = coach_engine.garmin_freshness([{"date": date(2026, 6, 15)}], [{"date": date(2026, 6, 15)}], as_of)
+        self.assertFalse(freshness["stale"])
+
+    @patch("scripts.garmin.coach_engine.active_context")
+    @patch("scripts.garmin.coach_engine.load_daily_metrics")
+    @patch("scripts.garmin.coach_engine.load_running_tolerance")
+    def test_build_decision_guards_on_stale_data(self, tolerance_mock, metrics_mock, context_mock) -> None:
+        tolerance_mock.return_value = {"weeks": []}
+        metrics_mock.return_value = [{"date": date(2026, 5, 16), "payload": {}}]
+        context_mock.return_value = {"cycle": {}, "active_block": {}, "preferences": {}, "response_profile": {}, "races": []}
+        activities = [{"date": date(2026, 5, 16), "km": 5.0, "training_effect_label": "EASY", "avg_hr": 130}]
+
+        decision = coach_engine.build_decision(activities, [], [], [], date(2026, 6, 15))
+
+        self.assertTrue(decision["data_stale"])
+        self.assertNotEqual(decision["status"], "green")
+        self.assertIn("desactualizados", decision["recommendation"].lower())
+
+
 if __name__ == "__main__":
     unittest.main()

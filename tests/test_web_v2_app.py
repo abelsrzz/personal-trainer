@@ -94,6 +94,16 @@ class WebV2Tests(unittest.TestCase):
         self.assertEqual(app.humanize_ui_label("hold_or_reduce"), "Mantener o reducir")
         self.assertEqual(app.clean_ui_text("`Bloque actual`"), "Bloque actual")
 
+    def test_request_app_path_prefixes_proxy_root_path(self) -> None:
+        request = types.SimpleNamespace(scope={"root_path": "/running"})
+        self.assertEqual(app.request_root_path(request), "/running")
+        self.assertEqual(app.request_app_path(request, "/calendar?month=2026-06"), "/running/calendar?month=2026-06")
+
+    def test_request_app_path_keeps_root_route_without_double_slash(self) -> None:
+        request = types.SimpleNamespace(scope={"root_path": "/running/"})
+        self.assertEqual(app.request_app_path(request, "/"), "/running")
+        self.assertEqual(app.request_app_path(request, "/login"), "/running/login")
+
     def test_aerobic_target_hr_values_derive_from_z2_band(self) -> None:
         with mock.patch.object(app.portal_core, "load_yaml", return_value={"zones": {"heart_rate": {"z2": "145-160"}}}):
             self.assertEqual(app.aerobic_target_hr_values(), [145, 153, 160])

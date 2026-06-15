@@ -79,21 +79,57 @@ def build_summary(day: str, steps: list[dict[str, Any]]) -> str:
     return "\n".join(lines)
 
 
+def _alert_import_failure(step: dict[str, Any]) -> None:
+    error = step.get("stderr") or step.get("stdout") or "Import Garmin activities failed"
+    try:
+        from scripts.notifications.sync_alerts import looks_like_auth_error, notify_token_problem, send_throttled_alert
+
+        if looks_like_auth_error(error):
+            notify_token_problem(error)
+        else:
+            send_throttled_alert("garmin_sync_failure", f"⚠️ Sincronización Garmin falló: {str(error).strip()[:300]}")
+    except Exception:  # noqa: BLE001 - alerting must never break the sync run
+        pass
+
+
 def service_sync(day: str, *, skip_garmin: bool = False) -> dict[str, Any]:
     steps: list[dict[str, Any]] = []
+    critical_import_ok = True
     if not skip_garmin:
-        steps.append(run_step("Import Garmin activities", [sys.executable, str(SYNC_GARMIN_SCRIPT), "import-activities", "--days", "14", "--limit", "40"]))
-        steps.append(run_step("Import Garmin daily metrics", [sys.executable, str(SYNC_GARMIN_SCRIPT), "import-daily", "--days", "14"], required=False))
-        profile_step = run_step("Import Garmin athlete profile", [sys.executable, str(SYNC_GARMIN_SCRIPT), "import-athlete-profile"], required=False)
-        steps.append(profile_step)
-        if profile_step.get("ok"):
-            steps.append(run_step("Apply Garmin athlete profile", [sys.executable, str(ATHLETE_SYNC_SCRIPT)], required=False))
-    coach_command = [sys.executable, str(COACH_SYNC_SCRIPT), "--date", day]
-    if skip_garmin:
-        coach_command.append("--skip-garmin")
-    steps.append(run_step("Coach sync", coach_command))
-    if not skip_garmin:
-        steps.append(run_step("Sync planned workouts", [sys.executable, str(SYNC_GARMIN_SCRIPT), "sync-planned-workouts"], required=False))
+        activities_step = run_step("Import Garmin activities", [sys.executable, str(SYNC_GARMIN_SCRIPT), "import-activities", "--days", "14", "--limit", "40"])
+        steps.append(activities_step)
+        critical_import_ok = bool(activities_step.get("ok"))
+        if critical_import_ok:
+            steps.append(run_step("Import Garmin daily metrics", [sys.executable, str(SYNC_GARMIN_SCRIPT), "import-daily", "--days", "14"], required=False))
+            profile_step = run_step("Import Garmin athlete profile", [sys.executable, str(SYNC_GARMIN_SCRIPT), "import-athlete-profile"], required=False)
+            steps.append(profile_step)
+            if profile_step.get("ok"):
+                steps.append(run_step("Apply Garmin athlete profile", [sys.executable, str(ATHLETE_SYNC_SCRIPT)], required=False))
+        else:
+            _alert_import_failure(activities_step)
+
+    # Only (re)generate the coaching decision when we have a trustworthy import.
+    # On a failed Garmin import we keep the last good decision instead of mixing
+    # stale/partial data into a fresh recommendation.
+    if skip_garmin or critical_import_ok:
+        coach_command = [sys.executable, str(COACH_SYNC_SCRIPT), "--date", day]
+        if skip_garmin:
+            coach_command.append("--skip-garmin")
+        steps.append(run_step("Coach sync", coach_command))
+        if not skip_garmin:
+            steps.append(run_step("Sync planned workouts", [sys.executable, str(SYNC_GARMIN_SCRIPT), "sync-planned-workouts"], required=False))
+    else:
+        steps.append(
+            {
+                "label": "Coach sync",
+                "command": "skipped",
+                "ok": False,
+                "required": True,
+                "stdout": "",
+                "stderr": "Saltado: la importación de Garmin falló; se conserva la última decisión válida.",
+                "returncode": 1,
+            }
+        )
     athlete_state = write_athlete_state_runtime()
     today_feed = write_today_feed_runtime()
     health = write_automation_health_runtime()

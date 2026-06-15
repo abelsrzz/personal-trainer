@@ -642,5 +642,55 @@ workout:
                 sync_garmin.DEFAULT_WORKOUTS_ROOT = original_workouts_root
 
 
+class GarminRetryTests(unittest.TestCase):
+    def test_with_retry_retries_transient_then_succeeds(self) -> None:
+        calls = []
+
+        def flaky():
+            calls.append(1)
+            if len(calls) < 3:
+                raise TimeoutError("connection timed out")
+            return "ok"
+
+        with patch.object(sync_garmin.time, "sleep", lambda *_: None):
+            result = sync_garmin._with_retry(flaky, what="x", retries=5, base_delay=0)
+        self.assertEqual(result, "ok")
+        self.assertEqual(len(calls), 3)
+
+    def test_with_retry_does_not_retry_auth_error(self) -> None:
+        calls = []
+
+        def auth_fail():
+            calls.append(1)
+            raise RuntimeError("401 Unauthorized")
+
+        with patch.object(sync_garmin.time, "sleep", lambda *_: None):
+            with self.assertRaises(RuntimeError):
+                sync_garmin._with_retry(auth_fail, what="login", retries=5, base_delay=0)
+        self.assertEqual(len(calls), 1)
+
+    def test_with_retry_gives_up_after_retries(self) -> None:
+        calls = []
+
+        def always_timeout():
+            calls.append(1)
+            raise TimeoutError("timed out")
+
+        with patch.object(sync_garmin.time, "sleep", lambda *_: None):
+            with self.assertRaises(TimeoutError):
+                sync_garmin._with_retry(always_timeout, what="x", retries=2, base_delay=0)
+        self.assertEqual(len(calls), 3)  # initial + 2 retries
+
+    def test_fetch_metric_returns_none_and_records_error(self) -> None:
+        errors: dict[str, str] = {}
+
+        def boom():
+            raise RuntimeError("403 forbidden")  # auth -> no retry, fast
+
+        value = sync_garmin._fetch_metric("sleep", boom, errors)
+        self.assertIsNone(value)
+        self.assertIn("sleep", errors)
+
+
 if __name__ == "__main__":
     unittest.main()

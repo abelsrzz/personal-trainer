@@ -115,7 +115,7 @@
       <p class="eyebrow">Semana activa</p>
       <h2>{{ (page.week.executive_summary.goal_sentence if page.week.executive_summary else 'Resumen semanal')|clean_text }}</h2>
     </div>
-    <a class="text-link" href="/calendar?focus=week">Abrir calendario</a>
+    <a class="text-link" href="{{ app_path('/calendar?focus=week') }}">Abrir calendario</a>
   </div>
   <div class="stack-list week-list">
     {% for row in page.week.rows[:7] %}

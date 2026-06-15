@@ -9,14 +9,23 @@ test:
     PYTHON_BIN: python3
     CI_VENV: .venv-ci
     PYTHONPATH: "."
+    PIP_DISABLE_PIP_VERSION_CHECK: "1"
   before_script:
     - 'if command -v python >/dev/null 2>&1; then export PYTHON_BIN=python; fi'
-    - '$PYTHON_BIN -m venv "$CI_VENV"'
-    - '. "$CI_VENV/bin/activate"'
-    - 'python -m pip install --quiet --upgrade pip'
-    - 'python -m pip install --quiet -r requirements.txt pytest'
+    - |
+      if "$PYTHON_BIN" -m venv "$CI_VENV"; then
+        . "$CI_VENV/bin/activate"
+        export CI_PYTHON=python
+        "$CI_PYTHON" -m pip install --quiet --upgrade pip
+        "$CI_PYTHON" -m pip install --quiet -r requirements.txt pytest
+      else
+        export CI_PYTHON="$PYTHON_BIN"
+        "$CI_PYTHON" -m pip install --quiet --upgrade pip
+        "$CI_PYTHON" -m pip install --quiet --user -r requirements.txt pytest
+        export PATH="$HOME/.local/bin:$PATH"
+      fi
   script:
-    - '. "$CI_VENV/bin/activate" && python -m pytest -q'
+    - '$CI_PYTHON -m pytest -q'
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
 

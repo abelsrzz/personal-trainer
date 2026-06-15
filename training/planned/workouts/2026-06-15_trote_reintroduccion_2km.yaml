@@ -1,8 +1,8 @@
 workout:
-  name: Trote facil control 2 km
-  schedule_date: 2026-06-19
+  name: Trote reintroduccion 2 km
+  schedule_date: 2026-06-15
   sport: running
-  description: Segunda exposicion de control, repitiendo la misma dosis del martes. Saltar la sesion si la tibia deja mas de 2 sobre 10 o reacciona peor al dia siguiente.
+  description: Primer trote programado de vuelta al impacto tras el test favorable del 10 de junio. Debe sentirse muy facil, completamente controlado y sin forzar la zancada.
   estimated_duration_s: 900
   steps:
   - order: 1

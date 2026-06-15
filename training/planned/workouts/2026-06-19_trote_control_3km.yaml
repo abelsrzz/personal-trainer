@@ -1,0 +1,16 @@
+workout:
+  name: Trote facil control 3 km
+  schedule_date: 2026-06-19
+  sport: running
+  description: Segunda exposicion de control con una unica progresion pequena respecto al lunes. Saltar la sesion si la tibia deja mas de 2 sobre 10 o reacciona peor al dia siguiente.
+  estimated_duration_s: 1320
+  steps:
+  - order: 1
+    step_type: interval
+    description: 3 km muy faciles
+    distance_m: 3000
+    target:
+      type: heart_rate_range
+      min_bpm: 132
+      max_bpm: 160
+  primary_goal: Recuperacion

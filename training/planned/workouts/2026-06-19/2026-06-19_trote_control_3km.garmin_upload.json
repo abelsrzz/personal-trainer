@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-06-11T20:26:33.238553Z",
+  "generated_at": "2026-06-15T08:33:49.0",
   "status": "scheduled",
-  "workout_hash": "d2e62d30e4e2ff266604788c74168e90dbbd52802cf8c01af071c65641a8a3f6",
-  "upload_mode": "structured_targets",
-  "workout_file": "training/planned/workouts/2026-06-16_trote_reintroduccion_2km.yaml",
+  "workout_hash": "b8786d5def674393f874e19f082f7f1d2eb05ecee8f04aa1225066b7ebb8cb0f",
+  "upload_mode": "garmin_recovered",
+  "workout_file": "training/planned/workouts/2026-06-19_trote_control_3km.yaml",
   "uploaded_response": {
-    "workoutId": 1597606179,
+    "workoutId": 1601535869,
     "ownerId": 137864769,
-    "workoutName": "Trote reintroduccion 2 km",
-    "description": "Primer trote programado de vuelta al impacto tras el test favorable del 10 de junio. Debe sentirse muy facil, completamente controlado y sin forzar la zancada.",
-    "updatedDate": "2026-06-11T20:26:32.0",
-    "createdDate": "2026-06-11T20:26:32.0",
+    "workoutName": "Trote facil control 3 km",
+    "description": "Segunda exposicion de control con una unica progresion pequena respecto al lunes. Saltar la sesion si la tibia deja mas de 2 sobre 10 o reacciona peor al dia siguiente.",
+    "updatedDate": "2026-06-15T08:33:49.0",
+    "createdDate": "2026-06-15T08:33:49.0",
     "sportType": {
       "sportTypeId": 1,
       "sportTypeKey": "running",
@@ -29,8 +29,8 @@
       "vivokidUser": false
     },
     "sharedWithUsers": null,
-    "estimatedDurationInSecs": 900,
-    "estimatedDistanceInMeters": 2000.0,
+    "estimatedDurationInSecs": 1320,
+    "estimatedDistanceInMeters": 3000.0,
     "workoutSegments": [
       {
         "segmentOrder": 1,
@@ -50,7 +50,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13649541868,
+            "stepId": 13684046744,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 3,
@@ -58,14 +58,14 @@
               "displayOrder": 3
             },
             "childStepId": null,
-            "description": "2 km muy faciles",
+            "description": "3 km muy faciles",
             "endCondition": {
               "conditionTypeId": 3,
               "conditionTypeKey": "distance",
               "displayOrder": 3,
               "displayable": true
             },
-            "endConditionValue": 2000.0,
+            "endConditionValue": 3000.0,
             "preferredEndConditionUnit": {
               "unitId": 1,
               "unitKey": "meter",
@@ -132,14 +132,14 @@
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1678861392,
+    "workoutScheduleId": 1682766081,
     "workout": {
-      "workoutId": 1597606179,
+      "workoutId": 1601535869,
       "ownerId": 137864769,
-      "workoutName": "Trote reintroduccion 2 km",
-      "description": "Primer trote programado de vuelta al impacto tras el test favorable del 10 de junio. Debe sentirse muy facil, completamente controlado y sin forzar la zancada.",
-      "updatedDate": "2026-06-11T20:26:32.0",
-      "createdDate": "2026-06-11T20:26:32.0",
+      "workoutName": "Trote facil control 3 km",
+      "description": "Segunda exposicion de control con una unica progresion pequena respecto al lunes. Saltar la sesion si la tibia deja mas de 2 sobre 10 o reacciona peor al dia siguiente.",
+      "updatedDate": "2026-06-15T08:33:49.0",
+      "createdDate": "2026-06-15T08:33:49.0",
       "sportType": {
         "sportTypeId": 1,
         "sportTypeKey": "running",
@@ -149,8 +149,8 @@
       "trainingPlanId": null,
       "author": null,
       "sharedWithUsers": null,
-      "estimatedDurationInSecs": 900,
-      "estimatedDistanceInMeters": 2000.0,
+      "estimatedDurationInSecs": 1320,
+      "estimatedDistanceInMeters": 3000.0,
       "workoutSegments": [
         {
           "segmentOrder": 1,
@@ -170,7 +170,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13649541868,
+              "stepId": 13684046744,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 3,
@@ -178,14 +178,14 @@
                 "displayOrder": 3
               },
               "childStepId": null,
-              "description": "2 km muy faciles",
+              "description": "3 km muy faciles",
               "endCondition": {
                 "conditionTypeId": 3,
                 "conditionTypeKey": "distance",
                 "displayOrder": 3,
                 "displayable": true
               },
-              "endConditionValue": 2000.0,
+              "endConditionValue": 3000.0,
               "preferredEndConditionUnit": {
                 "unitId": 1,
                 "unitKey": "meter",
@@ -251,8 +251,8 @@
       "isSessionTransitionEnabled": null,
       "shared": false
     },
-    "calendarDate": "2026-06-16",
-    "createdDate": "2026-06-11",
+    "calendarDate": "2026-06-19",
+    "createdDate": "2026-06-15",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -261,19 +261,11 @@
     "priority": null,
     "associatedActivityDateTime": null,
     "tpType": null,
-    "itp": false,
     "race": false,
-    "nameChanged": false,
-    "protected": false
+    "itp": false,
+    "protected": false,
+    "nameChanged": false
   },
   "warning": null,
-  "replaced_uploads": [
-    {
-      "record": "training/planned/workouts/2026-06-16/2026-06-16_trote_reintroduccion_2km.garmin_upload.json",
-      "scheduled_workout_id": 1678558742,
-      "unscheduled": true,
-      "workout_id": 1597295106,
-      "deleted": true
-    }
-  ]
+  "replaced_uploads": []
 }

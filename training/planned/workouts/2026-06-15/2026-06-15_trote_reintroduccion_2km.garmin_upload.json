@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-06-11T20:26:34.697325Z",
+  "generated_at": "2026-06-15T08:33:46.0",
   "status": "scheduled",
-  "workout_hash": "6c95156c945c9730e1121c40ab882452726f40a39a518a9d99a45c312a080118",
-  "upload_mode": "structured_targets",
-  "workout_file": "training/planned/workouts/2026-06-19_trote_control_2km.yaml",
+  "workout_hash": "750a96b89f7037651a3ff89296f77b65b489d973e40c8698ba49483e8ee6362a",
+  "upload_mode": "garmin_recovered",
+  "workout_file": "training/planned/workouts/2026-06-15_trote_reintroduccion_2km.yaml",
   "uploaded_response": {
-    "workoutId": 1597606225,
+    "workoutId": 1601535788,
     "ownerId": 137864769,
-    "workoutName": "Trote facil control 2 km",
-    "description": "Segunda exposicion de control, repitiendo la misma dosis del martes. Saltar la sesion si la tibia deja mas de 2 sobre 10 o reacciona peor al dia siguiente.",
-    "updatedDate": "2026-06-11T20:26:33.0",
-    "createdDate": "2026-06-11T20:26:33.0",
+    "workoutName": "Trote reintroduccion 2 km",
+    "description": "Primer trote programado de vuelta al impacto tras el test favorable del 10 de junio. Debe sentirse muy facil, completamente controlado y sin forzar la zancada.",
+    "updatedDate": "2026-06-15T08:33:46.0",
+    "createdDate": "2026-06-15T08:33:46.0",
     "sportType": {
       "sportTypeId": 1,
       "sportTypeKey": "running",
@@ -50,7 +50,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13649542054,
+            "stepId": 13684046203,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 3,
@@ -132,14 +132,14 @@
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1678861404,
+    "workoutScheduleId": 1682765999,
     "workout": {
-      "workoutId": 1597606225,
+      "workoutId": 1601535788,
       "ownerId": 137864769,
-      "workoutName": "Trote facil control 2 km",
-      "description": "Segunda exposicion de control, repitiendo la misma dosis del martes. Saltar la sesion si la tibia deja mas de 2 sobre 10 o reacciona peor al dia siguiente.",
-      "updatedDate": "2026-06-11T20:26:33.0",
-      "createdDate": "2026-06-11T20:26:33.0",
+      "workoutName": "Trote reintroduccion 2 km",
+      "description": "Primer trote programado de vuelta al impacto tras el test favorable del 10 de junio. Debe sentirse muy facil, completamente controlado y sin forzar la zancada.",
+      "updatedDate": "2026-06-15T08:33:46.0",
+      "createdDate": "2026-06-15T08:33:46.0",
       "sportType": {
         "sportTypeId": 1,
         "sportTypeKey": "running",
@@ -170,7 +170,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13649542054,
+              "stepId": 13684046203,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 3,
@@ -251,8 +251,8 @@
       "isSessionTransitionEnabled": null,
       "shared": false
     },
-    "calendarDate": "2026-06-19",
-    "createdDate": "2026-06-11",
+    "calendarDate": "2026-06-15",
+    "createdDate": "2026-06-15",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -261,19 +261,11 @@
     "priority": null,
     "associatedActivityDateTime": null,
     "tpType": null,
-    "race": false,
     "itp": false,
+    "race": false,
     "nameChanged": false,
     "protected": false
   },
   "warning": null,
-  "replaced_uploads": [
-    {
-      "record": "training/planned/workouts/2026-06-19/2026-06-19_trote_control_2km.garmin_upload.json",
-      "scheduled_workout_id": 1678558776,
-      "unscheduled": true,
-      "workout_id": 1597295140,
-      "deleted": true
-    }
-  ]
+  "replaced_uploads": []
 }

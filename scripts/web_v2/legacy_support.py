@@ -1210,6 +1210,9 @@ def chat_missing_message_response(request: Request) -> JSONResponse:
     return JSONResponse({"ok": False, "error": "Escribe un mensaje antes de enviar."}, status_code=400)
 
 
+WEB_CHAT_TIMEOUT_S = 90
+
+
 async def chat_execute_message(request: Request, config: OpenCodeRemoteConfig, message: str, *, display_message: str | None = None) -> JSONResponse:
     user_key = web_chat_identity(request)
     lock = WEB_CHAT_LOCKS.setdefault(user_key, asyncio.Lock())
@@ -1221,7 +1224,20 @@ async def chat_execute_message(request: Request, config: OpenCodeRemoteConfig, m
 
     async with lock:
         bridge = OpenCodeBridge(config)
-        result = await bridge.send(user_key, message, channel="web")
+        try:
+            result = await asyncio.wait_for(bridge.send(user_key, message, channel="web"), timeout=WEB_CHAT_TIMEOUT_S)
+        except asyncio.TimeoutError:
+            timeout_text = (
+                f"El entrenador no respondio en {WEB_CHAT_TIMEOUT_S}s. "
+                "Es posible que siga procesando en segundo plano. "
+                "Vuelve a abrir el chat en unos segundos para ver si hay respuesta."
+            )
+            append_web_chat_message(user_key, "user", display_message if display_message is not None else message)
+            append_web_chat_message(user_key, "assistant", timeout_text, error=True)
+            return JSONResponse(
+                {"ok": False, "error": timeout_text, "state": web_chat_state(request, config)},
+                status_code=200,
+            )
 
     append_web_chat_message(user_key, "user", display_message if display_message is not None else message)
     append_web_chat_message(user_key, "assistant", result.text, model=result.model, error=result.returncode != 0)

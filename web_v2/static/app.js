@@ -237,6 +237,9 @@
     toggle.addEventListener('click', async () => {
       shell.hidden = false;
       document.body.classList.add('chat-open');
+      // Reset any stuck state from a previous timed-out request
+      setThinking(false);
+      renderConfirm(null);
       try { await loadState(); }
       catch (e) { if (convTitle) convTitle.textContent = e.message || 'Error cargando chat.'; }
     });
@@ -261,15 +264,29 @@
       inputEl.style.height = '';
       addOptimisticMessage(message);
       setThinking(true);
+      const abort = new AbortController();
+      const abortTimer = setTimeout(() => abort.abort(), 100000); // 100s hard client timeout
       try {
-        const d = await apiPost(url('chatMessageUrl'), { message });
+        const r = await fetch(url('chatMessageUrl'), {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message }),
+          signal: abort.signal,
+        });
+        clearTimeout(abortTimer);
+        const d = await r.json();
+        if (!r.ok || !d.ok) throw new Error(d.error || d.message || 'Error.');
         renderState(d.state || {});
       } catch (e) {
+        clearTimeout(abortTimer);
         const errWrap   = document.createElement('div');
         errWrap.className = 'chat-bubble-wrap is-assistant is-error';
         const errBubble = document.createElement('div');
         errBubble.className = 'chat-bubble';
-        errBubble.textContent = e.message || 'Error enviando mensaje.';
+        errBubble.textContent = e.name === 'AbortError'
+          ? 'Sin respuesta en 100s. El entrenador puede seguir procesando — vuelve a abrir el chat para ver si respondió.'
+          : (e.message || 'Error enviando mensaje.');
         errWrap.appendChild(errBubble);
         messagesEl.appendChild(errWrap);
         messagesEl.scrollTop = messagesEl.scrollHeight;

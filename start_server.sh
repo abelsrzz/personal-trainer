@@ -283,7 +283,7 @@ stop_process() {
     local waited=0
     while kill -0 "$pid" 2>/dev/null && (( waited < 8 )); do
       sleep 1
-      (( waited++ ))
+      waited=$(( waited + 1 ))
     done
     if kill -0 "$pid" 2>/dev/null; then
       kill -9 "$pid" 2>/dev/null || true

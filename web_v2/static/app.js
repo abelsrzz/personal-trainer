@@ -115,6 +115,27 @@
     if (!toggle || !shell || !messagesEl || !inputEl || !sendButton) return;
 
     let busy = false;
+    let pollTimer = null;
+
+    const stopPolling = () => { if (pollTimer) { clearInterval(pollTimer); pollTimer = null; } };
+
+    const pollUntilDone = () => {
+      stopPolling();
+      pollTimer = setInterval(async () => {
+        try {
+          const r = await fetch(url('chatStateUrl'), { credentials: 'same-origin' });
+          const p = await r.json();
+          if (!r.ok || !p.ok) return;
+          const state = p.state || {};
+          renderState(state);
+          if (!state.processing) {
+            stopPolling();
+            setThinking(false);
+            inputEl.focus();
+          }
+        } catch (_) {}
+      }, 3000);
+    };
 
     const escapeHtml = (s) =>
       String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -237,23 +258,31 @@
     toggle.addEventListener('click', async () => {
       shell.hidden = false;
       document.body.classList.add('chat-open');
-      // Reset any stuck state from a previous timed-out request
-      setThinking(false);
       renderConfirm(null);
-      try { await loadState(); }
-      catch (e) { if (convTitle) convTitle.textContent = e.message || 'Error cargando chat.'; }
+      try {
+        await loadState();
+        // Resume polling if a task was running before the drawer was closed
+        const r2 = await fetch(url('chatStateUrl'), { credentials: 'same-origin' });
+        const p2 = await r2.json();
+        const st = (p2.state || {});
+        if (st.processing) { setThinking(true); pollUntilDone(); }
+        else { setThinking(false); }
+      } catch (e) {
+        setThinking(false);
+        if (convTitle) convTitle.textContent = e.message || 'Error cargando chat.';
+      }
     });
 
-    closeItems.forEach((el) => el.addEventListener('click', () => {
+    const closeChat = () => {
       shell.hidden = true;
       document.body.classList.remove('chat-open');
-    }));
+      stopPolling();
+    };
+
+    closeItems.forEach((el) => el.addEventListener('click', closeChat));
 
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && !shell.hidden) {
-        shell.hidden = true;
-        document.body.classList.remove('chat-open');
-      }
+      if (e.key === 'Escape' && !shell.hidden) closeChat();
     });
 
     const sendMessage = async () => {
@@ -264,33 +293,38 @@
       inputEl.style.height = '';
       addOptimisticMessage(message);
       setThinking(true);
-      const abort = new AbortController();
-      const abortTimer = setTimeout(() => abort.abort(), 100000); // 100s hard client timeout
       try {
         const r = await fetch(url('chatMessageUrl'), {
           method: 'POST',
           credentials: 'same-origin',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ message }),
-          signal: abort.signal,
         });
-        clearTimeout(abortTimer);
         const d = await r.json();
-        if (!r.ok || !d.ok) throw new Error(d.error || d.message || 'Error.');
+        if (r.status === 409) {
+          // Already processing — just start polling
+          pollUntilDone();
+          return;
+        }
+        if (!r.ok) throw new Error(d.error || d.message || 'Error del servidor.');
+        // 202 Accepted: background task started, poll for result
+        if (r.status === 202 || (d.state && d.state.processing)) {
+          renderState(d.state || {});
+          pollUntilDone();
+          return;
+        }
         renderState(d.state || {});
+        setThinking(false);
+        inputEl.focus();
       } catch (e) {
-        clearTimeout(abortTimer);
         const errWrap   = document.createElement('div');
         errWrap.className = 'chat-bubble-wrap is-assistant is-error';
         const errBubble = document.createElement('div');
         errBubble.className = 'chat-bubble';
-        errBubble.textContent = e.name === 'AbortError'
-          ? 'Sin respuesta en 100s. El entrenador puede seguir procesando — vuelve a abrir el chat para ver si respondió.'
-          : (e.message || 'Error enviando mensaje.');
+        errBubble.textContent = e.message || 'Error enviando mensaje.';
         errWrap.appendChild(errBubble);
         messagesEl.appendChild(errWrap);
         messagesEl.scrollTop = messagesEl.scrollHeight;
-      } finally {
         setThinking(false);
         inputEl.focus();
       }

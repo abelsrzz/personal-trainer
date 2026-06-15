@@ -74,6 +74,7 @@ CHAT_WEB_ENABLED = False
 
 
 WEB_CHAT_LOCKS: dict[str, asyncio.Lock] = {}
+_WEB_CHAT_TASKS: dict[str, "asyncio.Task[None]"] = {}
 FILE_CACHE: dict[tuple[str, str], tuple[int, int, Any]] = {}
 
 
@@ -1186,6 +1187,8 @@ def web_chat_state(request: Request, config: OpenCodeRemoteConfig | None, config
     session_id = store.get_session(user_key) if store else None
     _, user_state = _get_user_state(user_key)
     active_conv_id = user_state.get("active_conversation_id")
+    task = _WEB_CHAT_TASKS.get(user_key)
+    processing = bool(task and not task.done())
     return {
         "available": bool(config and not config_error),
         "error": config_error,
@@ -1197,6 +1200,7 @@ def web_chat_state(request: Request, config: OpenCodeRemoteConfig | None, config
         "config_path": str(OPENCODE_REMOTE_CONFIG_PATH.relative_to(ROOT)),
         "conversations": list_chat_conversations(user_key),
         "active_conversation_id": active_conv_id,
+        "processing": processing,
     }
 
 
@@ -1210,44 +1214,53 @@ def chat_missing_message_response(request: Request) -> JSONResponse:
     return JSONResponse({"ok": False, "error": "Escribe un mensaje antes de enviar."}, status_code=400)
 
 
-WEB_CHAT_TIMEOUT_S = 90
+WEB_CHAT_TIMEOUT_S = 180
+
+_logger_web_chat = logging.getLogger("web.chat")
+
+
+async def _chat_background_task(user_key: str, config: OpenCodeRemoteConfig, message: str, display_message: str | None) -> None:
+    stored_msg = display_message if display_message is not None else message
+    try:
+        bridge = OpenCodeBridge(config)
+        result = await asyncio.wait_for(
+            bridge.send(user_key, message, channel="web"),
+            timeout=WEB_CHAT_TIMEOUT_S,
+        )
+        append_web_chat_message(user_key, "user", stored_msg)
+        append_web_chat_message(user_key, "assistant", result.text, model=result.model, error=result.returncode != 0)
+        _logger_web_chat.info("chat task done user_key=%s rc=%s", user_key, result.returncode)
+    except asyncio.TimeoutError:
+        timeout_text = (
+            f"El entrenador no respondio en {WEB_CHAT_TIMEOUT_S}s. "
+            "Puede que siga procesando; vuelve a abrir el chat en unos minutos."
+        )
+        append_web_chat_message(user_key, "user", stored_msg)
+        append_web_chat_message(user_key, "assistant", timeout_text, error=True)
+        _logger_web_chat.warning("chat task timeout user_key=%s timeout_s=%s", user_key, WEB_CHAT_TIMEOUT_S)
+    except Exception as exc:
+        err_text = f"Error del entrenador: {exc}"
+        append_web_chat_message(user_key, "user", stored_msg)
+        append_web_chat_message(user_key, "assistant", err_text, error=True)
+        _logger_web_chat.error("chat task error user_key=%s exc=%s", user_key, exc, exc_info=True)
+    finally:
+        _WEB_CHAT_TASKS.pop(user_key, None)
 
 
 async def chat_execute_message(request: Request, config: OpenCodeRemoteConfig, message: str, *, display_message: str | None = None) -> JSONResponse:
     user_key = web_chat_identity(request)
-    lock = WEB_CHAT_LOCKS.setdefault(user_key, asyncio.Lock())
-    if lock.locked():
+    existing = _WEB_CHAT_TASKS.get(user_key)
+    if existing and not existing.done():
         return JSONResponse(
-            {"ok": False, "error": "Ya hay una peticion en curso para este usuario.", "state": web_chat_state(request, config)},
+            {"ok": False, "error": "Ya hay una peticion en curso.", "state": web_chat_state(request, config)},
             status_code=409,
         )
-
-    async with lock:
-        bridge = OpenCodeBridge(config)
-        try:
-            result = await asyncio.wait_for(bridge.send(user_key, message, channel="web"), timeout=WEB_CHAT_TIMEOUT_S)
-        except asyncio.TimeoutError:
-            timeout_text = (
-                f"El entrenador no respondio en {WEB_CHAT_TIMEOUT_S}s. "
-                "Es posible que siga procesando en segundo plano. "
-                "Vuelve a abrir el chat en unos segundos para ver si hay respuesta."
-            )
-            append_web_chat_message(user_key, "user", display_message if display_message is not None else message)
-            append_web_chat_message(user_key, "assistant", timeout_text, error=True)
-            return JSONResponse(
-                {"ok": False, "error": timeout_text, "state": web_chat_state(request, config)},
-                status_code=200,
-            )
-
-    append_web_chat_message(user_key, "user", display_message if display_message is not None else message)
-    append_web_chat_message(user_key, "assistant", result.text, model=result.model, error=result.returncode != 0)
+    _WEB_CHAT_TASKS.pop(user_key, None)
+    task = asyncio.create_task(_chat_background_task(user_key, config, message, display_message))
+    _WEB_CHAT_TASKS[user_key] = task
     return JSONResponse(
-        {
-            "ok": result.returncode == 0,
-            "message": None if result.returncode == 0 else "OpenCode devolvio una respuesta con incidencia operativa.",
-            "state": web_chat_state(request, config),
-        },
-        status_code=200,
+        {"ok": True, "processing": True, "state": web_chat_state(request, config)},
+        status_code=202,
     )
 
 

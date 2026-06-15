@@ -419,6 +419,10 @@ async def run_command(
             f"Command timed out after {timeout_s}s. "
             "La tarea de OpenCode excedio el limite del bot; prueba una peticion mas concreta o aumenta opencode_remote.timeout_s."
         )
+    except asyncio.CancelledError:
+        process.kill()
+        await process.wait()
+        raise
     stdout = stdout_bytes.decode("utf-8", errors="replace")
     stderr = stderr_bytes.decode("utf-8", errors="replace")
 

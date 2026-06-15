@@ -112,7 +112,7 @@
     data-chat-conversations-url="{{ app_path('/api/chat/conversations') }}"
     data-chat-switch-url="{{ app_path('/api/chat/conversations/switch') }}"
   ></div>
-  <script src="{{ app_path('/static/app.js') }}" defer></script>
+  <script src="{{ app_path('/static/app.js') }}?v={{ static_version }}" defer></script>
   {% endif %}
 </body>
 </html>

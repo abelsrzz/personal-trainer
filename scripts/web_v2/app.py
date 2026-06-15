@@ -565,6 +565,7 @@ def template_context(request: Request, **values: Any) -> dict[str, Any]:
         "garmin_sync_status_text": garmin_sync_status_text(),
         "automation_health": automation_health,
         "today_context": today_context,
+        "static_version": str(int((STATIC_DIR / "app.js").stat().st_mtime) if (STATIC_DIR / "app.js").exists() else 0),
     }
     context.update(values)
     return context

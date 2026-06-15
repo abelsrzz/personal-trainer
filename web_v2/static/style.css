@@ -1099,6 +1099,7 @@ h2 {
 }
 
 .stack-form input,
+.stack-form textarea,
 .stack-form button {
   border: 1px solid var(--line);
   border-radius: 14px;
@@ -1106,9 +1107,19 @@ h2 {
   font: inherit;
 }
 
-.stack-form input {
+.stack-form input,
+.stack-form textarea {
   color: var(--text);
   background: rgba(255, 255, 255, 0.03);
+}
+
+.stack-form textarea {
+  min-height: 132px;
+  resize: vertical;
+}
+
+.planner-form {
+  margin-top: 14px;
 }
 
 .stack-form button,

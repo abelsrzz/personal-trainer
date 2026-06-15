@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-06-14T13:58:44.467948+00:00",
-  "as_of": "2026-06-14",
+  "generated_at": "2026-06-15T08:02:29.194785+00:00",
+  "as_of": "2026-06-15",
   "lookback_days": 28,
   "activity_count_total": 68,
   "review_count_total": 17,
   "decision": {
-    "as_of": "2026-06-14",
+    "as_of": "2026-06-15",
     "status": "yellow",
     "action": "maintain_with_caution",
     "recommendation": "Mantener estructura, pero sin subir volumen ni intensidad hasta ver 2-3 sesiones faciles estables.",
@@ -93,6 +93,39 @@
     ],
     "windows": {
       "last_7_days": {
+        "start": "2026-06-09",
+        "end": "2026-06-15",
+        "runs": 1,
+        "km": 2.04222998046875,
+        "duration_s": 802.2030029296875,
+        "avg_pace_s_per_km": 392.8073775244251,
+        "avg_hr": 154.0,
+        "quality_runs": 0,
+        "long_run_km": 2.04222998046875
+      },
+      "previous_7_days": {
+        "start": "2026-06-02",
+        "end": "2026-06-08",
+        "runs": 0,
+        "km": 0,
+        "duration_s": 0,
+        "avg_pace_s_per_km": null,
+        "avg_hr": null,
+        "quality_runs": 0,
+        "long_run_km": 0.0
+      },
+      "last_28_days": {
+        "start": "2026-05-19",
+        "end": "2026-06-15",
+        "runs": 4,
+        "km": 19.365960205078125,
+        "duration_s": 6619.1099853515625,
+        "avg_pace_s_per_km": 341.7909525403189,
+        "avg_hr": 172.20488203425404,
+        "quality_runs": 3,
+        "long_run_km": 8.4472802734375
+      },
+      "last_complete_week": {
         "start": "2026-06-08",
         "end": "2026-06-14",
         "runs": 1,
@@ -103,42 +136,9 @@
         "quality_runs": 0,
         "long_run_km": 2.04222998046875
       },
-      "previous_7_days": {
-        "start": "2026-06-01",
-        "end": "2026-06-07",
-        "runs": 0,
-        "km": 0,
-        "duration_s": 0,
-        "avg_pace_s_per_km": null,
-        "avg_hr": null,
-        "quality_runs": 0,
-        "long_run_km": 0.0
-      },
-      "last_28_days": {
-        "start": "2026-05-18",
-        "end": "2026-06-14",
-        "runs": 4,
-        "km": 19.365960205078125,
-        "duration_s": 6619.1099853515625,
-        "avg_pace_s_per_km": 341.7909525403189,
-        "avg_hr": 172.20488203425404,
-        "quality_runs": 3,
-        "long_run_km": 8.4472802734375
-      },
-      "last_complete_week": {
-        "start": "2026-06-01",
-        "end": "2026-06-07",
-        "runs": 0,
-        "km": 0,
-        "duration_s": 0,
-        "avg_pace_s_per_km": null,
-        "avg_hr": null,
-        "quality_runs": 0,
-        "long_run_km": 0.0
-      },
       "previous_complete_week": {
-        "start": "2026-05-25",
-        "end": "2026-05-31",
+        "start": "2026-06-01",
+        "end": "2026-06-07",
         "runs": 0,
         "km": 0,
         "duration_s": 0,
@@ -187,7 +187,7 @@
       "snapshot": {
         "hrv": 137864769.0,
         "training_readiness": 137864769.0,
-        "resting_heart_rate": 57.0,
+        "resting_heart_rate": 51.0,
         "training_status": {
           "userId": 137864769,
           "mostRecentVO2Max": {
@@ -202,11 +202,11 @@
             },
             "cycling": null,
             "heatAltitudeAcclimation": {
-              "calendarDate": "2026-06-14",
-              "altitudeAcclimationDate": "2026-06-13",
-              "previousAltitudeAcclimationDate": "2026-06-13",
-              "heatAcclimationDate": "2026-06-13",
-              "previousHeatAcclimationDate": "2026-06-12",
+              "calendarDate": "2026-06-15",
+              "altitudeAcclimationDate": "2026-06-14",
+              "previousAltitudeAcclimationDate": "2026-06-14",
+              "heatAcclimationDate": "2026-06-14",
+              "previousHeatAcclimationDate": "2026-06-13",
               "altitudeAcclimation": 0,
               "previousAltitudeAcclimation": 0,
               "heatAcclimationPercentage": 1,
@@ -217,14 +217,14 @@
               "previousAltitude": 0,
               "acclimationPercentage": 0,
               "previousAcclimationPercentage": 0,
-              "altitudeAcclimationLocalTimestamp": "2026-06-14T00:03:27.0"
+              "altitudeAcclimationLocalTimestamp": "2026-06-15T00:03:27.0"
             }
           },
           "mostRecentTrainingLoadBalance": {
             "userId": 137864769,
             "metricsTrainingLoadBalanceDTOMap": {
               "3621896103": {
-                "calendarDate": "2026-06-14",
+                "calendarDate": "2026-06-15",
                 "deviceId": 3621896103,
                 "monthlyLoadAerobicLow": 873.93115,
                 "monthlyLoadAerobicHigh": 571.0513,
@@ -252,11 +252,11 @@
             "userId": 137864769,
             "latestTrainingStatusData": {
               "3621896103": {
-                "calendarDate": "2026-06-14",
+                "calendarDate": "2026-06-15",
                 "sinceDate": "2026-06-02",
                 "weeklyTrainingLoad": null,
                 "trainingStatus": 5,
-                "timestamp": 1781430417000,
+                "timestamp": 1781501521000,
                 "deviceId": 3621896103,
                 "loadTunnelMin": null,
                 "loadTunnelMax": null,
@@ -271,10 +271,10 @@
                   "acwrPercent": 8,
                   "acwrStatus": "LOW",
                   "acwrStatusFeedback": "FEEDBACK_1",
-                  "dailyTrainingLoadAcute": 108,
-                  "maxTrainingLoadChronic": 573.0,
-                  "minTrainingLoadChronic": 305.6,
-                  "dailyTrainingLoadChronic": 382,
+                  "dailyTrainingLoadAcute": 81,
+                  "maxTrainingLoadChronic": 540.0,
+                  "minTrainingLoadChronic": 288.0,
+                  "dailyTrainingLoadChronic": 360,
                   "dailyAcuteChronicWorkloadRatio": 0.2
                 },
                 "primaryTrainingDevice": true
@@ -289,7 +289,7 @@
               }
             ],
             "showSelector": false,
-            "lastPrimarySyncDate": "2026-06-14"
+            "lastPrimarySyncDate": "2026-06-15"
           },
           "heatAltitudeAcclimationDTO": null
         },
@@ -346,7 +346,7 @@
       "active_block": "Block 1: Final recovery and controlled impact return",
       "goal_race_name": "XXIV Padron 10k",
       "goal_race_priority": "S",
-      "days_to_goal_race": 237,
+      "days_to_goal_race": 236,
       "preferred_plan_columns": [
         "day",
         "description",
@@ -361,7 +361,7 @@
         "tempo_broken",
         "tempo_continuous"
       ],
-      "available_race_count": 4
+      "available_race_count": 3
     }
   },
   "goal_gates": {
@@ -459,11 +459,11 @@
   ],
   "daily_metrics": {
     "available_days": 28,
-    "latest_date": "2026-06-14",
+    "latest_date": "2026-06-15",
     "source": "garmin_daily",
     "latest_hrv": 137864769.0,
     "latest_training_readiness": 137864769.0,
-    "latest_resting_heart_rate": 57.0,
+    "latest_resting_heart_rate": 51.0,
     "latest_training_status": {
       "userId": 137864769,
       "mostRecentVO2Max": {
@@ -478,11 +478,11 @@
         },
         "cycling": null,
         "heatAltitudeAcclimation": {
-          "calendarDate": "2026-06-14",
-          "altitudeAcclimationDate": "2026-06-13",
-          "previousAltitudeAcclimationDate": "2026-06-13",
-          "heatAcclimationDate": "2026-06-13",
-          "previousHeatAcclimationDate": "2026-06-12",
+          "calendarDate": "2026-06-15",
+          "altitudeAcclimationDate": "2026-06-14",
+          "previousAltitudeAcclimationDate": "2026-06-14",
+          "heatAcclimationDate": "2026-06-14",
+          "previousHeatAcclimationDate": "2026-06-13",
           "altitudeAcclimation": 0,
           "previousAltitudeAcclimation": 0,
           "heatAcclimationPercentage": 1,
@@ -493,14 +493,14 @@
           "previousAltitude": 0,
           "acclimationPercentage": 0,
           "previousAcclimationPercentage": 0,
-          "altitudeAcclimationLocalTimestamp": "2026-06-14T00:03:27.0"
+          "altitudeAcclimationLocalTimestamp": "2026-06-15T00:03:27.0"
         }
       },
       "mostRecentTrainingLoadBalance": {
         "userId": 137864769,
         "metricsTrainingLoadBalanceDTOMap": {
           "3621896103": {
-            "calendarDate": "2026-06-14",
+            "calendarDate": "2026-06-15",
             "deviceId": 3621896103,
             "monthlyLoadAerobicLow": 873.93115,
             "monthlyLoadAerobicHigh": 571.0513,
@@ -528,11 +528,11 @@
         "userId": 137864769,
         "latestTrainingStatusData": {
           "3621896103": {
-            "calendarDate": "2026-06-14",
+            "calendarDate": "2026-06-15",
             "sinceDate": "2026-06-02",
             "weeklyTrainingLoad": null,
             "trainingStatus": 5,
-            "timestamp": 1781430417000,
+            "timestamp": 1781501521000,
             "deviceId": 3621896103,
             "loadTunnelMin": null,
             "loadTunnelMax": null,
@@ -547,10 +547,10 @@
               "acwrPercent": 8,
               "acwrStatus": "LOW",
               "acwrStatusFeedback": "FEEDBACK_1",
-              "dailyTrainingLoadAcute": 108,
-              "maxTrainingLoadChronic": 573.0,
-              "minTrainingLoadChronic": 305.6,
-              "dailyTrainingLoadChronic": 382,
+              "dailyTrainingLoadAcute": 81,
+              "maxTrainingLoadChronic": 540.0,
+              "minTrainingLoadChronic": 288.0,
+              "dailyTrainingLoadChronic": 360,
               "dailyAcuteChronicWorkloadRatio": 0.2
             },
             "primaryTrainingDevice": true
@@ -565,7 +565,7 @@
           }
         ],
         "showSelector": false,
-        "lastPrimarySyncDate": "2026-06-14"
+        "lastPrimarySyncDate": "2026-06-15"
       },
       "heatAltitudeAcclimationDTO": null
     },
@@ -587,12 +587,12 @@
       "sleep",
       "running_tolerance"
     ],
-    "latest_daily_date": "2026-06-14",
+    "latest_daily_date": "2026-06-15",
     "latest_activity_date": "2026-06-10",
     "daily_snapshot": {
       "hrv": 137864769.0,
       "training_readiness": 137864769.0,
-      "resting_heart_rate": 57.0,
+      "resting_heart_rate": 51.0,
       "training_status": {
         "userId": 137864769,
         "mostRecentVO2Max": {
@@ -607,11 +607,11 @@
           },
           "cycling": null,
           "heatAltitudeAcclimation": {
-            "calendarDate": "2026-06-14",
-            "altitudeAcclimationDate": "2026-06-13",
-            "previousAltitudeAcclimationDate": "2026-06-13",
-            "heatAcclimationDate": "2026-06-13",
-            "previousHeatAcclimationDate": "2026-06-12",
+            "calendarDate": "2026-06-15",
+            "altitudeAcclimationDate": "2026-06-14",
+            "previousAltitudeAcclimationDate": "2026-06-14",
+            "heatAcclimationDate": "2026-06-14",
+            "previousHeatAcclimationDate": "2026-06-13",
             "altitudeAcclimation": 0,
             "previousAltitudeAcclimation": 0,
             "heatAcclimationPercentage": 1,
@@ -622,14 +622,14 @@
             "previousAltitude": 0,
             "acclimationPercentage": 0,
             "previousAcclimationPercentage": 0,
-            "altitudeAcclimationLocalTimestamp": "2026-06-14T00:03:27.0"
+            "altitudeAcclimationLocalTimestamp": "2026-06-15T00:03:27.0"
           }
         },
         "mostRecentTrainingLoadBalance": {
           "userId": 137864769,
           "metricsTrainingLoadBalanceDTOMap": {
             "3621896103": {
-              "calendarDate": "2026-06-14",
+              "calendarDate": "2026-06-15",
               "deviceId": 3621896103,
               "monthlyLoadAerobicLow": 873.93115,
               "monthlyLoadAerobicHigh": 571.0513,
@@ -657,11 +657,11 @@
           "userId": 137864769,
           "latestTrainingStatusData": {
             "3621896103": {
-              "calendarDate": "2026-06-14",
+              "calendarDate": "2026-06-15",
               "sinceDate": "2026-06-02",
               "weeklyTrainingLoad": null,
               "trainingStatus": 5,
-              "timestamp": 1781430417000,
+              "timestamp": 1781501521000,
               "deviceId": 3621896103,
               "loadTunnelMin": null,
               "loadTunnelMax": null,
@@ -676,10 +676,10 @@
                 "acwrPercent": 8,
                 "acwrStatus": "LOW",
                 "acwrStatusFeedback": "FEEDBACK_1",
-                "dailyTrainingLoadAcute": 108,
-                "maxTrainingLoadChronic": 573.0,
-                "minTrainingLoadChronic": 305.6,
-                "dailyTrainingLoadChronic": 382,
+                "dailyTrainingLoadAcute": 81,
+                "maxTrainingLoadChronic": 540.0,
+                "minTrainingLoadChronic": 288.0,
+                "dailyTrainingLoadChronic": 360,
                 "dailyAcuteChronicWorkloadRatio": 0.2
               },
               "primaryTrainingDevice": true
@@ -694,7 +694,7 @@
             }
           ],
           "showSelector": false,
-          "lastPrimarySyncDate": "2026-06-14"
+          "lastPrimarySyncDate": "2026-06-15"
         },
         "heatAltitudeAcclimationDTO": null
       },
@@ -876,7 +876,7 @@
       },
       "coaching_note": "35:00 is aspirational and must be unlocked by checkpoint evidence before being used as training pace."
     },
-    "days_to_goal_race": 237,
-    "available_race_count": 4
+    "days_to_goal_race": 236,
+    "available_race_count": 3
   }
 }

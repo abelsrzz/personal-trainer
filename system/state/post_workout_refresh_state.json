@@ -4,9 +4,9 @@
   "last_processed_activity_id": 22335799805,
   "last_processed_activity_date": "2026-03-29",
   "last_processed_at": "2026-06-11T12:25:08.864637+00:00",
-  "last_successful_run": "2026-06-14T14:02:34.684808+00:00",
+  "last_successful_run": "2026-06-15T08:02:27.681764+00:00",
   "last_error": null,
-  "last_activity_import_at": "2026-06-14T14:02:34.684766+00:00",
+  "last_activity_import_at": "2026-06-15T08:02:27.681671+00:00",
   "last_daily_import_at": "2026-06-11T12:25:04.927142+00:00",
   "last_profile_sync_at": "2026-06-11T12:25:07.861934+00:00",
   "next_action": "wait_for_new_activity_or_feedback",
@@ -852,350 +852,350 @@
   ],
   "runs": [
     {
-      "run_at": "2026-06-11T21:22:40.932688+00:00",
+      "run_at": "2026-06-15T04:55:22.019927+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-11T21:27:44.172389+00:00",
+      "run_at": "2026-06-15T05:00:25.109973+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-11T21:28:57.815972+00:00",
+      "run_at": "2026-06-15T05:05:28.448439+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-11T21:32:48.247303+00:00",
+      "run_at": "2026-06-15T05:06:17.865233+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-11T21:37:52.106953+00:00",
+      "run_at": "2026-06-15T05:10:31.615477+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-11T21:42:57.122462+00:00",
+      "run_at": "2026-06-15T05:15:34.425472+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-11T21:44:31.719259+00:00",
+      "run_at": "2026-06-15T05:20:37.413099+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-11T21:47:24.646167+00:00",
+      "run_at": "2026-06-15T05:22:21.003894+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-11T21:48:01.831812+00:00",
+      "run_at": "2026-06-15T05:25:40.561772+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-11T21:50:54.644073+00:00",
+      "run_at": "2026-06-15T05:30:43.704753+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-11T21:53:05.621834+00:00",
+      "run_at": "2026-06-15T05:35:46.682738+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-11T21:55:44.917860+00:00",
+      "run_at": "2026-06-15T05:38:28.338033+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-14T09:55:16.172296+00:00",
+      "run_at": "2026-06-15T05:40:49.801252+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-14T10:00:18.953762+00:00",
+      "run_at": "2026-06-15T05:45:53.073221+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-14T11:51:36.131367+00:00",
+      "run_at": "2026-06-15T05:50:56.160420+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-14T11:54:28.384066+00:00",
+      "run_at": "2026-06-15T05:54:28.503065+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-14T11:56:39.008953+00:00",
+      "run_at": "2026-06-15T05:55:58.982379+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-14T12:01:40.643846+00:00",
+      "run_at": "2026-06-15T06:01:02.209868+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-14T12:06:42.683931+00:00",
+      "run_at": "2026-06-15T06:06:05.088179+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-14T12:10:00.355059+00:00",
+      "run_at": "2026-06-15T06:10:36.530744+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-14T12:11:44.756503+00:00",
+      "run_at": "2026-06-15T06:11:08.244412+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-14T12:16:47.735506+00:00",
+      "run_at": "2026-06-15T06:16:11.248566+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-14T12:21:50.398948+00:00",
+      "run_at": "2026-06-15T06:21:14.214961+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-14T12:25:32.109860+00:00",
+      "run_at": "2026-06-15T06:26:17.239703+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-14T12:26:52.457299+00:00",
+      "run_at": "2026-06-15T06:26:36.265759+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-14T12:31:54.621811+00:00",
+      "run_at": "2026-06-15T06:31:20.212869+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-14T12:36:56.696698+00:00",
+      "run_at": "2026-06-15T06:36:23.416809+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-14T12:41:07.714955+00:00",
+      "run_at": "2026-06-15T06:41:26.277675+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-14T12:41:58.630845+00:00",
+      "run_at": "2026-06-15T06:42:37.159354+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-14T12:47:00.616159+00:00",
+      "run_at": "2026-06-15T06:46:29.247371+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-14T12:52:03.443320+00:00",
+      "run_at": "2026-06-15T06:51:32.530128+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-14T12:56:38.387942+00:00",
+      "run_at": "2026-06-15T06:56:35.371697+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-14T12:57:05.453016+00:00",
+      "run_at": "2026-06-15T06:58:33.732480+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-14T13:02:07.626545+00:00",
+      "run_at": "2026-06-15T07:01:38.505338+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-14T13:07:10.230445+00:00",
+      "run_at": "2026-06-15T07:06:41.261819+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-14T13:12:08.953817+00:00",
+      "run_at": "2026-06-15T07:11:44.083870+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-14T13:12:12.993716+00:00",
+      "run_at": "2026-06-15T07:14:31.800614+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-14T13:17:15.391076+00:00",
+      "run_at": "2026-06-15T07:16:46.812260+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-14T13:22:17.018415+00:00",
+      "run_at": "2026-06-15T07:21:49.786683+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-14T13:27:19.594686+00:00",
+      "run_at": "2026-06-15T07:26:52.795730+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-14T13:27:37.594691+00:00",
+      "run_at": "2026-06-15T07:30:30.268000+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-14T13:32:21.884925+00:00",
+      "run_at": "2026-06-15T07:31:55.462240+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-14T13:37:24.016413+00:00",
+      "run_at": "2026-06-15T07:36:58.400583+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-14T13:42:26.533920+00:00",
+      "run_at": "2026-06-15T07:42:01.242566+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-14T13:43:15.415004+00:00",
+      "run_at": "2026-06-15T07:46:29.827445+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-14T13:47:28.166581+00:00",
+      "run_at": "2026-06-15T07:47:04.286570+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-14T13:52:30.058395+00:00",
+      "run_at": "2026-06-15T07:52:07.147786+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-14T13:57:32.264453+00:00",
+      "run_at": "2026-06-15T07:57:09.913366+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-14T13:58:44.035032+00:00",
+      "run_at": "2026-06-15T08:02:13.332677+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
     },
     {
-      "run_at": "2026-06-14T14:02:34.684817+00:00",
+      "run_at": "2026-06-15T08:02:27.681779+00:00",
       "detected_count": 0,
       "detected_activity_ids": [],
       "triggered_pipeline": false,

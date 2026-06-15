@@ -1,10 +1,8 @@
 {
-  "generated_at": "2026-06-14T14:02:34.593685Z",
+  "generated_at": "2026-06-15T08:02:13.099939Z",
   "days": 3,
   "limit": 20,
   "activity_type": "all",
-  "imported_count": 1,
-  "imported_activity_ids": [
-    23216229033
-  ]
+  "imported_count": 0,
+  "imported_activity_ids": []
 }

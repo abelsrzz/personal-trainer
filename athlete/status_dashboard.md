@@ -1,6 +1,6 @@
 # Athlete Status Dashboard
 
-- Fecha de analisis: `2026-06-14`
+- Fecha de analisis: `2026-06-15`
 - Estado: `yellow`
 - Accion recomendada: `maintain_with_caution`
 - Recomendacion: Mantener estructura, pero sin subir volumen ni intensidad hasta ver 2-3 sesiones faciles estables.
@@ -8,7 +8,7 @@
 ## Carga Reciente
 
 - Ultimos 7 dias: `2.0 km`, `1` carreras, `0` exigentes, tirada larga `2.0 km`.
-- Ultima semana completa: `0.0 km` vs semana previa `0.0 km` (`-`).
+- Ultima semana completa: `2.0 km` vs semana previa `0.0 km` (`-`).
 - Ultimos 28 dias: `19.4 km`, `4` carreras, media `4.8 km/sem`.
 - Ritmo medio 7d: `6:33/km`, FC media `154.0`.
 - Ventana movil 7d vs 7d previos: `-`.
@@ -69,4 +69,4 @@
 ## Datos Garmin Daily
 
 - Dias disponibles en ventana: `28`.
-- Ultimo dia diario importado: `2026-06-14`.
+- Ultimo dia diario importado: `2026-06-15`.

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import timedelta
+import json
 import logging
 import math
 import os
@@ -1001,6 +1002,8 @@ def calendar_page_data(month: str | None, focus: str = "all") -> dict[str, Any]:
             summary_days.append(day)
 
     month_days = [day for day in summary_days if day.get("in_month")]
+    month_start = month_days[0].get("date") if month_days else portal_core.date.today().replace(day=1).isoformat()
+    month_end = month_days[-1].get("date") if month_days else portal_core.date.today().isoformat()
     summary = {
         "planned": sum(day["summary"]["counts"]["planned"] for day in month_days),
         "completed": sum(day["summary"]["counts"]["reviewed"] for day in month_days),
@@ -1026,6 +1029,18 @@ def calendar_page_data(month: str | None, focus: str = "all") -> dict[str, Any]:
         {"key": "conflicts", "label": "Conflictos"},
         {"key": "races", "label": "Carreras"},
     ]
+    payload["plan_range_form"] = {
+        "start_date": month_start,
+        "end_date": month_end,
+        "premise": "",
+        "return_to": f"/calendar?month={payload.get('selected')}&focus={payload.get('focus')}",
+    }
+    payload["replan_range_form"] = {
+        "start_date": month_start,
+        "end_date": month_end,
+        "premise": "",
+        "return_to": f"/calendar?month={payload.get('selected')}&focus={payload.get('focus')}",
+    }
     payload["active_nav"] = "calendar"
     return payload
 
@@ -1132,6 +1147,11 @@ def planned_workout_page_data(slug: str) -> dict[str, Any] | None:
     return {
         "workout": workout,
         "linked_review_url": f"/completed-workouts/{linked_review.get('slug')}" if linked_review and linked_review.get("slug") else None,
+        "replan_form": {
+            "slug": slug,
+            "premise": "",
+            "return_to": f"/planned-workouts/{slug}",
+        },
         "active_nav": "calendar",
     }
 
@@ -1239,6 +1259,13 @@ def completed_workout_page_data(slug: str) -> dict[str, Any] | None:
     }
 
 
+def safe_return_to(value: str | None, fallback: str) -> str:
+    target = str(value or "").strip()
+    if target.startswith("/"):
+        return target
+    return fallback
+
+
 @app.get("/login", response_class=HTMLResponse)
 async def login_page(request: Request) -> HTMLResponse:
     if authenticated(request):
@@ -1294,6 +1321,54 @@ async def calendar(request: Request, month: str | None = None, focus: str = "all
     )
 
 
+@app.post("/calendar/plan-range")
+async def calendar_plan_range_submit(
+    request: Request,
+    start_date: str = Form(...),
+    end_date: str = Form(...),
+    premise: str = Form(""),
+    return_to: str = Form("/calendar"),
+) -> RedirectResponse:
+    redirect = auth_guard(request)
+    if redirect:
+        return redirect
+    result = run_action(
+        "plan_range",
+        payload={
+            "start_date": start_date,
+            "end_date": end_date,
+            "premise": premise,
+            "source": "web",
+        },
+    )
+    request.session["flash"] = {"level": "ok" if result.get("ok") else "error", "message": str(result.get("message") or "Operacion finalizada.")}
+    return RedirectResponse(url=safe_return_to(return_to, "/calendar"), status_code=303)
+
+
+@app.post("/calendar/replan-range")
+async def calendar_replan_range_submit(
+    request: Request,
+    start_date: str = Form(...),
+    end_date: str = Form(...),
+    premise: str = Form(""),
+    return_to: str = Form("/calendar"),
+) -> RedirectResponse:
+    redirect = auth_guard(request)
+    if redirect:
+        return redirect
+    result = run_action(
+        "replan_range",
+        payload={
+            "start_date": start_date,
+            "end_date": end_date,
+            "premise": premise,
+            "source": "web",
+        },
+    )
+    request.session["flash"] = {"level": "ok" if result.get("ok") else "error", "message": str(result.get("message") or "Operacion finalizada.")}
+    return RedirectResponse(url=safe_return_to(return_to, "/calendar"), status_code=303)
+
+
 @app.get("/plan", response_class=HTMLResponse)
 async def plan(request: Request) -> HTMLResponse:
     redirect = auth_guard(request)
@@ -1339,6 +1414,28 @@ async def planned_workout_detail(slug: str, request: Request) -> HTMLResponse:
     if not page:
         return HTMLResponse("Sesión planificada no encontrada.", status_code=404)
     return templates.TemplateResponse(request, "planned_workout_detail.html", template_context(request, page=page, active_nav="calendar"))
+
+
+@app.post("/planned-workouts/{slug}/replan")
+async def planned_workout_replan_submit(
+    slug: str,
+    request: Request,
+    premise: str = Form(""),
+    return_to: str = Form(""),
+) -> RedirectResponse:
+    redirect = auth_guard(request)
+    if redirect:
+        return redirect
+    result = run_action(
+        "replan_workout",
+        payload={
+            "slug": slug,
+            "premise": premise,
+            "source": "web",
+        },
+    )
+    request.session["flash"] = {"level": "ok" if result.get("ok") else "error", "message": str(result.get("message") or "Operacion finalizada.")}
+    return RedirectResponse(url=safe_return_to(return_to, f"/planned-workouts/{slug}"), status_code=303)
 
 
 @app.get("/completed-workouts/{slug}", response_class=HTMLResponse)

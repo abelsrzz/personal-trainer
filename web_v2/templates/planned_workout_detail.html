@@ -68,6 +68,19 @@
   </article>
 </section>
 
+<section class="panel emphasis-panel">
+  <p class="eyebrow">Replanificación</p>
+  <h2>Replanificar esta sesión con IA</h2>
+  <form class="stack-form planner-form" method="post" action="/planned-workouts/{{ page.replan_form.slug }}/replan">
+    <input type="hidden" name="return_to" value="{{ page.replan_form.return_to }}">
+    <label>
+      <span>Premisa libre</span>
+      <textarea name="premise" rows="5" placeholder="Ejemplo: convertir 5x1000 en 7x1000, bajar el ritmo objetivo o cambiar la sesión a bici de soporte.">{{ page.replan_form.premise }}</textarea>
+    </label>
+    <button class="link-button" type="submit">Replanificar y sincronizar Garmin</button>
+  </form>
+</section>
+
 {% if page.workout.targets and page.workout.targets.step_targets %}
 <section class="panel">
   <p class="eyebrow">Targets</p>

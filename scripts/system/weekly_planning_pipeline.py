@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -20,12 +21,14 @@ try:
     from scripts.system.context_engine import write_all_contexts
     from scripts.system.planning_validator import validate_prepared_week
     from scripts.system.policy_gate import PolicyGateError, enforce
+    from scripts.system.service_sync import service_sync
 except ModuleNotFoundError:  # pragma: no cover - direct script execution path fix
     sys.path.append(str(Path(__file__).resolve().parents[2]))
     from scripts.system.automation_health import write_automation_health
     from scripts.system.context_engine import write_all_contexts
     from scripts.system.planning_validator import validate_prepared_week
     from scripts.system.policy_gate import PolicyGateError, enforce
+    from scripts.system.service_sync import service_sync
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -37,6 +40,7 @@ TELEGRAM_CONFIG_PATH = ROOT / "telegram" / "bot_config.yaml"
 PDF_SCRIPT = ROOT / "scripts" / "notifications" / "semana_pdf_telegram.py"
 GARMIN_SYNC_SCRIPT = ROOT / "scripts" / "garmin" / "sync_garmin.py"
 ENRICH_WORKOUTS_SCRIPT = ROOT / "scripts" / "system" / "enrich_planned_workouts.py"
+PLANNED_WORKOUTS_DIR = ROOT / "training" / "planned" / "workouts"
 DEFAULT_MODEL = "openai/gpt-5.4"
 
 
@@ -54,6 +58,23 @@ def parse_args() -> argparse.Namespace:
 
     status = subparsers.add_parser("status", help="Show pipeline status as JSON")
     status.add_argument("--week-start", default="", help="Optional explicit week start date YYYY-MM-DD")
+
+    plan_range = subparsers.add_parser("plan-range", help="Plan or regenerate workouts inside an arbitrary date range")
+    plan_range.add_argument("--start-date", required=True, help="Range start YYYY-MM-DD")
+    plan_range.add_argument("--end-date", required=True, help="Range end YYYY-MM-DD")
+    plan_range.add_argument("--premise", default="", help="Free-text planning premise for the agent")
+    plan_range.add_argument("--source", default="manual", help="Trigger source label (manual, web, timer)")
+
+    replan_range = subparsers.add_parser("replan-range", help="Replan workouts inside an arbitrary date range")
+    replan_range.add_argument("--start-date", required=True, help="Range start YYYY-MM-DD")
+    replan_range.add_argument("--end-date", required=True, help="Range end YYYY-MM-DD")
+    replan_range.add_argument("--premise", default="", help="Free-text replanning premise for the agent")
+    replan_range.add_argument("--source", default="manual", help="Trigger source label (manual, web, timer)")
+
+    replan_workout = subparsers.add_parser("replan-workout", help="Replan one planned workout through OpenCode")
+    replan_workout.add_argument("--slug", required=True, help="Workout slug / YAML stem")
+    replan_workout.add_argument("--premise", default="", help="Free-text replanning premise for the agent")
+    replan_workout.add_argument("--source", default="manual", help="Trigger source label (manual, web, timer)")
     return parser.parse_args()
 
 
@@ -152,6 +173,128 @@ def opencode_model() -> str:
     return model or DEFAULT_MODEL
 
 
+def file_sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(65536), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def monday_for(day_value: date) -> date:
+    return day_value - timedelta(days=day_value.weekday())
+
+
+def sunday_for(day_value: date) -> date:
+    return monday_for(day_value) + timedelta(days=6)
+
+
+def week_ranges_between(start_date: date, end_date: date) -> list[tuple[date, date]]:
+    windows: list[tuple[date, date]] = []
+    cursor = monday_for(start_date)
+    final = monday_for(end_date)
+    while cursor <= final:
+        windows.append((cursor, cursor + timedelta(days=6)))
+        cursor += timedelta(days=7)
+    return windows
+
+
+def operative_week_paths_for_range(start_date: date, end_date: date) -> list[Path]:
+    active = current_active_week_info()
+    active_start = parse_iso_date(active.get("start_date"))
+    active_end = parse_iso_date(active.get("end_date"))
+    paths: list[Path] = []
+    for week_start, week_end in week_ranges_between(start_date, end_date):
+        if active_start == week_start and active_end == week_end:
+            paths.append(ACTIVE_WEEK_PATH)
+        else:
+            paths.append(prepared_week_path(week_start, week_end))
+    return paths
+
+
+def planned_workout_path(slug: str) -> Path:
+    return PLANNED_WORKOUTS_DIR / f"{slug}.yaml"
+
+
+def pre_operation_sync(day: str) -> dict[str, Any]:
+    payload = service_sync(day, skip_garmin=False)
+    return payload if isinstance(payload, dict) else {"ok": False, "summary": "Service sync devolvio una respuesta no valida."}
+
+
+def collect_range_snapshot(start_date: date, end_date: date) -> dict[str, str]:
+    snapshot: dict[str, str] = {}
+    for week_path in operative_week_paths_for_range(start_date, end_date):
+        if week_path.exists():
+            snapshot[display_path(week_path)] = file_sha256(week_path)
+    for workout_path in workout_yaml_files_for_range(start_date, end_date):
+        snapshot[display_path(workout_path)] = file_sha256(workout_path)
+    return snapshot
+
+
+def changed_paths_against_snapshot(snapshot: dict[str, str], start_date: date, end_date: date) -> list[str]:
+    current: dict[str, str] = {}
+    for week_path in operative_week_paths_for_range(start_date, end_date):
+        if week_path.exists():
+            current[display_path(week_path)] = file_sha256(week_path)
+    for workout_path in workout_yaml_files_for_range(start_date, end_date):
+        current[display_path(workout_path)] = file_sha256(workout_path)
+    changed = {
+        path
+        for path in set(snapshot) | set(current)
+        if snapshot.get(path) != current.get(path)
+    }
+    return sorted(changed)
+
+
+def build_range_prompt(target_start: date, target_end: date, premise: str, *, mode: str) -> str:
+    week_paths = operative_week_paths_for_range(target_start, target_end)
+    week_lines = "\n".join(f"- {display_path(path)}" for path in week_paths)
+    mode_line = "planificar" if mode == "plan" else "replanificar"
+    extra_rules = (
+        "Si una carrera o sesion deja de tener sentido dentro del rango, elimina o actualiza su archivo YAML y cualquier referencia semanal correspondiente."
+        if mode == "replan"
+        else "Si necesitas crear semanas futuras que todavia no existan en planning/weeks/prepared/, hazlo siguiendo el formato operativo habitual."
+    )
+    return (
+        "Actua como el planificador operativo de este repositorio y trabaja directamente sobre los archivos del proyecto. "
+        f"Tu objetivo es {mode_line} el rango indicado respetando el conocimiento y las reglas ya guardadas.\n\n"
+        f"Rango objetivo: del {target_start.isoformat()} al {target_end.isoformat()}.\n"
+        f"Premisa adicional obligatoria del usuario: {premise.strip() or 'Sin premisa adicional; usa el contexto operativo actual.'}\n\n"
+        "Archivos semanales canonicos que debes actualizar dentro de este rango:\n"
+        f"{week_lines}\n\n"
+        "Instrucciones obligatorias:\n"
+        "1. Lee AGENT.md, planning/context_automation_policy.md, .agents/memory/project_snapshot.md, .agents/workflows/weekly_coaching_cycle.md, planning/coaching_playbook.md, planning/workout_knowledge.yaml, planning/workout_template_knowledge_map.yaml, planning/session_selection_matrix.yaml, planning/workout_evaluation_rules.md, athlete/response_profile.yaml, athlete/status_dashboard.md, planning/coach_decision.md, system/state/athlete_state.json, athlete/profile.yaml, athlete/preferences.yaml, athlete/zones.yaml, athlete/shoes.yaml, athlete/health.yaml, athlete/shin_tracker.yaml, planning/goal_gates.yaml, athlete/supplements.yaml, planning/fueling_operational.md y carreras relevantes.\n"
+        "2. Modifica solo los archivos necesarios para que la fuente de verdad quede canonica: markdown semanal afectado y YAMLs fechados en training/planned/workouts/ dentro del rango. No uses overlays temporales.\n"
+        "3. Mantén intacto lo que quede fuera del rango salvo dependencias estrictamente necesarias.\n"
+        "4. Siempre que toques sesiones futuras, deja los YAMLs coherentes con el markdown semanal y con Garmin: pasos ejecutables, duration_s o distance_m cuando haga falta, sport correcto y metadata util (`template_id`, `knowledge_id`, `knowledge_label`, `primary_goal`) cuando proceda.\n"
+        f"5. {extra_rules}\n"
+        "6. Si la accion implica retirar sesiones del rango, elimina tambien los YAMLs y deja el markdown semanal consistente.\n"
+        "7. Al terminar, deja los archivos escritos en el repositorio y no hagas commit.\n"
+    )
+
+
+def build_workout_replan_prompt(slug: str, workout_path: Path, schedule_date: date, premise: str) -> str:
+    week_paths = operative_week_paths_for_range(schedule_date, schedule_date)
+    week_lines = "\n".join(f"- {display_path(path)}" for path in week_paths)
+    return (
+        "Actua como el replanificador operativo de este repositorio y trabaja directamente sobre los archivos del proyecto. "
+        "Debes replanificar una sola sesion planificada respetando el conocimiento y las reglas guardadas.\n\n"
+        f"Sesion objetivo: {slug}\n"
+        f"Archivo YAML canonico obligatorio: {display_path(workout_path)}\n"
+        f"Fecha operativa: {schedule_date.isoformat()}\n"
+        f"Premisa adicional obligatoria del usuario: {premise.strip() or 'Sin premisa adicional; usa el contexto operativo actual.'}\n\n"
+        "Archivos semanales canonicos que debes actualizar si hace falta:\n"
+        f"{week_lines}\n\n"
+        "Instrucciones obligatorias:\n"
+        "1. Lee AGENT.md, planning/context_automation_policy.md, planning/coaching_playbook.md, planning/workout_knowledge.yaml, planning/workout_template_knowledge_map.yaml, planning/session_selection_matrix.yaml, planning/workout_evaluation_rules.md, athlete/response_profile.yaml, athlete/status_dashboard.md, planning/coach_decision.md, system/state/athlete_state.json, athlete/health.yaml, athlete/zones.yaml, athlete/shin_tracker.yaml, athlete/supplements.yaml y planning/fueling_operational.md.\n"
+        "2. Replanifica solo esta sesion. Conserva el mismo slug y el mismo archivo YAML; no lo renombres ni lo muevas.\n"
+        "3. Mantén la fecha y la referencia del workout, salvo que la premisa exija otra cosa de forma inequívoca. Si cambias la fecha, deja el markdown semanal consistente y actualiza el workout dentro del mismo archivo.\n"
+        "4. El resultado final debe quedar canonico en el YAML real y en el markdown semanal. No uses overlays ni archivos temporales.\n"
+        "5. Asegura que los pasos resultantes sean ejecutables por Garmin y que la descripcion refleje con claridad el cambio pedido.\n"
+        "6. Al terminar, deja los archivos escritos en el repositorio y no hagas commit.\n"
+    )
+
+
 def build_planning_prompt(target_start: date, target_end: date, output_path: Path) -> str:
     return (
         "Actua como el planificador semanal de este repositorio y trabaja directamente sobre los archivos del proyecto. "
@@ -178,13 +321,12 @@ def run_command(command: list[str], *, timeout: int = 3600) -> subprocess.Comple
     return subprocess.run(command, cwd=ROOT, capture_output=True, text=True, timeout=timeout, check=False)
 
 
-def execute_opencode_planning(target_start: date, target_end: date, output_path: Path) -> tuple[bool, str, dict[str, Any]]:
-    prompt = build_planning_prompt(target_start, target_end, output_path)
+def execute_opencode_prompt(prompt: str) -> tuple[bool, str, dict[str, Any]]:
     command = ["opencode", "run", "--dir", str(ROOT), "--model", opencode_model(), "--print-logs", prompt]
     try:
         result = run_command(command)
     except FileNotFoundError:
-        return False, "No se encontro el binario `opencode`; no puedo preparar la siguiente semana automaticamente.", {"command": " ".join(command[:-1]), "returncode": None}
+        return False, "No se encontro el binario `opencode`; no puedo ejecutar la operacion automaticamente.", {"command": " ".join(command[:-1]), "returncode": None}
     detail = {
         "command": " ".join(command[:-1]),
         "returncode": result.returncode,
@@ -192,13 +334,21 @@ def execute_opencode_planning(target_start: date, target_end: date, output_path:
         "stderr": result.stderr[-4000:],
     }
     if result.returncode != 0:
+        return False, "OpenCode no pudo completar la operacion solicitada.", detail
+    return True, "Operacion OpenCode completada.", detail
+
+
+def execute_opencode_planning(target_start: date, target_end: date, output_path: Path) -> tuple[bool, str, dict[str, Any]]:
+    prompt = build_planning_prompt(target_start, target_end, output_path)
+    ok, message, detail = execute_opencode_prompt(prompt)
+    if not ok:
         return False, "OpenCode no pudo preparar la siguiente semana.", detail
     if not output_path.exists():
         return False, "OpenCode termino, pero no se genero el archivo esperado de la siguiente semana.", detail
     generated_start, generated_end = parse_week_date_window(read_text(output_path))
     if generated_start != target_start or generated_end != target_end:
         return False, "La semana preparada no coincide con el rango objetivo esperado.", detail
-    return True, "Siguiente semana preparada.", detail
+    return True, message, detail
 
 
 def planned_upload_record_path(workout_path: Path, workout_date: str) -> Path:
@@ -250,6 +400,68 @@ def sync_workouts_to_garmin(target_start: date, target_end: date) -> dict[str, A
     return {"items": results, "synced": synced, "failed": failed, "skipped": skipped}
 
 
+def sync_planned_workouts_verified() -> dict[str, Any]:
+    command = [sys.executable, str(GARMIN_SYNC_SCRIPT), "sync-planned-workouts"]
+    result = run_command(command, timeout=1800)
+    stdout = (result.stdout or "").strip()
+    stderr = (result.stderr or "").strip()
+    try:
+        payload = json.loads(stdout or "{}") if stdout else {}
+    except json.JSONDecodeError:
+        payload = {"raw_output": stdout or stderr}
+    failed = int(payload.get("failed") or 0) if isinstance(payload, dict) else 0
+    ok = result.returncode == 0 and failed == 0
+    return {
+        "ok": ok,
+        "command": " ".join(command),
+        "returncode": result.returncode,
+        "message": (stdout or stderr or "Sin salida")[-2000:],
+        "payload": payload if isinstance(payload, dict) else {"raw_output": stdout or stderr},
+    }
+
+
+def verify_workout_upload(workout_path: Path) -> tuple[bool, str, dict[str, Any]]:
+    payload = load_yaml(workout_path).get("workout", {})
+    schedule_date = str(payload.get("schedule_date") or "").strip()
+    if not schedule_date:
+        return False, "El workout no define schedule_date tras la replanificacion.", {}
+    upload_path = planned_upload_record_path(workout_path, schedule_date)
+    if not upload_path.exists():
+        return False, "No existe el registro .garmin_upload.json esperado tras la sincronizacion.", {"expected_upload_path": display_path(upload_path)}
+    try:
+        upload = json.loads(upload_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return False, "El registro de Garmin generado no es JSON valido.", {"expected_upload_path": display_path(upload_path)}
+    expected_hash = file_sha256(workout_path)
+    if upload.get("status") != "scheduled":
+        return False, "Garmin no devolvio estado scheduled para la sesion replanificada.", upload
+    if str(upload.get("workout_file") or "") != display_path(workout_path):
+        return False, "El registro Garmin apunta a un archivo distinto del YAML canonico.", upload
+    if str(upload.get("workout_hash") or "") != expected_hash:
+        return False, "El hash del upload Garmin no coincide con el YAML canonico actual.", upload
+    return True, "Workout sincronizado y verificado en Garmin.", upload
+
+
+def sync_single_workout_and_verify(workout_path: Path) -> dict[str, Any]:
+    command = [sys.executable, str(GARMIN_SYNC_SCRIPT), "schedule-workout-file", str(workout_path)]
+    result = run_command(command, timeout=600)
+    if result.returncode != 0:
+        return {
+            "ok": False,
+            "command": " ".join(command),
+            "returncode": result.returncode,
+            "message": ((result.stdout or result.stderr or "Fallo Garmin")[-2000:]),
+        }
+    ok, message, payload = verify_workout_upload(workout_path)
+    return {
+        "ok": ok,
+        "command": " ".join(command),
+        "returncode": result.returncode,
+        "message": message,
+        "payload": payload,
+    }
+
+
 def enrich_workouts_with_knowledge(target_start: date, target_end: date) -> tuple[bool, dict[str, Any]]:
     command = [sys.executable, str(ENRICH_WORKOUTS_SCRIPT), "--start-date", target_start.isoformat(), "--end-date", target_end.isoformat()]
     result = run_command(command, timeout=300)
@@ -265,6 +477,191 @@ def enrich_workouts_with_knowledge(target_start: date, target_end: date) -> tupl
 def refresh_operational_artifacts() -> None:
     write_all_contexts(refresh_capabilities=False)
     write_automation_health()
+
+
+def save_last_operation(entry: dict[str, Any]) -> None:
+    state = load_state()
+    state["last_range_operation"] = entry
+    save_state(state)
+
+
+def parse_required_date(value: str, *, field_name: str) -> date:
+    parsed = parse_iso_date(value)
+    if not parsed:
+        raise ValueError(f"Fecha no valida para {field_name}: {value}")
+    return parsed
+
+
+def plan_range(start_date_text: str, end_date_text: str, premise: str, source: str) -> dict[str, Any]:
+    try:
+        target_start = parse_required_date(start_date_text, field_name="start_date")
+        target_end = parse_required_date(end_date_text, field_name="end_date")
+    except ValueError as exc:
+        return {"ok": False, "message": str(exc), "code": "invalid_date"}
+    if target_end < target_start:
+        return {"ok": False, "message": "La fecha final no puede ser anterior a la inicial.", "code": "invalid_range"}
+    pre_sync = pre_operation_sync(date.today().isoformat())
+    if not pre_sync.get("ok"):
+        save_last_operation({
+            "status": "blocked_pre_sync",
+            "operation": "plan_range",
+            "start_date": target_start.isoformat(),
+            "end_date": target_end.isoformat(),
+            "premise": premise,
+            "updated_at": datetime.now().isoformat(),
+            "source": source,
+            "pre_sync": pre_sync,
+        })
+        return {"ok": False, "message": "No se puede planificar porque la sincronizacion previa con Garmin/coach ha fallado.", "code": "pre_sync_failed", "pre_sync": pre_sync}
+    snapshot = collect_range_snapshot(target_start, target_end)
+    ok, message, detail = execute_opencode_prompt(build_range_prompt(target_start, target_end, premise, mode="plan"))
+    changed_paths = changed_paths_against_snapshot(snapshot, target_start, target_end)
+    if not ok:
+        save_last_operation({
+            "status": "planning_failed",
+            "operation": "plan_range",
+            "start_date": target_start.isoformat(),
+            "end_date": target_end.isoformat(),
+            "premise": premise,
+            "updated_at": datetime.now().isoformat(),
+            "source": source,
+            "detail": detail,
+            "pre_sync": pre_sync,
+        })
+        return {"ok": False, "message": message, "code": "planning_failed", "detail": detail, "pre_sync": pre_sync}
+    garmin_sync = sync_planned_workouts_verified()
+    refresh_operational_artifacts()
+    entry = {
+        "status": "planned" if garmin_sync.get("ok") else "garmin_failed",
+        "operation": "plan_range",
+        "start_date": target_start.isoformat(),
+        "end_date": target_end.isoformat(),
+        "premise": premise,
+        "updated_at": datetime.now().isoformat(),
+        "source": source,
+        "changed_paths": changed_paths,
+        "planner_detail": {k: v for k, v in detail.items() if k != "stdout"},
+        "pre_sync": pre_sync,
+        "garmin_sync": garmin_sync,
+    }
+    save_last_operation(entry)
+    if not garmin_sync.get("ok"):
+        return {"ok": False, "message": "Plan generado, pero la verificacion Garmin posterior ha fallado.", "code": "garmin_sync_failed", "changed_paths": changed_paths, "garmin_sync": garmin_sync}
+    return {"ok": True, "message": "Plan generado y sincronizado con Garmin.", "code": "planned", "changed_paths": changed_paths, "garmin_sync": garmin_sync}
+
+
+def replan_range(start_date_text: str, end_date_text: str, premise: str, source: str) -> dict[str, Any]:
+    try:
+        target_start = parse_required_date(start_date_text, field_name="start_date")
+        target_end = parse_required_date(end_date_text, field_name="end_date")
+    except ValueError as exc:
+        return {"ok": False, "message": str(exc), "code": "invalid_date"}
+    if target_end < target_start:
+        return {"ok": False, "message": "La fecha final no puede ser anterior a la inicial.", "code": "invalid_range"}
+    pre_sync = pre_operation_sync(date.today().isoformat())
+    if not pre_sync.get("ok"):
+        save_last_operation({
+            "status": "blocked_pre_sync",
+            "operation": "replan_range",
+            "start_date": target_start.isoformat(),
+            "end_date": target_end.isoformat(),
+            "premise": premise,
+            "updated_at": datetime.now().isoformat(),
+            "source": source,
+            "pre_sync": pre_sync,
+        })
+        return {"ok": False, "message": "No se puede replanificar porque la sincronizacion previa con Garmin/coach ha fallado.", "code": "pre_sync_failed", "pre_sync": pre_sync}
+    snapshot = collect_range_snapshot(target_start, target_end)
+    ok, message, detail = execute_opencode_prompt(build_range_prompt(target_start, target_end, premise, mode="replan"))
+    changed_paths = changed_paths_against_snapshot(snapshot, target_start, target_end)
+    if not ok:
+        save_last_operation({
+            "status": "replanning_failed",
+            "operation": "replan_range",
+            "start_date": target_start.isoformat(),
+            "end_date": target_end.isoformat(),
+            "premise": premise,
+            "updated_at": datetime.now().isoformat(),
+            "source": source,
+            "detail": detail,
+            "pre_sync": pre_sync,
+        })
+        return {"ok": False, "message": message, "code": "replanning_failed", "detail": detail, "pre_sync": pre_sync}
+    garmin_sync = sync_planned_workouts_verified()
+    refresh_operational_artifacts()
+    entry = {
+        "status": "replanned" if garmin_sync.get("ok") else "garmin_failed",
+        "operation": "replan_range",
+        "start_date": target_start.isoformat(),
+        "end_date": target_end.isoformat(),
+        "premise": premise,
+        "updated_at": datetime.now().isoformat(),
+        "source": source,
+        "changed_paths": changed_paths,
+        "planner_detail": {k: v for k, v in detail.items() if k != "stdout"},
+        "pre_sync": pre_sync,
+        "garmin_sync": garmin_sync,
+    }
+    save_last_operation(entry)
+    if not garmin_sync.get("ok"):
+        return {"ok": False, "message": "Replan generado, pero la verificacion Garmin posterior ha fallado.", "code": "garmin_sync_failed", "changed_paths": changed_paths, "garmin_sync": garmin_sync}
+    return {"ok": True, "message": "Replan generado y sincronizado con Garmin.", "code": "replanned", "changed_paths": changed_paths, "garmin_sync": garmin_sync}
+
+
+def replan_workout(slug: str, premise: str, source: str) -> dict[str, Any]:
+    workout_path = planned_workout_path(slug)
+    if not workout_path.exists():
+        return {"ok": False, "message": f"No existe el workout planificado `{display_path(workout_path)}`.", "code": "workout_missing"}
+    spec = load_yaml(workout_path)
+    workout = spec.get("workout", {}) if isinstance(spec, dict) else {}
+    schedule_date = parse_iso_date(str(workout.get("schedule_date") or ""))
+    if not schedule_date:
+        return {"ok": False, "message": "La sesion no tiene una fecha valida para replanificar.", "code": "workout_missing_date"}
+    pre_sync = pre_operation_sync(date.today().isoformat())
+    if not pre_sync.get("ok"):
+        save_last_operation({
+            "status": "blocked_pre_sync",
+            "operation": "replan_workout",
+            "slug": slug,
+            "premise": premise,
+            "updated_at": datetime.now().isoformat(),
+            "source": source,
+            "pre_sync": pre_sync,
+        })
+        return {"ok": False, "message": "No se puede replanificar la sesion porque la sincronizacion previa con Garmin/coach ha fallado.", "code": "pre_sync_failed", "pre_sync": pre_sync}
+    previous_hash = file_sha256(workout_path)
+    ok, message, detail = execute_opencode_prompt(build_workout_replan_prompt(slug, workout_path, schedule_date, premise))
+    changed = [display_path(workout_path)] if workout_path.exists() and file_sha256(workout_path) != previous_hash else []
+    if not ok:
+        save_last_operation({
+            "status": "replanning_failed",
+            "operation": "replan_workout",
+            "slug": slug,
+            "premise": premise,
+            "updated_at": datetime.now().isoformat(),
+            "source": source,
+            "detail": detail,
+            "pre_sync": pre_sync,
+        })
+        return {"ok": False, "message": message, "code": "replanning_failed", "detail": detail, "pre_sync": pre_sync}
+    garmin_sync = sync_single_workout_and_verify(workout_path)
+    refresh_operational_artifacts()
+    entry = {
+        "status": "replanned" if garmin_sync.get("ok") else "garmin_failed",
+        "operation": "replan_workout",
+        "slug": slug,
+        "premise": premise,
+        "updated_at": datetime.now().isoformat(),
+        "source": source,
+        "changed_paths": changed,
+        "planner_detail": {k: v for k, v in detail.items() if k != "stdout"},
+        "pre_sync": pre_sync,
+        "garmin_sync": garmin_sync,
+    }
+    save_last_operation(entry)
+    if not garmin_sync.get("ok"):
+        return {"ok": False, "message": "La sesion se ha replanificado localmente, pero la verificacion Garmin ha fallado.", "code": "garmin_sync_failed", "changed_paths": changed, "garmin_sync": garmin_sync}
+    return {"ok": True, "message": "Sesion replanificada y sincronizada con Garmin.", "code": "replanned", "changed_paths": changed, "garmin_sync": garmin_sync}
 
 
 def send_active_week_pdf() -> tuple[bool, str]:
@@ -442,6 +839,15 @@ def main() -> None:
         emit(result, 0 if result.get("ok") else 1)
     if args.command == "status":
         emit(pipeline_status(week_start=str(args.week_start or "")), 0)
+    if args.command == "plan-range":
+        result = plan_range(str(args.start_date or ""), str(args.end_date or ""), str(args.premise or ""), str(args.source or "manual"))
+        emit(result, 0 if result.get("ok") else 1)
+    if args.command == "replan-range":
+        result = replan_range(str(args.start_date or ""), str(args.end_date or ""), str(args.premise or ""), str(args.source or "manual"))
+        emit(result, 0 if result.get("ok") else 1)
+    if args.command == "replan-workout":
+        result = replan_workout(str(args.slug or ""), str(args.premise or ""), str(args.source or "manual"))
+        emit(result, 0 if result.get("ok") else 1)
 
 
 if __name__ == "__main__":

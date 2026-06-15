@@ -305,6 +305,34 @@ class WebV2Tests(unittest.TestCase):
             payload = app.plan_page_data()
         self.assertEqual(payload["aerobic_trend_chart"]["target_hrs"], [145, 153, 160])
 
+    def test_calendar_page_data_exposes_range_forms(self) -> None:
+        calendar_payload = {
+            "selected": "2026-06",
+            "selected_label": "Junio 2026",
+            "prev_month": "2026-05",
+            "next_month": "2026-07",
+            "weeks": [[
+                {"date": "2026-06-01", "day": 1, "in_month": True, "is_today": False, "events": []},
+                {"date": "2026-06-30", "day": 30, "in_month": True, "is_today": False, "events": []},
+            ]],
+        }
+        with mock.patch.object(app.portal_core, "calendar_month_data_combined", return_value=calendar_payload):
+            page = app.calendar_page_data("2026-06")
+        self.assertEqual(page["plan_range_form"]["start_date"], "2026-06-01")
+        self.assertEqual(page["replan_range_form"]["end_date"], "2026-06-30")
+        self.assertEqual(page["plan_range_form"]["return_to"], "/calendar?month=2026-06&focus=all")
+
+    def test_planned_workout_page_data_exposes_replan_form(self) -> None:
+        workout = {
+            "slug": "2026-06-17_quality",
+            "name": "Calidad",
+            "linked_review": None,
+        }
+        with mock.patch.object(app.portal_core, "planned_workout_detail", return_value=workout):
+            page = app.planned_workout_page_data("2026-06-17_quality")
+        self.assertEqual(page["replan_form"]["slug"], "2026-06-17_quality")
+        self.assertEqual(page["replan_form"]["return_to"], "/planned-workouts/2026-06-17_quality")
+
     def test_athlete_page_data_exposes_zones_for_ui(self) -> None:
         athlete_payload = {
             "profile": {"name": "A", "age": 1, "city": "C", "availability": {"days_per_week": 4}},

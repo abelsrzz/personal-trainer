@@ -106,6 +106,8 @@ require_runtime() {
     exit 1
   fi
 
+  export PATH="$(dirname "$OPENCODE_BIN"):$PATH"
+
   if [[ ! -x "$PYTHON_BIN" ]]; then
     echo "ERROR: Python virtualenv not found or not executable: $PYTHON_BIN" >&2
     echo "Run: ./start_server.sh install" >&2

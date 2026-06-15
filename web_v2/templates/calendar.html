@@ -41,6 +41,50 @@
   </div>
 </section>
 
+<section class="grid grid-2 detail-grid">
+  <article class="panel">
+    <p class="eyebrow">Planificación</p>
+    <h2>Generar plan por rango</h2>
+    <form class="stack-form planner-form" method="post" action="/calendar/plan-range">
+      <input type="hidden" name="return_to" value="{{ page.plan_range_form.return_to }}">
+      <label>
+        <span>Desde</span>
+        <input type="date" name="start_date" value="{{ page.plan_range_form.start_date }}" required>
+      </label>
+      <label>
+        <span>Hasta</span>
+        <input type="date" name="end_date" value="{{ page.plan_range_form.end_date }}" required>
+      </label>
+      <label>
+        <span>Premisa libre</span>
+        <textarea name="premise" rows="5" placeholder="Ejemplo: quiero 3 sesiones de fuerza, mantener una salida larga suave y priorizar la vuelta progresiva al impacto.">{{ page.plan_range_form.premise }}</textarea>
+      </label>
+      <button class="link-button" type="submit">Generar plan</button>
+    </form>
+  </article>
+
+  <article class="panel">
+    <p class="eyebrow">Replanificación</p>
+    <h2>Replanificar rango con IA</h2>
+    <form class="stack-form planner-form" method="post" action="/calendar/replan-range">
+      <input type="hidden" name="return_to" value="{{ page.replan_range_form.return_to }}">
+      <label>
+        <span>Desde</span>
+        <input type="date" name="start_date" value="{{ page.replan_range_form.start_date }}" required>
+      </label>
+      <label>
+        <span>Hasta</span>
+        <input type="date" name="end_date" value="{{ page.replan_range_form.end_date }}" required>
+      </label>
+      <label>
+        <span>Premisa libre</span>
+        <textarea name="premise" rows="5" placeholder="Ejemplo: reduce impacto esa semana, cambia una calidad por bici y mete más fuerza si la tibia sigue sensible.">{{ page.replan_range_form.premise }}</textarea>
+      </label>
+      <button class="link-button" type="submit">Replanificar rango</button>
+    </form>
+  </article>
+</section>
+
 <section class="calendar-board calendar-board-v2">
   <div class="calendar-weekdays">
     <span>Lun</span>

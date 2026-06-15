@@ -18,7 +18,7 @@ try:
     from scripts.system.policy_gate import PolicyGateError
     from scripts.system.service_sync import service_sync
     from scripts.system.today_feed import write_today_feed
-    from scripts.system.weekly_planning_pipeline import activate_prepared_week, plan_next_week
+    from scripts.system.weekly_planning_pipeline import activate_prepared_week, plan_next_week, plan_range, replan_range, replan_workout
     from scripts.system.athlete_state import write_athlete_state
     from scripts.system.workout_family_response import write_workout_family_response
 except ModuleNotFoundError:  # pragma: no cover - direct script execution path fix
@@ -30,7 +30,7 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path f
     from scripts.system.policy_gate import PolicyGateError
     from scripts.system.service_sync import service_sync
     from scripts.system.today_feed import write_today_feed
-    from scripts.system.weekly_planning_pipeline import activate_prepared_week, plan_next_week
+    from scripts.system.weekly_planning_pipeline import activate_prepared_week, plan_next_week, plan_range, replan_range, replan_workout
     from scripts.system.athlete_state import write_athlete_state
     from scripts.system.workout_family_response import write_workout_family_response
 
@@ -61,6 +61,9 @@ POST_SUCCESS_CAPABILITIES: dict[str, list[str]] = {
     "sync_planned_workouts": [],
     "refresh_today_feed": [],
     "service_sync": ["coach_decision", "athlete_state", "post_workout_refresh"],
+    "plan_range": ["coach_decision", "athlete_state", "post_workout_refresh"],
+    "replan_range": ["coach_decision", "athlete_state", "post_workout_refresh"],
+    "replan_workout": ["coach_decision", "athlete_state", "post_workout_refresh"],
 }
 
 
@@ -69,6 +72,9 @@ REFRESH_ARTIFACT_ACTIONS = {
     "process_completed_activity",
     "rebuild_coach_state",
     "prepare_next_week",
+    "plan_range",
+    "replan_range",
+    "replan_workout",
     "activate_prepared_week",
     "sync_workout_to_garmin",
     "sync_planned_workouts",
@@ -143,6 +149,27 @@ def action_activate_prepared_week(*, source: str = "manual", week_start: str = "
     return {"ok": bool(payload.get("ok")), "message": str(payload.get("message") or "Activate prepared week finished."), "payload": payload}
 
 
+def action_plan_range(*, start_date: str, end_date: str, premise: str = "", source: str = "manual", **_: Any) -> dict[str, Any]:
+    if not start_date or not end_date:
+        raise ActionRuntimeError("Missing required payload fields: start_date, end_date")
+    payload = plan_range(start_date, end_date, premise, source)
+    return {"ok": bool(payload.get("ok")), "message": str(payload.get("message") or "Plan range finished."), "payload": payload}
+
+
+def action_replan_range(*, start_date: str, end_date: str, premise: str = "", source: str = "manual", **_: Any) -> dict[str, Any]:
+    if not start_date or not end_date:
+        raise ActionRuntimeError("Missing required payload fields: start_date, end_date")
+    payload = replan_range(start_date, end_date, premise, source)
+    return {"ok": bool(payload.get("ok")), "message": str(payload.get("message") or "Replan range finished."), "payload": payload}
+
+
+def action_replan_workout(*, slug: str, premise: str = "", source: str = "manual", **_: Any) -> dict[str, Any]:
+    if not slug:
+        raise ActionRuntimeError("Missing required payload field: slug")
+    payload = replan_workout(slug, premise, source)
+    return {"ok": bool(payload.get("ok")), "message": str(payload.get("message") or "Replan workout finished."), "payload": payload}
+
+
 def action_sync_workout_to_garmin(*, workout_file: str, **_: Any) -> dict[str, Any]:
     if not workout_file:
         raise ActionRuntimeError("Missing required payload field: workout_file")
@@ -158,6 +185,9 @@ def action_sync_workout_to_garmin(*, workout_file: str, **_: Any) -> dict[str, A
 def action_sync_planned_workouts(**_: Any) -> dict[str, Any]:
     ok, message, parsed = run_command([sys.executable, str(GARMIN_SYNC_SCRIPT), "sync-planned-workouts"], timeout=1800)
     payload = parsed or {"raw_output": message}
+    if isinstance(payload, dict) and int(payload.get("failed") or 0) > 0:
+        ok = False
+        message = f"Garmin sync finished with {int(payload.get('failed') or 0)} failed planned workout(s)."
     write_json(
         GARMIN_RECONCILE_STATE_PATH,
         {
@@ -255,6 +285,24 @@ ACTIONS: dict[str, ActionSpec] = {
         description="Prepare next week through weekly_planning_pipeline",
         handler=action_prepare_next_week,
         payload_schema={"source": "Trigger source", "force": "Boolean flag"},
+    ),
+    "plan_range": ActionSpec(
+        name="plan_range",
+        description="Generate or regenerate planned workouts inside a date range",
+        handler=action_plan_range,
+        payload_schema={"start_date": "Range start YYYY-MM-DD", "end_date": "Range end YYYY-MM-DD", "premise": "Free-text planning premise", "source": "Trigger source"},
+    ),
+    "replan_range": ActionSpec(
+        name="replan_range",
+        description="Replan workouts inside a date range with Garmin verification",
+        handler=action_replan_range,
+        payload_schema={"start_date": "Range start YYYY-MM-DD", "end_date": "Range end YYYY-MM-DD", "premise": "Free-text replanning premise", "source": "Trigger source"},
+    ),
+    "replan_workout": ActionSpec(
+        name="replan_workout",
+        description="Replan one workout with Garmin verification",
+        handler=action_replan_workout,
+        payload_schema={"slug": "Workout YAML stem", "premise": "Free-text replanning premise", "source": "Trigger source"},
     ),
     "activate_prepared_week": ActionSpec(
         name="activate_prepared_week",

@@ -11,8 +11,8 @@ health:
     did not leave next-day pain; only mild provoked tension remains in the left shin
     area.
   garmin_metrics:
-    last_sync: '2026-06-14T13:58:43.710505Z'
-    resting_hr: 57
+    last_sync: '2026-06-15T08:02:26.647113Z'
+    resting_hr: 51
     max_hr: 199
     vo2max: 46.0
     lactate_threshold_hr: 191

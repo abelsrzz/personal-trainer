@@ -1062,6 +1062,9 @@ def home_page_data() -> dict[str, Any]:
             for item in payload.get("upcoming", [])[:4]
         ],
         "recent_reviews": [compact_today_review(item) for item in payload.get("recent_reviews", [])[:3]],
+        "current_week_km": payload.get("current_week_km", 0),
+        "current_week_sessions": payload.get("current_week_sessions", 0),
+        "current_week_completed": payload.get("current_week_completed", 0),
         "active_nav": "hoy",
     }
 

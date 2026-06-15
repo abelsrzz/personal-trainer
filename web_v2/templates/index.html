@@ -27,14 +27,14 @@
     <p class="muted">Base absorbida {{ progression.get('baseline_running_km') or 0 }} km</p>
   </article>
   <article class="panel">
-    <p class="eyebrow">Objetivo de carga</p>
-    <h2>{% if target_min in [0, 0.0, '0', '0.0'] and target_max in [0, 0.0, '0', '0.0'] %}Pausado{% else %}{{ target_min }}-{{ target_max }} km{% endif %}</h2>
-    <p class="muted">Running previsto si el tejido responde</p>
+    <p class="eyebrow">Carga semanal</p>
+    <h2>{{ page.current_week_km }} km</h2>
+    <p class="muted">Suma km planificados esta semana</p>
   </article>
   <article class="panel">
-    <p class="eyebrow">Bici soporte</p>
-    <h2>{{ 'Sí' if progression.get('keep_bike_support_session') else 'No' }}</h2>
-    <p class="muted">Mantener una sesión sin impacto</p>
+    <p class="eyebrow">Sesiones semana</p>
+    <h2>{{ page.current_week_completed }}/{{ page.current_week_sessions }}</h2>
+    <p class="muted">Completadas de {{ page.current_week_sessions }} planificadas</p>
   </article>
   <article class="panel">
     <p class="eyebrow">Ritmo tempo</p>

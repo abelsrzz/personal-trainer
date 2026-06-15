@@ -5128,6 +5128,17 @@ def home_page_data() -> dict[str, Any]:
     week = week_page_data(dashboard=dashboard, workouts=workouts, reviews=reviews)
     upcoming = [item for item in workouts if parse_iso_date(item["date"]) and parse_iso_date(item["date"]) >= date.today()]
     recent_reviews = reviews[:5]
+
+    today_val = date.today()
+    week_start = today_val - timedelta(days=today_val.weekday())
+    week_end = week_start + timedelta(days=6)
+    this_week_workouts = [w for w in workouts if parse_iso_date(w.get("date")) and week_start <= parse_iso_date(w.get("date")) <= week_end]
+    this_week_km = round(sum(workout_distance_km(w) for w in this_week_workouts), 1)
+    this_week_sessions = len(this_week_workouts)
+    week_planned_slugs = {w.get("slug") for w in this_week_workouts if w.get("slug")}
+    this_week_reviews = [r for r in reviews if parse_iso_date(r.get("date")) and week_start <= parse_iso_date(r.get("date")) <= week_end]
+    this_week_completed = sum(1 for r in this_week_reviews if r.get("slug") in week_planned_slugs)
+
     return {
         "workspace": status,
         "dashboard": dashboard,
@@ -5139,6 +5150,9 @@ def home_page_data() -> dict[str, Any]:
         "planned_count": len(workouts),
         "review_count": len(reviews),
         "progress_metrics": progress_metrics(),
+        "current_week_km": this_week_km,
+        "current_week_sessions": this_week_sessions,
+        "current_week_completed": this_week_completed,
     }
 
 

@@ -280,7 +280,17 @@ stop_process() {
     local pid
     pid="$(<"$pid_file")"
     kill "$pid"
-    echo "Stopped $name (pid $pid)"
+    local waited=0
+    while kill -0 "$pid" 2>/dev/null && (( waited < 8 )); do
+      sleep 1
+      (( waited++ ))
+    done
+    if kill -0 "$pid" 2>/dev/null; then
+      kill -9 "$pid" 2>/dev/null || true
+      echo "Force-killed $name (pid $pid)"
+    else
+      echo "Stopped $name (pid $pid)"
+    fi
   else
     echo "$name is not running"
   fi

@@ -10,12 +10,18 @@ stages:
 test:
   stage: test
   image: python:3.13-slim
+  variables:
+    PYTHON_BIN: python3
+    CI_VENV: .venv-ci
   before_script:
-    - python -m pip install --quiet --upgrade pip
-    - pip install --quiet -r requirements.txt pytest
+    - 'if command -v python >/dev/null 2>&1; then export PYTHON_BIN=python; fi'
+    - '$PYTHON_BIN -m venv "$CI_VENV"'
+    - '. "$CI_VENV/bin/activate"'
+    - 'python -m pip install --quiet --upgrade pip'
+    - 'python -m pip install --quiet -r requirements.txt pytest'
   script:
     - >-
-      python -m pytest -q
+      . "$CI_VENV/bin/activate" && python -m pytest -q
       --deselect tests/test_load_progression.py::LoadProgressionTests::test_progression_window_uses_last_absorbed_week
       --deselect "tests/test_sync_garmin.py::GarminSyncTests::test_import_activities_fetches_multiple_pages_until_older_entries"
       --deselect tests/test_workout_knowledge.py::WorkoutKnowledgeTests::test_shared_matcher_derives_primary_goal_for_controlled_quality

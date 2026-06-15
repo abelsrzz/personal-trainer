@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block title %}Ajustes | RunPilot Next{% endblock %}
+{% block content %}
+<section class="hero-card compact-hero">
+  <div>
+    <p class="eyebrow">Ajustes</p>
+    <h1>Configuración operativa</h1>
+    <p class="lede">Telegram, OpenCode remoto y Gemini fallback desde una sola pantalla.</p>
+  </div>
+  <div class="hero-badges">
+    <span class="badge">{{ page.config_path }}</span>
+  </div>
+</section>
+
+<form class="settings-form" method="post" action="{{ app_path('/settings') }}">
+  <section class="panel">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">Telegram</p>
+        <h2>Bot y destino</h2>
+      </div>
+    </div>
+    <div class="grid grid-2 settings-grid">
+      <label class="field">
+        <span>Bot token</span>
+        <input type="text" name="telegram_bot_token" value="{{ page.telegram.bot_token }}" autocomplete="off">
+      </label>
+      <label class="field">
+        <span>Chat ID principal</span>
+        <input type="text" name="telegram_chat_id" value="{{ page.telegram.chat_id }}">
+      </label>
+      <label class="field">
+        <span>Allowed chat IDs</span>
+        <textarea name="telegram_allowed_chat_ids" rows="3">{{ page.telegram.allowed_chat_ids }}</textarea>
+      </label>
+      <label class="field">
+        <span>Caption prefix</span>
+        <input type="text" name="telegram_caption_prefix" value="{{ page.telegram.caption_prefix }}">
+      </label>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">OpenCode</p>
+        <h2>Bridge remoto</h2>
+      </div>
+    </div>
+    <div class="grid grid-2 settings-grid">
+      <label class="field checkbox-field">
+        <input type="hidden" name="opencode_enabled" value="0">
+        <input type="checkbox" name="opencode_enabled" value="1" {{ 'checked' if page.opencode.enabled else '' }}>
+        <span>Bridge activado</span>
+      </label>
+      <label class="field">
+        <span>Modelo por defecto</span>
+        <input type="text" name="opencode_model" value="{{ page.opencode.model }}">
+      </label>
+      <label class="field">
+        <span>Server URL</span>
+        <input type="text" name="opencode_server_url" value="{{ page.opencode.server_url }}">
+      </label>
+      <label class="field">
+        <span>Timeout (s)</span>
+        <input type="number" min="30" step="30" name="opencode_timeout_s" value="{{ page.opencode.timeout_s }}">
+      </label>
+      <label class="field">
+        <span>Max response chars</span>
+        <input type="number" min="2000" step="500" name="opencode_max_response_chars" value="{{ page.opencode.max_response_chars }}">
+      </label>
+      <label class="field">
+        <span>Confirmación extra</span>
+        <textarea name="opencode_require_confirmation_patterns" rows="5">{{ page.opencode.require_confirmation_patterns }}</textarea>
+      </label>
+      <label class="field checkbox-field">
+        <input type="hidden" name="opencode_allow_commit" value="0">
+        <input type="checkbox" name="opencode_allow_commit" value="1" {{ 'checked' if page.opencode.allow_commit else '' }}>
+        <span>Permitir commit</span>
+      </label>
+      <label class="field checkbox-field">
+        <input type="hidden" name="opencode_allow_push" value="0">
+        <input type="checkbox" name="opencode_allow_push" value="1" {{ 'checked' if page.opencode.allow_push else '' }}>
+        <span>Permitir push</span>
+      </label>
+      <label class="field checkbox-field">
+        <input type="hidden" name="opencode_dangerously_skip_permissions" value="0">
+        <input type="checkbox" name="opencode_dangerously_skip_permissions" value="1" {{ 'checked' if page.opencode.dangerously_skip_permissions else '' }}>
+        <span>Skip permissions</span>
+      </label>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">Gemini</p>
+        <h2>Fallback</h2>
+      </div>
+    </div>
+    <div class="grid grid-2 settings-grid">
+      <label class="field checkbox-field">
+        <input type="hidden" name="gemini_enabled" value="0">
+        <input type="checkbox" name="gemini_enabled" value="1" {{ 'checked' if page.gemini.enabled else '' }}>
+        <span>Fallback activado</span>
+      </label>
+      <label class="field">
+        <span>Gemini API key</span>
+        <input type="text" name="gemini_api_key" value="{{ page.gemini.api_key }}" autocomplete="off">
+      </label>
+      <label class="field field-wide">
+        <span>Modelos fallback</span>
+        <textarea name="gemini_models" rows="4">{{ page.gemini.models }}</textarea>
+      </label>
+    </div>
+  </section>
+
+  <div class="settings-actions">
+    <button class="ghost-button" type="submit">Guardar ajustes</button>
+  </div>
+</form>
+{% endblock %}

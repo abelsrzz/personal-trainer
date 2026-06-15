@@ -1,681 +1,17 @@
 {
   "last_seen_activity_id": 23201148301,
   "last_seen_activity_date": "2026-06-10",
-  "last_processed_activity_id": 22335799805,
-  "last_processed_activity_date": "2026-03-29",
-  "last_processed_at": "2026-06-11T12:25:08.864637+00:00",
-  "last_successful_run": "2026-06-15T08:02:27.681764+00:00",
+  "last_processed_activity_id": 23201148301,
+  "last_processed_activity_date": "2026-06-10",
+  "last_processed_at": "2026-06-15T15:36:11.527713+00:00",
+  "last_successful_run": "2026-06-15T15:36:11.527720+00:00",
   "last_error": null,
-  "last_activity_import_at": "2026-06-15T08:02:27.681671+00:00",
+  "last_activity_import_at": "2026-06-15T15:36:11.527718+00:00",
   "last_daily_import_at": "2026-06-11T12:25:04.927142+00:00",
   "last_profile_sync_at": "2026-06-11T12:25:07.861934+00:00",
   "next_action": "wait_for_new_activity_or_feedback",
   "timer_interval_minutes": 5,
   "processed_activities": [
-    {
-      "activity_id": 22408614965,
-      "activity_date": "2026-04-04",
-      "activity_name": "Ordes Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-01T12:22:40.062730+00:00"
-    },
-    {
-      "activity_id": 22428354271,
-      "activity_date": "2026-04-06",
-      "activity_name": "Ordes - 7km <150ppm",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-01T12:22:40.858657+00:00"
-    },
-    {
-      "activity_id": 22456165150,
-      "activity_date": "2026-04-08",
-      "activity_name": "Ordes - 5x1000@4:10",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-01T12:22:41.726613+00:00"
-    },
-    {
-      "activity_id": 22468277669,
-      "activity_date": "2026-04-09",
-      "activity_name": "Ordes - Copia de 8km <150ppm",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-01T12:22:42.501957+00:00"
-    },
-    {
-      "activity_id": 22502751674,
-      "activity_date": "2026-04-12",
-      "activity_name": "Ordes - 10km Z2",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-01T12:22:43.340284+00:00"
-    },
-    {
-      "activity_id": 22512924914,
-      "activity_date": "2026-04-13",
-      "activity_name": "Culleredo - 8km <150ppm",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-01T12:22:44.116019+00:00"
-    },
-    {
-      "activity_id": 22536339184,
-      "activity_date": "2026-04-15",
-      "activity_name": "Ordes - 7k <145ppm",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-01T12:22:44.911963+00:00"
-    },
-    {
-      "activity_id": 22549284276,
-      "activity_date": "2026-04-16",
-      "activity_name": "Ordes - 4x1000@3:55",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-01T12:22:45.727192+00:00"
-    },
-    {
-      "activity_id": 22573396857,
-      "activity_date": "2026-04-18",
-      "activity_name": "Ordes Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-01T12:22:46.556275+00:00"
-    },
-    {
-      "activity_id": 22939403784,
-      "activity_date": "2026-05-19",
-      "activity_name": "Ordes Caminar",
-      "review_slug": null,
-      "result": "error",
-      "processed_at": "2026-06-01T12:22:47.344088+00:00"
-    },
-    {
-      "activity_id": 22584349968,
-      "activity_date": "2026-04-19",
-      "activity_name": "Cerceda - 10k Z2",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-01T12:28:22.426627+00:00"
-    },
-    {
-      "activity_id": 22632227816,
-      "activity_date": "2026-04-23",
-      "activity_name": "Ordes Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-01T12:28:23.217960+00:00"
-    },
-    {
-      "activity_id": 22664185552,
-      "activity_date": "2026-04-26",
-      "activity_name": "Ordes Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-01T12:28:24.013953+00:00"
-    },
-    {
-      "activity_id": 22680042702,
-      "activity_date": "2026-04-27",
-      "activity_name": "Ordes Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-01T12:28:24.802552+00:00"
-    },
-    {
-      "activity_id": 22693329165,
-      "activity_date": "2026-04-28",
-      "activity_name": "Ordes - 4x1000@4:10",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-01T12:28:25.646983+00:00"
-    },
-    {
-      "activity_id": 22776053069,
-      "activity_date": "2026-05-05",
-      "activity_name": "Ordes - Rodaje 5 km reintroduccion",
-      "review_slug": "2026-05-05_rodaje_5km_reintroduccion",
-      "result": "success",
-      "processed_at": "2026-06-01T12:28:26.630848+00:00"
-    },
-    {
-      "activity_id": 22798592588,
-      "activity_date": "2026-05-07",
-      "activity_name": "Ordes - Rodaje 6 km + 4 rectas controlad",
-      "review_slug": "2026-05-07_rodaje_6km_rectas_controladas",
-      "result": "success",
-      "processed_at": "2026-06-01T12:28:29.041093+00:00"
-    },
-    {
-      "activity_id": 22822541135,
-      "activity_date": "2026-05-09",
-      "activity_name": "Cerceda Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-01T12:28:29.875056+00:00"
-    },
-    {
-      "activity_id": 22823255797,
-      "activity_date": "2026-05-09",
-      "activity_name": "Cerceda - IV EDICI\u00d3N OS 11 DAS V\u00cdAS - CONCELLO DE CERCEDA",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-01T12:28:30.597937+00:00"
-    },
-    {
-      "activity_id": 22870230448,
-      "activity_date": "2026-05-13",
-      "activity_name": "Ordes - Rodaje 7 km + 5 rectas controlad",
-      "review_slug": "2026-05-13_rodaje_7km_rectas_controladas",
-      "result": "success",
-      "processed_at": "2026-06-01T12:28:32.164398+00:00"
-    },
-    {
-      "activity_id": 22889384200,
-      "activity_date": "2026-05-15",
-      "activity_name": "Ordes - Especifica controlada Ordes",
-      "review_slug": "2026-05-15_especifica_controlada_ordes",
-      "result": "success",
-      "processed_at": "2026-06-01T12:28:33.123084+00:00"
-    },
-    {
-      "activity_id": 22939403784,
-      "activity_date": "2026-05-19",
-      "activity_name": "Ordes Caminar",
-      "review_slug": null,
-      "result": "error",
-      "processed_at": "2026-06-01T12:28:33.905730+00:00"
-    },
-    {
-      "activity_id": 22900018441,
-      "activity_date": "2026-05-16",
-      "activity_name": "Ordes - Rodaje 5 km facil",
-      "review_slug": "2026-05-16_rodaje_5km_facil",
-      "result": "success",
-      "processed_at": "2026-06-01T12:34:08.010017+00:00"
-    },
-    {
-      "activity_id": 22937591625,
-      "activity_date": "2026-05-19",
-      "activity_name": "Eliptica aerobica estable 55 min",
-      "review_slug": "2026-05-19_rodaje_5km_reintroduccion",
-      "result": "success",
-      "processed_at": "2026-06-01T12:34:08.999520+00:00"
-    },
-    {
-      "activity_id": 22939403784,
-      "activity_date": "2026-05-19",
-      "activity_name": "Ordes Caminar",
-      "review_slug": null,
-      "result": "error",
-      "processed_at": "2026-06-01T12:34:09.745586+00:00"
-    },
-    {
-      "activity_id": 22939403784,
-      "activity_date": "2026-05-19",
-      "activity_name": "Ordes Caminar",
-      "review_slug": null,
-      "result": "error",
-      "processed_at": "2026-06-10T19:44:41.901396+00:00"
-    },
-    {
-      "activity_id": 22939403784,
-      "activity_date": "2026-05-19",
-      "activity_name": "Ordes Caminar",
-      "review_slug": null,
-      "result": "error",
-      "processed_at": "2026-06-10T19:50:14.756049+00:00"
-    },
-    {
-      "activity_id": 22939403784,
-      "activity_date": "2026-05-19",
-      "activity_name": "Ordes Caminar",
-      "review_slug": null,
-      "result": "error",
-      "processed_at": "2026-06-10T19:55:49.258893+00:00"
-    },
-    {
-      "activity_id": 22939403784,
-      "activity_date": "2026-05-19",
-      "activity_name": "Ordes Caminar",
-      "review_slug": null,
-      "result": "error",
-      "processed_at": "2026-06-10T20:01:28.594676+00:00"
-    },
-    {
-      "activity_id": 22939403784,
-      "activity_date": "2026-05-19",
-      "activity_name": "Ordes Caminar",
-      "review_slug": null,
-      "result": "error",
-      "processed_at": "2026-06-10T20:07:00.593904+00:00"
-    },
-    {
-      "activity_id": 22939403784,
-      "activity_date": "2026-05-19",
-      "activity_name": "Ordes Caminar",
-      "review_slug": null,
-      "result": "error",
-      "processed_at": "2026-06-10T20:12:33.060013+00:00"
-    },
-    {
-      "activity_id": 22939403784,
-      "activity_date": "2026-05-19",
-      "activity_name": "Ordes Caminar",
-      "review_slug": null,
-      "result": "error",
-      "processed_at": "2026-06-10T20:21:27.388847+00:00"
-    },
-    {
-      "activity_id": 22939403784,
-      "activity_date": "2026-05-19",
-      "activity_name": "Ordes Caminar",
-      "review_slug": null,
-      "result": "error",
-      "processed_at": "2026-06-10T20:27:05.571069+00:00"
-    },
-    {
-      "activity_id": 22939403784,
-      "activity_date": "2026-05-19",
-      "activity_name": "Ordes Caminar",
-      "review_slug": null,
-      "result": "error",
-      "processed_at": "2026-06-10T20:32:44.883076+00:00"
-    },
-    {
-      "activity_id": 22939403784,
-      "activity_date": "2026-05-19",
-      "activity_name": "Ordes Caminar",
-      "review_slug": null,
-      "result": "error",
-      "processed_at": "2026-06-10T20:38:15.013943+00:00"
-    },
-    {
-      "activity_id": 22939403784,
-      "activity_date": "2026-05-19",
-      "activity_name": "Ordes Caminar",
-      "review_slug": null,
-      "result": "error",
-      "processed_at": "2026-06-11T11:18:32.605005+00:00"
-    },
-    {
-      "activity_id": 22939403784,
-      "activity_date": "2026-05-19",
-      "activity_name": "Ordes Caminar",
-      "review_slug": null,
-      "result": "error",
-      "processed_at": "2026-06-11T11:24:04.395610+00:00"
-    },
-    {
-      "activity_id": 22939403784,
-      "activity_date": "2026-05-19",
-      "activity_name": "Ordes Caminar",
-      "review_slug": null,
-      "result": "error",
-      "processed_at": "2026-06-11T11:29:44.783931+00:00"
-    },
-    {
-      "activity_id": 22939403784,
-      "activity_date": "2026-05-19",
-      "activity_name": "Ordes Caminar",
-      "review_slug": null,
-      "result": "error",
-      "processed_at": "2026-06-11T11:34:59.951929+00:00"
-    },
-    {
-      "activity_id": 22939403784,
-      "activity_date": "2026-05-19",
-      "activity_name": "Ordes Caminar",
-      "review_slug": null,
-      "result": "error",
-      "processed_at": "2026-06-11T11:36:29.731185+00:00"
-    },
-    {
-      "activity_id": 22939403784,
-      "activity_date": "2026-05-19",
-      "activity_name": "Ordes Caminar",
-      "review_slug": null,
-      "result": "error",
-      "processed_at": "2026-06-11T11:36:42.200239+00:00"
-    },
-    {
-      "activity_id": 22939403784,
-      "activity_date": "2026-05-19",
-      "activity_name": "Ordes Caminar",
-      "review_slug": null,
-      "result": "error",
-      "processed_at": "2026-06-11T11:42:05.718638+00:00"
-    },
-    {
-      "activity_id": 22939403784,
-      "activity_date": "2026-05-19",
-      "activity_name": "Ordes Caminar",
-      "review_slug": null,
-      "result": "error",
-      "processed_at": "2026-06-11T11:44:43.655059+00:00"
-    },
-    {
-      "activity_id": 22939403784,
-      "activity_date": "2026-05-19",
-      "activity_name": "Ordes Caminar",
-      "review_slug": null,
-      "result": "error",
-      "processed_at": "2026-06-11T11:44:48.607572+00:00"
-    },
-    {
-      "activity_id": 22948750716,
-      "activity_date": "2026-05-20",
-      "activity_name": "Ordes - Bicicleta aerobica de continuidad 70 min",
-      "review_slug": "2026-05-20_rodaje_6km_rectas_suaves",
-      "result": "success",
-      "processed_at": "2026-06-11T11:50:30.597494+00:00"
-    },
-    {
-      "activity_id": 22970190097,
-      "activity_date": "2026-05-22",
-      "activity_name": "Ordes - Activacion running ritmo carrera",
-      "review_slug": "2026-05-22_activacion_ritmo_carrera",
-      "result": "success",
-      "processed_at": "2026-06-11T11:50:31.924891+00:00"
-    },
-    {
-      "activity_id": 22992915868,
-      "activity_date": "2026-05-24",
-      "activity_name": "Ordes - Calentamiento pre-carrera Ordes",
-      "review_slug": "2026-05-24_calentamiento_precarrera_ordes",
-      "result": "success",
-      "processed_at": "2026-06-11T11:50:34.583991+00:00"
-    },
-    {
-      "activity_id": 22992941690,
-      "activity_date": "2026-05-24",
-      "activity_name": "Ordes - XXIX CARREIRA POPULAR CONCELLO DE ORDES",
-      "review_slug": "2026-05-24_calentamiento_precarrera_ordes",
-      "result": "success",
-      "processed_at": "2026-06-11T11:50:37.745364+00:00"
-    },
-    {
-      "activity_id": 23017054300,
-      "activity_date": "2026-05-26",
-      "activity_name": "Ordes - Bicicleta recuperacion post-Ordes 50 min",
-      "review_slug": "2026-05-26_rodaje_6km_recuperacion_post_ordes",
-      "result": "success",
-      "processed_at": "2026-06-11T11:50:39.453543+00:00"
-    },
-    {
-      "activity_id": 23032805565,
-      "activity_date": "2026-05-27",
-      "activity_name": "Fuerza",
-      "review_slug": "2026-05-27_fuerza_movilidad_tolerancia_35min",
-      "result": "success",
-      "processed_at": "2026-06-11T11:50:40.494404+00:00"
-    },
-    {
-      "activity_id": 23045517009,
-      "activity_date": "2026-05-28",
-      "activity_name": "Ordes - Bicicleta aerobica continua 65 min",
-      "review_slug": "2026-05-28_rodaje_7km_controlado",
-      "result": "success",
-      "processed_at": "2026-06-11T11:50:42.355350+00:00"
-    },
-    {
-      "activity_id": 23070751559,
-      "activity_date": "2026-05-30",
-      "activity_name": "Ordes - Bicicleta base aerobica 85 min",
-      "review_slug": "2026-05-30_rodaje_6km_progresivo_suave",
-      "result": "success",
-      "processed_at": "2026-06-11T11:50:44.049722+00:00"
-    },
-    {
-      "activity_id": 23083515075,
-      "activity_date": "2026-05-31",
-      "activity_name": "Movilidad tobillo y cadera 25 mi",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-11T11:50:44.979390+00:00"
-    },
-    {
-      "activity_id": 23117118586,
-      "activity_date": "2026-06-03",
-      "activity_name": "Ordes - Bicicleta tempo controlado 80 min",
-      "review_slug": null,
-      "result": "error",
-      "processed_at": "2026-06-11T11:50:46.017674+00:00"
-    },
-    {
-      "activity_id": 21469746216,
-      "activity_date": "2026-01-07",
-      "activity_name": "Ordes - S1 Mi\u00e9 Tempo - Carrera progresi",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-11T11:53:59.088696+00:00"
-    },
-    {
-      "activity_id": 21490398451,
-      "activity_date": "2026-01-09",
-      "activity_name": "Ordes - S1 Vie Intervalos - Repeticiones",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-11T11:53:59.943896+00:00"
-    },
-    {
-      "activity_id": 21511086356,
-      "activity_date": "2026-01-11",
-      "activity_name": "Ordes - S1 Dom Carrera larga - 15km Carr",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-11T11:54:00.824968+00:00"
-    },
-    {
-      "activity_id": 21534539726,
-      "activity_date": "2026-01-13",
-      "activity_name": "Ordes - S2 Mar Tempo - Repeticiones temp",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-11T11:54:01.674555+00:00"
-    },
-    {
-      "activity_id": 21558091935,
-      "activity_date": "2026-01-15",
-      "activity_name": "Ordes - S2 Jue Carrera larga - 17km Carr",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-11T11:54:02.568895+00:00"
-    },
-    {
-      "activity_id": 21585339290,
-      "activity_date": "2026-01-18",
-      "activity_name": "Ordes - S2 Dom Intervalos - Repeticiones",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-11T11:54:03.452552+00:00"
-    },
-    {
-      "activity_id": 23117118586,
-      "activity_date": "2026-06-03",
-      "activity_name": "Ordes - Bicicleta tempo controlado 80 min",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-11T11:54:04.315848+00:00"
-    },
-    {
-      "activity_id": 23141074036,
-      "activity_date": "2026-06-05",
-      "activity_name": "Ordes - Bicicleta Z2 65 min",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-11T11:54:05.211505+00:00"
-    },
-    {
-      "activity_id": 23201148301,
-      "activity_date": "2026-06-10",
-      "activity_name": "Ordes Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-11T11:54:06.156792+00:00"
-    },
-    {
-      "activity_id": 21598151813,
-      "activity_date": "2026-01-19",
-      "activity_name": "Ordes - S3 Lun Carrera f\u00e1cil - Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-11T11:56:26.709763+00:00"
-    },
-    {
-      "activity_id": 21621449393,
-      "activity_date": "2026-01-21",
-      "activity_name": "Ordes - S3 Mi\u00e9 Carrera f\u00e1cil #2 - Carr",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-11T11:56:27.614571+00:00"
-    },
-    {
-      "activity_id": 21641563872,
-      "activity_date": "2026-01-23",
-      "activity_name": "Ordes - S3 Vie Carrera larga - 15km Carrera larga progresiva",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-11T11:56:28.612915+00:00"
-    },
-    {
-      "activity_id": 21657464342,
-      "activity_date": "2026-01-25",
-      "activity_name": "Puentecesures Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-11T11:56:29.579244+00:00"
-    },
-    {
-      "activity_id": 21657557875,
-      "activity_date": "2026-01-25",
-      "activity_name": "Puentecesures Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-11T11:56:30.505796+00:00"
-    },
-    {
-      "activity_id": 21658011411,
-      "activity_date": "2026-01-25",
-      "activity_name": "Puentecesures Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-11T11:56:31.401258+00:00"
-    },
-    {
-      "activity_id": 21681833374,
-      "activity_date": "2026-01-27",
-      "activity_name": "Ordes - S4 Mar Carrera larga - 9km Carre",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-11T11:56:32.312493+00:00"
-    },
-    {
-      "activity_id": 21693008218,
-      "activity_date": "2026-01-28",
-      "activity_name": "Ordes - S4 Mi\u00e9 Intervalos - Repeticione",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-11T11:56:33.262951+00:00"
-    },
-    {
-      "activity_id": 21712898849,
-      "activity_date": "2026-01-30",
-      "activity_name": "Ordes - 9km Carrera larga",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-11T12:00:37.584221+00:00"
-    },
-    {
-      "activity_id": 21733179601,
-      "activity_date": "2026-02-01",
-      "activity_name": "Ordes - S4 Dom Tempo - Carrera progresiv",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-11T12:00:38.499601+00:00"
-    },
-    {
-      "activity_id": 21752883528,
-      "activity_date": "2026-02-03",
-      "activity_name": "Ordes - S5 Mar Intervalos de afinamiento",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-11T12:00:39.496120+00:00"
-    },
-    {
-      "activity_id": 21775076297,
-      "activity_date": "2026-02-05",
-      "activity_name": "Ordes - S5 Jue Carrera f\u00e1cil - Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-11T12:00:40.416181+00:00"
-    },
-    {
-      "activity_id": 21795039064,
-      "activity_date": "2026-02-07",
-      "activity_name": "Padr\u00f3n Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-11T12:00:41.336324+00:00"
-    },
-    {
-      "activity_id": 21795563726,
-      "activity_date": "2026-02-07",
-      "activity_name": "Padr\u00f3n Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-11T12:00:42.348275+00:00"
-    },
-    {
-      "activity_id": 21848754999,
-      "activity_date": "2026-02-11",
-      "activity_name": "Ordes Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-11T12:00:43.237187+00:00"
-    },
-    {
-      "activity_id": 21887135245,
-      "activity_date": "2026-02-16",
-      "activity_name": "Ordes - S1 Lun Carrera f\u00e1cil - Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-11T12:02:19.912535+00:00"
-    },
-    {
-      "activity_id": 21920505485,
-      "activity_date": "2026-02-19",
-      "activity_name": "Ordes - S1 Jue Cuestas - Repeticiones en",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-11T12:02:20.801020+00:00"
-    },
-    {
-      "activity_id": 21948499371,
-      "activity_date": "2026-02-22",
-      "activity_name": "Ordes - S1 Dom Carrera larga - 12km Carr",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-11T12:02:21.824391+00:00"
-    },
-    {
-      "activity_id": 21982934216,
-      "activity_date": "2026-02-25",
-      "activity_name": "Ordes - S2 Mi\u00e9 Carrera f\u00e1cil - Carrera",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-11T12:02:22.759463+00:00"
-    },
-    {
-      "activity_id": 21994588415,
-      "activity_date": "2026-02-26",
-      "activity_name": "Ordes - S2 Jue Intervalos - Repeticiones",
-      "review_slug": null,
-      "result": "success",
-      "processed_at": "2026-06-11T12:04:26.989485+00:00"
-    },
     {
       "activity_id": 22013626423,
       "activity_date": "2026-02-28",
@@ -811,6 +147,670 @@
       "review_slug": null,
       "result": "success",
       "processed_at": "2026-06-11T12:25:08.864609+00:00"
+    },
+    {
+      "activity_id": 21897480123,
+      "activity_date": "2026-02-17",
+      "activity_name": "Ordes - S1 Mar Tempo - Carrera progresiv",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:33:55.393338+00:00"
+    },
+    {
+      "activity_id": 21897541380,
+      "activity_date": "2026-02-17",
+      "activity_name": "Ordes Entrenamiento en pista",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:33:56.887133+00:00"
+    },
+    {
+      "activity_id": 22373167942,
+      "activity_date": "2026-04-01",
+      "activity_name": "Entrenamiento en cinta",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:33:58.199049+00:00"
+    },
+    {
+      "activity_id": 22408614965,
+      "activity_date": "2026-04-04",
+      "activity_name": "Ordes Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:35:04.467006+00:00"
+    },
+    {
+      "activity_id": 22428354271,
+      "activity_date": "2026-04-06",
+      "activity_name": "Ordes - 7km <150ppm",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:35:05.975706+00:00"
+    },
+    {
+      "activity_id": 22456165150,
+      "activity_date": "2026-04-08",
+      "activity_name": "Ordes - 5x1000@4:10",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:35:07.673944+00:00"
+    },
+    {
+      "activity_id": 21469746216,
+      "activity_date": "2026-01-07",
+      "activity_name": "Ordes - S1 Mi\u00e9 Tempo - Carrera progresi",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527297+00:00"
+    },
+    {
+      "activity_id": 21490398451,
+      "activity_date": "2026-01-09",
+      "activity_name": "Ordes - S1 Vie Intervalos - Repeticiones",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527312+00:00"
+    },
+    {
+      "activity_id": 21511086356,
+      "activity_date": "2026-01-11",
+      "activity_name": "Ordes - S1 Dom Carrera larga - 15km Carr",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527320+00:00"
+    },
+    {
+      "activity_id": 21534539726,
+      "activity_date": "2026-01-13",
+      "activity_name": "Ordes - S2 Mar Tempo - Repeticiones temp",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527326+00:00"
+    },
+    {
+      "activity_id": 21558091935,
+      "activity_date": "2026-01-15",
+      "activity_name": "Ordes - S2 Jue Carrera larga - 17km Carr",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527331+00:00"
+    },
+    {
+      "activity_id": 21585339290,
+      "activity_date": "2026-01-18",
+      "activity_name": "Ordes - S2 Dom Intervalos - Repeticiones",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527336+00:00"
+    },
+    {
+      "activity_id": 21598151813,
+      "activity_date": "2026-01-19",
+      "activity_name": "Ordes - S3 Lun Carrera f\u00e1cil - Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527342+00:00"
+    },
+    {
+      "activity_id": 21621449393,
+      "activity_date": "2026-01-21",
+      "activity_name": "Ordes - S3 Mi\u00e9 Carrera f\u00e1cil #2 - Carr",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527360+00:00"
+    },
+    {
+      "activity_id": 21641563872,
+      "activity_date": "2026-01-23",
+      "activity_name": "Ordes - S3 Vie Carrera larga - 15km Carrera larga progresiva",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527366+00:00"
+    },
+    {
+      "activity_id": 21657464342,
+      "activity_date": "2026-01-25",
+      "activity_name": "Puentecesures Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527370+00:00"
+    },
+    {
+      "activity_id": 21657557875,
+      "activity_date": "2026-01-25",
+      "activity_name": "Puentecesures Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527375+00:00"
+    },
+    {
+      "activity_id": 21658011411,
+      "activity_date": "2026-01-25",
+      "activity_name": "Puentecesures Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527381+00:00"
+    },
+    {
+      "activity_id": 21681833374,
+      "activity_date": "2026-01-27",
+      "activity_name": "Ordes - S4 Mar Carrera larga - 9km Carre",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527386+00:00"
+    },
+    {
+      "activity_id": 21693008218,
+      "activity_date": "2026-01-28",
+      "activity_name": "Ordes - S4 Mi\u00e9 Intervalos - Repeticione",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527390+00:00"
+    },
+    {
+      "activity_id": 21712898849,
+      "activity_date": "2026-01-30",
+      "activity_name": "Ordes - 9km Carrera larga",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527395+00:00"
+    },
+    {
+      "activity_id": 21733179601,
+      "activity_date": "2026-02-01",
+      "activity_name": "Ordes - S4 Dom Tempo - Carrera progresiv",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527400+00:00"
+    },
+    {
+      "activity_id": 21752883528,
+      "activity_date": "2026-02-03",
+      "activity_name": "Ordes - S5 Mar Intervalos de afinamiento",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527406+00:00"
+    },
+    {
+      "activity_id": 21775076297,
+      "activity_date": "2026-02-05",
+      "activity_name": "Ordes - S5 Jue Carrera f\u00e1cil - Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527411+00:00"
+    },
+    {
+      "activity_id": 21795039064,
+      "activity_date": "2026-02-07",
+      "activity_name": "Padr\u00f3n Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527416+00:00"
+    },
+    {
+      "activity_id": 21795563726,
+      "activity_date": "2026-02-07",
+      "activity_name": "Padr\u00f3n Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527421+00:00"
+    },
+    {
+      "activity_id": 21848754999,
+      "activity_date": "2026-02-11",
+      "activity_name": "Ordes Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527426+00:00"
+    },
+    {
+      "activity_id": 21887135245,
+      "activity_date": "2026-02-16",
+      "activity_name": "Ordes - S1 Lun Carrera f\u00e1cil - Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527431+00:00"
+    },
+    {
+      "activity_id": 21897480123,
+      "activity_date": "2026-02-17",
+      "activity_name": "Ordes - S1 Mar Tempo - Carrera progresiv",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527436+00:00"
+    },
+    {
+      "activity_id": 21897541380,
+      "activity_date": "2026-02-17",
+      "activity_name": "Ordes Entrenamiento en pista",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527441+00:00"
+    },
+    {
+      "activity_id": 21920505485,
+      "activity_date": "2026-02-19",
+      "activity_name": "Ordes - S1 Jue Cuestas - Repeticiones en",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527445+00:00"
+    },
+    {
+      "activity_id": 21948499371,
+      "activity_date": "2026-02-22",
+      "activity_name": "Ordes - S1 Dom Carrera larga - 12km Carr",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527450+00:00"
+    },
+    {
+      "activity_id": 21982934216,
+      "activity_date": "2026-02-25",
+      "activity_name": "Ordes - S2 Mi\u00e9 Carrera f\u00e1cil - Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527454+00:00"
+    },
+    {
+      "activity_id": 21994588415,
+      "activity_date": "2026-02-26",
+      "activity_name": "Ordes - S2 Jue Intervalos - Repeticiones",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527459+00:00"
+    },
+    {
+      "activity_id": 22013626423,
+      "activity_date": "2026-02-28",
+      "activity_name": "Ordes - S2 S\u00e1b Carrera f\u00e1cil #2 - Carr",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527464+00:00"
+    },
+    {
+      "activity_id": 22090618559,
+      "activity_date": "2026-03-07",
+      "activity_name": "Ordes - S3 S\u00e1b Carrera f\u00e1cil #2 - Carr",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527469+00:00"
+    },
+    {
+      "activity_id": 22130606199,
+      "activity_date": "2026-03-10",
+      "activity_name": "Ordes - S4 Mar Carrera f\u00e1cil - Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527473+00:00"
+    },
+    {
+      "activity_id": 22152251722,
+      "activity_date": "2026-03-12",
+      "activity_name": "Ordes - S4 Jue Carrera f\u00e1cil #2 - Carre",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527478+00:00"
+    },
+    {
+      "activity_id": 22161817119,
+      "activity_date": "2026-03-13",
+      "activity_name": "Ordes - S4 Vie Carrera larga - 12km Carr",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527483+00:00"
+    },
+    {
+      "activity_id": 22178118122,
+      "activity_date": "2026-03-15",
+      "activity_name": "Caldas de Reis Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527487+00:00"
+    },
+    {
+      "activity_id": 22179159201,
+      "activity_date": "2026-03-15",
+      "activity_name": "Caldas de Reis - III TRAIL LAXE DOS BOLOS 2026",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527492+00:00"
+    },
+    {
+      "activity_id": 22193880249,
+      "activity_date": "2026-03-16",
+      "activity_name": "Ordes - S5 Lun Carrera f\u00e1cil - Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527496+00:00"
+    },
+    {
+      "activity_id": 22216903032,
+      "activity_date": "2026-03-18",
+      "activity_name": "Ordes - S5 Mi\u00e9 Tempo - Variantes de 300",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527501+00:00"
+    },
+    {
+      "activity_id": 22228011456,
+      "activity_date": "2026-03-19",
+      "activity_name": "Ordes Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527506+00:00"
+    },
+    {
+      "activity_id": 22248829401,
+      "activity_date": "2026-03-21",
+      "activity_name": "Ordes - S5 S\u00e1b Cuestas - Descendentes:",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527511+00:00"
+    },
+    {
+      "activity_id": 22262856495,
+      "activity_date": "2026-03-22",
+      "activity_name": "Cerceda - S5 Dom Carrera larga - 12km Carr",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527516+00:00"
+    },
+    {
+      "activity_id": 22273989426,
+      "activity_date": "2026-03-23",
+      "activity_name": "Ordes Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527521+00:00"
+    },
+    {
+      "activity_id": 22297362456,
+      "activity_date": "2026-03-25",
+      "activity_name": "Ordes - S6",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527526+00:00"
+    },
+    {
+      "activity_id": 22308492819,
+      "activity_date": "2026-03-26",
+      "activity_name": "Ordes - S7 Jue Carrera f\u00e1cil - Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527531+00:00"
+    },
+    {
+      "activity_id": 22319447186,
+      "activity_date": "2026-03-27",
+      "activity_name": "Ordes Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527535+00:00"
+    },
+    {
+      "activity_id": 22335799805,
+      "activity_date": "2026-03-29",
+      "activity_name": "Ordes - S6 Dom Intervalos - Repeticiones",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527540+00:00"
+    },
+    {
+      "activity_id": 22373167942,
+      "activity_date": "2026-04-01",
+      "activity_name": "Entrenamiento en cinta",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527544+00:00"
+    },
+    {
+      "activity_id": 22468277669,
+      "activity_date": "2026-04-09",
+      "activity_name": "Ordes - Copia de 8km <150ppm",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527550+00:00"
+    },
+    {
+      "activity_id": 22502751674,
+      "activity_date": "2026-04-12",
+      "activity_name": "Ordes - 10km Z2",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527554+00:00"
+    },
+    {
+      "activity_id": 22512924914,
+      "activity_date": "2026-04-13",
+      "activity_name": "Culleredo - 8km <150ppm",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527559+00:00"
+    },
+    {
+      "activity_id": 22536339184,
+      "activity_date": "2026-04-15",
+      "activity_name": "Ordes - 7k <145ppm",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527564+00:00"
+    },
+    {
+      "activity_id": 22549284276,
+      "activity_date": "2026-04-16",
+      "activity_name": "Ordes - 4x1000@3:55",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527568+00:00"
+    },
+    {
+      "activity_id": 22573396857,
+      "activity_date": "2026-04-18",
+      "activity_name": "Ordes Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527573+00:00"
+    },
+    {
+      "activity_id": 22584349968,
+      "activity_date": "2026-04-19",
+      "activity_name": "Cerceda - 10k Z2",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527577+00:00"
+    },
+    {
+      "activity_id": 22632227816,
+      "activity_date": "2026-04-23",
+      "activity_name": "Ordes Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527582+00:00"
+    },
+    {
+      "activity_id": 22664185552,
+      "activity_date": "2026-04-26",
+      "activity_name": "Ordes Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527587+00:00"
+    },
+    {
+      "activity_id": 22680042702,
+      "activity_date": "2026-04-27",
+      "activity_name": "Ordes Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527591+00:00"
+    },
+    {
+      "activity_id": 22693329165,
+      "activity_date": "2026-04-28",
+      "activity_name": "Ordes - 4x1000@4:10",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527596+00:00"
+    },
+    {
+      "activity_id": 22776053069,
+      "activity_date": "2026-05-05",
+      "activity_name": "Ordes - Rodaje 5 km reintroduccion",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527601+00:00"
+    },
+    {
+      "activity_id": 22798592588,
+      "activity_date": "2026-05-07",
+      "activity_name": "Ordes - Rodaje 6 km + 4 rectas controlad",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527606+00:00"
+    },
+    {
+      "activity_id": 22822541135,
+      "activity_date": "2026-05-09",
+      "activity_name": "Cerceda Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527610+00:00"
+    },
+    {
+      "activity_id": 22823255797,
+      "activity_date": "2026-05-09",
+      "activity_name": "Cerceda - IV EDICI\u00d3N OS 11 DAS V\u00cdAS - CONCELLO DE CERCEDA",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527615+00:00"
+    },
+    {
+      "activity_id": 22870230448,
+      "activity_date": "2026-05-13",
+      "activity_name": "Ordes - Rodaje 7 km + 5 rectas controlad",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527620+00:00"
+    },
+    {
+      "activity_id": 22889384200,
+      "activity_date": "2026-05-15",
+      "activity_name": "Ordes - Especifica controlada Ordes",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527625+00:00"
+    },
+    {
+      "activity_id": 22900018441,
+      "activity_date": "2026-05-16",
+      "activity_name": "Ordes - Rodaje 5 km facil",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527629+00:00"
+    },
+    {
+      "activity_id": 22937591625,
+      "activity_date": "2026-05-19",
+      "activity_name": "Eliptica aerobica estable 55 min",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527634+00:00"
+    },
+    {
+      "activity_id": 22948750716,
+      "activity_date": "2026-05-20",
+      "activity_name": "Ordes - Bicicleta aerobica de continuidad 70 min",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527639+00:00"
+    },
+    {
+      "activity_id": 22970190097,
+      "activity_date": "2026-05-22",
+      "activity_name": "Ordes - Activacion running ritmo carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527644+00:00"
+    },
+    {
+      "activity_id": 22992915868,
+      "activity_date": "2026-05-24",
+      "activity_name": "Ordes - Calentamiento pre-carrera Ordes",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527649+00:00"
+    },
+    {
+      "activity_id": 22992941690,
+      "activity_date": "2026-05-24",
+      "activity_name": "Ordes - XXIX CARREIRA POPULAR CONCELLO DE ORDES",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527653+00:00"
+    },
+    {
+      "activity_id": 23017054300,
+      "activity_date": "2026-05-26",
+      "activity_name": "Ordes - Bicicleta recuperacion post-Ordes 50 min",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527658+00:00"
+    },
+    {
+      "activity_id": 23032805565,
+      "activity_date": "2026-05-27",
+      "activity_name": "Fuerza",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527662+00:00"
+    },
+    {
+      "activity_id": 23045517009,
+      "activity_date": "2026-05-28",
+      "activity_name": "Ordes - Bicicleta aerobica continua 65 min",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527667+00:00"
+    },
+    {
+      "activity_id": 23070751559,
+      "activity_date": "2026-05-30",
+      "activity_name": "Ordes - Bicicleta base aerobica 85 min",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527672+00:00"
+    },
+    {
+      "activity_id": 23083515075,
+      "activity_date": "2026-05-31",
+      "activity_name": "Movilidad tobillo y cadera 25 mi",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527677+00:00"
+    },
+    {
+      "activity_id": 23117118586,
+      "activity_date": "2026-06-03",
+      "activity_name": "Ordes - Bicicleta tempo controlado 80 min",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527683+00:00"
+    },
+    {
+      "activity_id": 23141074036,
+      "activity_date": "2026-06-05",
+      "activity_name": "Ordes - Bicicleta Z2 65 min",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527688+00:00"
+    },
+    {
+      "activity_id": 23201148301,
+      "activity_date": "2026-06-10",
+      "activity_name": "Ordes Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527693+00:00"
     }
   ],
   "processed_feedback_updates": [
@@ -851,27 +851,6 @@
     }
   ],
   "runs": [
-    {
-      "run_at": "2026-06-15T04:55:22.019927+00:00",
-      "detected_count": 0,
-      "detected_activity_ids": [],
-      "triggered_pipeline": false,
-      "error": null
-    },
-    {
-      "run_at": "2026-06-15T05:00:25.109973+00:00",
-      "detected_count": 0,
-      "detected_activity_ids": [],
-      "triggered_pipeline": false,
-      "error": null
-    },
-    {
-      "run_at": "2026-06-15T05:05:28.448439+00:00",
-      "detected_count": 0,
-      "detected_activity_ids": [],
-      "triggered_pipeline": false,
-      "error": null
-    },
     {
       "run_at": "2026-06-15T05:06:17.865233+00:00",
       "detected_count": 0,
@@ -1200,6 +1179,678 @@
       "detected_activity_ids": [],
       "triggered_pipeline": false,
       "error": null
+    },
+    {
+      "run_at": "2026-06-15T15:33:58.394459+00:00",
+      "detected_count": 3,
+      "detected_activity_ids": [
+        21897480123,
+        21897541380,
+        22373167942
+      ],
+      "triggered_pipeline": true,
+      "error": null
+    },
+    {
+      "run_at": "2026-06-15T15:35:07.863889+00:00",
+      "detected_count": 3,
+      "detected_activity_ids": [
+        22408614965,
+        22428354271,
+        22456165150
+      ],
+      "triggered_pipeline": true,
+      "error": null
+    },
+    {
+      "run_at": "2026-06-15T15:36:11.527724+00:00",
+      "detected_count": 80,
+      "detected_activity_ids": [
+        21469746216,
+        21490398451,
+        21511086356,
+        21534539726,
+        21558091935,
+        21585339290,
+        21598151813,
+        21621449393,
+        21641563872,
+        21657464342,
+        21657557875,
+        21658011411,
+        21681833374,
+        21693008218,
+        21712898849,
+        21733179601,
+        21752883528,
+        21775076297,
+        21795039064,
+        21795563726,
+        21848754999,
+        21887135245,
+        21897480123,
+        21897541380,
+        21920505485,
+        21948499371,
+        21982934216,
+        21994588415,
+        22013626423,
+        22090618559,
+        22130606199,
+        22152251722,
+        22161817119,
+        22178118122,
+        22179159201,
+        22193880249,
+        22216903032,
+        22228011456,
+        22248829401,
+        22262856495,
+        22273989426,
+        22297362456,
+        22308492819,
+        22319447186,
+        22335799805,
+        22373167942,
+        22408614965,
+        22428354271,
+        22456165150,
+        22468277669,
+        22502751674,
+        22512924914,
+        22536339184,
+        22549284276,
+        22573396857,
+        22584349968,
+        22632227816,
+        22664185552,
+        22680042702,
+        22693329165,
+        22776053069,
+        22798592588,
+        22822541135,
+        22823255797,
+        22870230448,
+        22889384200,
+        22900018441,
+        22937591625,
+        22948750716,
+        22970190097,
+        22992915868,
+        22992941690,
+        23017054300,
+        23032805565,
+        23045517009,
+        23070751559,
+        23083515075,
+        23117118586,
+        23141074036,
+        23201148301
+      ],
+      "triggered_pipeline": false,
+      "error": null
     }
-  ]
+  ],
+  "processed_activity_index": {
+    "22408614965": {
+      "activity_date": "2026-04-04",
+      "activity_name": "Ordes Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:35:04.466976+00:00"
+    },
+    "22428354271": {
+      "activity_date": "2026-04-06",
+      "activity_name": "Ordes - 7km <150ppm",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:35:05.975685+00:00"
+    },
+    "22456165150": {
+      "activity_date": "2026-04-08",
+      "activity_name": "Ordes - 5x1000@4:10",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:35:07.673926+00:00"
+    },
+    "21469746216": {
+      "activity_date": "2026-01-07",
+      "activity_name": "Ordes - S1 Mi\u00e9 Tempo - Carrera progresi",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527272+00:00"
+    },
+    "21490398451": {
+      "activity_date": "2026-01-09",
+      "activity_name": "Ordes - S1 Vie Intervalos - Repeticiones",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527307+00:00"
+    },
+    "21511086356": {
+      "activity_date": "2026-01-11",
+      "activity_name": "Ordes - S1 Dom Carrera larga - 15km Carr",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527317+00:00"
+    },
+    "21534539726": {
+      "activity_date": "2026-01-13",
+      "activity_name": "Ordes - S2 Mar Tempo - Repeticiones temp",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527323+00:00"
+    },
+    "21558091935": {
+      "activity_date": "2026-01-15",
+      "activity_name": "Ordes - S2 Jue Carrera larga - 17km Carr",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527329+00:00"
+    },
+    "21585339290": {
+      "activity_date": "2026-01-18",
+      "activity_name": "Ordes - S2 Dom Intervalos - Repeticiones",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527334+00:00"
+    },
+    "21598151813": {
+      "activity_date": "2026-01-19",
+      "activity_name": "Ordes - S3 Lun Carrera f\u00e1cil - Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527339+00:00"
+    },
+    "21621449393": {
+      "activity_date": "2026-01-21",
+      "activity_name": "Ordes - S3 Mi\u00e9 Carrera f\u00e1cil #2 - Carr",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527344+00:00"
+    },
+    "21641563872": {
+      "activity_date": "2026-01-23",
+      "activity_name": "Ordes - S3 Vie Carrera larga - 15km Carrera larga progresiva",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527363+00:00"
+    },
+    "21657464342": {
+      "activity_date": "2026-01-25",
+      "activity_name": "Puentecesures Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527368+00:00"
+    },
+    "21657557875": {
+      "activity_date": "2026-01-25",
+      "activity_name": "Puentecesures Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527373+00:00"
+    },
+    "21658011411": {
+      "activity_date": "2026-01-25",
+      "activity_name": "Puentecesures Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527378+00:00"
+    },
+    "21681833374": {
+      "activity_date": "2026-01-27",
+      "activity_name": "Ordes - S4 Mar Carrera larga - 9km Carre",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527383+00:00"
+    },
+    "21693008218": {
+      "activity_date": "2026-01-28",
+      "activity_name": "Ordes - S4 Mi\u00e9 Intervalos - Repeticione",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527388+00:00"
+    },
+    "21712898849": {
+      "activity_date": "2026-01-30",
+      "activity_name": "Ordes - 9km Carrera larga",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527393+00:00"
+    },
+    "21733179601": {
+      "activity_date": "2026-02-01",
+      "activity_name": "Ordes - S4 Dom Tempo - Carrera progresiv",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527398+00:00"
+    },
+    "21752883528": {
+      "activity_date": "2026-02-03",
+      "activity_name": "Ordes - S5 Mar Intervalos de afinamiento",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527404+00:00"
+    },
+    "21775076297": {
+      "activity_date": "2026-02-05",
+      "activity_name": "Ordes - S5 Jue Carrera f\u00e1cil - Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527409+00:00"
+    },
+    "21795039064": {
+      "activity_date": "2026-02-07",
+      "activity_name": "Padr\u00f3n Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527414+00:00"
+    },
+    "21795563726": {
+      "activity_date": "2026-02-07",
+      "activity_name": "Padr\u00f3n Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527419+00:00"
+    },
+    "21848754999": {
+      "activity_date": "2026-02-11",
+      "activity_name": "Ordes Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527424+00:00"
+    },
+    "21887135245": {
+      "activity_date": "2026-02-16",
+      "activity_name": "Ordes - S1 Lun Carrera f\u00e1cil - Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527429+00:00"
+    },
+    "21897480123": {
+      "activity_date": "2026-02-17",
+      "activity_name": "Ordes - S1 Mar Tempo - Carrera progresiv",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527434+00:00"
+    },
+    "21897541380": {
+      "activity_date": "2026-02-17",
+      "activity_name": "Ordes Entrenamiento en pista",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527439+00:00"
+    },
+    "21920505485": {
+      "activity_date": "2026-02-19",
+      "activity_name": "Ordes - S1 Jue Cuestas - Repeticiones en",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527443+00:00"
+    },
+    "21948499371": {
+      "activity_date": "2026-02-22",
+      "activity_name": "Ordes - S1 Dom Carrera larga - 12km Carr",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527448+00:00"
+    },
+    "21982934216": {
+      "activity_date": "2026-02-25",
+      "activity_name": "Ordes - S2 Mi\u00e9 Carrera f\u00e1cil - Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527452+00:00"
+    },
+    "21994588415": {
+      "activity_date": "2026-02-26",
+      "activity_name": "Ordes - S2 Jue Intervalos - Repeticiones",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527457+00:00"
+    },
+    "22013626423": {
+      "activity_date": "2026-02-28",
+      "activity_name": "Ordes - S2 S\u00e1b Carrera f\u00e1cil #2 - Carr",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527462+00:00"
+    },
+    "22090618559": {
+      "activity_date": "2026-03-07",
+      "activity_name": "Ordes - S3 S\u00e1b Carrera f\u00e1cil #2 - Carr",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527466+00:00"
+    },
+    "22130606199": {
+      "activity_date": "2026-03-10",
+      "activity_name": "Ordes - S4 Mar Carrera f\u00e1cil - Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527471+00:00"
+    },
+    "22152251722": {
+      "activity_date": "2026-03-12",
+      "activity_name": "Ordes - S4 Jue Carrera f\u00e1cil #2 - Carre",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527476+00:00"
+    },
+    "22161817119": {
+      "activity_date": "2026-03-13",
+      "activity_name": "Ordes - S4 Vie Carrera larga - 12km Carr",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527480+00:00"
+    },
+    "22178118122": {
+      "activity_date": "2026-03-15",
+      "activity_name": "Caldas de Reis Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527485+00:00"
+    },
+    "22179159201": {
+      "activity_date": "2026-03-15",
+      "activity_name": "Caldas de Reis - III TRAIL LAXE DOS BOLOS 2026",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527489+00:00"
+    },
+    "22193880249": {
+      "activity_date": "2026-03-16",
+      "activity_name": "Ordes - S5 Lun Carrera f\u00e1cil - Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527494+00:00"
+    },
+    "22216903032": {
+      "activity_date": "2026-03-18",
+      "activity_name": "Ordes - S5 Mi\u00e9 Tempo - Variantes de 300",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527499+00:00"
+    },
+    "22228011456": {
+      "activity_date": "2026-03-19",
+      "activity_name": "Ordes Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527504+00:00"
+    },
+    "22248829401": {
+      "activity_date": "2026-03-21",
+      "activity_name": "Ordes - S5 S\u00e1b Cuestas - Descendentes:",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527508+00:00"
+    },
+    "22262856495": {
+      "activity_date": "2026-03-22",
+      "activity_name": "Cerceda - S5 Dom Carrera larga - 12km Carr",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527513+00:00"
+    },
+    "22273989426": {
+      "activity_date": "2026-03-23",
+      "activity_name": "Ordes Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527519+00:00"
+    },
+    "22297362456": {
+      "activity_date": "2026-03-25",
+      "activity_name": "Ordes - S6",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527524+00:00"
+    },
+    "22308492819": {
+      "activity_date": "2026-03-26",
+      "activity_name": "Ordes - S7 Jue Carrera f\u00e1cil - Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527528+00:00"
+    },
+    "22319447186": {
+      "activity_date": "2026-03-27",
+      "activity_name": "Ordes Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527533+00:00"
+    },
+    "22335799805": {
+      "activity_date": "2026-03-29",
+      "activity_name": "Ordes - S6 Dom Intervalos - Repeticiones",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527538+00:00"
+    },
+    "22373167942": {
+      "activity_date": "2026-04-01",
+      "activity_name": "Entrenamiento en cinta",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527542+00:00"
+    },
+    "22468277669": {
+      "activity_date": "2026-04-09",
+      "activity_name": "Ordes - Copia de 8km <150ppm",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527547+00:00"
+    },
+    "22502751674": {
+      "activity_date": "2026-04-12",
+      "activity_name": "Ordes - 10km Z2",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527552+00:00"
+    },
+    "22512924914": {
+      "activity_date": "2026-04-13",
+      "activity_name": "Culleredo - 8km <150ppm",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527557+00:00"
+    },
+    "22536339184": {
+      "activity_date": "2026-04-15",
+      "activity_name": "Ordes - 7k <145ppm",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527561+00:00"
+    },
+    "22549284276": {
+      "activity_date": "2026-04-16",
+      "activity_name": "Ordes - 4x1000@3:55",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527566+00:00"
+    },
+    "22573396857": {
+      "activity_date": "2026-04-18",
+      "activity_name": "Ordes Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527571+00:00"
+    },
+    "22584349968": {
+      "activity_date": "2026-04-19",
+      "activity_name": "Cerceda - 10k Z2",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527575+00:00"
+    },
+    "22632227816": {
+      "activity_date": "2026-04-23",
+      "activity_name": "Ordes Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527580+00:00"
+    },
+    "22664185552": {
+      "activity_date": "2026-04-26",
+      "activity_name": "Ordes Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527584+00:00"
+    },
+    "22680042702": {
+      "activity_date": "2026-04-27",
+      "activity_name": "Ordes Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527589+00:00"
+    },
+    "22693329165": {
+      "activity_date": "2026-04-28",
+      "activity_name": "Ordes - 4x1000@4:10",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527594+00:00"
+    },
+    "22776053069": {
+      "activity_date": "2026-05-05",
+      "activity_name": "Ordes - Rodaje 5 km reintroduccion",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527599+00:00"
+    },
+    "22798592588": {
+      "activity_date": "2026-05-07",
+      "activity_name": "Ordes - Rodaje 6 km + 4 rectas controlad",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527603+00:00"
+    },
+    "22822541135": {
+      "activity_date": "2026-05-09",
+      "activity_name": "Cerceda Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527608+00:00"
+    },
+    "22823255797": {
+      "activity_date": "2026-05-09",
+      "activity_name": "Cerceda - IV EDICI\u00d3N OS 11 DAS V\u00cdAS - CONCELLO DE CERCEDA",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527613+00:00"
+    },
+    "22870230448": {
+      "activity_date": "2026-05-13",
+      "activity_name": "Ordes - Rodaje 7 km + 5 rectas controlad",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527618+00:00"
+    },
+    "22889384200": {
+      "activity_date": "2026-05-15",
+      "activity_name": "Ordes - Especifica controlada Ordes",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527622+00:00"
+    },
+    "22900018441": {
+      "activity_date": "2026-05-16",
+      "activity_name": "Ordes - Rodaje 5 km facil",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527627+00:00"
+    },
+    "22937591625": {
+      "activity_date": "2026-05-19",
+      "activity_name": "Eliptica aerobica estable 55 min",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527632+00:00"
+    },
+    "22948750716": {
+      "activity_date": "2026-05-20",
+      "activity_name": "Ordes - Bicicleta aerobica de continuidad 70 min",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527637+00:00"
+    },
+    "22970190097": {
+      "activity_date": "2026-05-22",
+      "activity_name": "Ordes - Activacion running ritmo carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527641+00:00"
+    },
+    "22992915868": {
+      "activity_date": "2026-05-24",
+      "activity_name": "Ordes - Calentamiento pre-carrera Ordes",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527646+00:00"
+    },
+    "22992941690": {
+      "activity_date": "2026-05-24",
+      "activity_name": "Ordes - XXIX CARREIRA POPULAR CONCELLO DE ORDES",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527651+00:00"
+    },
+    "23017054300": {
+      "activity_date": "2026-05-26",
+      "activity_name": "Ordes - Bicicleta recuperacion post-Ordes 50 min",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527656+00:00"
+    },
+    "23032805565": {
+      "activity_date": "2026-05-27",
+      "activity_name": "Fuerza",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527660+00:00"
+    },
+    "23045517009": {
+      "activity_date": "2026-05-28",
+      "activity_name": "Ordes - Bicicleta aerobica continua 65 min",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527665+00:00"
+    },
+    "23070751559": {
+      "activity_date": "2026-05-30",
+      "activity_name": "Ordes - Bicicleta base aerobica 85 min",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527670+00:00"
+    },
+    "23083515075": {
+      "activity_date": "2026-05-31",
+      "activity_name": "Movilidad tobillo y cadera 25 mi",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527675+00:00"
+    },
+    "23117118586": {
+      "activity_date": "2026-06-03",
+      "activity_name": "Ordes - Bicicleta tempo controlado 80 min",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527681+00:00"
+    },
+    "23141074036": {
+      "activity_date": "2026-06-05",
+      "activity_name": "Ordes - Bicicleta Z2 65 min",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527685+00:00"
+    },
+    "23201148301": {
+      "activity_date": "2026-06-10",
+      "activity_name": "Ordes Carrera",
+      "review_slug": null,
+      "result": "success",
+      "processed_at": "2026-06-15T15:36:11.527690+00:00"
+    }
+  }
 }

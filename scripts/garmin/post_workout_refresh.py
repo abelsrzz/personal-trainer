@@ -40,6 +40,8 @@ ATHLETE_SYNC_SCRIPT = ROOT / "scripts" / "garmin" / "athlete_sync.py"
 REVIEWABLE_ACTIVITY_TYPES = {
     "running",
     "trail_running",
+    "track_running",
+    "treadmill_running",
     "cycling",
     "road_biking",
     "indoor_cycling",
@@ -62,6 +64,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--skip-daily", action="store_true", help="Skip Garmin daily metrics refresh when new activity is found")
     parser.add_argument("--skip-athlete-profile", action="store_true", help="Skip Garmin athlete profile refresh when new activity is found")
     parser.add_argument("--skip-trigger", action="store_true", help="Only detect new activities and update state without launching the pipeline")
+    parser.add_argument("--sweep-local-backlog", action="store_true", help="Mark all locally imported reviewable Garmin activities as already processed without sending messages")
     return parser.parse_args()
 
 
@@ -123,6 +126,7 @@ def load_state() -> dict[str, Any]:
             "next_action": "import_recent_activities",
             "timer_interval_minutes": 5,
             "processed_activities": [],
+            "processed_activity_index": {},
             "processed_feedback_updates": [],
             "runs": [],
         },
@@ -194,6 +198,17 @@ def review_error_is_non_blocking(error: str | None) -> bool:
 
 
 def remember_processed(state: dict[str, Any], activity: dict[str, Any], result: str, review_slug: str | None = None) -> None:
+    processed_index = state.setdefault("processed_activity_index", {})
+    if not isinstance(processed_index, dict):
+        processed_index = {}
+        state["processed_activity_index"] = processed_index
+    processed_index[str(activity["activity_id"])] = {
+        "activity_date": activity["activity_date"],
+        "activity_name": activity.get("activity_name"),
+        "review_slug": review_slug,
+        "result": result,
+        "processed_at": utcnow_iso(),
+    }
     processed = state.setdefault("processed_activities", [])
     if not isinstance(processed, list):
         processed = []
@@ -210,6 +225,38 @@ def remember_processed(state: dict[str, Any], activity: dict[str, Any], result: 
     )
     if len(processed) > 100:
         del processed[:-100]
+
+
+def processed_success_ids(state: dict[str, Any]) -> set[int]:
+    processed_index = state.get("processed_activity_index")
+    if isinstance(processed_index, dict) and processed_index:
+        return {
+            int(activity_id)
+            for activity_id, item in processed_index.items()
+            if isinstance(item, dict) and item.get("result") == "success"
+        }
+    return {
+        int(item.get("activity_id"))
+        for item in state.get("processed_activities", [])
+        if isinstance(item, dict) and item.get("result") == "success" and item.get("activity_id") is not None
+    }
+
+
+def sweep_local_backlog(state: dict[str, Any], summaries: list[dict[str, Any]]) -> int:
+    existing_ids = processed_success_ids(state)
+    marked = 0
+    for activity in summaries:
+        if activity["activity_id"] in existing_ids:
+            continue
+        remember_processed(state, activity, "success")
+        existing_ids.add(activity["activity_id"])
+        marked += 1
+    if summaries:
+        latest = max(summaries, key=lambda item: (item["activity_date"], item["activity_id"]))
+        state["last_processed_activity_id"] = latest["activity_id"]
+        state["last_processed_activity_date"] = latest["activity_date"]
+        state["last_processed_at"] = utcnow_iso()
+    return marked
 
 
 def feedback_updates() -> list[dict[str, Any]]:
@@ -352,11 +399,7 @@ def remember_run(state: dict[str, Any], detected: list[dict[str, Any]], launched
 def main() -> None:
     args = parse_args()
     state = load_state()
-    processed_success_ids = {
-        int(item.get("activity_id"))
-        for item in state.get("processed_activities", [])
-        if isinstance(item, dict) and item.get("result") == "success" and item.get("activity_id") is not None
-    }
+    processed_success_id_set = processed_success_ids(state)
     processed_feedback_versions = {
         (str(item.get("slug")), str(item.get("updated_at")))
         for item in state.get("processed_feedback_updates", [])
@@ -396,7 +439,21 @@ def main() -> None:
         state["last_successful_sync_at"] = utcnow_iso()
 
     summaries = activity_summaries()
-    new_activities = [item for item in summaries if item["activity_id"] not in processed_success_ids]
+    if args.sweep_local_backlog:
+        marked = sweep_local_backlog(state, summaries)
+        if summaries:
+            state["last_seen_activity_id"] = summaries[-1]["activity_id"]
+            state["last_seen_activity_date"] = summaries[-1]["activity_date"]
+        state["last_activity_import_at"] = utcnow_iso()
+        state["last_error"] = None
+        state["last_successful_run"] = utcnow_iso()
+        state["next_action"] = "wait_for_new_activity_or_feedback"
+        remember_run(state, summaries, launched=False)
+        save_json(STATE_PATH, state)
+        write_athlete_state()
+        print(json.dumps({"swept": marked, "detected": len(summaries), "triggered": False}, indent=2, ensure_ascii=True))
+        return
+    new_activities = [item for item in summaries if item["activity_id"] not in processed_success_id_set]
     pending_feedback_updates = [item for item in feedback_updates() if (item["slug"], item["updated_at"]) not in processed_feedback_versions]
     if summaries:
         state["last_seen_activity_id"] = summaries[-1]["activity_id"]

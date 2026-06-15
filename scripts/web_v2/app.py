@@ -40,6 +40,7 @@ GARMIN_SYNC_DAILY_DAYS = max(1, int(os.getenv("RUNNING_WEB_V2_GARMIN_DAILY_DAYS"
 GARMIN_SYNC_ACTIVITY_LIMIT = max(1, int(os.getenv("RUNNING_WEB_V2_GARMIN_ACTIVITY_LIMIT") or "40"))
 GARMIN_SYNC_ACTIVITY_TYPE = str(os.getenv("RUNNING_WEB_V2_GARMIN_ACTIVITY_TYPE") or "all").strip() or "all"
 GARMIN_SYNC_DASHBOARD_DAYS = max(1, int(os.getenv("RUNNING_WEB_V2_GARMIN_DASHBOARD_DAYS") or "28"))
+TELEGRAM_BOT_CONFIG_PATH = ROOT / "telegram" / "bot_config.yaml"
 
 logger = logging.getLogger("web_v2.garmin_sync")
 
@@ -580,7 +581,187 @@ def active_nav(path: str) -> str:
         return "eventos"
     if path.startswith("/atleta"):
         return "atleta"
+    if path.startswith("/settings"):
+        return "settings"
     return ""
+
+
+def split_csv_lines(value: Any) -> list[str]:
+    if isinstance(value, list):
+        raw_items = [str(item or "") for item in value]
+    else:
+        raw_items = [part for chunk in str(value or "").splitlines() for part in chunk.split(",")]
+    seen: set[str] = set()
+    items: list[str] = []
+    for raw_item in raw_items:
+        item = raw_item.strip()
+        if not item or item in seen:
+            continue
+        seen.add(item)
+        items.append(item)
+    return items
+
+
+def load_bot_settings() -> dict[str, Any]:
+    payload = portal_core.load_optional_yaml(TELEGRAM_BOT_CONFIG_PATH)
+    return payload if isinstance(payload, dict) else {}
+
+
+def settings_page_data() -> dict[str, Any]:
+    payload = load_bot_settings()
+    telegram_config = payload.get("telegram") if isinstance(payload.get("telegram"), dict) else {}
+    opencode_config = payload.get("opencode_remote") if isinstance(payload.get("opencode_remote"), dict) else {}
+    gemini_config = opencode_config.get("gemini_fallback") if isinstance(opencode_config.get("gemini_fallback"), dict) else {}
+    return {
+        "config_path": str(TELEGRAM_BOT_CONFIG_PATH.relative_to(ROOT)),
+        "telegram": {
+            "bot_token": str(telegram_config.get("bot_token") or ""),
+            "chat_id": str(telegram_config.get("chat_id") or ""),
+            "caption_prefix": str(telegram_config.get("caption_prefix") or "Running Coach"),
+            "allowed_chat_ids": ", ".join(split_csv_lines(telegram_config.get("allowed_chat_ids") or [])),
+        },
+        "opencode": {
+            "enabled": bool(opencode_config.get("enabled", True)),
+            "server_url": str(opencode_config.get("server_url") or "http://127.0.0.1:4096"),
+            "timeout_s": int(opencode_config.get("timeout_s") or 3600),
+            "allow_commit": bool(opencode_config.get("allow_commit", True)),
+            "allow_push": bool(opencode_config.get("allow_push", True)),
+            "dangerously_skip_permissions": bool(opencode_config.get("dangerously_skip_permissions", False)),
+            "model": str(opencode_config.get("model") or portal_core.DEFAULT_OPENCODE_MODEL),
+            "max_response_chars": int(opencode_config.get("max_response_chars") or 12000),
+            "require_confirmation_patterns": "\n".join(split_csv_lines(opencode_config.get("require_confirmation_patterns") or [])),
+        },
+        "gemini": {
+            "enabled": bool(gemini_config.get("enabled", False)),
+            "api_key": str(gemini_config.get("api_key") or ""),
+            "models": ", ".join(split_csv_lines(gemini_config.get("models") or gemini_config.get("model") or ["gemini-2.5-pro"])),
+        },
+    }
+
+
+def update_bot_settings(form_data: dict[str, Any]) -> None:
+    payload = load_bot_settings()
+    telegram_config = payload.setdefault("telegram", {})
+    if not isinstance(telegram_config, dict):
+        telegram_config = {}
+        payload["telegram"] = telegram_config
+    opencode_config = payload.setdefault("opencode_remote", {})
+    if not isinstance(opencode_config, dict):
+        opencode_config = {}
+        payload["opencode_remote"] = opencode_config
+    gemini_config = opencode_config.setdefault("gemini_fallback", {})
+    if not isinstance(gemini_config, dict):
+        gemini_config = {}
+        opencode_config["gemini_fallback"] = gemini_config
+
+    current_bot_token = str(telegram_config.get("bot_token") or "")
+    current_gemini_api_key = str(gemini_config.get("api_key") or "")
+    telegram_config["bot_token"] = str(form_data.get("telegram_bot_token") or current_bot_token).strip()
+    telegram_config["chat_id"] = str(form_data.get("telegram_chat_id") or "").strip()
+    telegram_config["caption_prefix"] = str(form_data.get("telegram_caption_prefix") or "Running Coach").strip() or "Running Coach"
+    allowed_chat_ids = split_csv_lines(form_data.get("telegram_allowed_chat_ids") or "")
+    if telegram_config["chat_id"] and telegram_config["chat_id"] not in allowed_chat_ids:
+        allowed_chat_ids.append(telegram_config["chat_id"])
+    telegram_config["allowed_chat_ids"] = allowed_chat_ids
+
+    opencode_config["enabled"] = str(form_data.get("opencode_enabled") or "0") == "1"
+    opencode_config["server_url"] = str(form_data.get("opencode_server_url") or "http://127.0.0.1:4096").strip() or "http://127.0.0.1:4096"
+    opencode_config["timeout_s"] = max(30, int(str(form_data.get("opencode_timeout_s") or "3600").strip() or "3600"))
+    opencode_config["allow_commit"] = str(form_data.get("opencode_allow_commit") or "0") == "1"
+    opencode_config["allow_push"] = str(form_data.get("opencode_allow_push") or "0") == "1"
+    opencode_config["dangerously_skip_permissions"] = str(form_data.get("opencode_dangerously_skip_permissions") or "0") == "1"
+    opencode_config["model"] = portal_core.normalize_model_name(str(form_data.get("opencode_model") or portal_core.DEFAULT_OPENCODE_MODEL).strip())
+    opencode_config["max_response_chars"] = max(2000, int(str(form_data.get("opencode_max_response_chars") or "12000").strip() or "12000"))
+    opencode_config["require_confirmation_patterns"] = split_csv_lines(form_data.get("opencode_require_confirmation_patterns") or "")
+
+    gemini_config["enabled"] = str(form_data.get("gemini_enabled") or "0") == "1"
+    gemini_api_key = str(form_data.get("gemini_api_key") or "").strip()
+    gemini_config["api_key"] = gemini_api_key or current_gemini_api_key
+    gemini_config["models"] = split_csv_lines(form_data.get("gemini_models") or "") or ["gemini-2.5-pro"]
+
+    portal_core.write_yaml(TELEGRAM_BOT_CONFIG_PATH, payload)
+
+
+def _safe_int(value: Any) -> int | None:
+    try:
+        return int(str(value).strip())
+    except (TypeError, ValueError):
+        return None
+
+
+def chat_selectable_sessions(limit: int = 40) -> list[dict[str, Any]]:
+    reviews = portal_core.completed_reviews()
+    reviewed_ids = {_safe_int(item.get("garmin_activity_id")) for item in reviews}
+    options: list[dict[str, Any]] = []
+    for item in reviews[: max(1, limit // 2)]:
+        slug = str(item.get("slug") or "").strip()
+        if not slug:
+            continue
+        options.append(
+            {
+                "id": f"review:{slug}",
+                "label": f"{item.get('date') or '-'} · {clean_ui_text(item.get('activity_name') or item.get('name'))}",
+                "meta": f"Review · {clean_ui_text(item.get('session_kind_label'))} · {item.get('distance_km') or '-'} km · {item.get('duration') or '-'}",
+            }
+        )
+    for path in sorted(portal_core.GARMIN_ACTIVITY_DIR.glob("*/summary.json"), key=lambda item: item.parent.name, reverse=True):
+        summary = portal_core.load_optional_json(path, {})
+        if not isinstance(summary, dict):
+            continue
+        activity_id = _safe_int(summary.get("activityId"))
+        if not activity_id or activity_id in reviewed_ids:
+            continue
+        detail = portal_core.imported_garmin_activity_detail(activity_id)
+        if not detail:
+            continue
+        options.append(
+            {
+                "id": f"garmin:{activity_id}",
+                "label": f"{detail.get('date') or '-'} · {clean_ui_text(detail.get('activity_name') or detail.get('name'))}",
+                "meta": f"Garmin · {clean_ui_text(detail.get('session_kind_label'))} · {detail.get('distance_km') or '-'} km · {detail.get('duration') or '-'}",
+            }
+        )
+        if len(options) >= limit:
+            break
+    return options[:limit]
+
+
+def selected_chat_context(selected_ids: list[str]) -> tuple[list[dict[str, Any]], str]:
+    selected_items: list[dict[str, Any]] = []
+    context_lines: list[str] = []
+    for raw_id in selected_ids:
+        session_id = str(raw_id or "").strip()
+        if session_id.startswith("review:"):
+            detail = portal_core.completed_review_detail(session_id.split(":", 1)[1])
+        elif session_id.startswith("garmin:"):
+            detail = portal_core.imported_garmin_activity_detail(session_id.split(":", 1)[1])
+        else:
+            detail = None
+        if not detail:
+            continue
+        name = clean_ui_text(detail.get("activity_name") or detail.get("name"))
+        kind = clean_ui_text(detail.get("session_kind_label") or detail.get("sport") or "Sesion")
+        summary = clean_ui_text(detail.get("automated_review_summary") or detail.get("compliance_note") or "")
+        selected_items.append(
+            {
+                "id": session_id,
+                "label": f"{detail.get('date') or '-'} · {name}",
+                "meta": f"{kind} · {detail.get('distance_km') or '-'} km · {detail.get('duration') or '-'}",
+            }
+        )
+        context_lines.append(
+            f"- {detail.get('date') or '-'} | {kind} | {name} | {detail.get('distance_km') or '-'} km | {detail.get('duration') or '-'} | {detail.get('pace') or '-'} | {summary}"
+        )
+    if not context_lines:
+        return [], ""
+    return selected_items, "Sesiones previas seleccionadas:\n" + "\n".join(context_lines)
+
+
+def compose_chat_message(message: str, selected_ids: list[str]) -> tuple[str, list[dict[str, Any]]]:
+    selected_items, context_block = selected_chat_context(selected_ids)
+    if not context_block:
+        return message, selected_items
+    return f"{context_block}\n\nPeticion actual del usuario:\n{message}", selected_items
 
 
 def today_fueling_entries(today_plan: dict[str, Any]) -> list[dict[str, Any]]:
@@ -1291,6 +1472,15 @@ def safe_return_to(value: str | None, fallback: str) -> str:
     return fallback
 
 
+def chat_state_payload(request: Request, state: dict[str, Any]) -> dict[str, Any]:
+    payload = dict(state)
+    payload["selectable_sessions"] = chat_selectable_sessions()
+    payload["send_url"] = request_app_path(request, "/api/chat/message")
+    payload["reset_url"] = request_app_path(request, "/api/chat/reset")
+    payload["confirm_url"] = request_app_path(request, "/api/chat/confirm")
+    return payload
+
+
 @app.get("/login", response_class=HTMLResponse)
 async def login_page(request: Request) -> HTMLResponse:
     if authenticated(request):
@@ -1418,6 +1608,29 @@ async def atleta(request: Request) -> HTMLResponse:
     return templates.TemplateResponse(request, "atleta.html", template_context(request, page=athlete_page_data(), active_nav=active_nav(request.url.path)))
 
 
+@app.get("/settings", response_class=HTMLResponse)
+async def settings_page(request: Request) -> HTMLResponse:
+    redirect = auth_guard(request)
+    if redirect:
+        return redirect
+    return templates.TemplateResponse(request, "settings.html", template_context(request, page=settings_page_data(), active_nav="settings"))
+
+
+@app.post("/settings")
+async def settings_submit(request: Request) -> RedirectResponse:
+    redirect = auth_guard(request)
+    if redirect:
+        return redirect
+    form = dict(await request.form())
+    try:
+        update_bot_settings(form)
+    except (TypeError, ValueError) as exc:
+        request.session["flash"] = {"level": "error", "message": f"Configuracion invalida: {exc}"}
+    else:
+        request.session["flash"] = {"level": "ok", "message": "Configuracion guardada."}
+    return RedirectResponse(url=request_app_path(request, "/settings"), status_code=303)
+
+
 @app.get("/calendar/day/{day}", response_class=HTMLResponse)
 async def calendar_day(day: str, request: Request) -> HTMLResponse:
     redirect = auth_guard(request)
@@ -1521,6 +1734,83 @@ async def action_catalog_api(request: Request) -> JSONResponse:
     if guard:
         return JSONResponse({"ok": False, "error": "Sesion no valida."}, status_code=401)
     return JSONResponse({"ok": True, "actions": list_actions()}, status_code=200)
+
+
+@app.get("/api/chat/state")
+async def chat_state_api(request: Request) -> JSONResponse:
+    guard = auth_guard(request)
+    if guard:
+        return JSONResponse({"ok": False, "error": "Sesion no valida."}, status_code=401)
+    config, config_error, state = portal_core.chat_state_response(request)
+    return JSONResponse({"ok": True, "state": chat_state_payload(request, state), "available": bool(config and not config_error)}, status_code=200)
+
+
+@app.post("/api/chat/message")
+async def chat_message_api(request: Request) -> JSONResponse:
+    guard = auth_guard(request)
+    if guard:
+        return JSONResponse({"ok": False, "error": "Sesion no valida."}, status_code=401)
+    try:
+        payload = await request.json()
+    except json.JSONDecodeError:
+        payload = {}
+    if not isinstance(payload, dict):
+        return JSONResponse({"ok": False, "error": "Payload no valido."}, status_code=400)
+    message = str(payload.get("message") or "").strip()
+    selected_ids = [str(item).strip() for item in (payload.get("selected_sessions") or []) if str(item).strip()]
+    if not message:
+        return JSONResponse({"ok": False, "error": "Escribe un mensaje antes de enviar."}, status_code=400)
+    config, config_error, state = portal_core.chat_state_response(request)
+    if not config:
+        return JSONResponse({"ok": False, "error": config_error or "Chat no disponible.", "state": chat_state_payload(request, state)}, status_code=400)
+    bridge_message, selected_items = compose_chat_message(message, selected_ids)
+    response = await portal_core.chat_execute_message(request, config, bridge_message, display_message=message)
+    if isinstance(response, JSONResponse):
+        body = json.loads(response.body.decode("utf-8"))
+        state_payload = body.get("state") if isinstance(body.get("state"), dict) else {}
+        state_payload["selected_sessions"] = selected_items
+        body["state"] = chat_state_payload(request, state_payload)
+        return JSONResponse(body, status_code=response.status_code)
+    return response
+
+
+@app.post("/api/chat/reset")
+async def chat_reset_api(request: Request) -> JSONResponse:
+    guard = auth_guard(request)
+    if guard:
+        return JSONResponse({"ok": False, "error": "Sesion no valida."}, status_code=401)
+    config, config_error, state = portal_core.chat_state_response(request)
+    if not config:
+        return JSONResponse({"ok": False, "error": config_error or "Chat no disponible.", "state": chat_state_payload(request, state)}, status_code=400)
+    store, user_key = portal_core.chat_store_for_request(config, request)
+    portal_core.clear_web_chat_history(user_key)
+    portal_core.clear_web_chat_confirmation(store, user_key)
+    store.clear_session(user_key)
+    return JSONResponse({"ok": True, "state": chat_state_payload(request, portal_core.web_chat_state(request, config))}, status_code=200)
+
+
+@app.post("/api/chat/confirm")
+async def chat_confirm_api(request: Request) -> JSONResponse:
+    guard = auth_guard(request)
+    if guard:
+        return JSONResponse({"ok": False, "error": "Sesion no valida."}, status_code=401)
+    try:
+        payload = await request.json()
+    except json.JSONDecodeError:
+        payload = {}
+    config, config_error, state = portal_core.chat_state_response(request)
+    if not config:
+        return JSONResponse({"ok": False, "error": config_error or "Chat no disponible.", "state": chat_state_payload(request, state)}, status_code=400)
+    store, user_key = portal_core.chat_store_for_request(config, request)
+    pending = store.pop_confirmation(user_key, str(payload.get("confirmation_id") or ""))
+    if not pending:
+        return JSONResponse({"ok": False, "error": "Confirmacion no valida.", "state": chat_state_payload(request, portal_core.web_chat_state(request, config))}, status_code=400)
+    response = await portal_core.chat_execute_message(request, config, str(pending.get("message") or ""), display_message=str(pending.get("message") or ""))
+    if isinstance(response, JSONResponse):
+        body = json.loads(response.body.decode("utf-8"))
+        body["state"] = chat_state_payload(request, body.get("state") if isinstance(body.get("state"), dict) else {})
+        return JSONResponse(body, status_code=response.status_code)
+    return response
 
 
 @app.post("/api/actions/run")

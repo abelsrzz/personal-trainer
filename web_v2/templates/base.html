@@ -41,6 +41,7 @@
           <input type="hidden" name="return_to" value="{{ current_path }}">
           <button class="ghost-button" type="submit" data-garmin-sync-button {{ 'disabled' if garmin_sync.running else '' }}>{{ 'Sincronizando Garmin...' if garmin_sync.running else 'Sincronizar Garmin' }}</button>
         </form>
+        <a class="ghost-button" href="{{ app_path('/settings') }}">Ajustes</a>
         <a class="ghost-button" href="{{ app_path('/logout') }}">Salir</a>
       </div>
       {% endif %}
@@ -52,6 +53,45 @@
       {% block content %}{% endblock %}
     </main>
   </div>
+  {% if authenticated %}
+  <a class="floating-action settings-action" href="{{ app_path('/settings') }}" aria-label="Abrir ajustes">
+    <span aria-hidden="true">&#9881;</span>
+  </a>
+  <button class="floating-action chat-action" type="button" data-chat-toggle aria-label="Abrir chat del entrenador">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M4 5.5C4 4.12 5.12 3 6.5 3h11C18.88 3 20 4.12 20 5.5v8C20 14.88 18.88 16 17.5 16H9l-4.2 4.2c-.31.31-.8.09-.8-.35V5.5Z" fill="currentColor"></path>
+    </svg>
+  </button>
+  <section class="chat-shell" hidden data-chat-shell>
+    <div class="chat-backdrop" data-chat-close></div>
+    <div class="chat-panel">
+      <div class="chat-head">
+        <div>
+          <strong>Entrenador</strong>
+          <p data-chat-status>Chat listo.</p>
+        </div>
+        <button class="ghost-button" type="button" data-chat-close>Cerrar</button>
+      </div>
+      <div class="chat-history" data-chat-history></div>
+      <div class="chat-confirm" hidden data-chat-confirm>
+        <strong>Confirmación requerida</strong>
+        <p data-chat-confirm-reason></p>
+        <button class="ghost-button" type="button" data-chat-confirm-button>Confirmar</button>
+      </div>
+      <label class="field">
+        <span>Sesiones previas</span>
+        <select multiple size="6" data-chat-sessions></select>
+      </label>
+      <label class="field">
+        <span>Mensaje</span>
+        <textarea rows="5" data-chat-input placeholder="Pide cambios, dudas o ajustes del plan."></textarea>
+      </label>
+      <div class="chat-actions">
+        <button class="ghost-button" type="button" data-chat-reset>Reset chat</button>
+        <button class="ghost-button" type="button" data-chat-send>Enviar</button>
+      </div>
+    </div>
+  </section>
   {% if authenticated %}
   <script>
     (() => {
@@ -174,6 +214,166 @@
             button.disabled = true;
           }
         });
+      });
+    })();
+
+    (() => {
+      const toggle = document.querySelector('[data-chat-toggle]');
+      const shell = document.querySelector('[data-chat-shell]');
+      const closeItems = document.querySelectorAll('[data-chat-close]');
+      const history = document.querySelector('[data-chat-history]');
+      const status = document.querySelector('[data-chat-status]');
+      const input = document.querySelector('[data-chat-input]');
+      const sessions = document.querySelector('[data-chat-sessions]');
+      const sendButton = document.querySelector('[data-chat-send]');
+      const resetButton = document.querySelector('[data-chat-reset]');
+      const confirmBox = document.querySelector('[data-chat-confirm]');
+      const confirmReason = document.querySelector('[data-chat-confirm-reason]');
+      const confirmButton = document.querySelector('[data-chat-confirm-button]');
+      if (!toggle || !shell || !history || !status || !input || !sessions || !sendButton || !resetButton || !confirmBox || !confirmReason || !confirmButton) {
+        return;
+      }
+
+      const renderHistory = (items) => {
+        history.innerHTML = '';
+        if (!Array.isArray(items) || items.length === 0) {
+          history.innerHTML = '<p class="muted">Sin mensajes todavía.</p>';
+          return;
+        }
+        items.forEach((item) => {
+          const article = document.createElement('article');
+          article.className = `chat-message ${item.role === 'assistant' ? 'assistant' : 'user'}${item.error ? ' is-error' : ''}`;
+          const meta = document.createElement('div');
+          meta.className = 'chat-meta';
+          meta.textContent = `${item.role === 'assistant' ? 'Entrenador' : 'Tú'}${item.model ? ` · ${item.model}` : ''}`;
+          const body = document.createElement('p');
+          body.textContent = item.text || '';
+          article.appendChild(meta);
+          article.appendChild(body);
+          history.appendChild(article);
+        });
+        history.scrollTop = history.scrollHeight;
+      };
+
+      const renderSessions = (items) => {
+        sessions.innerHTML = '';
+        (items || []).forEach((item) => {
+          const option = document.createElement('option');
+          option.value = item.id;
+          option.textContent = `${item.label} | ${item.meta}`;
+          sessions.appendChild(option);
+        });
+      };
+
+      const renderConfirm = (pending) => {
+        if (!pending || !pending.id) {
+          confirmBox.hidden = true;
+          confirmButton.dataset.confirmationId = '';
+          return;
+        }
+        confirmBox.hidden = false;
+        confirmReason.textContent = pending.reason || 'Confirmacion requerida.';
+        confirmButton.dataset.confirmationId = pending.id;
+      };
+
+      const renderState = (state) => {
+        status.textContent = state.error || `Modelo activo: ${state.active_model || '-'}`;
+        renderHistory(state.history || []);
+        renderSessions(state.selectable_sessions || []);
+        renderConfirm(state.pending_confirmation || null);
+      };
+
+      const setLoading = (value, label) => {
+        sendButton.disabled = value;
+        resetButton.disabled = value;
+        confirmButton.disabled = value;
+        if (value && label) {
+          status.textContent = label;
+        }
+      };
+
+      const fetchState = async () => {
+        const response = await fetch('{{ app_path('/api/chat/state') }}', { credentials: 'same-origin' });
+        const payload = await response.json();
+        if (!response.ok || !payload.ok) {
+          throw new Error(payload.error || 'No pude cargar el chat.');
+        }
+        renderState(payload.state || {});
+      };
+
+      const sendPayload = async (url, payload, busyLabel) => {
+        setLoading(true, busyLabel);
+        try {
+          const response = await fetch(url, {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload || {}),
+          });
+          const data = await response.json();
+          if (!response.ok || !data.ok) {
+            throw new Error(data.error || data.message || 'Operacion fallida.');
+          }
+          renderState(data.state || {});
+          return data;
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      toggle.addEventListener('click', async () => {
+        shell.hidden = false;
+        document.body.classList.add('modal-open');
+        setLoading(true, 'Cargando chat...');
+        try {
+          await fetchState();
+        } catch (error) {
+          status.textContent = error.message || 'Error cargando chat.';
+        } finally {
+          setLoading(false);
+        }
+      });
+
+      closeItems.forEach((item) => item.addEventListener('click', () => {
+        shell.hidden = true;
+        document.body.classList.remove('modal-open');
+      }));
+
+      sendButton.addEventListener('click', async () => {
+        const message = input.value.trim();
+        if (!message) {
+          status.textContent = 'Escribe un mensaje antes de enviar.';
+          return;
+        }
+        try {
+          await sendPayload('{{ app_path('/api/chat/message') }}', {
+            message,
+            selected_sessions: Array.from(sessions.selectedOptions).map((item) => item.value).filter(Boolean),
+          }, 'Consultando entrenador...');
+          input.value = '';
+        } catch (error) {
+          status.textContent = error.message || 'No pude enviar mensaje.';
+        }
+      });
+
+      resetButton.addEventListener('click', async () => {
+        try {
+          await sendPayload('{{ app_path('/api/chat/reset') }}', {}, 'Reiniciando chat...');
+        } catch (error) {
+          status.textContent = error.message || 'No pude resetear chat.';
+        }
+      });
+
+      confirmButton.addEventListener('click', async () => {
+        const confirmationId = confirmButton.dataset.confirmationId || '';
+        if (!confirmationId) {
+          return;
+        }
+        try {
+          await sendPayload('{{ app_path('/api/chat/confirm') }}', { confirmation_id: confirmationId }, 'Confirmando accion...');
+        } catch (error) {
+          status.textContent = error.message || 'No pude confirmar accion.';
+        }
       });
     })();
   </script>

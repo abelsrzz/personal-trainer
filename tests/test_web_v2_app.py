@@ -362,6 +362,58 @@ class WebV2Tests(unittest.TestCase):
             payload = app.athlete_page_data()
         self.assertEqual(payload["zones"]["heart_rate"]["z2"], "145-160")
 
+    def test_compose_chat_message_embeds_selected_session_context(self) -> None:
+        with mock.patch.object(
+            app,
+            "selected_chat_context",
+            return_value=([{"id": "review:test", "label": "2026-06-10 · Rodaje", "meta": "Review"}], "Sesiones previas seleccionadas:\n- 2026-06-10 | Rodaje"),
+        ):
+            message, selected = app.compose_chat_message("ajusta manana", ["review:test"])
+        self.assertIn("Sesiones previas seleccionadas", message)
+        self.assertIn("Peticion actual del usuario", message)
+        self.assertEqual(selected[0]["id"], "review:test")
+
+    def test_update_bot_settings_preserves_existing_gemini_key_when_blank(self) -> None:
+        existing = {
+            "telegram": {"bot_token": "abc", "chat_id": "1", "caption_prefix": "Running Coach"},
+            "opencode_remote": {"gemini_fallback": {"enabled": True, "api_key": "secret", "models": ["gemini-2.5-pro"]}},
+        }
+        captured = {}
+
+        def fake_write(_path, payload):
+            captured["payload"] = payload
+
+        with (
+            mock.patch.object(app, "load_bot_settings", return_value=existing),
+            mock.patch.object(app.portal_core, "write_yaml", side_effect=fake_write),
+        ):
+            app.update_bot_settings(
+                {
+                    "telegram_bot_token": "",
+                    "telegram_chat_id": "2",
+                    "telegram_caption_prefix": "Coach",
+                    "telegram_allowed_chat_ids": "2,3",
+                    "opencode_enabled": "1",
+                    "opencode_server_url": "http://127.0.0.1:4096",
+                    "opencode_timeout_s": "3600",
+                    "opencode_allow_commit": "1",
+                    "opencode_allow_push": "0",
+                    "opencode_dangerously_skip_permissions": "0",
+                    "opencode_model": "openai/gpt-5.4",
+                    "opencode_max_response_chars": "12000",
+                    "opencode_require_confirmation_patterns": "rm -rf",
+                    "gemini_enabled": "1",
+                    "gemini_api_key": "",
+                    "gemini_models": "gemini-2.5-pro, gemini-2.5-flash",
+                }
+            )
+
+        payload = captured["payload"]
+        self.assertEqual(payload["telegram"]["chat_id"], "2")
+        self.assertEqual(payload["telegram"]["allowed_chat_ids"], ["2", "3"])
+        self.assertEqual(payload["opencode_remote"]["gemini_fallback"]["api_key"], "secret")
+        self.assertEqual(payload["opencode_remote"]["gemini_fallback"]["models"], ["gemini-2.5-pro", "gemini-2.5-flash"])
+
 
 if __name__ == "__main__":
     unittest.main()

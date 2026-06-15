@@ -1,0 +1,118 @@
+{
+  "generated_at": "2026-06-15T15:35:07.942507+00:00",
+  "families": [
+    {
+      "family": "30_regenerativo_muy_suave",
+      "avg_score": 10.0,
+      "risks": {
+        "bajo": 1
+      },
+      "count": 1,
+      "latest_date": "2026-05-05",
+      "examples": [
+        "2026-05-05_rodaje_5km_reintroduccion"
+      ]
+    },
+    {
+      "family": "30_suave",
+      "avg_score": 10.0,
+      "risks": {
+        "medio": 1
+      },
+      "count": 1,
+      "latest_date": "2026-05-16",
+      "examples": [
+        "2026-05-16_rodaje_5km_facil"
+      ]
+    },
+    {
+      "family": "40_regenerativo_muy_suave",
+      "avg_score": 9.33,
+      "risks": {
+        "medio": 2,
+        "bajo": 1
+      },
+      "count": 3,
+      "latest_date": "2026-05-26",
+      "examples": [
+        "2026-05-07_rodaje_6km_rectas_controladas",
+        "2026-05-13_rodaje_7km_rectas_controladas",
+        "2026-05-26_rodaje_6km_recuperacion_post_ordes"
+      ]
+    },
+    {
+      "family": "50_en_z2_estable",
+      "avg_score": 10.0,
+      "risks": {
+        "bajo": 1
+      },
+      "count": 1,
+      "latest_date": "2026-05-19",
+      "examples": [
+        "2026-05-19_rodaje_5km_reintroduccion"
+      ]
+    },
+    {
+      "family": "50_suave",
+      "avg_score": 10.0,
+      "risks": {
+        "medio": 1
+      },
+      "count": 1,
+      "latest_date": "2026-05-15",
+      "examples": [
+        "2026-05-15_especifica_controlada_ordes"
+      ]
+    },
+    {
+      "family": "70_en_z2_estable",
+      "avg_score": 9.0,
+      "risks": {
+        "medio": 1,
+        "alto": 1
+      },
+      "count": 2,
+      "latest_date": "2026-05-28",
+      "examples": [
+        "2026-05-20_rodaje_6km_rectas_suaves",
+        "2026-05-28_rodaje_7km_controlado"
+      ]
+    },
+    {
+      "family": "90_en_z2_estable",
+      "avg_score": 10.0,
+      "risks": {
+        "medio": 1
+      },
+      "count": 1,
+      "latest_date": "2026-05-30",
+      "examples": [
+        "2026-05-30_rodaje_6km_progresivo_suave"
+      ]
+    },
+    {
+      "family": "Base aerobica sin impacto",
+      "avg_score": 9.0,
+      "risks": {
+        "medio": 1
+      },
+      "count": 1,
+      "latest_date": "2026-05-19",
+      "examples": [
+        "2026-05-19_eliptica_aerobica"
+      ]
+    },
+    {
+      "family": "Recuperacion",
+      "avg_score": 8.0,
+      "risks": {
+        "bajo": 1
+      },
+      "count": 1,
+      "latest_date": "2026-05-23",
+      "examples": [
+        "2026-05-23_paseo_reconocimiento_ordes"
+      ]
+    }
+  ]
+}

@@ -1071,7 +1071,7 @@ def chat_missing_message_response(request: Request) -> JSONResponse:
     return JSONResponse({"ok": False, "error": "Escribe un mensaje antes de enviar."}, status_code=400)
 
 
-async def chat_execute_message(request: Request, config: OpenCodeRemoteConfig, message: str) -> JSONResponse:
+async def chat_execute_message(request: Request, config: OpenCodeRemoteConfig, message: str, *, display_message: str | None = None) -> JSONResponse:
     user_key = web_chat_identity(request)
     lock = WEB_CHAT_LOCKS.setdefault(user_key, asyncio.Lock())
     if lock.locked():
@@ -1084,7 +1084,7 @@ async def chat_execute_message(request: Request, config: OpenCodeRemoteConfig, m
         bridge = OpenCodeBridge(config)
         result = await bridge.send(user_key, message, channel="web")
 
-    append_web_chat_message(user_key, "user", message)
+    append_web_chat_message(user_key, "user", display_message if display_message is not None else message)
     append_web_chat_message(user_key, "assistant", result.text, model=result.model, error=result.returncode != 0)
     return JSONResponse(
         {

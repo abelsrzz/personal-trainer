@@ -1002,10 +1002,12 @@ def decorate_calendar_entry(item: dict[str, Any] | None, source: str | None = No
 
 
 def home_page_data() -> dict[str, Any]:
+    week_stats = portal_core.current_week_stats()
     feed = load_today_feed()
     if feed:
         return {
             **feed,
+            **week_stats,
             "active_nav": "hoy",
         }
 
@@ -1065,6 +1067,7 @@ def home_page_data() -> dict[str, Any]:
         "current_week_km": payload.get("current_week_km", 0),
         "current_week_sessions": payload.get("current_week_sessions", 0),
         "current_week_completed": payload.get("current_week_completed", 0),
+        "current_week_actual_km": payload.get("current_week_actual_km", 0),
         "active_nav": "hoy",
     }
 

@@ -156,9 +156,7 @@ def knowledge_entry_id(entry: dict[str, Any]) -> str | None:
     return stable_slug(label) if label else None
 
 
-@lru_cache(maxsize=4)
-def _cached_knowledge_entries(_signature: tuple[int, int]) -> tuple[dict[str, Any], ...]:
-    knowledge = load_workout_knowledge()
+def _knowledge_entries_from_payload(knowledge: dict[str, Any]) -> list[dict[str, Any]]:
     categories = knowledge.get("categories") if isinstance(knowledge.get("categories"), dict) else {}
     entries: list[dict[str, Any]] = []
     for category_key, raw_entries in categories.items():
@@ -173,11 +171,16 @@ def _cached_knowledge_entries(_signature: tuple[int, int]) -> tuple[dict[str, An
             if not entry_id:
                 continue
             entries.append({**entry, "id": entry_id, "category": category_key})
-    return tuple(entries)
+    return entries
+
+
+@lru_cache(maxsize=4)
+def _cached_knowledge_entries(_signature: tuple[int, int]) -> tuple[dict[str, Any], ...]:
+    return tuple(_knowledge_entries_from_payload(load_workout_knowledge()))
 
 
 def iter_knowledge_entries() -> list[dict[str, Any]]:
-    return list(_cached_knowledge_entries(workout_knowledge_signature()))
+    return _knowledge_entries_from_payload(load_workout_knowledge())
 
 
 @lru_cache(maxsize=4)
@@ -198,7 +201,10 @@ def knowledge_entry_by_id(entry_id: str) -> dict[str, Any] | None:
     target = str(entry_id or "").strip()
     if not target:
         return None
-    return _cached_knowledge_entry_maps(workout_knowledge_signature())[0].get(target)
+    for entry in iter_knowledge_entries():
+        if str(entry.get("id") or "").strip() == target:
+            return entry
+    return None
 
 
 def knowledge_entry_by_label(label: str) -> dict[str, Any] | None:
@@ -206,7 +212,10 @@ def knowledge_entry_by_label(label: str) -> dict[str, Any] | None:
     if not target:
         return None
     normalized_target = normalize_text(target)
-    return _cached_knowledge_entry_maps(workout_knowledge_signature())[1].get(normalized_target)
+    for entry in iter_knowledge_entries():
+        if normalize_text(entry.get("label")) == normalized_target:
+            return entry
+    return None
 
 
 def summarized_entry(entry: dict[str, Any]) -> dict[str, Any]:
@@ -294,7 +303,7 @@ def match_workout_knowledge(payload: dict[str, Any], session_kind: str, template
     if resolved_template_id:
         mapping = template_knowledge_map().get(resolved_template_id) if isinstance(template_knowledge_map().get(resolved_template_id), dict) else None
         for knowledge_id in (mapping or {}).get("preferred_knowledge_ids", []):
-            entry = knowledge_entry_by_id(str(knowledge_id))
+            entry = knowledge_entry_by_id(str(knowledge_id)) or next((item for item in iter_knowledge_entries() if str(item.get("id") or "") == str(knowledge_id)), None)
             if entry:
                 return apply_primary_goal_override(summarized_entry(entry), payload, session_kind)
 
@@ -337,5 +346,16 @@ def match_workout_knowledge(payload: dict[str, Any], session_kind: str, template
         fallback = easy_recovery_fallback(payload, session_kind)
         if fallback:
             return apply_primary_goal_override(fallback, payload, session_kind)
-        return fallback
+        derived = derived_primary_goal(payload, session_kind)
+        if derived:
+            return {
+                "id": stable_slug(derived),
+                "label": derived,
+                "goals": [],
+                "goal_labels": [],
+                "primary_goal": derived,
+                "summary": f"Esta sesion se usa sobre todo para {derived.lower()}.",
+                "category": "derived",
+            }
+        return None
     return apply_primary_goal_override(summarized_entry(best_match), payload, session_kind)

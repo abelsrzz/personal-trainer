@@ -527,7 +527,7 @@ def fetch_recent_activities(client: Garmin, start_date: str, limit: int, activit
     start = 0
     page_size = max(1, min(int(limit or 1), 100))
 
-    while len(collected) < limit:
+    while True:
         page_start = start
         if activity_type_filter is None:
             def _get_page() -> Any:
@@ -547,12 +547,11 @@ def fetch_recent_activities(client: Garmin, start_date: str, limit: int, activit
         saw_older_activity = False
         for activity in batch:
             if activity_matches_date(activity, start_date):
-                collected.append(activity)
-                if len(collected) >= limit:
-                    break
+                if len(collected) < limit:
+                    collected.append(activity)
             else:
                 saw_older_activity = True
-        if len(batch) < page_size or saw_older_activity or len(collected) >= limit:
+        if len(batch) < page_size or saw_older_activity:
             break
         start += len(batch)
 

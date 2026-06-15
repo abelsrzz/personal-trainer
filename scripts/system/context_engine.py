@@ -99,6 +99,8 @@ def parse_week_window(markdown: str) -> tuple[str | None, str | None]:
 def active_week_payload() -> dict[str, Any]:
     markdown = read_text(ACTIVE_WEEK_PATH)
     start_date, end_date = parse_week_window(markdown)
+    end = parse_iso_date(end_date)
+    stale = bool(end and date.today() > end)
     title = ""
     for line in markdown.splitlines():
         if line.startswith("# "):
@@ -109,6 +111,8 @@ def active_week_payload() -> dict[str, Any]:
         "start_date": start_date,
         "end_date": end_date,
         "path": str(ACTIVE_WEEK_PATH.relative_to(ROOT)) if ACTIVE_WEEK_PATH.exists() else None,
+        "stale": stale,
+        "stale_reason": "La fecha actual supera el fin de la semana activa." if stale else None,
     }
 
 
@@ -257,6 +261,8 @@ def build_context(name: str, *, refresh_capabilities: bool = True) -> dict[str, 
             },
         },
     }
+    if payload["active_week"].get("stale"):
+        payload["warnings"].append("Semana activa caducada; activar semana preparada antes de planificar/replanificar.")
 
     if name == "today_context":
         payload["today_plan"] = {

@@ -3,7 +3,7 @@
 - Fecha de analisis: `2026-06-15`
 - Estado: `yellow`
 - Accion recomendada: `maintain_with_caution`
-- Recomendacion: Mantener estructura, pero sin subir volumen ni intensidad hasta ver 2-3 sesiones faciles estables.
+- Recomendacion: Datos de Garmin desactualizados: sincroniza antes de confiar en esta decision. Mantener estructura, pero sin subir volumen ni intensidad hasta ver 2-3 sesiones faciles estables.
 
 ## Carga Reciente
 
@@ -23,6 +23,7 @@
 ## Riesgos Detectados
 
 - Training status de Garmin sugiere prudencia en la carga actual.
+- Ultima actividad importada hace 5 dias (>3); puede faltar carga reciente por sincronizar.
 - El limitador principal declarado sigue siendo la durabilidad aerobica; la construccion debe respetarlo.
 - La automatizacion prioriza como backbone de calidad: fartlek_structured, cruise_intervals, tempo_broken.
 

@@ -3,10 +3,13 @@
 from __future__ import annotations
 
 import argparse
+import contextlib
 import json
+import os
 import subprocess
 import sys
 from dataclasses import dataclass
+from datetime import datetime
 from pathlib import Path
 from typing import Any, Callable
 
@@ -40,6 +43,22 @@ GARMIN_SYNC_SCRIPT = ROOT / "scripts" / "garmin" / "sync_garmin.py"
 POST_WORKOUT_REFRESH_SCRIPT = ROOT / "scripts" / "garmin" / "post_workout_refresh.py"
 COACH_ENGINE_SCRIPT = ROOT / "scripts" / "garmin" / "coach_engine.py"
 GARMIN_RECONCILE_STATE_PATH = ROOT / "system" / "state" / "garmin_reconcile_state.json"
+GLOBAL_LOCK_PATH = ROOT / "system" / "state" / "automation.lock"
+
+
+@contextlib.contextmanager
+def global_action_lock(name: str):
+    import fcntl
+
+    GLOBAL_LOCK_PATH.parent.mkdir(parents=True, exist_ok=True)
+    with GLOBAL_LOCK_PATH.open("w", encoding="utf-8") as handle:
+        fcntl.flock(handle, fcntl.LOCK_EX)
+        handle.write(json.dumps({"action": name, "pid": os.getpid(), "started_at": datetime.now().isoformat()}, ensure_ascii=True) + "\n")
+        handle.flush()
+        try:
+            yield
+        finally:
+            fcntl.flock(handle, fcntl.LOCK_UN)
 
 
 @dataclass
@@ -85,6 +104,8 @@ REFRESH_ARTIFACT_ACTIONS = {
     "send_morning_brief",
     "service_sync",
 }
+
+PIPELINE_LOCKED_ACTIONS = {"prepare_next_week", "activate_prepared_week", "plan_range", "replan_range", "replan_workout"}
 
 
 def run_command(command: list[str], *, timeout: int = 3600) -> tuple[bool, str, dict[str, Any] | None]:
@@ -382,7 +403,11 @@ def run_action(name: str, *, payload: dict[str, Any] | None = None) -> dict[str,
     if spec is None:
         raise ActionRuntimeError(f"Unknown action: {name}")
     try:
-        result = spec.handler(**(payload or {}))
+        if name in PIPELINE_LOCKED_ACTIONS:
+            result = spec.handler(**(payload or {}))
+        else:
+            with global_action_lock(name):
+                result = spec.handler(**(payload or {}))
     except PolicyGateError as exc:
         return {"ok": False, "action": name, "message": str(exc), "error_type": "policy_gate"}
     except ActionRuntimeError as exc:

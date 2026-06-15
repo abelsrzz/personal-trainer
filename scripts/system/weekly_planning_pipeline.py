@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import contextlib
 import hashlib
 import json
 import os
@@ -36,12 +37,29 @@ ACTIVE_WEEK_PATH = ROOT / "planning" / "weeks" / "semana_actual.md"
 PREPARED_WEEKS_DIR = ROOT / "planning" / "weeks" / "prepared"
 ARCHIVED_WEEKS_DIR = ROOT / "planning" / "weeks" / "archived"
 STATE_PATH = ROOT / "system" / "state" / "weekly_planning_state.json"
+GLOBAL_LOCK_PATH = ROOT / "system" / "state" / "automation.lock"
+PLANNING_RUNS_DIR = ROOT / "system" / "state" / "planning_runs"
 TELEGRAM_CONFIG_PATH = ROOT / "telegram" / "bot_config.yaml"
 PDF_SCRIPT = ROOT / "scripts" / "notifications" / "semana_pdf_telegram.py"
 GARMIN_SYNC_SCRIPT = ROOT / "scripts" / "garmin" / "sync_garmin.py"
 ENRICH_WORKOUTS_SCRIPT = ROOT / "scripts" / "system" / "enrich_planned_workouts.py"
 PLANNED_WORKOUTS_DIR = ROOT / "training" / "planned" / "workouts"
 DEFAULT_MODEL = "openai/gpt-5.4"
+
+
+@contextlib.contextmanager
+def global_operation_lock(name: str):
+    import fcntl
+
+    GLOBAL_LOCK_PATH.parent.mkdir(parents=True, exist_ok=True)
+    with GLOBAL_LOCK_PATH.open("w", encoding="utf-8") as handle:
+        fcntl.flock(handle, fcntl.LOCK_EX)
+        handle.write(json.dumps({"operation": name, "pid": os.getpid(), "started_at": datetime.now().isoformat()}, ensure_ascii=True) + "\n")
+        handle.flush()
+        try:
+            yield
+        finally:
+            fcntl.flock(handle, fcntl.LOCK_UN)
 
 
 def parse_args() -> argparse.Namespace:
@@ -157,12 +175,15 @@ def archived_week_path(start: date, end: date, title: str) -> Path:
 def current_active_week_info() -> dict[str, Any]:
     content = read_text(ACTIVE_WEEK_PATH)
     start_date, end_date = parse_week_date_window(content)
+    stale = bool(end_date and date.today() > end_date)
     return {
         "exists": ACTIVE_WEEK_PATH.exists(),
         "path": display_path(ACTIVE_WEEK_PATH),
         "title": active_week_title(content),
         "start_date": start_date.isoformat() if start_date else None,
         "end_date": end_date.isoformat() if end_date else None,
+        "stale": stale,
+        "stale_reason": "La fecha actual supera el fin de la semana activa." if stale else None,
     }
 
 
@@ -179,6 +200,13 @@ def file_sha256(path: Path) -> str:
         for chunk in iter(lambda: handle.read(65536), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def save_planning_run(run_id: str, payload: dict[str, Any]) -> Path:
+    PLANNING_RUNS_DIR.mkdir(parents=True, exist_ok=True)
+    path = PLANNING_RUNS_DIR / f"{run_id}.json"
+    path.write_text(json.dumps(payload, indent=2, ensure_ascii=True, default=str) + "\n", encoding="utf-8")
+    return path
 
 
 def monday_for(day_value: date) -> date:
@@ -307,7 +335,7 @@ def build_planning_prompt(target_start: date, target_end: date, output_path: Pat
         "3. Genera la semana objetivo en el archivo indicado con el mismo formato operativo habitual del proyecto: titulo, fechas, contexto si hace falta, tabla diaria con dia, descripcion, distancia, ritmo o FC y zapatillas.\n"
         "4. No modifiques planning/weeks/semana_actual.md. Solo prepara la siguiente semana en el archivo de salida.\n"
         "5. Crea o actualiza los YAML necesarios en training/planned/workouts/ para las sesiones fechadas de esa semana. Siempre que puedas, incluye `template_id`, `knowledge_id`, `knowledge_label` y `primary_goal` alineados con training/planned/workouts/library_run_templates.yaml, planning/workout_template_knowledge_map.yaml y planning/workout_knowledge.yaml. Si la sesion es de bicicleta, usa `sport: cycling`, no `fitness_equipment`. Si la sesion es de natacion, usa `sport: swimming`. Si la sesion es de eliptica, usa `sport: elliptical`. Incluye preferentemente una sesion especifica de movilidad por semana si el contexto del atleta no desaconseja meterla. Si la sesion es de fuerza o movilidad, no uses un bloque unico con todos los ejercicios en la descripcion: crea un paso por ejercicio. Usa `garmin/strength_mobility_exercise_knowledge.yaml` para asignar el ejercicio Garmin exacto o la familia Garmin mas cercana permitida para cada movimiento. Si el conocimiento local marca `upload_strategy: closest_garmin_family`, rellena `exercise_name` y `category` con esa seleccion Garmin y deja la instruccion exacta en `description`. Si marca `description_only`, deja esos campos vacios. Solo usa `provider_exercise_source_id` cuando exista una referencia exacta confirmada. Si el ejercicio va por series y repeticiones, por ejemplo `4x8`, no lo representes por tiempo: crea un `repeat_group` con `iterations: 4` y dentro un paso del ejercicio con `repetitions: 8`; solo usa `duration_s` para descansos o bloques realmente temporales. En movilidad aplica la misma filosofia: ejercicios explicitos, iteraciones si hacen falta y descripcion precisa.\n"
-        "6. Cuando el atleta vuelva a correr, reintroduce la carga de impacto de forma progresiva: usa como default aproximadamente `+6-10%` de volumen semanal de running sobre la ultima semana realmente absorbida, salvo que el contexto obligue a mantener o reducir. Si una semana tambien sube intensidad de running, estrecha la progresion hacia `0-5%` o incluso manten estable la carga. No subas a la vez volumen e intensidad de running en una semana fragil.\n"
+        "6. Cuando el atleta vuelva a correr, reintroduce la carga de impacto de forma progresiva: usa como default aproximadamente `+5%` de volumen semanal de running sobre la ultima semana realmente absorbida, salvo que el contexto obligue a mantener o reducir. Si una semana tambien sube intensidad de running, estrecha la progresion hacia `0-5%` o incluso manten estable la carga. No subas a la vez volumen e intensidad de running en una semana fragil.\n"
         "7. Mantén al menos una sesion de bicicleta en la mayoria de semanas mientras la durabilidad de carrera no sea claramente estable. La bici puede servir para base aerobica y tambien para apoyo tempo/VO2 sin impacto si eso protege mejor la tibia.\n"
         "8. Introduce fartlek con regularidad en la vuelta al impacto y base temprana como puente entre rodajes faciles y trabajo mas denso.\n"
         "9. A lo largo de los bloques, la carga debe crecer lo suficiente para sostener el objetivo de febrero de 2027, pero solo cuando los checkpoints y la tolerancia tisular lo permitan; no te quedes cronificado en carga de rehabilitacion si la evolucion ya permite mas.\n"
@@ -322,17 +350,34 @@ def run_command(command: list[str], *, timeout: int = 3600) -> subprocess.Comple
 
 
 def execute_opencode_prompt(prompt: str) -> tuple[bool, str, dict[str, Any]]:
+    run_id = datetime.now().strftime("%Y%m%dT%H%M%S") + "_" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8]
     command = ["opencode", "run", "--dir", str(ROOT), "--model", opencode_model(), "--print-logs", prompt]
+    prompt_path = save_planning_run(
+        run_id,
+        {
+            "run_id": run_id,
+            "started_at": datetime.now().isoformat(),
+            "model": opencode_model(),
+            "command": " ".join(command[:-1]),
+            "prompt": prompt,
+            "prompt_sha256": hashlib.sha256(prompt.encode("utf-8")).hexdigest(),
+            "status": "started",
+        },
+    )
     try:
         result = run_command(command)
     except FileNotFoundError:
-        return False, "No se encontro el binario `opencode`; no puedo ejecutar la operacion automaticamente.", {"command": " ".join(command[:-1]), "returncode": None}
+        save_planning_run(run_id, {"run_id": run_id, "status": "error", "message": "opencode missing", "prompt_path": display_path(prompt_path)})
+        return False, "No se encontro el binario `opencode`; no puedo ejecutar la operacion automaticamente.", {"command": " ".join(command[:-1]), "returncode": None, "run_id": run_id, "prompt_path": display_path(prompt_path)}
     detail = {
         "command": " ".join(command[:-1]),
         "returncode": result.returncode,
         "stdout": result.stdout[-4000:],
         "stderr": result.stderr[-4000:],
+        "run_id": run_id,
+        "prompt_path": display_path(prompt_path),
     }
+    save_planning_run(run_id, {"run_id": run_id, "finished_at": datetime.now().isoformat(), "status": "ok" if result.returncode == 0 else "error", "detail": detail, "prompt": prompt, "prompt_sha256": hashlib.sha256(prompt.encode("utf-8")).hexdigest()})
     if result.returncode != 0:
         return False, "OpenCode no pudo completar la operacion solicitada.", detail
     return True, "Operacion OpenCode completada.", detail
@@ -493,6 +538,11 @@ def parse_required_date(value: str, *, field_name: str) -> date:
 
 
 def plan_range(start_date_text: str, end_date_text: str, premise: str, source: str) -> dict[str, Any]:
+    with global_operation_lock("plan_range"):
+        return _plan_range(start_date_text, end_date_text, premise, source)
+
+
+def _plan_range(start_date_text: str, end_date_text: str, premise: str, source: str) -> dict[str, Any]:
     try:
         target_start = parse_required_date(start_date_text, field_name="start_date")
         target_end = parse_required_date(end_date_text, field_name="end_date")
@@ -551,6 +601,11 @@ def plan_range(start_date_text: str, end_date_text: str, premise: str, source: s
 
 
 def replan_range(start_date_text: str, end_date_text: str, premise: str, source: str) -> dict[str, Any]:
+    with global_operation_lock("replan_range"):
+        return _replan_range(start_date_text, end_date_text, premise, source)
+
+
+def _replan_range(start_date_text: str, end_date_text: str, premise: str, source: str) -> dict[str, Any]:
     try:
         target_start = parse_required_date(start_date_text, field_name="start_date")
         target_end = parse_required_date(end_date_text, field_name="end_date")
@@ -609,6 +664,11 @@ def replan_range(start_date_text: str, end_date_text: str, premise: str, source:
 
 
 def replan_workout(slug: str, premise: str, source: str) -> dict[str, Any]:
+    with global_operation_lock("replan_workout"):
+        return _replan_workout(slug, premise, source)
+
+
+def _replan_workout(slug: str, premise: str, source: str) -> dict[str, Any]:
     workout_path = planned_workout_path(slug)
     if not workout_path.exists():
         return {"ok": False, "message": f"No existe el workout planificado `{display_path(workout_path)}`.", "code": "workout_missing"}
@@ -691,6 +751,11 @@ def ensure_prepared_entry(state: dict[str, Any], target_start: date, target_end:
 
 
 def plan_next_week(force: bool, source: str) -> dict[str, Any]:
+    with global_operation_lock("plan_next_week"):
+        return _plan_next_week(force, source)
+
+
+def _plan_next_week(force: bool, source: str) -> dict[str, Any]:
     try:
         if force:
             enforce("regenerate_prepared_week", source=source)
@@ -731,6 +796,11 @@ def plan_next_week(force: bool, source: str) -> dict[str, Any]:
 
 
 def activate_prepared_week(source: str, week_start: str = "") -> dict[str, Any]:
+    with global_operation_lock("activate_prepared_week"):
+        return _activate_prepared_week(source, week_start)
+
+
+def _activate_prepared_week(source: str, week_start: str = "") -> dict[str, Any]:
     try:
         enforce("activate_prepared_week", source=source)
     except PolicyGateError as exc:

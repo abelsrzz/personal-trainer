@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-15T13:25:29.362325+00:00",
+  "generated_at": "2026-06-15T13:50:01.427514+00:00",
   "context": "race_context",
   "today": "2026-06-15",
   "warnings": [
@@ -7,7 +7,8 @@
     "athlete_state: datos potencialmente desactualizados.",
     "training_paces: datos potencialmente desactualizados.",
     "coach_decision: datos potencialmente desactualizados.",
-    "shoes_mileage: datos potencialmente desactualizados."
+    "shoes_mileage: datos potencialmente desactualizados.",
+    "Semana activa caducada; activar semana preparada antes de planificar/replanificar."
   ],
   "stale_capabilities": [
     "athlete_profile",
@@ -62,7 +63,9 @@
     "title": "Block 1 - Semana 3 De Rehabilitacion",
     "start_date": "2026-06-08",
     "end_date": "2026-06-14",
-    "path": "planning/weeks/semana_actual.md"
+    "path": "planning/weeks/semana_actual.md",
+    "stale": true,
+    "stale_reason": "La fecha actual supera el fin de la semana activa."
   },
   "prepared_weeks": [
     {
@@ -194,10 +197,10 @@
     "as_of": "2026-06-15",
     "status": "yellow",
     "action": "maintain_with_caution",
-    "recommendation": "Mantener estructura, pero sin subir volumen ni intensidad hasta ver 2-3 sesiones faciles estables."
+    "recommendation": "Datos de Garmin desactualizados: sincroniza antes de confiar en esta decision. Mantener estructura, pero sin subir volumen ni intensidad hasta ver 2-3 sesiones faciles estables."
   },
   "athlete_state": {
-    "generated_at": "2026-06-15T08:02:29.382667+00:00",
+    "generated_at": "2026-06-15T13:46:27.557303+00:00",
     "source_of_truth": "system/state/athlete_state.json",
     "identity": {
       "id": "main",
@@ -478,7 +481,7 @@
           "band": "green"
         },
         "baseline_running_km": 0.0,
-        "default_running_growth_pct": 8.0,
+        "default_running_growth_pct": 5.0,
         "next_running_target_km": 0.0,
         "next_running_target_range_km": {
           "min": 0.0,
@@ -571,7 +574,7 @@
       "as_of": "2026-06-15",
       "status": "yellow",
       "action": "maintain_with_caution",
-      "recommendation": "Mantener estructura, pero sin subir volumen ni intensidad hasta ver 2-3 sesiones faciles estables.",
+      "recommendation": "Datos de Garmin desactualizados: sincroniza antes de confiar en esta decision. Mantener estructura, pero sin subir volumen ni intensidad hasta ver 2-3 sesiones faciles estables.",
       "session_guidance": {
         "coach_state": "yellow",
         "shin_band": "green",
@@ -662,8 +665,8 @@
       ],
       "daily_metrics": {
         "latest_date": "2026-06-15",
-        "latest_hrv": 137864769.0,
-        "latest_training_readiness": 137864769.0,
+        "latest_hrv": 75.0,
+        "latest_training_readiness": null,
         "latest_resting_heart_rate": 51.0,
         "latest_training_status": {
           "userId": 137864769,
@@ -775,7 +778,7 @@
         "activities": true,
         "daily_metrics": true,
         "hrv": true,
-        "training_readiness": true,
+        "training_readiness": false,
         "resting_heart_rate": true,
         "training_status": true,
         "sleep": false,

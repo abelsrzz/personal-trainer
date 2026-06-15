@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-15T13:25:29.373423+00:00",
+  "generated_at": "2026-06-15T13:50:01.438711+00:00",
   "overall_status": "warning",
   "summary": "Sistema usable con advertencias o datos potencialmente stale.",
   "warnings": [
@@ -91,7 +91,7 @@
     "coach_state": {
       "coach_as_of": "2026-06-15",
       "coach_status": "yellow",
-      "athlete_state_generated_at": "2026-06-15T08:02:29.382667+00:00"
+      "athlete_state_generated_at": "2026-06-15T13:46:27.557303+00:00"
     },
     "garmin_reconcile": {
       "generated_at": "2026-06-11T17:42:27.959842Z",

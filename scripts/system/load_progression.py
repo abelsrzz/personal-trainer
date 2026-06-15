@@ -177,7 +177,7 @@ def progression_window(reviews: list[dict[str, Any]], shin_entries: list[dict[st
     absorbed = last_absorbed_week(reviews, shin_entries, as_of=as_of, coach_status=coach_status)
     shin = latest_shin_status(shin_entries, as_of=as_of)
     baseline_running_km = float((absorbed or {}).get("running_km") or 0.0)
-    growth_pct = 8.0
+    growth_pct = 5.0
     next_running_km = baseline_running_km * (1.0 + (growth_pct / 100.0)) if baseline_running_km > 0 else 0.0
     blocked_dimensions: list[str] = []
     if shin["band"] != "green":

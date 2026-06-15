@@ -458,21 +458,53 @@ def first_numeric(value: Any) -> float | None:
     return None
 
 
+def numeric_in_range(value: Any, *, min_value: float, max_value: float) -> float | None:
+    numeric = first_numeric(value)
+    if numeric is None:
+        return None
+    if min_value <= numeric <= max_value:
+        return numeric
+    return None
+
+
+def first_by_keys(payload: Any, keys: tuple[str, ...], *, min_value: float, max_value: float) -> float | None:
+    if not isinstance(payload, dict):
+        return numeric_in_range(payload, min_value=min_value, max_value=max_value)
+    for key in keys:
+        if key in payload:
+            numeric = numeric_in_range(payload.get(key), min_value=min_value, max_value=max_value)
+            if numeric is not None:
+                return numeric
+    for value in payload.values():
+        if isinstance(value, dict):
+            numeric = first_by_keys(value, keys, min_value=min_value, max_value=max_value)
+            if numeric is not None:
+                return numeric
+        elif isinstance(value, list):
+            for item in value:
+                numeric = first_by_keys(item, keys, min_value=min_value, max_value=max_value)
+                if numeric is not None:
+                    return numeric
+    return None
+
+
 def daily_metric_snapshot(metrics: list[dict[str, Any]], as_of: date) -> dict[str, Any]:
     candidates = [item for item in metrics if item["date"] <= as_of]
     if not candidates:
         return {}
     latest = candidates[-1]["payload"]
     sleep_payload = latest.get("sleep") if isinstance(latest.get("sleep"), dict) else {}
+    hrv_payload = latest.get("hrv")
+    readiness_payload = latest.get("training_readiness")
     return {
-        "hrv": first_numeric(latest.get("hrv")),
-        "training_readiness": first_numeric(latest.get("training_readiness")),
-        "resting_heart_rate": first_numeric(nested_get(latest, "heart_rates", "restingHeartRate")) or first_numeric(latest.get("heart_rates")),
+        "hrv": first_by_keys(hrv_payload, ("weeklyAvg", "lastNightAvg", "hrv", "value", "score"), min_value=10, max_value=250),
+        "training_readiness": first_by_keys(readiness_payload, ("score", "readinessScore", "trainingReadinessScore", "value"), min_value=0, max_value=100),
+        "resting_heart_rate": first_by_keys(latest.get("heart_rates"), ("restingHeartRate", "restingHR", "value"), min_value=30, max_value=120),
         "training_status": nested_get(latest, "training_status", "mostRecentTrainingStatus", "trainingStatus")
         or nested_get(latest, "training_status", "trainingStatus")
         or latest.get("training_status"),
-        "sleep_score": first_numeric(sleep_payload.get("sleepScores")),
-        "sleep_duration_s": first_numeric(sleep_payload.get("sleepTimeSeconds")),
+        "sleep_score": first_by_keys(sleep_payload.get("sleepScores"), ("overall", "total", "score", "value"), min_value=0, max_value=100),
+        "sleep_duration_s": first_by_keys(sleep_payload, ("sleepTimeSeconds", "totalSleepSeconds", "duration"), min_value=0, max_value=86400),
     }
 
 
@@ -481,7 +513,7 @@ def classify_daily_signals(metrics: list[dict[str, Any]], activities: list[dict[
     last_28 = aggregate_window(activities, as_of - timedelta(days=27), as_of)
     running_tolerance = load_running_tolerance()
     daily_window = [item for item in metrics if as_of - timedelta(days=6) <= item["date"] <= as_of]
-    hrv_values = [first_numeric(item["payload"].get("hrv")) for item in daily_window]
+    hrv_values = [first_by_keys(item["payload"].get("hrv"), ("weeklyAvg", "lastNightAvg", "hrv", "value", "score"), min_value=10, max_value=250) for item in daily_window]
     hrv_values = [value for value in hrv_values if value is not None]
     readiness = snapshot.get("training_readiness")
     resting_hr = snapshot.get("resting_heart_rate")

@@ -4,7 +4,6 @@ stages:
 
 test:
   stage: test
-  image: python:3.13-slim
   variables:
     PYTHON_BIN: python3
     CI_VENV: .venv-ci
@@ -13,6 +12,15 @@ test:
   before_script:
     - 'if command -v python >/dev/null 2>&1; then export PYTHON_BIN=python; fi'
     - |
+      if ! "$PYTHON_BIN" -m pip --version >/dev/null 2>&1; then
+        if command -v apt-get >/dev/null 2>&1; then
+          apt-get update
+          apt-get install -y python3-pip python3-venv python3.13-venv
+        else
+          echo "Python pip no disponible y no existe apt-get para instalarlo." >&2
+          exit 1
+        fi
+      fi
       if "$PYTHON_BIN" -m venv "$CI_VENV"; then
         . "$CI_VENV/bin/activate"
         export CI_PYTHON=python
@@ -31,9 +39,22 @@ test:
 
 deploy_main:
   stage: deploy
-  image: alpine:3.20
   before_script:
-    - apk add --no-cache bash openssh-client rsync python3
+    - |
+      missing=""
+      command -v bash >/dev/null 2>&1 || missing="$missing bash"
+      command -v ssh >/dev/null 2>&1 || missing="$missing openssh-client"
+      command -v rsync >/dev/null 2>&1 || missing="$missing rsync"
+      command -v python3 >/dev/null 2>&1 || missing="$missing python3"
+      if [ -n "$missing" ]; then
+        if command -v apt-get >/dev/null 2>&1; then
+          apt-get update
+          apt-get install -y $missing
+        else
+          echo "Faltan dependencias de deploy:$missing y no existe apt-get." >&2
+          exit 1
+        fi
+      fi
   script:
     - bash deploy/gitlab/deploy_via_ssh.sh
   rules:

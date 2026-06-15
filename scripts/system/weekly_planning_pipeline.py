@@ -349,6 +349,47 @@ def run_command(command: list[str], *, timeout: int = 3600) -> subprocess.Comple
     return subprocess.run(command, cwd=ROOT, capture_output=True, text=True, timeout=timeout, check=False)
 
 
+_OPENCODE_QUOTA_PATTERNS = [
+    "insufficient_quota", "insufficient_credits", "billing_hard_limit",
+    "rate_limit_exceeded", "quota_exceeded", "quota exceeded",
+    "credit limit", "no credits", "out of credits", "payment required",
+    "too many requests", "usage limit", "usage limit has been reached",
+    "ai_apicallerror", "ai_retryerror", "model_not_found", "model not found",
+]
+
+
+def _opencode_quota_error(result: subprocess.CompletedProcess[str]) -> bool:
+    if result.returncode == 0 and result.stdout.strip():
+        return False
+    combined = (result.stdout + " " + result.stderr).lower()
+    return any(p in combined for p in _OPENCODE_QUOTA_PATTERNS) or result.returncode == 124
+
+
+def _gemini_config() -> tuple[str, list[str]]:
+    config = load_yaml(TELEGRAM_CONFIG_PATH)
+    remote = config.get("opencode_remote", {}) if isinstance(config.get("opencode_remote"), dict) else {}
+    fallback = remote.get("gemini_fallback", {}) if isinstance(remote.get("gemini_fallback"), dict) else {}
+    api_key = str(fallback.get("api_key") or os.getenv("GEMINI_API_KEY") or "").strip()
+    models = fallback.get("models") if isinstance(fallback.get("models"), list) else []
+    if not models:
+        models = ["gemini-2.5-pro", "gemini-2.5-flash", "gemini-2.0-flash"]
+    return api_key, [str(m) for m in models]
+
+
+def _execute_via_gemini(prompt: str, run_id: str) -> tuple[bool, str, dict[str, Any]]:
+    try:
+        api_key, models = _gemini_config()
+        if not api_key:
+            return False, "Gemini API key no configurada (GEMINI_API_KEY).", {"run_id": run_id, "fallback": "gemini"}
+        from scripts.telegram.gemini_fallback import call_gemini_chain
+        text, model_used = call_gemini_chain(api_key, models, prompt, channel="planning")
+        save_planning_run(run_id, {"run_id": run_id, "finished_at": datetime.now().isoformat(), "status": "ok", "fallback": "gemini", "model": model_used, "response": text[:2000]})
+        return True, f"Planificacion completada via Gemini ({model_used}).", {"run_id": run_id, "fallback": "gemini", "model": model_used}
+    except Exception as exc:
+        save_planning_run(run_id, {"run_id": run_id, "status": "error", "fallback": "gemini", "error": str(exc)})
+        return False, f"Gemini no pudo completar la planificacion: {exc}", {"run_id": run_id, "fallback": "gemini"}
+
+
 def execute_opencode_prompt(prompt: str) -> tuple[bool, str, dict[str, Any]]:
     run_id = datetime.now().strftime("%Y%m%dT%H%M%S") + "_" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8]
     command = ["opencode", "run", "--dir", str(ROOT), "--model", opencode_model(), "--print-logs", prompt]
@@ -368,7 +409,13 @@ def execute_opencode_prompt(prompt: str) -> tuple[bool, str, dict[str, Any]]:
         result = run_command(command)
     except FileNotFoundError:
         save_planning_run(run_id, {"run_id": run_id, "status": "error", "message": "opencode missing", "prompt_path": display_path(prompt_path)})
-        return False, "No se encontro el binario `opencode`; no puedo ejecutar la operacion automaticamente.", {"command": " ".join(command[:-1]), "returncode": None, "run_id": run_id, "prompt_path": display_path(prompt_path)}
+        return _execute_via_gemini(prompt, run_id)
+
+    if _opencode_quota_error(result):
+        save_planning_run(run_id, {"run_id": run_id, "status": "quota_error", "returncode": result.returncode,
+                                   "stderr_preview": result.stderr[-500:], "prompt_path": display_path(prompt_path)})
+        return _execute_via_gemini(prompt, run_id)
+
     detail = {
         "command": " ".join(command[:-1]),
         "returncode": result.returncode,

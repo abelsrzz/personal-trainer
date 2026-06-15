@@ -303,19 +303,29 @@ _PROVIDER_FAILURE_PATTERNS = [
     "daily limit",
     "weekly limit",
     "usage limit",
+    "usage limit has been reached",
     "request limit",
     "model_not_found",
     "model not found",
     "no model available",
+    "ai_apicallerror",
+    "ai_retryerror",
 ]
 
 
 def _is_provider_unavailable(returncode: int, stdout: str, stderr: str) -> bool:
-    """Return True when the failure looks like a provider/quota issue (not a local config error)."""
-    if returncode == 0:
-        return False
+    """Return True when the failure looks like a provider/quota issue (not a local config error).
+
+    opencode sometimes exits rc=0 even when the model quota is exhausted, so we check
+    the combined output for known error patterns regardless of the return code.
+    rc=124 (timeout) is also treated as unavailable so Gemini activates without
+    waiting for all local retries to exhaust.
+    """
     combined = (stdout + " " + stderr).lower()
-    return any(p in combined for p in _PROVIDER_FAILURE_PATTERNS)
+    if any(p in combined for p in _PROVIDER_FAILURE_PATTERNS):
+        return True
+    # Treat timeout as unavailable so we fail fast to Gemini instead of retrying
+    return returncode == 124
 
 
 def _send_gemini_alert_nowait(reason: str, model: str) -> None:
@@ -749,6 +759,18 @@ class OpenCodeBridge:
             preview_text(stderr, 220),
         )
 
+        # Fail fast to Gemini if the first run already shows a provider/quota error
+        # (including timeout rc=124 — no point retrying a model with no credits).
+        if _is_provider_unavailable(returncode, stdout, stderr):
+            failure_reason = preview_text(stderr or stdout or "provider error after first run", 200)
+            logger.warning(
+                "Provider unavailable after first run; activating Gemini fallback trace_id=%s chat_id=%s reason=%s",
+                trace_id,
+                str(chat_id),
+                failure_reason,
+            )
+            return await self._try_gemini_fallback(message, channel, failure_reason)
+
         if attach and returncode == 124:
             logger.warning("Attach run timed out; retrying locally trace_id=%s chat_id=%s", trace_id, str(chat_id))
             command = self.build_run_command(prompt, session_id, title, model, attach=False)
@@ -766,6 +788,15 @@ class OpenCodeBridge:
                 preview_text(stdout, 220),
                 preview_text(stderr, 220),
             )
+            if _is_provider_unavailable(returncode, stdout, stderr):
+                failure_reason = preview_text(stderr or stdout or "provider error after local retry", 200)
+                logger.warning(
+                    "Provider unavailable after local retry; activating Gemini fallback trace_id=%s chat_id=%s reason=%s",
+                    trace_id,
+                    str(chat_id),
+                    failure_reason,
+                )
+                return await self._try_gemini_fallback(message, channel, failure_reason)
 
         # On some setups, `opencode run --attach` can succeed but return no
         # assistant text. If that happens, retry locally once.
@@ -803,7 +834,7 @@ class OpenCodeBridge:
             else:
                 logger.warning("Could not discover session id for title=%s", title)
 
-        # Gemini fallback: trigger when opencode fails with a provider/quota error.
+        # Final Gemini fallback check (covers local retry2 and any other remaining path).
         if _is_provider_unavailable(returncode, stdout, stderr):
             failure_reason = preview_text(stderr or stdout or "unknown provider error", 200)
             logger.warning(

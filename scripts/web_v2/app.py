@@ -19,7 +19,15 @@ from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
 
 from scripts.system.automation_hub import build_status as automation_jobs_status, load_state as load_automation_jobs_state, run_due_jobs, run_job
+import asyncio as _asyncio
 from scripts.system.action_runtime import list_actions, run_action
+
+
+async def _run_action_async(name: str, payload: dict | None = None) -> dict:
+    """Run a potentially long-running action in a thread executor so the asyncio
+    event loop stays free (prevents 504 proxy timeouts on blocking subprocess calls)."""
+    loop = _asyncio.get_running_loop()
+    return await loop.run_in_executor(None, lambda: run_action(name, payload=payload))
 from scripts.system.automation_health import load_automation_health
 from scripts.system.context_engine import load_context_artifact
 from scripts.system.today_feed import load_today_feed
@@ -1557,7 +1565,7 @@ async def calendar_plan_range_submit(
     redirect = auth_guard(request)
     if redirect:
         return redirect
-    result = run_action(
+    result = await _run_action_async(
         "plan_range",
         payload={
             "start_date": start_date,
@@ -1581,7 +1589,7 @@ async def calendar_replan_range_submit(
     redirect = auth_guard(request)
     if redirect:
         return redirect
-    result = run_action(
+    result = await _run_action_async(
         "replan_range",
         payload={
             "start_date": start_date,
@@ -1674,7 +1682,7 @@ async def planned_workout_replan_submit(
     redirect = auth_guard(request)
     if redirect:
         return redirect
-    result = run_action(
+    result = await _run_action_async(
         "replan_workout",
         payload={
             "slug": slug,
@@ -1888,7 +1896,7 @@ async def action_run_api(request: Request) -> JSONResponse:
     if not action_name:
         return JSONResponse({"ok": False, "error": "Falta la accion."}, status_code=400)
     action_payload = payload.get("payload") if isinstance(payload.get("payload"), dict) else {}
-    result = run_action(action_name, payload=action_payload)
+    result = await _run_action_async(action_name, payload=action_payload)
     status_code = 200 if result.get("ok") else 400
     return JSONResponse(result, status_code=status_code)
 

@@ -1199,12 +1199,19 @@ def calendar_page_data(month: str | None, focus: str = "all") -> dict[str, Any]:
             "items": events,
         }
 
+    today_iso = portal_core.date.today().isoformat()
     summary_days: list[dict[str, Any]] = []
     for week in payload.get("weeks", []):
         for day in week:
             day["v2_detail_url"] = f"/calendar/day/{day.get('date')}"
             day["summary"] = summarize_day(day)
-            day["is_dimmed"] = not day_matches_focus(day["summary"], focus)
+            is_past = day.get("date", "") < today_iso
+            has_past_incomplete = (
+                is_past
+                and day["summary"]["counts"]["planned"] > 0
+                and day["summary"]["completed_count"] == 0
+            )
+            day["is_dimmed"] = not day_matches_focus(day["summary"], focus) or has_past_incomplete
             summary_days.append(day)
 
     month_days = [day for day in summary_days if day.get("in_month")]

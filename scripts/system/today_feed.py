@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -137,7 +137,11 @@ def load_today_feed(*, build_if_missing: bool = True) -> dict[str, Any]:
         try:
             payload = json.loads(TODAY_FEED_PATH.read_text(encoding="utf-8"))
             if isinstance(payload, dict):
-                return payload
+                cached_date = str(
+                    (payload.get("today_plan") or {}).get("date") or ""
+                ).strip()
+                if cached_date == date.today().isoformat():
+                    return payload
         except (json.JSONDecodeError, OSError):
             pass
     if not build_if_missing:

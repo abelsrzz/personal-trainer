@@ -318,14 +318,11 @@ def _is_provider_unavailable(returncode: int, stdout: str, stderr: str) -> bool:
 
     opencode sometimes exits rc=0 even when the model quota is exhausted, so we check
     the combined output for known error patterns regardless of the return code.
-    rc=124 (timeout) is also treated as unavailable so Gemini activates without
-    waiting for all local retries to exhaust.
+    Timeouts are handled separately so attach mode can retry locally before
+    burning Gemini fallback on a slow but otherwise healthy request.
     """
     combined = (stdout + " " + stderr).lower()
-    if any(p in combined for p in _PROVIDER_FAILURE_PATTERNS):
-        return True
-    # Treat timeout as unavailable so we fail fast to Gemini instead of retrying
-    return returncode == 124
+    return any(p in combined for p in _PROVIDER_FAILURE_PATTERNS)
 
 
 def _send_gemini_alert_nowait(reason: str, model: str) -> None:
@@ -680,7 +677,11 @@ class OpenCodeBridge:
         session_backend = self.store.get_session_backend(chat_id)
         model = self.store.get_model(chat_id) or self.config.model
         trace_id = secrets.token_hex(4)
-        title = None if session_id else f"telegram-{chat_id}-{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')}"
+
+        def fresh_title() -> str:
+            return f"telegram-{chat_id}-{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')}"
+
+        title = None if session_id else fresh_title()
         prompt = self.build_prompt(message, channel=channel)
 
         probe_error = health.detail if not health.attach else None
@@ -773,16 +774,23 @@ class OpenCodeBridge:
 
         if attach and returncode == 124:
             logger.warning("Attach run timed out; retrying locally trace_id=%s chat_id=%s", trace_id, str(chat_id))
+            # Switching backend mid-request must start a fresh local session.
+            session_id = None
+            backend = "local"
+            title = title or fresh_title()
             command = self.build_run_command(prompt, session_id, title, model, attach=False)
             started_retry = asyncio.get_running_loop().time()
-            returncode, stdout, stderr = await run_command(command, self.config.project_dir, self.config.timeout_s)
+            # Cap local retry at 600s so a hanging LLM stream triggers Gemini quickly.
+            local_retry_timeout_s = min(self.config.timeout_s, 600)
+            returncode, stdout, stderr = await run_command(command, self.config.project_dir, local_retry_timeout_s)
             elapsed_retry_s = asyncio.get_running_loop().time() - started_retry
             logger.info(
-                "OpenCode local retry done trace_id=%s chat_id=%s exit=%s elapsed_s=%.2f stdout_len=%s stderr_len=%s stdout_preview=%s stderr_preview=%s",
+                "OpenCode local retry done trace_id=%s chat_id=%s exit=%s elapsed_s=%.2f timeout_s=%s stdout_len=%s stderr_len=%s stdout_preview=%s stderr_preview=%s",
                 trace_id,
                 str(chat_id),
                 returncode,
                 elapsed_retry_s,
+                local_retry_timeout_s,
                 len(stdout or ""),
                 len(stderr or ""),
                 preview_text(stdout, 220),
@@ -798,6 +806,18 @@ class OpenCodeBridge:
                 )
                 return await self._try_gemini_fallback(message, channel, failure_reason)
 
+            if returncode == 124:
+                failure_reason = (
+                    f"opencode local run timed out after {self.config.timeout_s}s "
+                    "(LLM stream colgado sin completar — posible cuota agotada o API no responde)"
+                )
+                logger.warning(
+                    "Local retry timed out; activating Gemini fallback trace_id=%s chat_id=%s",
+                    trace_id,
+                    str(chat_id),
+                )
+                return await self._try_gemini_fallback(message, channel, failure_reason)
+
         # On some setups, `opencode run --attach` can succeed but return no
         # assistant text. If that happens, retry locally once.
         if attach and returncode == 0 and not (stdout or "").strip():
@@ -809,6 +829,8 @@ class OpenCodeBridge:
             )
             # Avoid continuing an attach-created session when switching backend.
             session_id = None
+            backend = "local"
+            title = title or fresh_title()
             command = self.build_run_command(prompt, session_id, title, model, attach=False)
             started_retry2 = asyncio.get_running_loop().time()
             returncode, stdout, stderr = await run_command(command, self.config.project_dir, self.config.timeout_s)
@@ -842,6 +864,18 @@ class OpenCodeBridge:
                 trace_id,
                 str(chat_id),
                 failure_reason,
+            )
+            return await self._try_gemini_fallback(message, channel, failure_reason)
+
+        if returncode == 124:
+            failure_reason = (
+                f"opencode timed out after {self.config.timeout_s}s "
+                "(LLM stream colgado — posible cuota agotada, API lenta o solicitud demasiado compleja)"
+            )
+            logger.warning(
+                "Final timeout check; activating Gemini fallback trace_id=%s chat_id=%s",
+                trace_id,
+                str(chat_id),
             )
             return await self._try_gemini_fallback(message, channel, failure_reason)
 

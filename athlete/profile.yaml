@@ -21,17 +21,39 @@ athlete:
     - Work schedule 07:30-15:00
     garmin_training_days:
     - TUESDAY
-    - SUNDAY
     - THURSDAY
-    - FRIDAY
-    - MONDAY
     - WEDNESDAY
     - SATURDAY
+    - FRIDAY
+    - MONDAY
+    - SUNDAY
     garmin_preferred_long_training_days:
     - SUNDAY
   current_context:
     strength_sessions_per_week: 1
   data_sources:
     garmin:
-      last_sync: '2026-06-15T08:02:26.647113Z'
+      last_sync: '2026-06-16T06:54:09.923405Z'
       profile_snapshot: training/completed/imports/garmin/profile/athlete_profile_snapshot.json
+  strength_equipment:
+    dumbbells_kg:
+    - min: 1
+      max: 5
+      type: mancuernas ajustables
+    kettlebells_kg:
+    - min: 1
+      max: 5
+      type: kettlebell
+    barbell_kg:
+    - min: 5
+      max: 10
+      type: barra con discos
+    resistance_bands:
+    - resistance_kg_approx: 12
+      type: goma larga
+    - resistance_kg_approx_range: 1-8
+      type: gomas cortas
+    notes: 'Material adquirido en junio 2026 para entrenamiento de fuerza en casa.
+      Permite planificar sesiones de fuerza completas con cargas bajas-medias.
+
+      '

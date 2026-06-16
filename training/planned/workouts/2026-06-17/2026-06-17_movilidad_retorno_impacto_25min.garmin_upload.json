@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-06-15T08:33:48.0",
+  "generated_at": "2026-06-16T06:58:02.456263Z",
   "status": "scheduled",
-  "workout_hash": "8575ac53e1e6f4ae3ebf08ebd00ce0cbb62bce563c5a9fcc38f4885bb62d3c72",
-  "upload_mode": "garmin_recovered",
-  "workout_file": "training/planned/workouts/2026-06-16_movilidad_retorno_impacto_25min.yaml",
+  "workout_hash": "a845e7b1b0d09d8c6de1a658c824db3b15baeb02573ce5e3572d454aa2a6b1f0",
+  "upload_mode": "structured_targets",
+  "workout_file": "training/planned/workouts/2026-06-17_movilidad_retorno_impacto_25min.yaml",
   "uploaded_response": {
-    "workoutId": 1601535826,
+    "workoutId": 1602713123,
     "ownerId": 137864769,
     "workoutName": "Movilidad retorno al impacto 25 min",
     "description": "Sesion de movilidad para descargar tobillo, cadera y tronco entre las dos exposiciones de carrera de la semana.",
-    "updatedDate": "2026-06-15T08:33:48.0",
-    "createdDate": "2026-06-15T08:33:48.0",
+    "updatedDate": "2026-06-16T06:58:01.0",
+    "createdDate": "2026-06-16T06:58:01.0",
     "sportType": {
       "sportTypeId": 11,
       "sportTypeKey": "mobility",
@@ -50,7 +50,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13684046438,
+            "stepId": 13695642507,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 1,
@@ -102,7 +102,7 @@
           },
           {
             "type": "RepeatGroupDTO",
-            "stepId": 13684046439,
+            "stepId": 13695642508,
             "stepOrder": 2,
             "stepType": {
               "stepTypeId": 6,
@@ -114,7 +114,7 @@
             "workoutSteps": [
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13684046440,
+                "stepId": 13695642509,
                 "stepOrder": 3,
                 "stepType": {
                   "stepTypeId": 3,
@@ -166,7 +166,7 @@
               },
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13684046441,
+                "stepId": 13695642510,
                 "stepOrder": 4,
                 "stepType": {
                   "stepTypeId": 3,
@@ -231,7 +231,7 @@
           },
           {
             "type": "RepeatGroupDTO",
-            "stepId": 13684046442,
+            "stepId": 13695642511,
             "stepOrder": 5,
             "stepType": {
               "stepTypeId": 6,
@@ -243,7 +243,7 @@
             "workoutSteps": [
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13684046443,
+                "stepId": 13695642512,
                 "stepOrder": 6,
                 "stepType": {
                   "stepTypeId": 3,
@@ -295,7 +295,7 @@
               },
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13684046444,
+                "stepId": 13695642513,
                 "stepOrder": 7,
                 "stepType": {
                   "stepTypeId": 3,
@@ -360,7 +360,7 @@
           },
           {
             "type": "RepeatGroupDTO",
-            "stepId": 13684046445,
+            "stepId": 13695642514,
             "stepOrder": 8,
             "stepType": {
               "stepTypeId": 6,
@@ -372,7 +372,7 @@
             "workoutSteps": [
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13684046446,
+                "stepId": 13695642515,
                 "stepOrder": 9,
                 "stepType": {
                   "stepTypeId": 3,
@@ -424,7 +424,7 @@
               },
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13684046447,
+                "stepId": 13695642516,
                 "stepOrder": 10,
                 "stepType": {
                   "stepTypeId": 3,
@@ -489,7 +489,7 @@
           },
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13684046448,
+            "stepId": 13695642517,
             "stepOrder": 11,
             "stepType": {
               "stepTypeId": 2,
@@ -567,14 +567,14 @@
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1682766034,
+    "workoutScheduleId": 1683934576,
     "workout": {
-      "workoutId": 1601535826,
+      "workoutId": 1602713123,
       "ownerId": 137864769,
       "workoutName": "Movilidad retorno al impacto 25 min",
       "description": "Sesion de movilidad para descargar tobillo, cadera y tronco entre las dos exposiciones de carrera de la semana.",
-      "updatedDate": "2026-06-15T08:33:48.0",
-      "createdDate": "2026-06-15T08:33:48.0",
+      "updatedDate": "2026-06-16T06:58:01.0",
+      "createdDate": "2026-06-16T06:58:01.0",
       "sportType": {
         "sportTypeId": 11,
         "sportTypeKey": "mobility",
@@ -605,7 +605,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13684046438,
+              "stepId": 13695642507,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 1,
@@ -657,7 +657,7 @@
             },
             {
               "type": "RepeatGroupDTO",
-              "stepId": 13684046439,
+              "stepId": 13695642508,
               "stepOrder": 2,
               "stepType": {
                 "stepTypeId": 6,
@@ -669,7 +669,7 @@
               "workoutSteps": [
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13684046440,
+                  "stepId": 13695642509,
                   "stepOrder": 3,
                   "stepType": {
                     "stepTypeId": 3,
@@ -721,7 +721,7 @@
                 },
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13684046441,
+                  "stepId": 13695642510,
                   "stepOrder": 4,
                   "stepType": {
                     "stepTypeId": 3,
@@ -786,7 +786,7 @@
             },
             {
               "type": "RepeatGroupDTO",
-              "stepId": 13684046442,
+              "stepId": 13695642511,
               "stepOrder": 5,
               "stepType": {
                 "stepTypeId": 6,
@@ -798,7 +798,7 @@
               "workoutSteps": [
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13684046443,
+                  "stepId": 13695642512,
                   "stepOrder": 6,
                   "stepType": {
                     "stepTypeId": 3,
@@ -850,7 +850,7 @@
                 },
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13684046444,
+                  "stepId": 13695642513,
                   "stepOrder": 7,
                   "stepType": {
                     "stepTypeId": 3,
@@ -915,7 +915,7 @@
             },
             {
               "type": "RepeatGroupDTO",
-              "stepId": 13684046445,
+              "stepId": 13695642514,
               "stepOrder": 8,
               "stepType": {
                 "stepTypeId": 6,
@@ -927,7 +927,7 @@
               "workoutSteps": [
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13684046446,
+                  "stepId": 13695642515,
                   "stepOrder": 9,
                   "stepType": {
                     "stepTypeId": 3,
@@ -979,7 +979,7 @@
                 },
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13684046447,
+                  "stepId": 13695642516,
                   "stepOrder": 10,
                   "stepType": {
                     "stepTypeId": 3,
@@ -1044,7 +1044,7 @@
             },
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13684046448,
+              "stepId": 13695642517,
               "stepOrder": 11,
               "stepType": {
                 "stepTypeId": 2,
@@ -1121,8 +1121,8 @@
       "isSessionTransitionEnabled": null,
       "shared": false
     },
-    "calendarDate": "2026-06-16",
-    "createdDate": "2026-06-15",
+    "calendarDate": "2026-06-17",
+    "createdDate": "2026-06-16",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -1131,10 +1131,10 @@
     "priority": null,
     "associatedActivityDateTime": null,
     "tpType": null,
-    "race": false,
-    "itp": false,
+    "protected": false,
     "nameChanged": false,
-    "protected": false
+    "race": false,
+    "itp": false
   },
   "warning": null,
   "replaced_uploads": []

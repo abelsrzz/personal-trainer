@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-06-11T11:35:45.055994Z",
+  "generated_at": "2026-06-16T06:57:57.784570Z",
   "status": "scheduled",
-  "workout_hash": "918b67b9ab86f63c062cdffc025ad03521c7785625d4f5c5e80a727aefdb7647",
+  "workout_hash": "34b4a2c1eacfd7cf18251b3172bf9d4eaba94d96ea89b968f6036c6b47c65dd5",
   "upload_mode": "structured_targets",
-  "workout_file": "training/planned/workouts/2026-06-17_fuerza_rehabilitadora_b_35min.yaml",
+  "workout_file": "training/planned/workouts/2026-06-16_blindaje_antilesiones_50min.yaml",
   "uploaded_response": {
-    "workoutId": 1597254840,
+    "workoutId": 1602713075,
     "ownerId": 137864769,
-    "workoutName": "Fuerza rehabilitadora B 35 min",
-    "description": "Mantenimiento de fuerza durante la vuelta al impacto.",
-    "updatedDate": "2026-06-11T11:35:43.0",
-    "createdDate": "2026-06-11T11:35:43.0",
+    "workoutName": "Blindaje anti-lesiones 50 min",
+    "description": "Sesi\u00f3n de fuerza media-larga enfocada en blindaje contra fascitis plantar y periostitis tibial posterior. Incluye trabajo de musculatura intr\u00ednseca del pie, cadena posterior, tibial posterior y est\u00edmulo de core. Basada en el material disponible: gomas cortas, goma larga, mancuernas y barra ligera.\n",
+    "updatedDate": "2026-06-16T06:57:56.0",
+    "createdDate": "2026-06-16T06:57:56.0",
     "sportType": {
       "sportTypeId": 5,
       "sportTypeKey": "strength_training",
@@ -29,7 +29,7 @@
       "vivokidUser": false
     },
     "sharedWithUsers": null,
-    "estimatedDurationInSecs": 2100,
+    "estimatedDurationInSecs": 3000,
     "estimatedDistanceInMeters": null,
     "workoutSegments": [
       {
@@ -50,7 +50,7 @@
         "workoutSteps": [
           {
             "type": "ExecutableStepDTO",
-            "stepId": 13645686514,
+            "stepId": 13695642127,
             "stepOrder": 1,
             "stepType": {
               "stepTypeId": 1,
@@ -58,14 +58,14 @@
               "displayOrder": 1
             },
             "childStepId": null,
-            "description": "Activacion y movilidad articular",
+            "description": "Activaci\u00f3n pie y tobillo: c\u00edrculos de tobillo 10x cada direcci\u00f3n, marcha de puntillas 30 s, marcha de talones 30 s, movilidad de cadera en suelo\n",
             "endCondition": {
               "conditionTypeId": 2,
               "conditionTypeKey": "time",
               "displayOrder": 2,
               "displayable": true
             },
-            "endConditionValue": 300.0,
+            "endConditionValue": 480.0,
             "preferredEndConditionUnit": null,
             "endConditionCompare": null,
             "targetType": {
@@ -102,7 +102,7 @@
           },
           {
             "type": "RepeatGroupDTO",
-            "stepId": 13645686515,
+            "stepId": 13695642128,
             "stepOrder": 2,
             "stepType": {
               "stepTypeId": 6,
@@ -114,7 +114,7 @@
             "workoutSteps": [
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13645686516,
+                "stepId": 13695642129,
                 "stepOrder": 3,
                 "stepType": {
                   "stepTypeId": 3,
@@ -122,7 +122,7 @@
                   "displayOrder": 3
                 },
                 "childStepId": 1,
-                "description": "Banded ankle inversion \u00b7 15 repeticiones por lado",
+                "description": "Eccentric heel drop (Alfredson) \u00b7 pie recto + pie girado 15\u00b0 hacia fuera \u00b7 15 repeticiones lentas cada pierna \u00b7 usa borde de escal\u00f3n o libro grueso \u00b7 foco: descenso de 3 s controlado\n",
                 "endCondition": {
                   "conditionTypeId": 10,
                   "conditionTypeKey": "reps",
@@ -179,7 +179,7 @@
           },
           {
             "type": "RepeatGroupDTO",
-            "stepId": 13645686517,
+            "stepId": 13695642130,
             "stepOrder": 4,
             "stepType": {
               "stepTypeId": 6,
@@ -191,7 +191,7 @@
             "workoutSteps": [
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13645686518,
+                "stepId": 13695642131,
                 "stepOrder": 5,
                 "stepType": {
                   "stepTypeId": 3,
@@ -199,7 +199,84 @@
                   "displayOrder": 3
                 },
                 "childStepId": 2,
-                "description": "Banded ankle eversion \u00b7 15 repeticiones por lado",
+                "description": "Towel scrunches / marble pickups \u00b7 musculatura intr\u00ednseca del pie \u00b7 30 s cada pie \u00b7 recoge toalla o pelotas del suelo con los dedos\n",
+                "endCondition": {
+                  "conditionTypeId": 2,
+                  "conditionTypeKey": "time",
+                  "displayOrder": 2,
+                  "displayable": true
+                },
+                "endConditionValue": 60.0,
+                "preferredEndConditionUnit": null,
+                "endConditionCompare": null,
+                "targetType": {
+                  "workoutTargetTypeId": 1,
+                  "workoutTargetTypeKey": "no.target",
+                  "displayOrder": 1
+                },
+                "targetValueOne": null,
+                "targetValueTwo": null,
+                "targetValueUnit": null,
+                "zoneNumber": null,
+                "secondaryTargetType": null,
+                "secondaryTargetValueOne": null,
+                "secondaryTargetValueTwo": null,
+                "secondaryTargetValueUnit": null,
+                "secondaryZoneNumber": null,
+                "endConditionZone": null,
+                "strokeType": {
+                  "strokeTypeId": 0,
+                  "strokeTypeKey": null,
+                  "displayOrder": 0
+                },
+                "equipmentType": {
+                  "equipmentTypeId": 0,
+                  "equipmentTypeKey": null,
+                  "displayOrder": 0
+                },
+                "category": null,
+                "exerciseName": null,
+                "workoutProvider": null,
+                "providerExerciseSourceId": null,
+                "weightValue": null,
+                "weightUnit": null
+              }
+            ],
+            "endConditionValue": 3.0,
+            "preferredEndConditionUnit": null,
+            "endConditionCompare": null,
+            "endCondition": {
+              "conditionTypeId": 7,
+              "conditionTypeKey": "iterations",
+              "displayOrder": 7,
+              "displayable": false
+            },
+            "skipLastRestStep": null,
+            "smartRepeat": false
+          },
+          {
+            "type": "RepeatGroupDTO",
+            "stepId": 13695642132,
+            "stepOrder": 6,
+            "stepType": {
+              "stepTypeId": 6,
+              "stepTypeKey": "repeat",
+              "displayOrder": 6
+            },
+            "childStepId": 3,
+            "numberOfIterations": 3,
+            "workoutSteps": [
+              {
+                "type": "ExecutableStepDTO",
+                "stepId": 13695642133,
+                "stepOrder": 7,
+                "stepType": {
+                  "stepTypeId": 3,
+                  "stepTypeKey": "interval",
+                  "displayOrder": 3
+                },
+                "childStepId": 3,
+                "description": "Resisted ankle inversion con goma corta \u00b7 tibial posterior \u00b7 15 repeticiones por lado \u00b7 ancla la goma en lateral externo, rota el pie hacia dentro resistiendo\n",
                 "endCondition": {
                   "conditionTypeId": 10,
                   "conditionTypeKey": "reps",
@@ -256,34 +333,34 @@
           },
           {
             "type": "RepeatGroupDTO",
-            "stepId": 13645686519,
-            "stepOrder": 6,
+            "stepId": 13695642134,
+            "stepOrder": 8,
             "stepType": {
               "stepTypeId": 6,
               "stepTypeKey": "repeat",
               "displayOrder": 6
             },
-            "childStepId": 3,
+            "childStepId": 4,
             "numberOfIterations": 3,
             "workoutSteps": [
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13645686520,
-                "stepOrder": 7,
+                "stepId": 13695642135,
+                "stepOrder": 9,
                 "stepType": {
                   "stepTypeId": 3,
                   "stepTypeKey": "interval",
                   "displayOrder": 3
                 },
-                "childStepId": 3,
-                "description": "Step-up to knee drive \u00b7 8 repeticiones por lado",
+                "childStepId": 4,
+                "description": "Toe raises (dorsiflexi\u00f3n activa) \u00b7 tibial anterior \u00b7 20 repeticiones \u00b7 de pie, talones fijos, dedos arriba al m\u00e1ximo\n",
                 "endCondition": {
                   "conditionTypeId": 10,
                   "conditionTypeKey": "reps",
                   "displayOrder": 10,
                   "displayable": true
                 },
-                "endConditionValue": 8.0,
+                "endConditionValue": 20.0,
                 "preferredEndConditionUnit": null,
                 "endConditionCompare": null,
                 "targetType": {
@@ -333,34 +410,34 @@
           },
           {
             "type": "RepeatGroupDTO",
-            "stepId": 13645686521,
-            "stepOrder": 8,
+            "stepId": 13695642136,
+            "stepOrder": 10,
             "stepType": {
               "stepTypeId": 6,
               "stepTypeKey": "repeat",
               "displayOrder": 6
             },
-            "childStepId": 4,
+            "childStepId": 5,
             "numberOfIterations": 3,
             "workoutSteps": [
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13645686522,
-                "stepOrder": 9,
+                "stepId": 13695642137,
+                "stepOrder": 11,
                 "stepType": {
                   "stepTypeId": 3,
                   "stepTypeKey": "interval",
                   "displayOrder": 3
                 },
-                "childStepId": 4,
-                "description": "Romanian deadlift \u00b7 8-10 repeticiones",
+                "childStepId": 5,
+                "description": "Romanian deadlift con barra 5-8 kg \u00b7 10 repeticiones \u00b7 cadena posterior y gl\u00fateo \u00b7 espalda neutra, empuje de cadera\n",
                 "endCondition": {
                   "conditionTypeId": 10,
                   "conditionTypeKey": "reps",
                   "displayOrder": 10,
                   "displayable": true
                 },
-                "endConditionValue": 8.0,
+                "endConditionValue": 10.0,
                 "preferredEndConditionUnit": null,
                 "endConditionCompare": null,
                 "targetType": {
@@ -410,84 +487,7 @@
           },
           {
             "type": "RepeatGroupDTO",
-            "stepId": 13645686523,
-            "stepOrder": 10,
-            "stepType": {
-              "stepTypeId": 6,
-              "stepTypeKey": "repeat",
-              "displayOrder": 6
-            },
-            "childStepId": 5,
-            "numberOfIterations": 3,
-            "workoutSteps": [
-              {
-                "type": "ExecutableStepDTO",
-                "stepId": 13645686524,
-                "stepOrder": 11,
-                "stepType": {
-                  "stepTypeId": 3,
-                  "stepTypeKey": "interval",
-                  "displayOrder": 3
-                },
-                "childStepId": 5,
-                "description": "Hamstring bridge on heels \u00b7 10-12 repeticiones",
-                "endCondition": {
-                  "conditionTypeId": 10,
-                  "conditionTypeKey": "reps",
-                  "displayOrder": 10,
-                  "displayable": true
-                },
-                "endConditionValue": 10.0,
-                "preferredEndConditionUnit": null,
-                "endConditionCompare": null,
-                "targetType": {
-                  "workoutTargetTypeId": 1,
-                  "workoutTargetTypeKey": "no.target",
-                  "displayOrder": 1
-                },
-                "targetValueOne": null,
-                "targetValueTwo": null,
-                "targetValueUnit": null,
-                "zoneNumber": null,
-                "secondaryTargetType": null,
-                "secondaryTargetValueOne": null,
-                "secondaryTargetValueTwo": null,
-                "secondaryTargetValueUnit": null,
-                "secondaryZoneNumber": null,
-                "endConditionZone": null,
-                "strokeType": {
-                  "strokeTypeId": 0,
-                  "strokeTypeKey": null,
-                  "displayOrder": 0
-                },
-                "equipmentType": {
-                  "equipmentTypeId": 0,
-                  "equipmentTypeKey": null,
-                  "displayOrder": 0
-                },
-                "category": null,
-                "exerciseName": null,
-                "workoutProvider": null,
-                "providerExerciseSourceId": null,
-                "weightValue": null,
-                "weightUnit": null
-              }
-            ],
-            "endConditionValue": 3.0,
-            "preferredEndConditionUnit": null,
-            "endConditionCompare": null,
-            "endCondition": {
-              "conditionTypeId": 7,
-              "conditionTypeKey": "iterations",
-              "displayOrder": 7,
-              "displayable": false
-            },
-            "skipLastRestStep": null,
-            "smartRepeat": false
-          },
-          {
-            "type": "RepeatGroupDTO",
-            "stepId": 13645686525,
+            "stepId": 13695642138,
             "stepOrder": 12,
             "stepType": {
               "stepTypeId": 6,
@@ -499,7 +499,7 @@
             "workoutSteps": [
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13645686526,
+                "stepId": 13695642139,
                 "stepOrder": 13,
                 "stepType": {
                   "stepTypeId": 3,
@@ -507,7 +507,7 @@
                   "displayOrder": 3
                 },
                 "childStepId": 6,
-                "description": "Pallof press \u00b7 10-12 repeticiones por lado",
+                "description": "Single-leg glute bridge \u00b7 10-12 repeticiones por pierna \u00b7 tal\u00f3n apoyado, empuje de cadera, sostener 2 s arriba \u00b7 refuerzo gl\u00fateo y control p\u00e9lvico\n",
                 "endCondition": {
                   "conditionTypeId": 10,
                   "conditionTypeKey": "reps",
@@ -515,6 +515,83 @@
                   "displayable": true
                 },
                 "endConditionValue": 10.0,
+                "preferredEndConditionUnit": null,
+                "endConditionCompare": null,
+                "targetType": {
+                  "workoutTargetTypeId": 1,
+                  "workoutTargetTypeKey": "no.target",
+                  "displayOrder": 1
+                },
+                "targetValueOne": null,
+                "targetValueTwo": null,
+                "targetValueUnit": null,
+                "zoneNumber": null,
+                "secondaryTargetType": null,
+                "secondaryTargetValueOne": null,
+                "secondaryTargetValueTwo": null,
+                "secondaryTargetValueUnit": null,
+                "secondaryZoneNumber": null,
+                "endConditionZone": null,
+                "strokeType": {
+                  "strokeTypeId": 0,
+                  "strokeTypeKey": null,
+                  "displayOrder": 0
+                },
+                "equipmentType": {
+                  "equipmentTypeId": 0,
+                  "equipmentTypeKey": null,
+                  "displayOrder": 0
+                },
+                "category": "BANDED_EXERCISES",
+                "exerciseName": "GLUTE_BRIDGE",
+                "workoutProvider": null,
+                "providerExerciseSourceId": null,
+                "weightValue": null,
+                "weightUnit": null
+              }
+            ],
+            "endConditionValue": 3.0,
+            "preferredEndConditionUnit": null,
+            "endConditionCompare": null,
+            "endCondition": {
+              "conditionTypeId": 7,
+              "conditionTypeKey": "iterations",
+              "displayOrder": 7,
+              "displayable": false
+            },
+            "skipLastRestStep": null,
+            "smartRepeat": false
+          },
+          {
+            "type": "RepeatGroupDTO",
+            "stepId": 13695642140,
+            "stepOrder": 14,
+            "stepType": {
+              "stepTypeId": 6,
+              "stepTypeKey": "repeat",
+              "displayOrder": 6
+            },
+            "childStepId": 7,
+            "numberOfIterations": 3,
+            "workoutSteps": [
+              {
+                "type": "ExecutableStepDTO",
+                "stepId": 13695642141,
+                "stepOrder": 15,
+                "stepType": {
+                  "stepTypeId": 3,
+                  "stepTypeKey": "interval",
+                  "displayOrder": 3
+                },
+                "childStepId": 7,
+                "description": "Step-up to knee drive con mancuerna 2-3 kg por mano \u00b7 8 repeticiones por pierna \u00b7 rodilla sube a 90\u00b0, control de bajada\n",
+                "endCondition": {
+                  "conditionTypeId": 10,
+                  "conditionTypeKey": "reps",
+                  "displayOrder": 10,
+                  "displayable": true
+                },
+                "endConditionValue": 8.0,
                 "preferredEndConditionUnit": null,
                 "endConditionCompare": null,
                 "targetType": {
@@ -564,27 +641,27 @@
           },
           {
             "type": "RepeatGroupDTO",
-            "stepId": 13645686527,
-            "stepOrder": 14,
+            "stepId": 13695642142,
+            "stepOrder": 16,
             "stepType": {
               "stepTypeId": 6,
               "stepTypeKey": "repeat",
               "displayOrder": 6
             },
-            "childStepId": 7,
+            "childStepId": 8,
             "numberOfIterations": 3,
             "workoutSteps": [
               {
                 "type": "ExecutableStepDTO",
-                "stepId": 13645686528,
-                "stepOrder": 15,
+                "stepId": 13695642143,
+                "stepOrder": 17,
                 "stepType": {
                   "stepTypeId": 3,
                   "stepTypeKey": "interval",
                   "displayOrder": 3
                 },
-                "childStepId": 7,
-                "description": "Dead bug \u00b7 8-10 repeticiones por lado",
+                "childStepId": 8,
+                "description": "Dead bug \u00b7 8 repeticiones por lado \u00b7 brazo y pierna contralateral \u00b7 lumbar pegada al suelo todo el recorrido \u00b7 core profundo\n",
                 "endCondition": {
                   "conditionTypeId": 10,
                   "conditionTypeKey": "reps",
@@ -640,23 +717,177 @@
             "smartRepeat": false
           },
           {
+            "type": "RepeatGroupDTO",
+            "stepId": 13695642144,
+            "stepOrder": 18,
+            "stepType": {
+              "stepTypeId": 6,
+              "stepTypeKey": "repeat",
+              "displayOrder": 6
+            },
+            "childStepId": 9,
+            "numberOfIterations": 3,
+            "workoutSteps": [
+              {
+                "type": "ExecutableStepDTO",
+                "stepId": 13695642145,
+                "stepOrder": 19,
+                "stepType": {
+                  "stepTypeId": 3,
+                  "stepTypeKey": "interval",
+                  "displayOrder": 3
+                },
+                "childStepId": 9,
+                "description": "Pallof press con goma larga (~12 kg) \u00b7 10 repeticiones por lado \u00b7 resistencia lateral anti-rotaci\u00f3n, codo a 90\u00b0, empuja y regresa lento\n",
+                "endCondition": {
+                  "conditionTypeId": 10,
+                  "conditionTypeKey": "reps",
+                  "displayOrder": 10,
+                  "displayable": true
+                },
+                "endConditionValue": 10.0,
+                "preferredEndConditionUnit": null,
+                "endConditionCompare": null,
+                "targetType": {
+                  "workoutTargetTypeId": 1,
+                  "workoutTargetTypeKey": "no.target",
+                  "displayOrder": 1
+                },
+                "targetValueOne": null,
+                "targetValueTwo": null,
+                "targetValueUnit": null,
+                "zoneNumber": null,
+                "secondaryTargetType": null,
+                "secondaryTargetValueOne": null,
+                "secondaryTargetValueTwo": null,
+                "secondaryTargetValueUnit": null,
+                "secondaryZoneNumber": null,
+                "endConditionZone": null,
+                "strokeType": {
+                  "strokeTypeId": 0,
+                  "strokeTypeKey": null,
+                  "displayOrder": 0
+                },
+                "equipmentType": {
+                  "equipmentTypeId": 0,
+                  "equipmentTypeKey": null,
+                  "displayOrder": 0
+                },
+                "category": null,
+                "exerciseName": null,
+                "workoutProvider": null,
+                "providerExerciseSourceId": null,
+                "weightValue": null,
+                "weightUnit": null
+              }
+            ],
+            "endConditionValue": 3.0,
+            "preferredEndConditionUnit": null,
+            "endConditionCompare": null,
+            "endCondition": {
+              "conditionTypeId": 7,
+              "conditionTypeKey": "iterations",
+              "displayOrder": 7,
+              "displayable": false
+            },
+            "skipLastRestStep": null,
+            "smartRepeat": false
+          },
+          {
+            "type": "RepeatGroupDTO",
+            "stepId": 13695642146,
+            "stepOrder": 20,
+            "stepType": {
+              "stepTypeId": 6,
+              "stepTypeKey": "repeat",
+              "displayOrder": 6
+            },
+            "childStepId": 10,
+            "numberOfIterations": 3,
+            "workoutSteps": [
+              {
+                "type": "ExecutableStepDTO",
+                "stepId": 13695642147,
+                "stepOrder": 21,
+                "stepType": {
+                  "stepTypeId": 3,
+                  "stepTypeKey": "interval",
+                  "displayOrder": 3
+                },
+                "childStepId": 10,
+                "description": "Plank con shoulder tap \u00b7 10 taps por lado (20 total) \u00b7 caderas estables, pelvis sin oscilar, respiraci\u00f3n continua\n",
+                "endCondition": {
+                  "conditionTypeId": 10,
+                  "conditionTypeKey": "reps",
+                  "displayOrder": 10,
+                  "displayable": true
+                },
+                "endConditionValue": 20.0,
+                "preferredEndConditionUnit": null,
+                "endConditionCompare": null,
+                "targetType": {
+                  "workoutTargetTypeId": 1,
+                  "workoutTargetTypeKey": "no.target",
+                  "displayOrder": 1
+                },
+                "targetValueOne": null,
+                "targetValueTwo": null,
+                "targetValueUnit": null,
+                "zoneNumber": null,
+                "secondaryTargetType": null,
+                "secondaryTargetValueOne": null,
+                "secondaryTargetValueTwo": null,
+                "secondaryTargetValueUnit": null,
+                "secondaryZoneNumber": null,
+                "endConditionZone": null,
+                "strokeType": {
+                  "strokeTypeId": 0,
+                  "strokeTypeKey": null,
+                  "displayOrder": 0
+                },
+                "equipmentType": {
+                  "equipmentTypeId": 0,
+                  "equipmentTypeKey": null,
+                  "displayOrder": 0
+                },
+                "category": null,
+                "exerciseName": null,
+                "workoutProvider": null,
+                "providerExerciseSourceId": null,
+                "weightValue": null,
+                "weightUnit": null
+              }
+            ],
+            "endConditionValue": 3.0,
+            "preferredEndConditionUnit": null,
+            "endConditionCompare": null,
+            "endCondition": {
+              "conditionTypeId": 7,
+              "conditionTypeKey": "iterations",
+              "displayOrder": 7,
+              "displayable": false
+            },
+            "skipLastRestStep": null,
+            "smartRepeat": false
+          },
+          {
             "type": "ExecutableStepDTO",
-            "stepId": 13645686529,
-            "stepOrder": 16,
+            "stepId": 13695642148,
+            "stepOrder": 22,
             "stepType": {
               "stepTypeId": 2,
               "stepTypeKey": "cooldown",
               "displayOrder": 2
             },
             "childStepId": null,
-            "description": "Movilidad final y descarga suave",
+            "description": "Estiramiento gemelos (pie recto y pie doblado 20 s c/u, cada pierna), estiramiento tibial anterior arrodillado 30 s, automasaje plantar con pelota de tenis 30 s cada pie\n",
             "endCondition": {
               "conditionTypeId": 2,
               "conditionTypeKey": "time",
               "displayOrder": 2,
               "displayable": true
             },
-            "endConditionValue": 300.0,
+            "endConditionValue": 420.0,
             "preferredEndConditionUnit": null,
             "endConditionCompare": null,
             "targetType": {
@@ -719,14 +950,14 @@
     "shared": false
   },
   "scheduled_response": {
-    "workoutScheduleId": 1678519570,
+    "workoutScheduleId": 1683934517,
     "workout": {
-      "workoutId": 1597254840,
+      "workoutId": 1602713075,
       "ownerId": 137864769,
-      "workoutName": "Fuerza rehabilitadora B 35 min",
-      "description": "Mantenimiento de fuerza durante la vuelta al impacto.",
-      "updatedDate": "2026-06-11T11:35:43.0",
-      "createdDate": "2026-06-11T11:35:43.0",
+      "workoutName": "Blindaje anti-lesiones 50 min",
+      "description": "Sesi\u00f3n de fuerza media-larga enfocada en blindaje contra fascitis plantar y periostitis tibial posterior. Incluye trabajo de musculatura intr\u00ednseca del pie, cadena posterior, tibial posterior y est\u00edmulo de core. Basada en el material disponible: gomas cortas, goma larga, mancuernas y barra ligera.\n",
+      "updatedDate": "2026-06-16T06:57:56.0",
+      "createdDate": "2026-06-16T06:57:56.0",
       "sportType": {
         "sportTypeId": 5,
         "sportTypeKey": "strength_training",
@@ -736,7 +967,7 @@
       "trainingPlanId": null,
       "author": null,
       "sharedWithUsers": null,
-      "estimatedDurationInSecs": 2100,
+      "estimatedDurationInSecs": 3000,
       "estimatedDistanceInMeters": null,
       "workoutSegments": [
         {
@@ -757,7 +988,7 @@
           "workoutSteps": [
             {
               "type": "ExecutableStepDTO",
-              "stepId": 13645686514,
+              "stepId": 13695642127,
               "stepOrder": 1,
               "stepType": {
                 "stepTypeId": 1,
@@ -765,14 +996,14 @@
                 "displayOrder": 1
               },
               "childStepId": null,
-              "description": "Activacion y movilidad articular",
+              "description": "Activaci\u00f3n pie y tobillo: c\u00edrculos de tobillo 10x cada direcci\u00f3n, marcha de puntillas 30 s, marcha de talones 30 s, movilidad de cadera en suelo\n",
               "endCondition": {
                 "conditionTypeId": 2,
                 "conditionTypeKey": "time",
                 "displayOrder": 2,
                 "displayable": true
               },
-              "endConditionValue": 300.0,
+              "endConditionValue": 480.0,
               "preferredEndConditionUnit": null,
               "endConditionCompare": null,
               "targetType": {
@@ -809,7 +1040,7 @@
             },
             {
               "type": "RepeatGroupDTO",
-              "stepId": 13645686515,
+              "stepId": 13695642128,
               "stepOrder": 2,
               "stepType": {
                 "stepTypeId": 6,
@@ -821,7 +1052,7 @@
               "workoutSteps": [
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13645686516,
+                  "stepId": 13695642129,
                   "stepOrder": 3,
                   "stepType": {
                     "stepTypeId": 3,
@@ -829,7 +1060,7 @@
                     "displayOrder": 3
                   },
                   "childStepId": 1,
-                  "description": "Banded ankle inversion \u00b7 15 repeticiones por lado",
+                  "description": "Eccentric heel drop (Alfredson) \u00b7 pie recto + pie girado 15\u00b0 hacia fuera \u00b7 15 repeticiones lentas cada pierna \u00b7 usa borde de escal\u00f3n o libro grueso \u00b7 foco: descenso de 3 s controlado\n",
                   "endCondition": {
                     "conditionTypeId": 10,
                     "conditionTypeKey": "reps",
@@ -886,7 +1117,7 @@
             },
             {
               "type": "RepeatGroupDTO",
-              "stepId": 13645686517,
+              "stepId": 13695642130,
               "stepOrder": 4,
               "stepType": {
                 "stepTypeId": 6,
@@ -898,7 +1129,7 @@
               "workoutSteps": [
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13645686518,
+                  "stepId": 13695642131,
                   "stepOrder": 5,
                   "stepType": {
                     "stepTypeId": 3,
@@ -906,7 +1137,84 @@
                     "displayOrder": 3
                   },
                   "childStepId": 2,
-                  "description": "Banded ankle eversion \u00b7 15 repeticiones por lado",
+                  "description": "Towel scrunches / marble pickups \u00b7 musculatura intr\u00ednseca del pie \u00b7 30 s cada pie \u00b7 recoge toalla o pelotas del suelo con los dedos\n",
+                  "endCondition": {
+                    "conditionTypeId": 2,
+                    "conditionTypeKey": "time",
+                    "displayOrder": 2,
+                    "displayable": true
+                  },
+                  "endConditionValue": 60.0,
+                  "preferredEndConditionUnit": null,
+                  "endConditionCompare": null,
+                  "targetType": {
+                    "workoutTargetTypeId": 1,
+                    "workoutTargetTypeKey": "no.target",
+                    "displayOrder": 1
+                  },
+                  "targetValueOne": null,
+                  "targetValueTwo": null,
+                  "targetValueUnit": null,
+                  "zoneNumber": null,
+                  "secondaryTargetType": null,
+                  "secondaryTargetValueOne": null,
+                  "secondaryTargetValueTwo": null,
+                  "secondaryTargetValueUnit": null,
+                  "secondaryZoneNumber": null,
+                  "endConditionZone": null,
+                  "strokeType": {
+                    "strokeTypeId": 0,
+                    "strokeTypeKey": null,
+                    "displayOrder": 0
+                  },
+                  "equipmentType": {
+                    "equipmentTypeId": 0,
+                    "equipmentTypeKey": null,
+                    "displayOrder": 0
+                  },
+                  "category": null,
+                  "exerciseName": null,
+                  "workoutProvider": null,
+                  "providerExerciseSourceId": null,
+                  "weightValue": null,
+                  "weightUnit": null
+                }
+              ],
+              "endConditionValue": 3.0,
+              "preferredEndConditionUnit": null,
+              "endConditionCompare": null,
+              "endCondition": {
+                "conditionTypeId": 7,
+                "conditionTypeKey": "iterations",
+                "displayOrder": 7,
+                "displayable": false
+              },
+              "skipLastRestStep": null,
+              "smartRepeat": false
+            },
+            {
+              "type": "RepeatGroupDTO",
+              "stepId": 13695642132,
+              "stepOrder": 6,
+              "stepType": {
+                "stepTypeId": 6,
+                "stepTypeKey": "repeat",
+                "displayOrder": 6
+              },
+              "childStepId": 3,
+              "numberOfIterations": 3,
+              "workoutSteps": [
+                {
+                  "type": "ExecutableStepDTO",
+                  "stepId": 13695642133,
+                  "stepOrder": 7,
+                  "stepType": {
+                    "stepTypeId": 3,
+                    "stepTypeKey": "interval",
+                    "displayOrder": 3
+                  },
+                  "childStepId": 3,
+                  "description": "Resisted ankle inversion con goma corta \u00b7 tibial posterior \u00b7 15 repeticiones por lado \u00b7 ancla la goma en lateral externo, rota el pie hacia dentro resistiendo\n",
                   "endCondition": {
                     "conditionTypeId": 10,
                     "conditionTypeKey": "reps",
@@ -963,34 +1271,34 @@
             },
             {
               "type": "RepeatGroupDTO",
-              "stepId": 13645686519,
-              "stepOrder": 6,
+              "stepId": 13695642134,
+              "stepOrder": 8,
               "stepType": {
                 "stepTypeId": 6,
                 "stepTypeKey": "repeat",
                 "displayOrder": 6
               },
-              "childStepId": 3,
+              "childStepId": 4,
               "numberOfIterations": 3,
               "workoutSteps": [
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13645686520,
-                  "stepOrder": 7,
+                  "stepId": 13695642135,
+                  "stepOrder": 9,
                   "stepType": {
                     "stepTypeId": 3,
                     "stepTypeKey": "interval",
                     "displayOrder": 3
                   },
-                  "childStepId": 3,
-                  "description": "Step-up to knee drive \u00b7 8 repeticiones por lado",
+                  "childStepId": 4,
+                  "description": "Toe raises (dorsiflexi\u00f3n activa) \u00b7 tibial anterior \u00b7 20 repeticiones \u00b7 de pie, talones fijos, dedos arriba al m\u00e1ximo\n",
                   "endCondition": {
                     "conditionTypeId": 10,
                     "conditionTypeKey": "reps",
                     "displayOrder": 10,
                     "displayable": true
                   },
-                  "endConditionValue": 8.0,
+                  "endConditionValue": 20.0,
                   "preferredEndConditionUnit": null,
                   "endConditionCompare": null,
                   "targetType": {
@@ -1040,34 +1348,34 @@
             },
             {
               "type": "RepeatGroupDTO",
-              "stepId": 13645686521,
-              "stepOrder": 8,
+              "stepId": 13695642136,
+              "stepOrder": 10,
               "stepType": {
                 "stepTypeId": 6,
                 "stepTypeKey": "repeat",
                 "displayOrder": 6
               },
-              "childStepId": 4,
+              "childStepId": 5,
               "numberOfIterations": 3,
               "workoutSteps": [
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13645686522,
-                  "stepOrder": 9,
+                  "stepId": 13695642137,
+                  "stepOrder": 11,
                   "stepType": {
                     "stepTypeId": 3,
                     "stepTypeKey": "interval",
                     "displayOrder": 3
                   },
-                  "childStepId": 4,
-                  "description": "Romanian deadlift \u00b7 8-10 repeticiones",
+                  "childStepId": 5,
+                  "description": "Romanian deadlift con barra 5-8 kg \u00b7 10 repeticiones \u00b7 cadena posterior y gl\u00fateo \u00b7 espalda neutra, empuje de cadera\n",
                   "endCondition": {
                     "conditionTypeId": 10,
                     "conditionTypeKey": "reps",
                     "displayOrder": 10,
                     "displayable": true
                   },
-                  "endConditionValue": 8.0,
+                  "endConditionValue": 10.0,
                   "preferredEndConditionUnit": null,
                   "endConditionCompare": null,
                   "targetType": {
@@ -1117,84 +1425,7 @@
             },
             {
               "type": "RepeatGroupDTO",
-              "stepId": 13645686523,
-              "stepOrder": 10,
-              "stepType": {
-                "stepTypeId": 6,
-                "stepTypeKey": "repeat",
-                "displayOrder": 6
-              },
-              "childStepId": 5,
-              "numberOfIterations": 3,
-              "workoutSteps": [
-                {
-                  "type": "ExecutableStepDTO",
-                  "stepId": 13645686524,
-                  "stepOrder": 11,
-                  "stepType": {
-                    "stepTypeId": 3,
-                    "stepTypeKey": "interval",
-                    "displayOrder": 3
-                  },
-                  "childStepId": 5,
-                  "description": "Hamstring bridge on heels \u00b7 10-12 repeticiones",
-                  "endCondition": {
-                    "conditionTypeId": 10,
-                    "conditionTypeKey": "reps",
-                    "displayOrder": 10,
-                    "displayable": true
-                  },
-                  "endConditionValue": 10.0,
-                  "preferredEndConditionUnit": null,
-                  "endConditionCompare": null,
-                  "targetType": {
-                    "workoutTargetTypeId": 1,
-                    "workoutTargetTypeKey": "no.target",
-                    "displayOrder": 1
-                  },
-                  "targetValueOne": null,
-                  "targetValueTwo": null,
-                  "targetValueUnit": null,
-                  "zoneNumber": null,
-                  "secondaryTargetType": null,
-                  "secondaryTargetValueOne": null,
-                  "secondaryTargetValueTwo": null,
-                  "secondaryTargetValueUnit": null,
-                  "secondaryZoneNumber": null,
-                  "endConditionZone": null,
-                  "strokeType": {
-                    "strokeTypeId": 0,
-                    "strokeTypeKey": null,
-                    "displayOrder": 0
-                  },
-                  "equipmentType": {
-                    "equipmentTypeId": 0,
-                    "equipmentTypeKey": null,
-                    "displayOrder": 0
-                  },
-                  "category": null,
-                  "exerciseName": null,
-                  "workoutProvider": null,
-                  "providerExerciseSourceId": null,
-                  "weightValue": null,
-                  "weightUnit": null
-                }
-              ],
-              "endConditionValue": 3.0,
-              "preferredEndConditionUnit": null,
-              "endConditionCompare": null,
-              "endCondition": {
-                "conditionTypeId": 7,
-                "conditionTypeKey": "iterations",
-                "displayOrder": 7,
-                "displayable": false
-              },
-              "skipLastRestStep": null,
-              "smartRepeat": false
-            },
-            {
-              "type": "RepeatGroupDTO",
-              "stepId": 13645686525,
+              "stepId": 13695642138,
               "stepOrder": 12,
               "stepType": {
                 "stepTypeId": 6,
@@ -1206,7 +1437,7 @@
               "workoutSteps": [
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13645686526,
+                  "stepId": 13695642139,
                   "stepOrder": 13,
                   "stepType": {
                     "stepTypeId": 3,
@@ -1214,7 +1445,7 @@
                     "displayOrder": 3
                   },
                   "childStepId": 6,
-                  "description": "Pallof press \u00b7 10-12 repeticiones por lado",
+                  "description": "Single-leg glute bridge \u00b7 10-12 repeticiones por pierna \u00b7 tal\u00f3n apoyado, empuje de cadera, sostener 2 s arriba \u00b7 refuerzo gl\u00fateo y control p\u00e9lvico\n",
                   "endCondition": {
                     "conditionTypeId": 10,
                     "conditionTypeKey": "reps",
@@ -1222,6 +1453,83 @@
                     "displayable": true
                   },
                   "endConditionValue": 10.0,
+                  "preferredEndConditionUnit": null,
+                  "endConditionCompare": null,
+                  "targetType": {
+                    "workoutTargetTypeId": 1,
+                    "workoutTargetTypeKey": "no.target",
+                    "displayOrder": 1
+                  },
+                  "targetValueOne": null,
+                  "targetValueTwo": null,
+                  "targetValueUnit": null,
+                  "zoneNumber": null,
+                  "secondaryTargetType": null,
+                  "secondaryTargetValueOne": null,
+                  "secondaryTargetValueTwo": null,
+                  "secondaryTargetValueUnit": null,
+                  "secondaryZoneNumber": null,
+                  "endConditionZone": null,
+                  "strokeType": {
+                    "strokeTypeId": 0,
+                    "strokeTypeKey": null,
+                    "displayOrder": 0
+                  },
+                  "equipmentType": {
+                    "equipmentTypeId": 0,
+                    "equipmentTypeKey": null,
+                    "displayOrder": 0
+                  },
+                  "category": "BANDED_EXERCISES",
+                  "exerciseName": "GLUTE_BRIDGE",
+                  "workoutProvider": null,
+                  "providerExerciseSourceId": null,
+                  "weightValue": null,
+                  "weightUnit": null
+                }
+              ],
+              "endConditionValue": 3.0,
+              "preferredEndConditionUnit": null,
+              "endConditionCompare": null,
+              "endCondition": {
+                "conditionTypeId": 7,
+                "conditionTypeKey": "iterations",
+                "displayOrder": 7,
+                "displayable": false
+              },
+              "skipLastRestStep": null,
+              "smartRepeat": false
+            },
+            {
+              "type": "RepeatGroupDTO",
+              "stepId": 13695642140,
+              "stepOrder": 14,
+              "stepType": {
+                "stepTypeId": 6,
+                "stepTypeKey": "repeat",
+                "displayOrder": 6
+              },
+              "childStepId": 7,
+              "numberOfIterations": 3,
+              "workoutSteps": [
+                {
+                  "type": "ExecutableStepDTO",
+                  "stepId": 13695642141,
+                  "stepOrder": 15,
+                  "stepType": {
+                    "stepTypeId": 3,
+                    "stepTypeKey": "interval",
+                    "displayOrder": 3
+                  },
+                  "childStepId": 7,
+                  "description": "Step-up to knee drive con mancuerna 2-3 kg por mano \u00b7 8 repeticiones por pierna \u00b7 rodilla sube a 90\u00b0, control de bajada\n",
+                  "endCondition": {
+                    "conditionTypeId": 10,
+                    "conditionTypeKey": "reps",
+                    "displayOrder": 10,
+                    "displayable": true
+                  },
+                  "endConditionValue": 8.0,
                   "preferredEndConditionUnit": null,
                   "endConditionCompare": null,
                   "targetType": {
@@ -1271,27 +1579,27 @@
             },
             {
               "type": "RepeatGroupDTO",
-              "stepId": 13645686527,
-              "stepOrder": 14,
+              "stepId": 13695642142,
+              "stepOrder": 16,
               "stepType": {
                 "stepTypeId": 6,
                 "stepTypeKey": "repeat",
                 "displayOrder": 6
               },
-              "childStepId": 7,
+              "childStepId": 8,
               "numberOfIterations": 3,
               "workoutSteps": [
                 {
                   "type": "ExecutableStepDTO",
-                  "stepId": 13645686528,
-                  "stepOrder": 15,
+                  "stepId": 13695642143,
+                  "stepOrder": 17,
                   "stepType": {
                     "stepTypeId": 3,
                     "stepTypeKey": "interval",
                     "displayOrder": 3
                   },
-                  "childStepId": 7,
-                  "description": "Dead bug \u00b7 8-10 repeticiones por lado",
+                  "childStepId": 8,
+                  "description": "Dead bug \u00b7 8 repeticiones por lado \u00b7 brazo y pierna contralateral \u00b7 lumbar pegada al suelo todo el recorrido \u00b7 core profundo\n",
                   "endCondition": {
                     "conditionTypeId": 10,
                     "conditionTypeKey": "reps",
@@ -1347,23 +1655,177 @@
               "smartRepeat": false
             },
             {
+              "type": "RepeatGroupDTO",
+              "stepId": 13695642144,
+              "stepOrder": 18,
+              "stepType": {
+                "stepTypeId": 6,
+                "stepTypeKey": "repeat",
+                "displayOrder": 6
+              },
+              "childStepId": 9,
+              "numberOfIterations": 3,
+              "workoutSteps": [
+                {
+                  "type": "ExecutableStepDTO",
+                  "stepId": 13695642145,
+                  "stepOrder": 19,
+                  "stepType": {
+                    "stepTypeId": 3,
+                    "stepTypeKey": "interval",
+                    "displayOrder": 3
+                  },
+                  "childStepId": 9,
+                  "description": "Pallof press con goma larga (~12 kg) \u00b7 10 repeticiones por lado \u00b7 resistencia lateral anti-rotaci\u00f3n, codo a 90\u00b0, empuja y regresa lento\n",
+                  "endCondition": {
+                    "conditionTypeId": 10,
+                    "conditionTypeKey": "reps",
+                    "displayOrder": 10,
+                    "displayable": true
+                  },
+                  "endConditionValue": 10.0,
+                  "preferredEndConditionUnit": null,
+                  "endConditionCompare": null,
+                  "targetType": {
+                    "workoutTargetTypeId": 1,
+                    "workoutTargetTypeKey": "no.target",
+                    "displayOrder": 1
+                  },
+                  "targetValueOne": null,
+                  "targetValueTwo": null,
+                  "targetValueUnit": null,
+                  "zoneNumber": null,
+                  "secondaryTargetType": null,
+                  "secondaryTargetValueOne": null,
+                  "secondaryTargetValueTwo": null,
+                  "secondaryTargetValueUnit": null,
+                  "secondaryZoneNumber": null,
+                  "endConditionZone": null,
+                  "strokeType": {
+                    "strokeTypeId": 0,
+                    "strokeTypeKey": null,
+                    "displayOrder": 0
+                  },
+                  "equipmentType": {
+                    "equipmentTypeId": 0,
+                    "equipmentTypeKey": null,
+                    "displayOrder": 0
+                  },
+                  "category": null,
+                  "exerciseName": null,
+                  "workoutProvider": null,
+                  "providerExerciseSourceId": null,
+                  "weightValue": null,
+                  "weightUnit": null
+                }
+              ],
+              "endConditionValue": 3.0,
+              "preferredEndConditionUnit": null,
+              "endConditionCompare": null,
+              "endCondition": {
+                "conditionTypeId": 7,
+                "conditionTypeKey": "iterations",
+                "displayOrder": 7,
+                "displayable": false
+              },
+              "skipLastRestStep": null,
+              "smartRepeat": false
+            },
+            {
+              "type": "RepeatGroupDTO",
+              "stepId": 13695642146,
+              "stepOrder": 20,
+              "stepType": {
+                "stepTypeId": 6,
+                "stepTypeKey": "repeat",
+                "displayOrder": 6
+              },
+              "childStepId": 10,
+              "numberOfIterations": 3,
+              "workoutSteps": [
+                {
+                  "type": "ExecutableStepDTO",
+                  "stepId": 13695642147,
+                  "stepOrder": 21,
+                  "stepType": {
+                    "stepTypeId": 3,
+                    "stepTypeKey": "interval",
+                    "displayOrder": 3
+                  },
+                  "childStepId": 10,
+                  "description": "Plank con shoulder tap \u00b7 10 taps por lado (20 total) \u00b7 caderas estables, pelvis sin oscilar, respiraci\u00f3n continua\n",
+                  "endCondition": {
+                    "conditionTypeId": 10,
+                    "conditionTypeKey": "reps",
+                    "displayOrder": 10,
+                    "displayable": true
+                  },
+                  "endConditionValue": 20.0,
+                  "preferredEndConditionUnit": null,
+                  "endConditionCompare": null,
+                  "targetType": {
+                    "workoutTargetTypeId": 1,
+                    "workoutTargetTypeKey": "no.target",
+                    "displayOrder": 1
+                  },
+                  "targetValueOne": null,
+                  "targetValueTwo": null,
+                  "targetValueUnit": null,
+                  "zoneNumber": null,
+                  "secondaryTargetType": null,
+                  "secondaryTargetValueOne": null,
+                  "secondaryTargetValueTwo": null,
+                  "secondaryTargetValueUnit": null,
+                  "secondaryZoneNumber": null,
+                  "endConditionZone": null,
+                  "strokeType": {
+                    "strokeTypeId": 0,
+                    "strokeTypeKey": null,
+                    "displayOrder": 0
+                  },
+                  "equipmentType": {
+                    "equipmentTypeId": 0,
+                    "equipmentTypeKey": null,
+                    "displayOrder": 0
+                  },
+                  "category": null,
+                  "exerciseName": null,
+                  "workoutProvider": null,
+                  "providerExerciseSourceId": null,
+                  "weightValue": null,
+                  "weightUnit": null
+                }
+              ],
+              "endConditionValue": 3.0,
+              "preferredEndConditionUnit": null,
+              "endConditionCompare": null,
+              "endCondition": {
+                "conditionTypeId": 7,
+                "conditionTypeKey": "iterations",
+                "displayOrder": 7,
+                "displayable": false
+              },
+              "skipLastRestStep": null,
+              "smartRepeat": false
+            },
+            {
               "type": "ExecutableStepDTO",
-              "stepId": 13645686529,
-              "stepOrder": 16,
+              "stepId": 13695642148,
+              "stepOrder": 22,
               "stepType": {
                 "stepTypeId": 2,
                 "stepTypeKey": "cooldown",
                 "displayOrder": 2
               },
               "childStepId": null,
-              "description": "Movilidad final y descarga suave",
+              "description": "Estiramiento gemelos (pie recto y pie doblado 20 s c/u, cada pierna), estiramiento tibial anterior arrodillado 30 s, automasaje plantar con pelota de tenis 30 s cada pie\n",
               "endCondition": {
                 "conditionTypeId": 2,
                 "conditionTypeKey": "time",
                 "displayOrder": 2,
                 "displayable": true
               },
-              "endConditionValue": 300.0,
+              "endConditionValue": 420.0,
               "preferredEndConditionUnit": null,
               "endConditionCompare": null,
               "targetType": {
@@ -1425,8 +1887,8 @@
       "isSessionTransitionEnabled": null,
       "shared": false
     },
-    "calendarDate": "2026-06-17",
-    "createdDate": "2026-06-11",
+    "calendarDate": "2026-06-16",
+    "createdDate": "2026-06-16",
     "ownerId": 137864769,
     "newName": null,
     "consumer": null,
@@ -1435,19 +1897,11 @@
     "priority": null,
     "associatedActivityDateTime": null,
     "tpType": null,
-    "itp": false,
     "race": false,
-    "protected": false,
-    "nameChanged": false
+    "itp": false,
+    "nameChanged": false,
+    "protected": false
   },
   "warning": null,
-  "replaced_uploads": [
-    {
-      "record": "training/planned/workouts/2026-06-17/2026-06-17_fuerza_rehabilitadora_b_35min.garmin_upload.json",
-      "scheduled_workout_id": 1661173969,
-      "unscheduled": true,
-      "workout_id": 1579702455,
-      "deleted": true
-    }
-  ]
+  "replaced_uploads": []
 }

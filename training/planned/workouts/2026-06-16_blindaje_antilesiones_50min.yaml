@@ -1,0 +1,140 @@
+workout:
+  name: Blindaje anti-lesiones 50 min
+  schedule_date: 2026-06-16
+  sport: strength
+  description: >
+    Sesión de fuerza media-larga enfocada en blindaje contra fascitis plantar y
+    periostitis tibial posterior. Incluye trabajo de musculatura intrínseca del pie,
+    cadena posterior, tibial posterior y estímulo de core. Basada en el material
+    disponible: gomas cortas, goma larga, mancuernas y barra ligera.
+  estimated_duration_s: 3000
+  steps:
+  - order: 1
+    step_type: warmup
+    description: >
+      Activación pie y tobillo: círculos de tobillo 10x cada dirección, marcha
+      de puntillas 30 s, marcha de talones 30 s, movilidad de cadera en suelo
+    duration_s: 480
+
+  - order: 2
+    type: repeat_group
+    iterations: 3
+    steps:
+    - order: 3
+      step_type: interval
+      description: >
+        Eccentric heel drop (Alfredson) · pie recto + pie girado 15° hacia fuera ·
+        15 repeticiones lentas cada pierna · usa borde de escalón o libro grueso ·
+        foco: descenso de 3 s controlado
+      repetitions: 15
+
+  - order: 3
+    type: repeat_group
+    iterations: 3
+    steps:
+    - order: 4
+      step_type: interval
+      description: >
+        Towel scrunches / marble pickups · musculatura intrínseca del pie ·
+        30 s cada pie · recoge toalla o pelotas del suelo con los dedos
+      duration_s: 60
+
+  - order: 4
+    type: repeat_group
+    iterations: 3
+    steps:
+    - order: 5
+      step_type: interval
+      description: >
+        Resisted ankle inversion con goma corta · tibial posterior ·
+        15 repeticiones por lado · ancla la goma en lateral externo,
+        rota el pie hacia dentro resistiendo
+      repetitions: 15
+
+  - order: 5
+    type: repeat_group
+    iterations: 3
+    steps:
+    - order: 6
+      step_type: interval
+      description: >
+        Toe raises (dorsiflexión activa) · tibial anterior ·
+        20 repeticiones · de pie, talones fijos, dedos arriba al máximo
+      repetitions: 20
+
+  - order: 6
+    type: repeat_group
+    iterations: 3
+    steps:
+    - order: 7
+      step_type: interval
+      description: >
+        Romanian deadlift con barra 5-8 kg · 10 repeticiones ·
+        cadena posterior y glúteo · espalda neutra, empuje de cadera
+      repetitions: 10
+      exercise_name: Deadlift
+      category: DEADLIFT
+
+  - order: 7
+    type: repeat_group
+    iterations: 3
+    steps:
+    - order: 8
+      step_type: interval
+      description: >
+        Single-leg glute bridge · 10-12 repeticiones por pierna ·
+        talón apoyado, empuje de cadera, sostener 2 s arriba ·
+        refuerzo glúteo y control pélvico
+      repetitions: 10
+
+  - order: 8
+    type: repeat_group
+    iterations: 3
+    steps:
+    - order: 9
+      step_type: interval
+      description: >
+        Step-up to knee drive con mancuerna 2-3 kg por mano ·
+        8 repeticiones por pierna · rodilla sube a 90°, control de bajada
+      repetitions: 8
+
+  - order: 9
+    type: repeat_group
+    iterations: 3
+    steps:
+    - order: 10
+      step_type: interval
+      description: >
+        Dead bug · 8 repeticiones por lado · brazo y pierna contralateral ·
+        lumbar pegada al suelo todo el recorrido · core profundo
+      repetitions: 8
+
+  - order: 10
+    type: repeat_group
+    iterations: 3
+    steps:
+    - order: 11
+      step_type: interval
+      description: >
+        Pallof press con goma larga (~12 kg) · 10 repeticiones por lado ·
+        resistencia lateral anti-rotación, codo a 90°, empuja y regresa lento
+      repetitions: 10
+
+  - order: 11
+    type: repeat_group
+    iterations: 3
+    steps:
+    - order: 12
+      step_type: interval
+      description: >
+        Plank con shoulder tap · 10 taps por lado (20 total) ·
+        caderas estables, pelvis sin oscilar, respiración continua
+      repetitions: 20
+
+  - order: 12
+    step_type: cooldown
+    description: >
+      Estiramiento gemelos (pie recto y pie doblado 20 s c/u, cada pierna),
+      estiramiento tibial anterior arrodillado 30 s, automasaje plantar
+      con pelota de tenis 30 s cada pie
+    duration_s: 420

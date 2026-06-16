@@ -57,6 +57,26 @@ class TelegramOpenCodeBridgeTests(unittest.TestCase):
 
         self.assertEqual(config.opencode.local_retry_timeout_s, DEFAULT_LOCAL_RETRY_TIMEOUT_S)
 
+    def test_load_config_defaults_to_non_interactive_permissions(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            config_path = Path(tmp_dir) / "bot_config.yaml"
+            config_path.write_text(
+                yaml.safe_dump(
+                    {
+                        "telegram": {"bot_token": "token", "chat_id": "1"},
+                        "opencode_remote": {"project_dir": str(ROOT)},
+                    },
+                    sort_keys=False,
+                ),
+                encoding="utf-8",
+            )
+
+            with patch.dict("os.environ", {}, clear=True):
+                config = load_config(config_path)
+
+        self.assertTrue(config.opencode.dangerously_skip_permissions)
+        self.assertTrue(sanitized_config(config)["opencode_remote"]["dangerously_skip_permissions"])
+
 
 if __name__ == "__main__":
     unittest.main()

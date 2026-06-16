@@ -22,7 +22,7 @@ import yaml
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_CONFIG_PATH = ROOT / "telegram" / "bot_config.yaml"
 DEFAULT_OPENCODE_MODEL = "openai/gpt-5.4"
-DEFAULT_LOCAL_RETRY_TIMEOUT_S = 180
+DEFAULT_LOCAL_RETRY_TIMEOUT_S = 900
 ANSI_RE = re.compile(r"\x1b\[[0-9;]*m")
 
 logger = logging.getLogger("telegram.opencode_bridge")
@@ -142,7 +142,7 @@ def load_config(path: Path = DEFAULT_CONFIG_PATH) -> RemoteBotConfig:
             timeout_s=int(opencode_data.get("timeout_s") or 3600),
             allow_commit=bool(opencode_data.get("allow_commit", True)),
             allow_push=bool(opencode_data.get("allow_push", True)),
-            dangerously_skip_permissions=bool(opencode_data.get("dangerously_skip_permissions", False)),
+            dangerously_skip_permissions=bool(opencode_data.get("dangerously_skip_permissions", True)),
             model=normalize_model_name(opencode_data.get("model") or DEFAULT_OPENCODE_MODEL),
             variant=(str(opencode_data.get("variant") or "").strip() or None),
             max_response_chars=int(opencode_data.get("max_response_chars") or 12000),

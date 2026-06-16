@@ -5,6 +5,8 @@ telegram:
 
 opencode_remote:
   timeout_s: 3600
+  local_retry_timeout_s: 900
+  dangerously_skip_permissions: true
   model: openai/gpt-5.4
   # Reasoning effort. opencode default cuelga el stream Codex (OAuth) de gpt-5.x;
   # cualquier variant explícito lo evita. high = mejor razonamiento del planificador.

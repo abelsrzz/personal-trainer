@@ -938,7 +938,7 @@ def load_web_chat_remote_config() -> tuple[OpenCodeRemoteConfig | None, str | No
                 timeout_s=int(opencode_data.get("timeout_s") or 3600),
                 allow_commit=bool(opencode_data.get("allow_commit", True)),
                 allow_push=bool(opencode_data.get("allow_push", True)),
-                dangerously_skip_permissions=bool(opencode_data.get("dangerously_skip_permissions", False)),
+                dangerously_skip_permissions=bool(opencode_data.get("dangerously_skip_permissions", True)),
                 model=normalize_model_name(opencode_data.get("model") or DEFAULT_OPENCODE_MODEL),
                 variant=(str(opencode_data.get("variant") or "").strip() or None),
                 max_response_chars=int(opencode_data.get("max_response_chars") or 12000),

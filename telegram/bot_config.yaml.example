@@ -22,7 +22,10 @@ opencode_remote:
   timeout_s: 1800
   allow_commit: true
   allow_push: true
-  dangerously_skip_permissions: false
+  # Telegram bot runs unattended and must be able to edit training files without
+  # waiting for an interactive approval prompt.
+  dangerously_skip_permissions: true
+  local_retry_timeout_s: 900
   model: openai/gpt-5.4
   max_response_chars: 12000
   require_confirmation_patterns:

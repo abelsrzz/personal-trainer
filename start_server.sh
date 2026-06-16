@@ -76,7 +76,8 @@ is_running() {
   [[ -f "$pid_file" ]] || return 1
   local pid
   pid="$(<"$pid_file")"
-  [[ -n "$pid" ]] || return 1
+  # Reject empty, zero, or non-integer values — kill 0 would signal the whole process group
+  [[ "$pid" =~ ^[1-9][0-9]*$ ]] || return 1
   kill -0 "$pid" 2>/dev/null
 }
 

@@ -230,7 +230,7 @@ def opencode_model() -> str:
 def opencode_variant() -> str:
     config = load_yaml(TELEGRAM_CONFIG_PATH)
     remote = config.get("opencode_remote", {}) if isinstance(config.get("opencode_remote"), dict) else {}
-    return str(remote.get("variant") or os.getenv("OPENCODE_VARIANT") or "high").strip() or "high"
+    return str(os.getenv("OPENCODE_PLANNING_VARIANT") or remote.get("planning_variant") or "minimal").strip() or "minimal"
 
 
 def file_sha256(path: Path) -> str:

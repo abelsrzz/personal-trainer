@@ -137,7 +137,7 @@ def load_config(path: Path = DEFAULT_CONFIG_PATH) -> RemoteBotConfig:
         ),
         opencode=OpenCodeRemoteConfig(
             enabled=bool(opencode_data.get("enabled", True)),
-            server_url=str(opencode_data.get("server_url") or "http://127.0.0.1:4096").strip(),
+            server_url=str(os.getenv("OPENCODE_SERVER_URL") or opencode_data.get("server_url") or "http://127.0.0.1:4096").strip(),
             project_dir=project_dir,
             session_store=session_store,
             timeout_s=int(opencode_data.get("timeout_s") or 3600),

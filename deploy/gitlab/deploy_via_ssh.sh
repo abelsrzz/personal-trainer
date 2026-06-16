@@ -156,6 +156,8 @@ rsync -az --delete \
   --exclude '.pytest_cache/' \
   --exclude '__pycache__/' \
   --exclude '*.pyc' \
+  --exclude '.env' \
+  --exclude '.deploy-preserve/' \
   --exclude 'telegram/opencode_sessions.json' \
   --exclude 'telegram/.semana_actual_state.json' \
   ./ "$REMOTE_TARGET:$DEPLOY_PATH/"

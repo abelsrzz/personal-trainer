@@ -157,10 +157,26 @@ def load_yaml(path: Path) -> dict[str, Any]:
     return _read_cached_file(path, "yaml")
 
 
+def _mirror_to_sql(path: Path) -> None:
+    """Dual-write hook: keep the SQL mirror in sync after a file write.
+
+    No-op unless STORAGE_BACKEND=sql. Failures are logged but never break the
+    file-based write, so the app stays functional if the DB is unavailable.
+    """
+    if str(os.getenv("STORAGE_BACKEND") or "file").strip().lower() != "sql":
+        return
+    try:
+        from scripts.storage.migrate_files_to_sql import mirror_file
+        mirror_file(path)
+    except Exception as exc:  # pragma: no cover - resilience path
+        logger.warning("SQL mirror failed for %s: %s", path, exc)
+
+
 def write_yaml(path: Path, payload: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as handle:
         yaml.safe_dump(payload, handle, allow_unicode=False, sort_keys=False)
+    _mirror_to_sql(path)
 
 
 def read_text(path: Path) -> str:
@@ -220,6 +236,7 @@ def iso_date_string(value: Any) -> str:
 def write_json(path: Path, payload: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, indent=2, ensure_ascii=True) + "\n", encoding="utf-8")
+    _mirror_to_sql(path)
 
 
 def month_label(value: str) -> str:
@@ -932,7 +949,7 @@ def load_web_chat_remote_config() -> tuple[OpenCodeRemoteConfig | None, str | No
         return (
             OpenCodeRemoteConfig(
                 enabled=bool(opencode_data.get("enabled", True)),
-                server_url=str(opencode_data.get("server_url") or "http://127.0.0.1:4096").strip(),
+                server_url=str(os.getenv("OPENCODE_SERVER_URL") or opencode_data.get("server_url") or "http://127.0.0.1:4096").strip(),
                 project_dir=normalize_runtime_path(opencode_data.get("project_dir") or ROOT),
                 session_store=normalize_runtime_path(opencode_data.get("session_store") or "telegram/opencode_sessions.json"),
                 timeout_s=int(opencode_data.get("timeout_s") or 3600),

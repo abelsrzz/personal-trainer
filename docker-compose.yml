@@ -1,0 +1,178 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-personal_trainer}
+      POSTGRES_USER: ${POSTGRES_USER:-personal_trainer}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-personal_trainer}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    restart: unless-stopped
+
+  # One-shot file -> SQL import on every `up`. Validates coverage and prunes
+  # rows whose source file disappeared. Blocks the app services until done.
+  migrate:
+    build: .
+    environment: &app_environment
+      DATABASE_URL: ${DATABASE_URL:-postgresql://personal_trainer:personal_trainer@db:5432/personal_trainer}
+      STORAGE_BACKEND: ${STORAGE_BACKEND:-sql}
+      RUNNING_WEB_USERNAME: ${RUNNING_WEB_USERNAME:-abel}
+      RUNNING_WEB_PASSWORD: ${RUNNING_WEB_PASSWORD:-change-me}
+      RUNNING_WEB_SECRET: ${RUNNING_WEB_SECRET:-change-me-too}
+      RUNNING_WEB_V2_GARMIN_AUTO_SYNC: ${RUNNING_WEB_V2_GARMIN_AUTO_SYNC:-1}
+      GARMIN_EMAIL: ${GARMIN_EMAIL:-}
+      GARMIN_PASSWORD: ${GARMIN_PASSWORD:-}
+      GARMIN_TOKEN_STORE: ${GARMIN_TOKEN_STORE:-/home/app/.garminconnect}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
+      TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID:-}
+      TELEGRAM_ALLOWED_CHAT_IDS: ${TELEGRAM_ALLOWED_CHAT_IDS:-}
+      OPENCODE_SERVER_URL: ${OPENCODE_SERVER_URL:-http://opencode:4096}
+      OPENCODE_PROJECT_DIR: ${OPENCODE_PROJECT_DIR:-/app}
+      OPENCODE_SESSION_STORE: ${OPENCODE_SESSION_STORE:-telegram/opencode_sessions.json}
+      OPENCODE_REMOTE_ENABLED: ${OPENCODE_REMOTE_ENABLED:-1}
+      OPENCODE_MODEL: ${OPENCODE_MODEL:-openai/gpt-5.4}
+      OPENCODE_TIMEOUT_S: ${OPENCODE_TIMEOUT_S:-1800}
+      OPENCODE_MAX_RESPONSE_CHARS: ${OPENCODE_MAX_RESPONSE_CHARS:-12000}
+      OPENCODE_VARIANT: ${OPENCODE_VARIANT:-minimal}
+      OPENCODE_REQUIRE_CONFIRMATION_PATTERNS: ${OPENCODE_REQUIRE_CONFIRMATION_PATTERNS:-}
+      OPENCODE_ALLOW_COMMIT: ${OPENCODE_ALLOW_COMMIT:-1}
+      OPENCODE_ALLOW_PUSH: ${OPENCODE_ALLOW_PUSH:-1}
+      OPENCODE_DANGEROUSLY_SKIP_PERMISSIONS: ${OPENCODE_DANGEROUSLY_SKIP_PERMISSIONS:-0}
+      XDG_DATA_HOME: ${XDG_DATA_HOME:-/tmp/opencode-data}
+      XDG_CONFIG_HOME: ${XDG_CONFIG_HOME:-/tmp/opencode-config}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+    volumes:
+      - .:/app
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ["python", "scripts/storage/migrate_files_to_sql.py", "--apply", "--validate", "--prune"]
+    restart: "no"
+
+  # Background reconciler: keeps the SQL mirror in sync with file writers that
+  # bypass legacy_support (garmin import daemon, weekly pipeline) and with
+  # opencode agent file edits.
+  reconcile:
+    build: .
+    environment:
+      <<: *app_environment
+    volumes:
+      - .:/app
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    command:
+      - sh
+      - -lc
+      - |
+        while true; do
+          python scripts/storage/migrate_files_to_sql.py --apply --prune || true
+          sleep ${RECONCILE_INTERVAL_SECONDS:-300}
+        done
+    restart: unless-stopped
+
+  opencode:
+    build: .
+    environment:
+      <<: *app_environment
+    volumes:
+      - .:/app
+      - opencode-home:/home/app/.opencode
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    command:
+      - sh
+      - -lc
+      - |
+        export PATH="/home/app/.opencode/bin:/home/app/.local/bin:$PATH"
+        if ! command -v opencode >/dev/null 2>&1; then
+          curl --http1.1 --connect-timeout 10 --max-time 120 --retry 2 --retry-delay 2 --retry-all-errors -fsSL https://opencode.ai/install | bash
+        fi
+        exec opencode serve --hostname 0.0.0.0 --port 4096
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:4096/config', timeout=2)"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    restart: unless-stopped
+
+  web:
+    build: .
+    environment:
+      <<: *app_environment
+    volumes:
+      - .:/app
+      - garmin-token-store:/home/app/.garminconnect
+    ports:
+      - "${RUNNING_WEB_PORT:-8090}:8090"
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+      opencode:
+        condition: service_started
+    command: ["python", "-m", "uvicorn", "scripts.web_v2.app:app", "--app-dir", "/app", "--host", "0.0.0.0", "--port", "8090", "--proxy-headers", "--forwarded-allow-ips=*"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8090/healthz', timeout=2)"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    restart: unless-stopped
+
+  garmin:
+    build: .
+    environment:
+      <<: *app_environment
+      POST_WORKOUT_REFRESH_INTERVAL_SECONDS: ${POST_WORKOUT_REFRESH_INTERVAL_SECONDS:-300}
+    volumes:
+      - .:/app
+      - garmin-token-store:/home/app/.garminconnect
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+      web:
+        condition: service_started
+    command: ["python", "scripts/garmin/post_workout_refresh_daemon.py", "--interval-seconds", "${POST_WORKOUT_REFRESH_INTERVAL_SECONDS:-300}"]
+    restart: unless-stopped
+
+  telegram:
+    build: .
+    environment:
+      <<: *app_environment
+    volumes:
+      - .:/app
+      - garmin-token-store:/home/app/.garminconnect
+      - opencode-home:/home/app/.opencode
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+      opencode:
+        condition: service_started
+      web:
+        condition: service_started
+    command: ["python", "scripts/telegram/opencode_bot.py"]
+    restart: unless-stopped
+
+volumes:
+  postgres-data:
+  garmin-token-store:
+  opencode-home:

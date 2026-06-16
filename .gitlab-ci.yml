@@ -36,6 +36,7 @@ test:
     - '$CI_PYTHON -m pytest -q'
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH == "docker"'
 
 deploy_main:
   stage: deploy
@@ -59,3 +60,34 @@ deploy_main:
     - bash deploy/gitlab/deploy_via_ssh.sh
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
+
+# Dockerized deploy: rsyncs the repo to the server (keeps the bind-mounted git
+# checkout fresh for opencode), then runs `docker compose up` which executes the
+# migrate one-shot and (re)starts every service. Manual trigger on the docker
+# branch. Requires Docker + compose installed on the server and a populated
+# /opt/personal-trainer/.env (see deploy/docker/server_cutover.sh).
+deploy_docker:
+  stage: deploy
+  variables:
+    DEPLOY_RESTART_COMMAND: "docker compose up -d --build --remove-orphans"
+  before_script:
+    - |
+      missing=""
+      command -v bash >/dev/null 2>&1 || missing="$missing bash"
+      command -v ssh >/dev/null 2>&1 || missing="$missing openssh-client"
+      command -v rsync >/dev/null 2>&1 || missing="$missing rsync"
+      command -v python3 >/dev/null 2>&1 || missing="$missing python3"
+      if [ -n "$missing" ]; then
+        if command -v apt-get >/dev/null 2>&1; then
+          apt-get update
+          apt-get install -y $missing
+        else
+          echo "Faltan dependencias de deploy:$missing y no existe apt-get." >&2
+          exit 1
+        fi
+      fi
+  script:
+    - bash deploy/gitlab/deploy_via_ssh.sh
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "docker"'
+      when: manual

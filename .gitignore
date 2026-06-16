@@ -12,5 +12,8 @@ venv/
 scripts/web_v2/web_debug.log
 /tmp/opencode/
 
+# Docker / local secrets
+.env
+
 # OS noise
 .DS_Store

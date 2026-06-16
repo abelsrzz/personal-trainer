@@ -77,6 +77,24 @@ class WeeklyPlanningPipelineTests(unittest.TestCase):
         self.assertEqual(result["code"], "garmin_sync_failed")
         self.assertEqual(state_box["payload"]["last_range_operation"]["operation"], "plan_range")
 
+    def test_range_agent_prompt_rejects_success_without_file_changes(self) -> None:
+        with (
+            patch.object(weekly_planning_pipeline, "execute_opencode_prompt", return_value=(True, "Operacion OpenCode completada.", {"run_id": "run1"})),
+            patch.object(weekly_planning_pipeline, "changed_paths_against_snapshot", return_value=[]),
+            patch.object(weekly_planning_pipeline, "_execute_via_gemini", return_value=(False, "Gemini sin cambios", {"fallback": "gemini"})),
+        ):
+            ok, message, detail, changed_paths = weekly_planning_pipeline.execute_range_agent_prompt(
+                "prompt",
+                date(2026, 6, 16),
+                date(2026, 6, 18),
+                {},
+            )
+
+        self.assertFalse(ok)
+        self.assertIn("sin modificar archivos", message)
+        self.assertEqual(changed_paths, [])
+        self.assertIn("opencode_no_changes", detail)
+
     def test_replan_workout_reuses_canonical_yaml_and_verifies_garmin(self) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:
             root = Path(tmp_dir)

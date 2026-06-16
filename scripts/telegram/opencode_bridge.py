@@ -22,6 +22,7 @@ import yaml
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_CONFIG_PATH = ROOT / "telegram" / "bot_config.yaml"
 DEFAULT_OPENCODE_MODEL = "openai/gpt-5.4"
+DEFAULT_LOCAL_RETRY_TIMEOUT_S = 180
 ANSI_RE = re.compile(r"\x1b\[[0-9;]*m")
 
 logger = logging.getLogger("telegram.opencode_bridge")
@@ -57,6 +58,7 @@ class OpenCodeRemoteConfig:
     model: str | None
     variant: str | None
     max_response_chars: int
+    local_retry_timeout_s: int
     require_confirmation_patterns: tuple[str, ...]
     # Gemini fallback — activated when opencode/GPT-5.4 is unavailable
     gemini_fallback_enabled: bool = False
@@ -144,6 +146,7 @@ def load_config(path: Path = DEFAULT_CONFIG_PATH) -> RemoteBotConfig:
             model=normalize_model_name(opencode_data.get("model") or DEFAULT_OPENCODE_MODEL),
             variant=(str(opencode_data.get("variant") or "").strip() or None),
             max_response_chars=int(opencode_data.get("max_response_chars") or 12000),
+            local_retry_timeout_s=max(30, int(opencode_data.get("local_retry_timeout_s") or os.getenv("OPENCODE_TELEGRAM_LOCAL_RETRY_TIMEOUT_S") or DEFAULT_LOCAL_RETRY_TIMEOUT_S)),
             require_confirmation_patterns=tuple(
                 str(item).lower() for item in opencode_data.get("require_confirmation_patterns", [])
             ),
@@ -175,6 +178,7 @@ def sanitized_config(config: RemoteBotConfig) -> dict[str, Any]:
             "allow_push": config.opencode.allow_push,
             "dangerously_skip_permissions": config.opencode.dangerously_skip_permissions,
             "model": config.opencode.model,
+            "local_retry_timeout_s": config.opencode.local_retry_timeout_s,
             "gemini_fallback_enabled": config.opencode.gemini_fallback_enabled,
             "gemini_api_key": "set" if config.opencode.gemini_api_key else "missing",
             "gemini_models": list(config.opencode.gemini_models),
@@ -746,7 +750,7 @@ class OpenCodeBridge:
                 await on_started(started_message)
 
         started = asyncio.get_running_loop().time()
-        first_timeout_s = min(self.config.timeout_s, 25) if attach else self.config.timeout_s
+        first_timeout_s = min(self.config.timeout_s, 25 if attach else self.config.local_retry_timeout_s)
         returncode, stdout, stderr = await run_command(
             command,
             self.config.project_dir,
@@ -787,8 +791,7 @@ class OpenCodeBridge:
             title = title or fresh_title()
             command = self.build_run_command(prompt, session_id, title, model, attach=False)
             started_retry = asyncio.get_running_loop().time()
-            # Cap local retry at 600s so a hanging LLM stream triggers Gemini quickly.
-            local_retry_timeout_s = min(self.config.timeout_s, 600)
+            local_retry_timeout_s = min(self.config.timeout_s, self.config.local_retry_timeout_s)
             returncode, stdout, stderr = await run_command(command, self.config.project_dir, local_retry_timeout_s)
             elapsed_retry_s = asyncio.get_running_loop().time() - started_retry
             logger.info(
@@ -815,7 +818,7 @@ class OpenCodeBridge:
 
             if returncode == 124:
                 failure_reason = (
-                    f"opencode local run timed out after {self.config.timeout_s}s "
+                    f"opencode local run timed out after {local_retry_timeout_s}s "
                     "(LLM stream colgado sin completar — posible cuota agotada o API no responde)"
                 )
                 logger.warning(
@@ -840,7 +843,8 @@ class OpenCodeBridge:
             title = title or fresh_title()
             command = self.build_run_command(prompt, session_id, title, model, attach=False)
             started_retry2 = asyncio.get_running_loop().time()
-            returncode, stdout, stderr = await run_command(command, self.config.project_dir, self.config.timeout_s)
+            local_retry_timeout_s = min(self.config.timeout_s, self.config.local_retry_timeout_s)
+            returncode, stdout, stderr = await run_command(command, self.config.project_dir, local_retry_timeout_s)
             elapsed_retry2_s = asyncio.get_running_loop().time() - started_retry2
             logger.info(
                 "OpenCode local retry2 done trace_id=%s chat_id=%s exit=%s elapsed_s=%.2f stdout_len=%s stderr_len=%s stdout_preview=%s stderr_preview=%s",

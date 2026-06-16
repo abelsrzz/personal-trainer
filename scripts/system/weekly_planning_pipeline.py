@@ -11,6 +11,7 @@ import re
 import shutil
 import subprocess
 import sys
+import time
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any
@@ -66,13 +67,26 @@ PLANNED_WORKOUTS_DIR = ROOT / "training" / "planned" / "workouts"
 DEFAULT_MODEL = "openai/gpt-5.4"
 
 
+class OperationLockError(RuntimeError):
+    pass
+
+
 @contextlib.contextmanager
 def global_operation_lock(name: str):
     import fcntl
 
     GLOBAL_LOCK_PATH.parent.mkdir(parents=True, exist_ok=True)
+    timeout_s = max(1, int(os.getenv("AUTOMATION_LOCK_TIMEOUT_S") or "10"))
+    deadline = time.monotonic() + timeout_s
     with GLOBAL_LOCK_PATH.open("w", encoding="utf-8") as handle:
-        fcntl.flock(handle, fcntl.LOCK_EX)
+        while True:
+            try:
+                fcntl.flock(handle, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                break
+            except BlockingIOError as exc:
+                if time.monotonic() >= deadline:
+                    raise OperationLockError(f"Ya hay una operacion de automatizacion en curso; reintenta en unos minutos ({name}).") from exc
+                time.sleep(0.5)
         handle.write(json.dumps({"operation": name, "pid": os.getpid(), "started_at": datetime.now().isoformat()}, ensure_ascii=True) + "\n")
         handle.flush()
         try:
@@ -485,6 +499,25 @@ def execute_opencode_planning(target_start: date, target_end: date, output_path:
     return True, message, detail
 
 
+def execute_range_agent_prompt(prompt: str, target_start: date, target_end: date, snapshot: dict[str, str]) -> tuple[bool, str, dict[str, Any], list[str]]:
+    ok, message, detail = execute_opencode_prompt(prompt)
+    changed_paths = changed_paths_against_snapshot(snapshot, target_start, target_end)
+    if not ok or changed_paths:
+        return ok, message, detail, changed_paths
+
+    run_id = str(detail.get("run_id") or datetime.now().strftime("%Y%m%dT%H%M%S"))
+    fallback_ok, fallback_message, fallback_detail = _execute_via_gemini(prompt, f"{run_id}_nochange")
+    fallback_changed_paths = changed_paths_against_snapshot(snapshot, target_start, target_end)
+    if fallback_ok and fallback_changed_paths:
+        return True, fallback_message, {"opencode_no_changes": detail, "fallback": fallback_detail}, fallback_changed_paths
+    return (
+        False,
+        "La IA termino sin modificar archivos del rango; no se acepta como plan generado.",
+        {"opencode_no_changes": detail, "fallback": fallback_detail},
+        fallback_changed_paths,
+    )
+
+
 def planned_upload_record_path(workout_path: Path, workout_date: str) -> Path:
     return ROOT / "training" / "planned" / "workouts" / workout_date / f"{workout_path.stem}.garmin_upload.json"
 
@@ -627,8 +660,12 @@ def parse_required_date(value: str, *, field_name: str) -> date:
 
 
 def plan_range(start_date_text: str, end_date_text: str, premise: str, source: str) -> dict[str, Any]:
-    with global_operation_lock("plan_range"):
-        return _plan_range(start_date_text, end_date_text, premise, source)
+    try:
+        with global_operation_lock("plan_range"):
+            return _plan_range(start_date_text, end_date_text, premise, source)
+    except OperationLockError as exc:
+        _finish_progress(False, str(exc))
+        return {"ok": False, "message": str(exc), "code": "operation_busy"}
 
 
 def _plan_range(start_date_text: str, end_date_text: str, premise: str, source: str) -> dict[str, Any]:
@@ -659,8 +696,7 @@ def _plan_range(start_date_text: str, end_date_text: str, premise: str, source: 
     _step(2, "Preparando contexto del rango…")
     snapshot = collect_range_snapshot(target_start, target_end)
     _step(3, "Generando plan con IA…")
-    ok, message, detail = execute_opencode_prompt(build_range_prompt(target_start, target_end, premise, mode="plan"))
-    changed_paths = changed_paths_against_snapshot(snapshot, target_start, target_end)
+    ok, message, detail, changed_paths = execute_range_agent_prompt(build_range_prompt(target_start, target_end, premise, mode="plan"), target_start, target_end, snapshot)
     if not ok:
         _finish_progress(False, f"Error al generar el plan: {message}")
         save_last_operation({
@@ -701,8 +737,12 @@ def _plan_range(start_date_text: str, end_date_text: str, premise: str, source: 
 
 
 def replan_range(start_date_text: str, end_date_text: str, premise: str, source: str) -> dict[str, Any]:
-    with global_operation_lock("replan_range"):
-        return _replan_range(start_date_text, end_date_text, premise, source)
+    try:
+        with global_operation_lock("replan_range"):
+            return _replan_range(start_date_text, end_date_text, premise, source)
+    except OperationLockError as exc:
+        _finish_progress(False, str(exc))
+        return {"ok": False, "message": str(exc), "code": "operation_busy"}
 
 
 def _replan_range(start_date_text: str, end_date_text: str, premise: str, source: str) -> dict[str, Any]:
@@ -733,8 +773,7 @@ def _replan_range(start_date_text: str, end_date_text: str, premise: str, source
     _step(2, "Preparando contexto del rango…")
     snapshot = collect_range_snapshot(target_start, target_end)
     _step(3, "Generando plan con IA…")
-    ok, message, detail = execute_opencode_prompt(build_range_prompt(target_start, target_end, premise, mode="replan"))
-    changed_paths = changed_paths_against_snapshot(snapshot, target_start, target_end)
+    ok, message, detail, changed_paths = execute_range_agent_prompt(build_range_prompt(target_start, target_end, premise, mode="replan"), target_start, target_end, snapshot)
     if not ok:
         _finish_progress(False, f"Error al replanificar: {message}")
         save_last_operation({
@@ -775,8 +814,11 @@ def _replan_range(start_date_text: str, end_date_text: str, premise: str, source
 
 
 def replan_workout(slug: str, premise: str, source: str) -> dict[str, Any]:
-    with global_operation_lock("replan_workout"):
-        return _replan_workout(slug, premise, source)
+    try:
+        with global_operation_lock("replan_workout"):
+            return _replan_workout(slug, premise, source)
+    except OperationLockError as exc:
+        return {"ok": False, "message": str(exc), "code": "operation_busy"}
 
 
 def _replan_workout(slug: str, premise: str, source: str) -> dict[str, Any]:
@@ -862,8 +904,11 @@ def ensure_prepared_entry(state: dict[str, Any], target_start: date, target_end:
 
 
 def plan_next_week(force: bool, source: str) -> dict[str, Any]:
-    with global_operation_lock("plan_next_week"):
-        return _plan_next_week(force, source)
+    try:
+        with global_operation_lock("plan_next_week"):
+            return _plan_next_week(force, source)
+    except OperationLockError as exc:
+        return {"ok": False, "message": str(exc), "code": "operation_busy"}
 
 
 def _plan_next_week(force: bool, source: str) -> dict[str, Any]:
@@ -907,8 +952,11 @@ def _plan_next_week(force: bool, source: str) -> dict[str, Any]:
 
 
 def activate_prepared_week(source: str, week_start: str = "") -> dict[str, Any]:
-    with global_operation_lock("activate_prepared_week"):
-        return _activate_prepared_week(source, week_start)
+    try:
+        with global_operation_lock("activate_prepared_week"):
+            return _activate_prepared_week(source, week_start)
+    except OperationLockError as exc:
+        return {"ok": False, "message": str(exc), "code": "operation_busy"}
 
 
 def _activate_prepared_week(source: str, week_start: str = "") -> dict[str, Any]:

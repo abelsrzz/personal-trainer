@@ -1,0 +1,15 @@
+workout:
+  name: Trote facil continuidad 2.5 km
+  schedule_date: 2026-06-22
+  sport: running
+  description: Trote muy facil para dar continuidad a la vuelta al impacto. Debe salir comodo, sin mirar ritmo y con zancada corta y relajada.
+  estimated_duration_s: 1080
+  steps:
+  - order: 1
+    step_type: interval
+    description: 2.5 km muy faciles
+    distance_m: 2500
+    target:
+      type: heart_rate_range
+      min_bpm: 132
+      max_bpm: 156

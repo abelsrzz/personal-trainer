@@ -1,0 +1,15 @@
+workout:
+  name: Trote facil control 3 km
+  schedule_date: 2026-06-27
+  sport: running
+  description: Rodaje de control para confirmar que dos exposiciones faciles ya se absorben sin reaccion rara. Debe sentirse claramente facil.
+  estimated_duration_s: 1320
+  steps:
+  - order: 1
+    step_type: interval
+    description: 3 km muy faciles
+    distance_m: 3000
+    target:
+      type: heart_rate_range
+      min_bpm: 132
+      max_bpm: 158

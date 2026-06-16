@@ -1,0 +1,31 @@
+workout:
+  name: Bicicleta apoyo Z2 75 min
+  schedule_date: 2026-06-25
+  sport: cycling
+  description: Sesion de soporte aerobico en bici para sumar carga sin impacto y llegar fresco al fin de semana.
+  estimated_duration_s: 4500
+  steps:
+  - order: 1
+    step_type: warmup
+    description: 10 min suaves
+    duration_s: 600
+    target:
+      type: heart_rate_range
+      min_bpm: 120
+      max_bpm: 138
+  - order: 2
+    step_type: interval
+    description: 55 min Z2 estable
+    duration_s: 3300
+    target:
+      type: heart_rate_range
+      min_bpm: 145
+      max_bpm: 158
+  - order: 3
+    step_type: cooldown
+    description: 10 min suaves
+    duration_s: 600
+    target:
+      type: heart_rate_range
+      min_bpm: 115
+      max_bpm: 135

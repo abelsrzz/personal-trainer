@@ -1,0 +1,20 @@
+{
+  "generated_at": "2026-06-16T16:00:00Z",
+  "status": "scheduled",
+  "workout_hash": "b73dea1ee521a84fa3e30b2c3d4453e7a9323e56aa6eb035fe0e2c6906571a36",
+  "upload_mode": "garmin_calendar_restore",
+  "workout_file": "training/planned/workouts/2026-06-22_trote_facil_continuidad_2_5km.yaml",
+  "uploaded_response": {
+    "workoutId": 1602935750,
+    "workoutName": "Trote facil continuidad 2.5 km"
+  },
+  "scheduled_response": {
+    "workoutScheduleId": 1684149941,
+    "workout": {
+      "workoutId": 1602935750,
+      "workoutName": "Trote facil continuidad 2.5 km"
+    }
+  },
+  "warning": null,
+  "replaced_uploads": []
+}

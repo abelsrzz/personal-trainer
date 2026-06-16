@@ -1,0 +1,20 @@
+{
+  "generated_at": "2026-06-16T16:00:00Z",
+  "status": "scheduled",
+  "workout_hash": "08a973c9c00e215e8290141a6c3bd749467097042719bed1af97ff88c977138a",
+  "upload_mode": "garmin_calendar_restore",
+  "workout_file": "training/planned/workouts/2026-06-28_retorno_progresivo_25min.yaml",
+  "uploaded_response": {
+    "workoutId": 1602936291,
+    "workoutName": "Retorno progresivo 25 min"
+  },
+  "scheduled_response": {
+    "workoutScheduleId": 1684150462,
+    "workout": {
+      "workoutId": 1602936291,
+      "workoutName": "Retorno progresivo 25 min"
+    }
+  },
+  "warning": null,
+  "replaced_uploads": []
+}

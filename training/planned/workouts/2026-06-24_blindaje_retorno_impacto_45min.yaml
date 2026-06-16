@@ -1,0 +1,85 @@
+workout:
+  name: Blindaje retorno impacto 45 min
+  schedule_date: 2026-06-24
+  sport: strength
+  description: Sesion de fuerza de soporte para tobillo, pie, tibial, gluteo y core. Debe reforzar sin dejar fatiga residual alta para fin de semana.
+  estimated_duration_s: 2700
+  steps:
+  - order: 1
+    step_type: warmup
+    description: Activacion de pie, tobillo y cadera
+    duration_s: 300
+  - order: 2
+    type: repeat_group
+    iterations: 3
+    steps:
+    - order: 3
+      step_type: interval
+      description: Eccentric heel drop · 12 repeticiones por pierna · descenso lento de 3 s
+      repetitions: 12
+  - order: 4
+    type: repeat_group
+    iterations: 3
+    steps:
+    - order: 5
+      step_type: interval
+      description: Resisted ankle inversion con goma · 15 repeticiones por lado
+      repetitions: 15
+  - order: 6
+    type: repeat_group
+    iterations: 3
+    steps:
+    - order: 7
+      step_type: interval
+      description: Toe raises · 18 repeticiones controladas
+      repetitions: 18
+  - order: 8
+    type: repeat_group
+    iterations: 3
+    steps:
+    - order: 9
+      step_type: interval
+      description: Romanian deadlift con carga ligera · 8 repeticiones
+      repetitions: 8
+      exercise_name: ROMANIAN_DEADLIFT
+      category: DEADLIFT
+  - order: 10
+    type: repeat_group
+    iterations: 3
+    steps:
+    - order: 11
+      step_type: interval
+      description: Step-up to knee drive · 8 repeticiones por pierna
+      repetitions: 8
+  - order: 12
+    type: repeat_group
+    iterations: 3
+    steps:
+    - order: 13
+      step_type: interval
+      description: Single-leg glute bridge · 10 repeticiones por pierna
+      repetitions: 10
+      exercise_name: GLUTE_BRIDGE
+      category: BANDED_EXERCISES
+  - order: 14
+    type: repeat_group
+    iterations: 3
+    steps:
+    - order: 15
+      step_type: interval
+      description: Pallof press con goma · 10 repeticiones por lado
+      repetitions: 10
+  - order: 16
+    type: repeat_group
+    iterations: 3
+    steps:
+    - order: 17
+      step_type: interval
+      description: Dead bug · 8 repeticiones por lado
+      repetitions: 8
+      exercise_name: DEAD_BUG
+      category: HIP_STABILITY
+  - order: 18
+    step_type: cooldown
+    description: Estiramientos suaves de gemelo, pie y cadera
+    duration_s: 300

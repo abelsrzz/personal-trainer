@@ -1,0 +1,39 @@
+workout:
+  name: Retorno progresivo 25 min
+  schedule_date: 2026-06-28
+  sport: running
+  description: Continuo progresivo y controlado para cerrar semana sin series ni cambios bruscos. Solo hacerlo si sabado se absorbe limpio y tibia amanece tranquila.
+  estimated_duration_s: 1500
+  steps:
+  - order: 1
+    step_type: warmup
+    description: 8 min muy faciles
+    duration_s: 480
+    target:
+      type: heart_rate_range
+      min_bpm: 132
+      max_bpm: 148
+  - order: 2
+    step_type: interval
+    description: 10 min continuos comodos, subiendo poco a poco
+    duration_s: 600
+    target:
+      type: heart_rate_range
+      min_bpm: 145
+      max_bpm: 158
+  - order: 3
+    step_type: interval
+    description: 5 min finales progresivos, controlados y sin apretar zancada
+    duration_s: 300
+    target:
+      type: heart_rate_range
+      min_bpm: 158
+      max_bpm: 166
+  - order: 4
+    step_type: cooldown
+    description: 2 min soltar muy suave
+    duration_s: 120
+    target:
+      type: heart_rate_range
+      min_bpm: 120
+      max_bpm: 145

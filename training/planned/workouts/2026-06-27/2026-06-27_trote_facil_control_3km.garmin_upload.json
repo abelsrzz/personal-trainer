@@ -1,0 +1,20 @@
+{
+  "generated_at": "2026-06-16T16:00:00Z",
+  "status": "scheduled",
+  "workout_hash": "a2b2234e0081bc4c498a46bea6f643ef35645248d7e954e9d451239736b8feab",
+  "upload_mode": "garmin_calendar_restore",
+  "workout_file": "training/planned/workouts/2026-06-27_trote_facil_control_3km.yaml",
+  "uploaded_response": {
+    "workoutId": 1602936256,
+    "workoutName": "Trote facil control 3 km"
+  },
+  "scheduled_response": {
+    "workoutScheduleId": 1684150423,
+    "workout": {
+      "workoutId": 1602936256,
+      "workoutName": "Trote facil control 3 km"
+    }
+  },
+  "warning": null,
+  "replaced_uploads": []
+}

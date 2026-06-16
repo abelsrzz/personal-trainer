@@ -1,0 +1,20 @@
+{
+  "generated_at": "2026-06-16T16:00:00Z",
+  "status": "scheduled",
+  "workout_hash": "e751d8b71577841dca3950f166c68118ea8af9216927fe1857ca5fddd9a541cf",
+  "upload_mode": "garmin_calendar_restore",
+  "workout_file": "training/planned/workouts/2026-06-24_blindaje_retorno_impacto_45min.yaml",
+  "uploaded_response": {
+    "workoutId": 1602936178,
+    "workoutName": "Blindaje retorno impacto 45 min"
+  },
+  "scheduled_response": {
+    "workoutScheduleId": 1684150357,
+    "workout": {
+      "workoutId": 1602936178,
+      "workoutName": "Blindaje retorno impacto 45 min"
+    }
+  },
+  "warning": null,
+  "replaced_uploads": []
+}

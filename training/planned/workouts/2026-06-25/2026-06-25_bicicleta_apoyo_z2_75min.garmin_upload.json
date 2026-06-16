@@ -1,0 +1,20 @@
+{
+  "generated_at": "2026-06-16T16:00:00Z",
+  "status": "scheduled",
+  "workout_hash": "77ef338e63fc1ab274d934003fce01d01361dae9b905531308ef28f497f992da",
+  "upload_mode": "garmin_calendar_restore",
+  "workout_file": "training/planned/workouts/2026-06-25_bicicleta_apoyo_z2_75min.yaml",
+  "uploaded_response": {
+    "workoutId": 1602936209,
+    "workoutName": "Bicicleta apoyo Z2 75 min"
+  },
+  "scheduled_response": {
+    "workoutScheduleId": 1684150382,
+    "workout": {
+      "workoutId": 1602936209,
+      "workoutName": "Bicicleta apoyo Z2 75 min"
+    }
+  },
+  "warning": null,
+  "replaced_uploads": []
+}

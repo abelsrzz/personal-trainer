@@ -284,7 +284,8 @@ def planned_workout_path(slug: str) -> Path:
 
 
 def pre_operation_sync(day: str) -> dict[str, Any]:
-    payload = service_sync(day, skip_garmin=False)
+    sync_garmin = str(os.getenv("PLANNING_PRE_SYNC_GARMIN") or "0").strip().lower() in {"1", "true", "yes", "on"}
+    payload = service_sync(day, skip_garmin=not sync_garmin)
     return payload if isinstance(payload, dict) else {"ok": False, "summary": "Service sync devolvio una respuesta no valida."}
 
 

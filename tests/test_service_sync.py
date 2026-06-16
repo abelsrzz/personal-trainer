@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import subprocess
 import unittest
 import sys
 from pathlib import Path
@@ -52,6 +53,14 @@ class ServiceSyncTests(unittest.TestCase):
         self.assertIn("Import Garmin activities", called)
         self.assertNotIn("Coach sync", called)
         self.assertFalse(payload["ok"])
+
+    def test_run_step_times_out_instead_of_hanging(self) -> None:
+        with patch.object(service_sync.subprocess, "run", side_effect=subprocess.TimeoutExpired(["cmd"], 30)):
+            step = service_sync.run_step("Slow step", ["cmd"])
+
+        self.assertFalse(step["ok"])
+        self.assertEqual(step["returncode"], 124)
+        self.assertIn("Timeout", step["stderr"])
 
 
 if __name__ == "__main__":

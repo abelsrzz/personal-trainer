@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import subprocess
 import sys
 from datetime import date, datetime, timezone
@@ -52,7 +53,19 @@ def parse_args() -> argparse.Namespace:
 
 
 def run_step(label: str, command: list[str], *, required: bool = True) -> dict[str, Any]:
-    result = subprocess.run(command, cwd=ROOT, capture_output=True, text=True, check=False)
+    timeout_s = max(30, int(os.getenv("SERVICE_SYNC_STEP_TIMEOUT_S") or "600"))
+    try:
+        result = subprocess.run(command, cwd=ROOT, capture_output=True, text=True, check=False, timeout=timeout_s)
+    except subprocess.TimeoutExpired as exc:
+        return {
+            "label": label,
+            "command": " ".join(command),
+            "ok": False,
+            "required": required,
+            "stdout": (exc.stdout or "").strip() if isinstance(exc.stdout, str) else "",
+            "stderr": f"Timeout tras {timeout_s}s",
+            "returncode": 124,
+        }
     ok = result.returncode == 0
     return {
         "label": label,

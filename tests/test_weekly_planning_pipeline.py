@@ -19,6 +19,12 @@ class WeeklyPlanningPipelineTests(unittest.TestCase):
         with patch.object(weekly_planning_pipeline, "load_yaml", return_value={"opencode_remote": {"variant": "high"}}):
             self.assertEqual(weekly_planning_pipeline.opencode_variant(), "minimal")
 
+    def test_pre_operation_sync_skips_garmin_by_default(self) -> None:
+        with patch.object(weekly_planning_pipeline, "service_sync", return_value={"ok": True}) as sync_mock:
+            weekly_planning_pipeline.pre_operation_sync("2026-06-16")
+
+        sync_mock.assert_called_once_with("2026-06-16", skip_garmin=True)
+
     def test_plan_next_week_prepares_safe_week(self) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:
             prepared_dir = Path(tmp_dir) / "prepared"

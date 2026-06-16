@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import timedelta
+from datetime import datetime, timedelta
 import json
 import logging
 import math
@@ -581,6 +581,18 @@ def template_context(request: Request, **values: Any) -> dict[str, Any]:
     }
     context.update(values)
     return context
+
+
+def normalize_plan_progress(progress: dict[str, Any]) -> dict[str, Any]:
+    if progress.get("status") not in {"done", "error"} or not progress.get("updated_at"):
+        return progress
+    try:
+        age_s = (datetime.now() - datetime.fromisoformat(str(progress.get("updated_at")))).total_seconds()
+    except ValueError:
+        return progress
+    if age_s <= 15:
+        return progress
+    return {"running": False, "step": 0, "total": progress.get("total") or 5, "label": "", "status": "idle", "message": "", "updated_at": ""}
 
 
 def active_nav(path: str) -> str:
@@ -1745,7 +1757,7 @@ async def plan_progress_api(request: Request) -> JSONResponse:
         return JSONResponse({"ok": False, "error": "Sesion no valida."}, status_code=401)
     if _pipeline_progress is None:
         return JSONResponse({"ok": True, "progress": {"running": False, "step": 0, "total": 5, "label": "", "status": "idle", "message": "", "updated_at": ""}})
-    return JSONResponse({"ok": True, "progress": _pipeline_progress.get()})
+    return JSONResponse({"ok": True, "progress": normalize_plan_progress(_pipeline_progress.get())})
 
 
 @app.get("/api/automation/health")

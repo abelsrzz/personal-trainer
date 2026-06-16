@@ -112,6 +112,17 @@ class WebV2Tests(unittest.TestCase):
         self.assertEqual(app.request_app_path(request, "/"), "/running")
         self.assertEqual(app.request_app_path(request, "/login"), "/running/login")
 
+    def test_normalize_plan_progress_hides_stale_terminal_state(self) -> None:
+        old = (app.datetime.now() - app.timedelta(seconds=30)).isoformat()
+        payload = app.normalize_plan_progress({"running": False, "step": 5, "total": 5, "label": "Plan generado", "status": "done", "message": "ok", "updated_at": old})
+        self.assertEqual(payload["status"], "idle")
+        self.assertFalse(payload["running"])
+
+    def test_normalize_plan_progress_keeps_fresh_done_state(self) -> None:
+        now = app.datetime.now().isoformat()
+        payload = app.normalize_plan_progress({"running": False, "step": 5, "total": 5, "label": "Plan generado", "status": "done", "message": "ok", "updated_at": now})
+        self.assertEqual(payload["status"], "done")
+
     def test_aerobic_target_hr_values_derive_from_z2_band(self) -> None:
         with mock.patch.object(app.portal_core, "load_yaml", return_value={"zones": {"heart_rate": {"z2": "145-160"}}}):
             self.assertEqual(app.aerobic_target_hr_values(), [145, 153, 160])

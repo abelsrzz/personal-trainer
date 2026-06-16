@@ -393,6 +393,7 @@
     if (!bar || !fill || !lbl || !apiUrl) return;
 
     let hideTimer = null;
+    let terminalSeen = false;
 
     const hide = () => {
       bar.setAttribute('hidden', 'hidden');
@@ -401,17 +402,21 @@
     };
 
     const render = (p) => {
+      if (p.status === 'idle') { terminalSeen = false; clearTimeout(hideTimer); hide(); return; }
+      if ((p.status === 'done' || p.status === 'error') && terminalSeen) return;
       clearTimeout(hideTimer);
-      if (p.status === 'idle') { hide(); return; }
+      if (p.status === 'running') terminalSeen = false;
       const pct = p.total > 0 ? Math.round((p.step / p.total) * 100) : 0;
       bar.removeAttribute('hidden');
       fill.style.width = pct + '%';
       fill.dataset.status = p.status;
       lbl.textContent = p.label || '';
       if (p.status === 'done') {
+        terminalSeen = true;
         fill.style.width = '100%';
         hideTimer = setTimeout(hide, 4000);
       } else if (p.status === 'error') {
+        terminalSeen = true;
         hideTimer = setTimeout(hide, 8000);
       }
     };

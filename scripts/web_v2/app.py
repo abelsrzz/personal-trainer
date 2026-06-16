@@ -64,6 +64,7 @@ app.add_middleware(
     session_cookie="runpilot_v2_session",
 )
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+app.mount("/assets", StaticFiles(directory=STATIC_DIR), name="assets")
 templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
 
 

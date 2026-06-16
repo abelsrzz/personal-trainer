@@ -433,7 +433,10 @@ def execute_opencode_prompt(prompt: str) -> tuple[bool, str, dict[str, Any]]:
             "status": "started",
         },
     )
-    _OPENCODE_PIPELINE_TIMEOUT = 600
+    # Un plan completo de semana con gpt-5.4 --variant high razona durante
+    # varios minutos legítimamente. El hang real ya está resuelto (variant),
+    # así que damos margen amplio; el timeout solo cubre cuelgues residuales.
+    _OPENCODE_PIPELINE_TIMEOUT = int(os.getenv("OPENCODE_PIPELINE_TIMEOUT") or 1800)
     try:
         result = run_command(command, timeout=_OPENCODE_PIPELINE_TIMEOUT)
     except subprocess.TimeoutExpired:

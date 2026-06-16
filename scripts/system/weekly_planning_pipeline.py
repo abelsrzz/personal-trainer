@@ -381,7 +381,7 @@ def _opencode_quota_error(result: subprocess.CompletedProcess[str]) -> bool:
     if result.returncode == 0 and result.stdout.strip():
         return False
     combined = (result.stdout + " " + result.stderr).lower()
-    return any(p in combined for p in _OPENCODE_QUOTA_PATTERNS) or result.returncode == 124
+    return any(p in combined for p in _OPENCODE_QUOTA_PATTERNS) or result.returncode in (124,) or result.returncode < 0
 
 
 def _gemini_config() -> tuple[str, list[str]]:
@@ -424,8 +424,12 @@ def execute_opencode_prompt(prompt: str) -> tuple[bool, str, dict[str, Any]]:
             "status": "started",
         },
     )
+    _OPENCODE_PIPELINE_TIMEOUT = 600
     try:
-        result = run_command(command)
+        result = run_command(command, timeout=_OPENCODE_PIPELINE_TIMEOUT)
+    except subprocess.TimeoutExpired:
+        save_planning_run(run_id, {"run_id": run_id, "status": "timeout", "message": f"opencode timed out after {_OPENCODE_PIPELINE_TIMEOUT}s", "prompt_path": display_path(prompt_path)})
+        return _execute_via_gemini(prompt, run_id)
     except FileNotFoundError:
         save_planning_run(run_id, {"run_id": run_id, "status": "error", "message": "opencode missing", "prompt_path": display_path(prompt_path)})
         return _execute_via_gemini(prompt, run_id)

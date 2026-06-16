@@ -12,7 +12,7 @@ import time
 from pathlib import Path
 from typing import Any
 
-from fastapi import FastAPI, Form, Request
+from fastapi import BackgroundTasks, FastAPI, Form, Request
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -1563,6 +1563,7 @@ async def calendar(request: Request, month: str | None = None, focus: str = "all
 @app.post("/calendar/plan-range")
 async def calendar_plan_range_submit(
     request: Request,
+    background_tasks: BackgroundTasks,
     start_date: str = Form(...),
     end_date: str = Form(...),
     premise: str = Form(""),
@@ -1571,22 +1572,19 @@ async def calendar_plan_range_submit(
     redirect = auth_guard(request)
     if redirect:
         return redirect
-    result = await _run_action_async(
+    background_tasks.add_task(
+        run_action,
         "plan_range",
-        payload={
-            "start_date": start_date,
-            "end_date": end_date,
-            "premise": premise,
-            "source": "web",
-        },
+        payload={"start_date": start_date, "end_date": end_date, "premise": premise, "source": "web"},
     )
-    request.session["flash"] = {"level": "ok" if result.get("ok") else "error", "message": str(result.get("message") or "Operacion finalizada.")}
+    request.session["flash"] = {"level": "ok", "message": f"Planificando {start_date} → {end_date} en segundo plano. Recarga el calendario en unos segundos."}
     return RedirectResponse(url=request_app_path(request, safe_return_to(return_to, "/calendar")), status_code=303)
 
 
 @app.post("/calendar/replan-range")
 async def calendar_replan_range_submit(
     request: Request,
+    background_tasks: BackgroundTasks,
     start_date: str = Form(...),
     end_date: str = Form(...),
     premise: str = Form(""),
@@ -1595,16 +1593,12 @@ async def calendar_replan_range_submit(
     redirect = auth_guard(request)
     if redirect:
         return redirect
-    result = await _run_action_async(
+    background_tasks.add_task(
+        run_action,
         "replan_range",
-        payload={
-            "start_date": start_date,
-            "end_date": end_date,
-            "premise": premise,
-            "source": "web",
-        },
+        payload={"start_date": start_date, "end_date": end_date, "premise": premise, "source": "web"},
     )
-    request.session["flash"] = {"level": "ok" if result.get("ok") else "error", "message": str(result.get("message") or "Operacion finalizada.")}
+    request.session["flash"] = {"level": "ok", "message": f"Replanificando {start_date} → {end_date} en segundo plano. Recarga el calendario en unos segundos."}
     return RedirectResponse(url=request_app_path(request, safe_return_to(return_to, "/calendar")), status_code=303)
 
 

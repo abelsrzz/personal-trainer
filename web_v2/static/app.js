@@ -384,4 +384,49 @@
     }
   })();
 
+  /* ── Plan progress bar ──────────────────────────── */
+  (function planProgress() {
+    const bar    = document.querySelector('[data-plan-progress]');
+    const fill   = document.querySelector('[data-plan-progress-fill]');
+    const lbl    = document.querySelector('[data-plan-progress-label]');
+    const apiUrl = url('planProgressUrl');
+    if (!bar || !fill || !lbl || !apiUrl) return;
+
+    let hideTimer = null;
+
+    const hide = () => {
+      bar.setAttribute('hidden', 'hidden');
+      fill.style.width = '0%';
+      fill.dataset.status = '';
+    };
+
+    const render = (p) => {
+      clearTimeout(hideTimer);
+      if (p.status === 'idle') { hide(); return; }
+      const pct = p.total > 0 ? Math.round((p.step / p.total) * 100) : 0;
+      bar.removeAttribute('hidden');
+      fill.style.width = pct + '%';
+      fill.dataset.status = p.status;
+      lbl.textContent = p.label || '';
+      if (p.status === 'done') {
+        fill.style.width = '100%';
+        hideTimer = setTimeout(hide, 4000);
+      } else if (p.status === 'error') {
+        hideTimer = setTimeout(hide, 8000);
+      }
+    };
+
+    const poll = async () => {
+      try {
+        const r = await fetch(apiUrl, { credentials: 'same-origin' });
+        if (!r.ok) return;
+        const d = await r.json();
+        if (d && d.ok && d.progress) render(d.progress);
+      } catch (_) {}
+    };
+
+    poll();
+    window.setInterval(poll, 2000);
+  })();
+
 })();

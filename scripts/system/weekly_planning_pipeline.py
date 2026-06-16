@@ -28,8 +28,27 @@ except ModuleNotFoundError:  # pragma: no cover - direct script execution path f
     from scripts.system.automation_health import write_automation_health
     from scripts.system.context_engine import write_all_contexts
     from scripts.system.planning_validator import validate_prepared_week
-    from scripts.system.policy_gate import PolicyGateError, enforce
-    from scripts.system.service_sync import service_sync
+
+try:
+    from scripts.system import pipeline_progress as _progress
+except Exception:  # pragma: no cover
+    _progress = None  # type: ignore[assignment]
+
+
+def _step(n: int, label: str) -> None:
+    if _progress is not None:
+        try:
+            _progress.update(n, label)
+        except Exception:
+            pass
+
+
+def _finish_progress(ok: bool, message: str = "") -> None:
+    if _progress is not None:
+        try:
+            _progress.finish(ok, message)
+        except Exception:
+            pass
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -594,11 +613,15 @@ def _plan_range(start_date_text: str, end_date_text: str, premise: str, source: 
         target_start = parse_required_date(start_date_text, field_name="start_date")
         target_end = parse_required_date(end_date_text, field_name="end_date")
     except ValueError as exc:
+        _finish_progress(False, str(exc))
         return {"ok": False, "message": str(exc), "code": "invalid_date"}
     if target_end < target_start:
+        _finish_progress(False, "Rango de fechas inválido.")
         return {"ok": False, "message": "La fecha final no puede ser anterior a la inicial.", "code": "invalid_range"}
+    _step(1, "Sincronizando datos con Garmin…")
     pre_sync = pre_operation_sync(date.today().isoformat())
     if not pre_sync.get("ok"):
+        _finish_progress(False, "Fallo en sincronización previa con Garmin.")
         save_last_operation({
             "status": "blocked_pre_sync",
             "operation": "plan_range",
@@ -610,10 +633,13 @@ def _plan_range(start_date_text: str, end_date_text: str, premise: str, source: 
             "pre_sync": pre_sync,
         })
         return {"ok": False, "message": "No se puede planificar porque la sincronizacion previa con Garmin/coach ha fallado.", "code": "pre_sync_failed", "pre_sync": pre_sync}
+    _step(2, "Preparando contexto del rango…")
     snapshot = collect_range_snapshot(target_start, target_end)
+    _step(3, "Generando plan con IA…")
     ok, message, detail = execute_opencode_prompt(build_range_prompt(target_start, target_end, premise, mode="plan"))
     changed_paths = changed_paths_against_snapshot(snapshot, target_start, target_end)
     if not ok:
+        _finish_progress(False, f"Error al generar el plan: {message}")
         save_last_operation({
             "status": "planning_failed",
             "operation": "plan_range",
@@ -626,7 +652,9 @@ def _plan_range(start_date_text: str, end_date_text: str, premise: str, source: 
             "pre_sync": pre_sync,
         })
         return {"ok": False, "message": message, "code": "planning_failed", "detail": detail, "pre_sync": pre_sync}
+    _step(4, "Subiendo entrenamientos a Garmin…")
     garmin_sync = sync_planned_workouts_verified()
+    _step(5, "Actualizando resumen…")
     refresh_operational_artifacts()
     entry = {
         "status": "planned" if garmin_sync.get("ok") else "garmin_failed",
@@ -643,7 +671,9 @@ def _plan_range(start_date_text: str, end_date_text: str, premise: str, source: 
     }
     save_last_operation(entry)
     if not garmin_sync.get("ok"):
+        _finish_progress(False, "Plan generado, pero fallo la verificación Garmin.")
         return {"ok": False, "message": "Plan generado, pero la verificacion Garmin posterior ha fallado.", "code": "garmin_sync_failed", "changed_paths": changed_paths, "garmin_sync": garmin_sync}
+    _finish_progress(True, "Plan generado y sincronizado con Garmin.")
     return {"ok": True, "message": "Plan generado y sincronizado con Garmin.", "code": "planned", "changed_paths": changed_paths, "garmin_sync": garmin_sync}
 
 
@@ -657,11 +687,15 @@ def _replan_range(start_date_text: str, end_date_text: str, premise: str, source
         target_start = parse_required_date(start_date_text, field_name="start_date")
         target_end = parse_required_date(end_date_text, field_name="end_date")
     except ValueError as exc:
+        _finish_progress(False, str(exc))
         return {"ok": False, "message": str(exc), "code": "invalid_date"}
     if target_end < target_start:
+        _finish_progress(False, "Rango de fechas inválido.")
         return {"ok": False, "message": "La fecha final no puede ser anterior a la inicial.", "code": "invalid_range"}
+    _step(1, "Sincronizando datos con Garmin…")
     pre_sync = pre_operation_sync(date.today().isoformat())
     if not pre_sync.get("ok"):
+        _finish_progress(False, "Fallo en sincronización previa con Garmin.")
         save_last_operation({
             "status": "blocked_pre_sync",
             "operation": "replan_range",
@@ -673,10 +707,13 @@ def _replan_range(start_date_text: str, end_date_text: str, premise: str, source
             "pre_sync": pre_sync,
         })
         return {"ok": False, "message": "No se puede replanificar porque la sincronizacion previa con Garmin/coach ha fallado.", "code": "pre_sync_failed", "pre_sync": pre_sync}
+    _step(2, "Preparando contexto del rango…")
     snapshot = collect_range_snapshot(target_start, target_end)
+    _step(3, "Generando plan con IA…")
     ok, message, detail = execute_opencode_prompt(build_range_prompt(target_start, target_end, premise, mode="replan"))
     changed_paths = changed_paths_against_snapshot(snapshot, target_start, target_end)
     if not ok:
+        _finish_progress(False, f"Error al replanificar: {message}")
         save_last_operation({
             "status": "replanning_failed",
             "operation": "replan_range",
@@ -689,7 +726,9 @@ def _replan_range(start_date_text: str, end_date_text: str, premise: str, source
             "pre_sync": pre_sync,
         })
         return {"ok": False, "message": message, "code": "replanning_failed", "detail": detail, "pre_sync": pre_sync}
+    _step(4, "Subiendo entrenamientos a Garmin…")
     garmin_sync = sync_planned_workouts_verified()
+    _step(5, "Actualizando resumen…")
     refresh_operational_artifacts()
     entry = {
         "status": "replanned" if garmin_sync.get("ok") else "garmin_failed",
@@ -706,7 +745,9 @@ def _replan_range(start_date_text: str, end_date_text: str, premise: str, source
     }
     save_last_operation(entry)
     if not garmin_sync.get("ok"):
+        _finish_progress(False, "Replan generado, pero falló la verificación Garmin.")
         return {"ok": False, "message": "Replan generado, pero la verificacion Garmin posterior ha fallado.", "code": "garmin_sync_failed", "changed_paths": changed_paths, "garmin_sync": garmin_sync}
+    _finish_progress(True, "Replan generado y sincronizado con Garmin.")
     return {"ok": True, "message": "Replan generado y sincronizado con Garmin.", "code": "replanned", "changed_paths": changed_paths, "garmin_sync": garmin_sync}
 
 

@@ -8,6 +8,10 @@
   <link rel="stylesheet" href="{{ app_path('/static/style.css') }}">
 </head>
 <body>
+  <div class="plan-progress-bar" hidden data-plan-progress>
+    <div class="plan-progress-fill" data-plan-progress-fill></div>
+    <span class="plan-progress-label" data-plan-progress-label></span>
+  </div>
   <div class="planner-busy-overlay" hidden data-planner-busy>
     <div class="planner-busy-card">
       <div class="planner-spinner" aria-hidden="true"></div>
@@ -111,6 +115,7 @@
     data-chat-confirm-url="{{ app_path('/api/chat/confirm') }}"
     data-chat-conversations-url="{{ app_path('/api/chat/conversations') }}"
     data-chat-switch-url="{{ app_path('/api/chat/conversations/switch') }}"
+    data-plan-progress-url="{{ app_path('/api/plan/progress') }}"
   ></div>
   <script src="{{ app_path('/static/app.js') }}?v={{ static_version }}" defer></script>
   {% endif %}

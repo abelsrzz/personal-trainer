@@ -21,6 +21,10 @@ from starlette.middleware.sessions import SessionMiddleware
 from scripts.system.automation_hub import build_status as automation_jobs_status, load_state as load_automation_jobs_state, run_due_jobs, run_job
 import asyncio as _asyncio
 from scripts.system.action_runtime import list_actions, run_action
+try:
+    from scripts.system import pipeline_progress as _pipeline_progress
+except Exception:
+    _pipeline_progress = None  # type: ignore[assignment]
 
 
 async def _run_action_async(name: str, payload: dict | None = None) -> dict:
@@ -1571,6 +1575,8 @@ async def calendar_plan_range_submit(
     redirect = auth_guard(request)
     if redirect:
         return redirect
+    if _pipeline_progress is not None:
+        _pipeline_progress.reset()
     threading.Thread(
         target=run_action,
         args=("plan_range",),
@@ -1592,6 +1598,8 @@ async def calendar_replan_range_submit(
     redirect = auth_guard(request)
     if redirect:
         return redirect
+    if _pipeline_progress is not None:
+        _pipeline_progress.reset()
     threading.Thread(
         target=run_action,
         args=("replan_range",),
@@ -1728,6 +1736,16 @@ async def garmin_sync_status(request: Request) -> JSONResponse:
     if guard:
         return JSONResponse({"ok": False, "error": "Sesion no valida."}, status_code=401)
     return JSONResponse({"ok": True, "sync": dict(_garmin_sync_state), "status_text": garmin_sync_status_text()}, status_code=200)
+
+
+@app.get("/api/plan/progress")
+async def plan_progress_api(request: Request) -> JSONResponse:
+    guard = auth_guard(request)
+    if guard:
+        return JSONResponse({"ok": False, "error": "Sesion no valida."}, status_code=401)
+    if _pipeline_progress is None:
+        return JSONResponse({"ok": True, "progress": {"running": False, "step": 0, "total": 5, "label": "", "status": "idle", "message": "", "updated_at": ""}})
+    return JSONResponse({"ok": True, "progress": _pipeline_progress.get()})
 
 
 @app.get("/api/automation/health")

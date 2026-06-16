@@ -23,6 +23,7 @@ ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_CONFIG_PATH = ROOT / "telegram" / "bot_config.yaml"
 DEFAULT_OPENCODE_MODEL = "openai/gpt-5.4"
 DEFAULT_LOCAL_RETRY_TIMEOUT_S = 900
+DEFAULT_SESSION_DISCOVERY_TIMEOUT_S = 8
 ANSI_RE = re.compile(r"\x1b\[[0-9;]*m")
 
 logger = logging.getLogger("telegram.opencode_bridge")
@@ -593,7 +594,7 @@ class OpenCodeBridge:
     async def discover_session_id(self, title: str) -> str | None:
         command = ["opencode", "session", "list", "--format", "json", "--max-count", "20"]
         logger.info("Discovering session id by title=%s", title)
-        returncode, stdout, _stderr = await run_command(command, self.config.project_dir, 30)
+        returncode, stdout, _stderr = await run_command(command, self.config.project_dir, DEFAULT_SESSION_DISCOVERY_TIMEOUT_S)
         if returncode != 0 or not stdout:
             logger.warning("Session list failed: exit=%s stdout_len=%s", returncode, len(stdout or ""))
             return None

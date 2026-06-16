@@ -311,6 +311,11 @@ def build_range_prompt(target_start: date, target_end: date, premise: str, *, mo
     return (
         "Actua como el planificador operativo de este repositorio y trabaja directamente sobre los archivos del proyecto. "
         f"Tu objetivo es {mode_line} el rango indicado respetando el conocimiento y las reglas ya guardadas.\n\n"
+        "MODO EJECUCION OBLIGATORIO: trabajas en una sesion automatica no interactiva. Debes EJECUTAR los cambios "
+        "usando las herramientas de escritura (write/edit) en este mismo turno. NO describas lo que vas a hacer ni "
+        "termines con frases de intencion como 'voy a' o 'ahora leere': realiza las lecturas y despues ESCRIBE los "
+        "archivos de verdad. No finalices la tarea hasta haber creado/actualizado el markdown semanal y todos los "
+        "YAMLs fechados del rango con la herramienta de escritura.\n\n"
         f"Rango objetivo: del {target_start.isoformat()} al {target_end.isoformat()}.\n"
         f"Premisa adicional obligatoria del usuario: {premise.strip() or 'Sin premisa adicional; usa el contexto operativo actual.'}\n\n"
         "Archivos semanales canonicos que debes actualizar dentro de este rango:\n"
@@ -322,7 +327,9 @@ def build_range_prompt(target_start: date, target_end: date, premise: str, *, mo
         "4. Siempre que toques sesiones futuras, deja los YAMLs coherentes con el markdown semanal y con Garmin: pasos ejecutables, duration_s o distance_m cuando haga falta, sport correcto y metadata util (`template_id`, `knowledge_id`, `knowledge_label`, `primary_goal`) cuando proceda.\n"
         f"5. {extra_rules}\n"
         "6. Si la accion implica retirar sesiones del rango, elimina tambien los YAMLs y deja el markdown semanal consistente.\n"
-        "7. Al terminar, deja los archivos escritos en el repositorio y no hagas commit.\n"
+        "7. Antes de terminar, VERIFICA que has usado la herramienta de escritura para cada YAML del rango y para el "
+        "markdown semanal. Si no has escrito ningun archivo todavia, hazlo ahora: la tarea no esta completa hasta que "
+        "los archivos esten escritos en el repositorio. No hagas commit.\n"
     )
 
 

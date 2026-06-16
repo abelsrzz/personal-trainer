@@ -5,7 +5,7 @@ telegram:
 
 opencode_remote:
   timeout_s: 3600
-  model: openai/gpt-5.4
+  model: google/gemini-2.5-flash
   gemini_fallback:
     enabled: true
     # api_key: set via GEMINI_API_KEY environment variable (never commit the key)

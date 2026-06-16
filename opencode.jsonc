@@ -1,5 +1,11 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "model": "google/gemini-2.5-flash",
+  "provider": {
+    "google": {
+      "env": ["GEMINI_API_KEY", "GOOGLE_GENERATIVE_AI_API_KEY"]
+    }
+  },
   "agent": {
     "build": {
       "steps": 40

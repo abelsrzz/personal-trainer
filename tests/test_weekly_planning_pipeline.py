@@ -79,7 +79,7 @@ class WeeklyPlanningPipelineTests(unittest.TestCase):
 
     def test_range_agent_prompt_rejects_success_without_file_changes(self) -> None:
         with (
-            patch.object(weekly_planning_pipeline, "execute_opencode_prompt", return_value=(True, "Operacion OpenCode completada.", {"run_id": "run1"})),
+            patch.object(weekly_planning_pipeline, "execute_opencode_prompt", return_value=(True, "Operacion OpenCode completada.", {"run_id": "run1"})) as execute_mock,
             patch.object(weekly_planning_pipeline, "changed_paths_against_snapshot", return_value=[]),
             patch.object(weekly_planning_pipeline, "_execute_via_gemini", return_value=(False, "Gemini sin cambios", {"fallback": "gemini"})),
         ):
@@ -94,6 +94,8 @@ class WeeklyPlanningPipelineTests(unittest.TestCase):
         self.assertIn("sin modificar archivos", message)
         self.assertEqual(changed_paths, [])
         self.assertIn("opencode_no_changes", detail)
+        self.assertIn("opencode_retry_no_changes", detail)
+        self.assertEqual(execute_mock.call_count, 2)
 
     def test_replan_workout_reuses_canonical_yaml_and_verifies_garmin(self) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:

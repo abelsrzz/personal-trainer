@@ -506,14 +506,25 @@ def execute_range_agent_prompt(prompt: str, target_start: date, target_end: date
         return ok, message, detail, changed_paths
 
     run_id = str(detail.get("run_id") or datetime.now().strftime("%Y%m%dT%H%M%S"))
+    retry_prompt = (
+        prompt
+        + "\n\nREINTENTO OBLIGATORIO: la ejecucion anterior termino sin modificar ningun archivo del rango. "
+        "Eso es fallo operativo. No expliques intenciones. Escribe ahora los markdown/YAML canonicos del rango con las herramientas de escritura "
+        "y termina solo cuando `git diff --name-only` muestre cambios dentro del rango.\n"
+    )
+    retry_ok, retry_message, retry_detail = execute_opencode_prompt(retry_prompt)
+    retry_changed_paths = changed_paths_against_snapshot(snapshot, target_start, target_end)
+    if not retry_ok or retry_changed_paths:
+        return retry_ok, retry_message, {"opencode_no_changes": detail, "opencode_retry": retry_detail}, retry_changed_paths
+
     fallback_ok, fallback_message, fallback_detail = _execute_via_gemini(prompt, f"{run_id}_nochange")
     fallback_changed_paths = changed_paths_against_snapshot(snapshot, target_start, target_end)
     if fallback_ok and fallback_changed_paths:
-        return True, fallback_message, {"opencode_no_changes": detail, "fallback": fallback_detail}, fallback_changed_paths
+        return True, fallback_message, {"opencode_no_changes": detail, "opencode_retry_no_changes": retry_detail, "fallback": fallback_detail}, fallback_changed_paths
     return (
         False,
-        "La IA termino sin modificar archivos del rango; no se acepta como plan generado.",
-        {"opencode_no_changes": detail, "fallback": fallback_detail},
+        "La IA termino sin modificar archivos del rango tras reintentar con OpenCode; no se acepta como plan generado.",
+        {"opencode_no_changes": detail, "opencode_retry_no_changes": retry_detail, "fallback": fallback_detail},
         fallback_changed_paths,
     )
 

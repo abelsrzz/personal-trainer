@@ -940,6 +940,7 @@ def load_web_chat_remote_config() -> tuple[OpenCodeRemoteConfig | None, str | No
                 allow_push=bool(opencode_data.get("allow_push", True)),
                 dangerously_skip_permissions=bool(opencode_data.get("dangerously_skip_permissions", False)),
                 model=normalize_model_name(opencode_data.get("model") or DEFAULT_OPENCODE_MODEL),
+                variant=(str(opencode_data.get("variant") or "").strip() or None),
                 max_response_chars=int(opencode_data.get("max_response_chars") or 12000),
                 require_confirmation_patterns=tuple(
                     str(item).lower() for item in opencode_data.get("require_confirmation_patterns", []) if str(item).strip()

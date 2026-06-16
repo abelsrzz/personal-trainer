@@ -213,6 +213,12 @@ def opencode_model() -> str:
     return model or DEFAULT_MODEL
 
 
+def opencode_variant() -> str:
+    config = load_yaml(TELEGRAM_CONFIG_PATH)
+    remote = config.get("opencode_remote", {}) if isinstance(config.get("opencode_remote"), dict) else {}
+    return str(remote.get("variant") or os.getenv("OPENCODE_VARIANT") or "high").strip() or "high"
+
+
 def file_sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as handle:
@@ -411,7 +417,10 @@ def _execute_via_gemini(prompt: str, run_id: str) -> tuple[bool, str, dict[str, 
 
 def execute_opencode_prompt(prompt: str) -> tuple[bool, str, dict[str, Any]]:
     run_id = datetime.now().strftime("%Y%m%dT%H%M%S") + "_" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8]
-    command = ["opencode", "run", "--dir", str(ROOT), "--model", opencode_model(), "--print-logs", prompt]
+    # --variant forces an explicit reasoning effort. The opencode default hangs
+    # the OpenAI/Codex (OAuth) stream mid-run on gpt-5.x; any explicit variant
+    # avoids the freeze that was leaving plan-range/replan-range stuck.
+    command = ["opencode", "run", "--dir", str(ROOT), "--model", opencode_model(), "--variant", opencode_variant(), "--print-logs", prompt]
     prompt_path = save_planning_run(
         run_id,
         {

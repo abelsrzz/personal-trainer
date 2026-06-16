@@ -55,6 +55,7 @@ class OpenCodeRemoteConfig:
     allow_push: bool
     dangerously_skip_permissions: bool
     model: str | None
+    variant: str | None
     max_response_chars: int
     require_confirmation_patterns: tuple[str, ...]
     # Gemini fallback — activated when opencode/GPT-5.4 is unavailable
@@ -141,6 +142,7 @@ def load_config(path: Path = DEFAULT_CONFIG_PATH) -> RemoteBotConfig:
             allow_push=bool(opencode_data.get("allow_push", True)),
             dangerously_skip_permissions=bool(opencode_data.get("dangerously_skip_permissions", False)),
             model=normalize_model_name(opencode_data.get("model") or DEFAULT_OPENCODE_MODEL),
+            variant=(str(opencode_data.get("variant") or "").strip() or None),
             max_response_chars=int(opencode_data.get("max_response_chars") or 12000),
             require_confirmation_patterns=tuple(
                 str(item).lower() for item in opencode_data.get("require_confirmation_patterns", [])
@@ -567,6 +569,11 @@ class OpenCodeBridge:
             command.extend(["--attach", self.config.server_url])
         command.extend(["--dir", str(self.config.project_dir)])
         command.extend(["--model", model])
+        # Force an explicit reasoning variant. The opencode default reasoning
+        # effort hangs the OpenAI/Codex (OAuth) stream mid-run on gpt-5.x; any
+        # explicit --variant avoids the freeze.
+        if self.config.variant:
+            command.extend(["--variant", self.config.variant])
         # Keep default format so stdout contains the assistant answer.
         # Also print internal logs to stderr to help debugging if stdout is empty.
         command.append("--print-logs")
